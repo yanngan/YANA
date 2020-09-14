@@ -4,7 +4,7 @@ A new Flutter application.
 
 ## Getting Started!!!
 
-ggg - this is yann ganem
+ggg - this is Lidor
 
 This project is a starting point for a Flutter application.
 

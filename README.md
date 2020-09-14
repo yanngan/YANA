@@ -5,7 +5,7 @@ A new Flutter application.
 ## Getting Started!!!
 
 ggg - this is Lidor 456789
-ggg - this is yann ganem 987
+ggg - this is yann
 
 This project is a starting point for a Flutter application.
 

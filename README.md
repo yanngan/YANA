@@ -2,7 +2,7 @@
 
 A new Flutter application.
 
-## Getting Started with YANA project!!!
+## Getting Started!!!!
 
 This project is a starting point for a Flutter application.
 

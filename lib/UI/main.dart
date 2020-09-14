@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// Developers: Lidor Eliyahu & Yann Ganem
+
 void main() {
   runApp(MyApp());
 }

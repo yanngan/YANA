@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 //PAGES
 import 'PAGES/AllPage.dart';
-//WEDGETS
+//WIDGETS
 import 'WIDGETS/allWidgets.dart';
 
 /// Developers: Lidor Eliyahu & Yann Ganem

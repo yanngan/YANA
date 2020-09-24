@@ -8,6 +8,7 @@ export 'Welcome.dart';
 export 'SingUp.dart';
 export 'NoticeBoard.dart';
 
+const appName = "YANA";
 
 const int Welcome_index   = 0;
 const int Login_index     = 1;

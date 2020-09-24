@@ -25,7 +25,8 @@ class _MainPageState extends State<MainPage> {
       onWillPop: _onBackPressed,
       child: Scaffold(
         bottomNavigationBar: hideBottomNavigationBar?null:MyCurvedNavigationBar(pageController),
-        body: PageView(
+        body: //Welcome()   --> Lidor Built Welcome
+        PageView(
           pageSnapping: true,
           physics:new NeverScrollableScrollPhysics(),
           onPageChanged: (index){

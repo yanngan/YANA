@@ -11,7 +11,7 @@ class _NoticeBoardState extends State<NoticeBoard> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.amber,
-      child: Center(child: Text("Welcome")),
+      child: Center(child: Text("NoticeBoard")),
     );
   }
 }

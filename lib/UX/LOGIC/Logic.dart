@@ -5,13 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'EXCEPTIONS/CanNotGetUserLocationException.dart';
 /// Developers: Lidor Eliyahu & Yann Ganem
 
-
-
-
-
 class Logic{
-
-
 
 
   ///getUserLocation
@@ -33,8 +27,8 @@ class Logic{
     }
     print(position);
     CameraPosition toReturn = CameraPosition(
-      target: LatLng(position.altitude,position.longitude),
-      zoom: 20.4746,);
+      target: LatLng(position.latitude,position.longitude),
+      zoom: 18.4746,);
     return toReturn;
   }
 }

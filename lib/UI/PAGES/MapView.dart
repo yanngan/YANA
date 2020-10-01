@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:yana/UI/WIDGETS/MapSample.dart';
 
 class MapView extends StatefulWidget {
   @override
@@ -11,7 +12,9 @@ class _MapViewState extends State<MapView> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.amber,
-      child: Center(child: Text("MapView")),
+      child: Center(
+       child: MapSample()
+      ),
     );
   }
 }

@@ -17,7 +17,7 @@ class _WelcomeState extends State<Welcome> {
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
-        backgroundColor: Colors.cyan,
+        backgroundColor: Colors.amberAccent,
         body: Container(
           child: Center(
             child: Column(
@@ -54,7 +54,7 @@ class _WelcomeState extends State<Welcome> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(30),
                   child: RaisedButton(
-                    color:Colors.amber,
+                    color:Colors.pink,
                     onPressed: () {
                       this.widget.callback(1);
                     },
@@ -69,7 +69,7 @@ class _WelcomeState extends State<Welcome> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(30),
                   child: RaisedButton(
-                    color:Colors.amber,
+                    color:Colors.pink,
                     onPressed: () {
                       setState(() {
                         this.widget.callback(2);
@@ -87,7 +87,7 @@ class _WelcomeState extends State<Welcome> {
                   borderRadius: BorderRadius.circular(30),
                   child: RaisedButton(
                     padding: const EdgeInsets.all(10.0),
-                    color:Colors.amber,
+                    color:Colors.pink,
                     onPressed: () {
                       setState(() {
                         this.widget.callback(3);

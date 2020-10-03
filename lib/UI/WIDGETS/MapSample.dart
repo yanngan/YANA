@@ -34,8 +34,10 @@ class MapSampleState extends State<MapSample> {
           _controller.complete(controller);
         },
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: jumpToCurrentLocation,
+        backgroundColor: Colors.amber,
         label: Text('To my location!'),
         icon: Icon(Icons.directions_boat),
       ),

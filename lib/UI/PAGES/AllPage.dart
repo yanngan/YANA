@@ -9,6 +9,7 @@ export 'SignIn.dart';
 export 'NoticeBoard.dart';
 
 const appName = "YANA";
+bool isOver18 = false;
 
 //const int Welcome_index   = 0;
 //const int Login_index     = 1;

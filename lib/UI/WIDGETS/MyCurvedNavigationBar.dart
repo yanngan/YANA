@@ -5,6 +5,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import '../PAGES/AllPage.dart';
 
 
+// ignore: must_be_immutable
 class MyCurvedNavigationBar extends StatefulWidget {
   PageController pageController;
   MyCurvedNavigationBar(this.pageController);

@@ -67,7 +67,7 @@ class _SignInState extends State<SignIn> {
                     textColor: Colors.black54,
                     fontSize: 16.0
                 );
-//                SystemNavigator.pop();
+                SystemNavigator.pop();
               },
               color: Colors.transparent,
               icon: Icon(Icons.thumb_down),

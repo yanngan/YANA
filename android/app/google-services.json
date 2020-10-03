@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "378665091191",
+    "firebase_url": "https://yana-36317.firebaseio.com",
+    "project_id": "yana-36317",
+    "storage_bucket": "yana-36317.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378665091191:android:82c396f1d14753f34f4672",
+        "android_client_info": {
+          "package_name": "com.yana.yana"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "378665091191-5t5lt4baqfpjkltbklsgon7ahr3chbol.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTqPk_3tYCfQSaf7en0Ht4KWWj1yRn1Vs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "378665091191-5t5lt4baqfpjkltbklsgon7ahr3chbol.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "378665091191-4gkkfi75lsrdjjb134ku4n24idjigpvr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.yana.yana"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

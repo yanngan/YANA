@@ -7,5 +7,5 @@ We have 2 types of users:
     2) Searcher
 
 
-#### Developers: Lidor Eliyahu & Yann Ganem
+#### Developers: Lidor Eliyahu & Yann Ganem & Yisrael Bar
 

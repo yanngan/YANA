@@ -6,7 +6,8 @@ import 'PAGES/AllPage.dart';
 //WIDGETS
 import 'WIDGETS/allWidgets.dart';
 //AIzaSyAg2GgqVtmCLI6Ge73OdoU2xTYtIW_0Fp0
-/// Developers: Lidor Eliyahu & Yann Ganem
+
+/// Developers: Lidor Eliyahu Shelef, Yann Ganem, Yisrael Bar-Or and Jonas Sperling
 
 // Global Variables
 int currentIndex = MapView_index;
@@ -63,59 +64,79 @@ class _MainPageState extends State<MainPage> {
       return Login();
     }else if(pageType == 3) {
       return Scaffold(
-        bottomNavigationBar: hideBottomNavigationBar
-            ? null
-            : MyCurvedNavigationBar(pageController),
-        body: PageView(
-          controller: pageController,
-          pageSnapping: true,
-          physics: new NeverScrollableScrollPhysics(),
-          onPageChanged: (index) {
-            FocusScope.of(context).unfocus();
-            print(index);
-            hideBottomNavigationBar = true;
-            switch (index) {
-              case Chat_index:
-                hideBottomNavigationBar = false;
-                break;
-              case SearchView_index:
-                hideBottomNavigationBar = false;
-                break;
-              case MapView_index:
-                hideBottomNavigationBar = false;
-                break;
-              case NoticeBoard_index:
-                hideBottomNavigationBar = false;
-                break;
-              case Settings_index:
-                hideBottomNavigationBar = false;
-                break;
-              case Welcome_index:
-                break;
-              case Login_index:
-                break;
-              case SingIn_index:
-                break;
-              case ChatList_index:
-                hideBottomNavigationBar = false;
-                break;
-            }
-            setState(() {
-              currentIndex = index;
-            });
-          },
-          children: [
-            Chat(),
-            SearchView(),
-            MapView(),
-            NoticeBoard(),
-            Settings(),
-//            Welcome(),
-//            Login(),
-//            SingUp(),
-//            ChatList(),
-          ],
+//        bottomNavigationBar: hideBottomNavigationBar
+//            ? null
+//            : MyCurvedNavigationBar(pageController),
+        body:Scaffold(
+          body: Stack(
+            children: <Widget>[
+              PageView(
+                controller: pageController,
+                pageSnapping: true,
+                physics: new NeverScrollableScrollPhysics(),
+                onPageChanged: (index) {
+                  FocusScope.of(context).unfocus();
+                  print(index);
+                  hideBottomNavigationBar = true;
+                  switch (index) {
+                    case Chat_index:
+                      hideBottomNavigationBar = false;
+                      break;
+                    case SearchView_index:
+                      hideBottomNavigationBar = false;
+                      break;
+                    case MapView_index:
+                      hideBottomNavigationBar = false;
+                      break;
+                    case NoticeBoard_index:
+                      hideBottomNavigationBar = false;
+                      break;
+                    case Settings_index:
+                      hideBottomNavigationBar = false;
+                      break;
+                    case Welcome_index:
+                      break;
+                    case Login_index:
+                      break;
+                    case SingIn_index:
+                      break;
+                    case ChatList_index:
+                      hideBottomNavigationBar = false;
+                      break;
+                  }
+                  setState(() {
+                    currentIndex = index;
+                  });
+                },
+                children: [
+                  Chat(),
+                  SearchView(),
+                  MapView(),
+                  NoticeBoard(),
+                  Settings(),
+      //            Welcome(),
+      //            Login(),
+      //            SingUp(),
+      //            ChatList(),
+                ],
+              ),
+              Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Theme(
+                      data: Theme.of(context)
+                          .copyWith(canvasColor: Colors.transparent),
+                      child: hideBottomNavigationBar
+                          ? null
+                          : MyCurvedNavigationBar(pageController),
+                  )
+              ),
+            ],
+          ),
         ),
+
+
+
+
       );
     }else{
       return Container(

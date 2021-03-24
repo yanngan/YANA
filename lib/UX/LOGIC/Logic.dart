@@ -3,10 +3,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 //EXCEPTIONS
 import 'EXCEPTIONS/CanNotGetUserLocationException.dart';
-/// Developers: Lidor Eliyahu & Yann Ganem
+
+/// Developers: Lidor Eliyahu Shelef, Yann Ganem, Yisrael Bar-Or and Jonas Sperling
 
 class Logic{
-
 
   ///getUserLocation
   ///try to get hes current ;ocation, if fail ->

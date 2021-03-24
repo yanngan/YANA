@@ -1,7 +1,8 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:yana/UX/LOGIC/Logic.dart';
 
 class MapSample extends StatefulWidget {
@@ -10,6 +11,7 @@ class MapSample extends StatefulWidget {
 }
 
 class MapSampleState extends State<MapSample> {
+
   Completer<GoogleMapController> _controller = Completer();
 
   static final CameraPosition _kGooglePlex = CameraPosition(
@@ -28,6 +30,8 @@ class MapSampleState extends State<MapSample> {
     //jumpToCurrentLocation();
     return new Scaffold(
       body: GoogleMap(
+        zoomControlsEnabled: false,   // False reason -> could'nt figure out how to move it's position from our custom navigation bar
+        zoomGesturesEnabled: true,
         mapType: MapType.hybrid,
         initialCameraPosition: _kGooglePlex,
         onMapCreated: (GoogleMapController controller) {
@@ -35,11 +39,14 @@ class MapSampleState extends State<MapSample> {
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: jumpToCurrentLocation,
-        backgroundColor: Colors.amber,
-        label: Text('To my location!'),
-        icon: Icon(Icons.directions_boat),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 60.0),
+        child: FloatingActionButton.extended(
+          onPressed: jumpToCurrentLocation,
+          backgroundColor: Colors.amber,
+          label: Text('To My Location!', style: TextStyle(fontSize: 20, color: Colors.black87),),
+          icon: Icon(Icons.directions_boat, color: Colors.black54,),
+        ),
       ),
     );
   }
@@ -57,6 +64,17 @@ class MapSampleState extends State<MapSample> {
   void jumpToCurrentLocation() async {
     CameraPosition CurrntUserLocation = await Logic.getUserLocation();
     _goTo(CurrntUserLocation);
+
+//    Fluttertoast.showToast(
+//        msg: "Location:\n" + CurrntUserLocation.toString(),
+//        toastLength: Toast.LENGTH_LONG,
+//        gravity: ToastGravity.CENTER,
+//        timeInSecForIosWeb: 1,
+//        backgroundColor: Colors.red,
+//        textColor: Colors.white,
+//        fontSize: 16.0
+//    );
+
   }
 
 

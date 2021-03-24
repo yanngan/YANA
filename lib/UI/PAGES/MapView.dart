@@ -11,10 +11,14 @@ class _MapViewState extends State<MapView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.amber,
+//      color: Colors.amber,
       child: Center(
        child: MapSample()
       ),
     );
   }
 }
+
+
+
+

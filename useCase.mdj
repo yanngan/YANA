@@ -12,54 +12,6 @@
 			"name": "Model",
 			"ownedElements": [
 				{
-					"_type": "UMLClassDiagram",
-					"_id": "AAAAAAFF+qBtyKM79qY=",
-					"_parent": {
-						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
-					},
-					"name": "Main",
-					"defaultDiagram": true,
-					"ownedViews": [
-						{
-							"_type": "RectangleView",
-							"_id": "AAAAAAF4U/wxR/p42pE=",
-							"_parent": {
-								"$ref": "AAAAAAFF+qBtyKM79qY="
-							},
-							"font": "Arial;13;0",
-							"left": 168,
-							"top": 80,
-							"width": 616,
-							"height": 576
-						},
-						{
-							"_type": "EllipseView",
-							"_id": "AAAAAAF4U/w65vp7zIY=",
-							"_parent": {
-								"$ref": "AAAAAAFF+qBtyKM79qY="
-							},
-							"font": "Arial;13;0",
-							"showShadow": false,
-							"left": 240,
-							"top": 136,
-							"width": 152,
-							"height": 128
-						},
-						{
-							"_type": "UMLTextView",
-							"_id": "AAAAAAF4U/1e2/qMqDQ=",
-							"_parent": {
-								"$ref": "AAAAAAFF+qBtyKM79qY="
-							},
-							"font": "Arial;13;0",
-							"left": 280,
-							"top": 192,
-							"width": 60,
-							"height": 24
-						}
-					]
-				},
-				{
 					"_type": "UMLUseCaseDiagram",
 					"_id": "AAAAAAF4U/5JWfqPVAk=",
 					"_parent": {

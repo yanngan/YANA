@@ -98,7 +98,7 @@ class _MainPageState extends State<MainPage> {
                       break;
                     case Login_index:
                       break;
-                    case SingIn_index:
+                    case SingUp_index:
                       break;
                     case ChatList_index:
                       hideBottomNavigationBar = false;

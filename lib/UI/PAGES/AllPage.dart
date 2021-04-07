@@ -5,7 +5,7 @@ export 'MapView.dart';
 export 'SearchView.dart';
 export 'Settings.dart';
 export 'Welcome.dart';
-export 'SignIn.dart';
+export 'SignUp.dart';
 export 'NoticeBoard.dart';
 
 /// Developers: Lidor Eliyahu Shelef, Yann Ganem, Yisrael Bar-Or and Jonas Sperling

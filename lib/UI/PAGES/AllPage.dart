@@ -32,7 +32,7 @@ const int NoticeBoard_index   = 3;
 const int Settings_index      = 4;
 const int Welcome_index       = 5;
 const int Login_index         = 6;
-const int SingIn_index        = 7;
+const int SingUp_index        = 7;
 const int ChatList_index      = 8;
 
 

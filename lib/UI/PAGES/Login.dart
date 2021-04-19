@@ -38,8 +38,8 @@ class _LoginState extends State<Login> {
                   break;
                 case FacebookLoginStatus.error:
                   Fluttertoast.showToast(
-                      msg: 'Something went wrong with the login process.\n'
-                          'Here\'s the error Facebook gave us: ${result
+                      msg: 'Something went wrong with the login process. \n'
+                          'Here\'s the error Facebook gave us : ${result
                           .errorMessage}',
                       toastLength: Toast.LENGTH_LONG,
                       gravity: ToastGravity.CENTER,

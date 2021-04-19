@@ -1,26 +1,13 @@
 # YANA
 
-A new Flutter application.
-
-## Getting Started!!!
-
-ggg - this is Lidor
-ggg - this is yann
-
-ccc - yann ganem THE
-ccc - yann ganem the
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+YANA is a none profit volunteering organization that is meant to connect between people.
 
 
-#### Developers: Lidor Eliyahu & Yann Ganem
+#### Developers: Lidor Eliyahu Shelef, Yann Moshe Ganem, Yisrael Bar-Or, Jonas Sperling
+
+
+ - [Lidor Eliyahu Shelef](https://www.linkedin.com/in/lidor-e-s/)
+ - [Yisrael Bar-Or](https://www.linkedin.com/in/yisrael-bar-7534a842/)
+ - [Jonas Sperling](https://www.linkedin.com/in/jonas-s-32927b20b/)
+ - [Yann Moshe Ganem](https://www.linkedin.com/in/yann-ganem-00ab02183/)
 

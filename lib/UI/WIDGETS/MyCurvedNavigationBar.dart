@@ -27,7 +27,7 @@ class _MyCurvedNavigationBarState extends State<MyCurvedNavigationBar> {
       color: Colors.amber[600],
       items: <Widget>[
         Icon(Icons.chat, size: 30,color:Colors.red),      /// Chat Page
-        Icon(Icons.zoom_in, size: 30,color:Colors.red),   /// Search Page
+        Icon(Icons.search, size: 30,color:Colors.red),   /// Search Page
         Icon(Icons.map, size: 30,color:Colors.red),       /// Map Page
         Icon(Icons.dashboard, size: 30,color:Colors.red), /// NoticeBoard Page
         Icon(Icons.settings, size: 30,color:Colors.red),  /// Setting Page

@@ -15,12 +15,12 @@ class Logic{
   ///     throw CanNotGetUserLocationException
 
   static Future<CameraPosition> getUserLocation() async{
-    Position position;
+    Position? position;
     try {
-      position = await getCurrentPosition(desiredAccuracy: LocationAccuracy.high,timeLimit: Duration(seconds: 3));
+      position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high,timeLimit: Duration(seconds: 3));
     }
     catch (e){
-      position = await getLastKnownPosition();
+      position = await Geolocator.getLastKnownPosition();
     }
     if(position == null){
       throw CanNotGetUserLocationException();

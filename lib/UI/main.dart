@@ -1,6 +1,7 @@
 //FLUTTER
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 //PAGES
 import 'PAGES/AllPage.dart';
 //WIDGETS
@@ -61,7 +62,7 @@ class _MainPageState extends State<MainPage> {
     if(pageType == 1){
       return SignIn();
     }else if(pageType == 2){
-      return Login();
+      return Login(this.callback);
     }else if(pageType == 3) {
       return Scaffold(
 //        bottomNavigationBar: hideBottomNavigationBar
@@ -123,11 +124,10 @@ class _MainPageState extends State<MainPage> {
               Align(
                   alignment: Alignment.bottomCenter,
                   child: Theme(
-                      data: Theme.of(context)
+                    data: Theme.of(context)
                           .copyWith(canvasColor: Colors.transparent),
-                      child: hideBottomNavigationBar
-                          ? null
-                          : MyCurvedNavigationBar(pageController),
+                    child: hideBottomNavigationBar ? SizedBox(height: 0, width: 0,) : MyCurvedNavigationBar(pageController),
+//                      child: hideBottomNavigationBar ? null : MyCurvedNavigationBar(pageController),
                   )
               ),
             ],
@@ -145,30 +145,39 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
-  Future<bool> _onBackPressed() {
-    return showDialog(
-      context: context,
-      builder: (context) => new AlertDialog(
-        title: new Text('Are you sure'),
-        content: new Text('you want to log out?'),
-        actions: <Widget>[
-          new GestureDetector(
-            onTap: (){
-              Navigator.of(context).pop(false);
-            },
-            child: Text("NO"),
-          ),
-          SizedBox(height: 16),
-          new GestureDetector(
-            onTap: () {
-              this.callback(0);
-              Navigator.pop(context);
-            },
-            child: Text("YES"),
-          ),
-        ],
-      ),
-    ) ??false;
+  Future<void> _logOut() async {
+    await FacebookAuth.instance.logOut();
+    setState(() {});
   }
+
+  Future<bool> _onBackPressed() async {
+    _logOut();
+    return true;
+  }
+//  Future<bool> _onBackPressed() {
+//    return showDialog(
+//      context: context,
+//      builder: (context) => new AlertDialog(
+//        title: new Text('Are you sure'),
+//        content: new Text('you want to log out?'),
+//        actions: <Widget>[
+//          new GestureDetector(
+//            onTap: (){
+//              Navigator.of(context).pop(false);
+//            },
+//            child: Text("NO"),
+//          ),
+//          SizedBox(height: 16),
+//          new GestureDetector(
+//            onTap: () {
+//              this.callback(0);
+//              Navigator.pop(context);
+//            },
+//            child: Text("YES"),
+//          ),
+//        ],
+//      ),
+//    ) ?? false;
+//  }
 
 }

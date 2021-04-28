@@ -24,7 +24,7 @@ class _MyCurvedNavigationBarState extends State<MyCurvedNavigationBar> {
       animationCurve: Curves.easeInOut,
       index: MapView_index,
       height: 50,
-      color: Colors.amber[600],
+      color: Colors.amber[600]!,
       items: <Widget>[
         Icon(Icons.chat, size: 30,color:Colors.red),      /// Chat Page
         Icon(Icons.search, size: 30,color:Colors.red),   /// Search Page

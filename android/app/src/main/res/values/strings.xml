@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">YANA</string>
+    <string name="facebook_app_id">243031144171299</string>
+    <string name="fb_login_protocol_scheme">fb243031144171299</string>
+</resources>

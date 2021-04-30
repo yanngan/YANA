@@ -1,9 +1,0 @@
-class Place_Details {
-
-  String name;
-  int number;
-  bool kosher;
-
-
-  Place_Details({this.name, this.number, this.kosher});
-}

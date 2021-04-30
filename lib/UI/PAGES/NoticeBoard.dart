@@ -8,37 +8,57 @@ class NoticeBoard extends StatefulWidget {
 }
 
 List<Place_Details> data = [
-  Place_Details(kosher: false, name: 'Chez Andi', number: 0258795461),
-  Place_Details(kosher: true, name: 'Rimon', number: 0145897859),
-  Place_Details(kosher: true, name: 'Katsefet', number: 0212354674),
-  Place_Details(kosher: false, name: 'Gueoula', number: 0267889744),
-  Place_Details(kosher: true, name: 'KoshTrip', number: 0248985431),
-  Place_Details(kosher: true, name: 'KoshTrip', number: 0248985431),
-  Place_Details(kosher: true, name: 'KoshTrip', number: 0248985431),
-  Place_Details(kosher: true, name: 'KoshTrip', number: 0248985431),
-  Place_Details(kosher: true, name: 'KoshTrip', number: 0248985431),
-  Place_Details(kosher: true, name: 'KoshTrip', number: 0248985431),
-  Place_Details(kosher: true, name: 'KoshTrip', number: 0248985431),
+  Place_Details(
+      kosher: false,
+      name: 'Chez Andi',
+      number: 0258795461,
+      details: 'Hi everyone ! \n'
+          'My name sdi Jonas\n'
+          'Waht for u ?\n'
+          'gergfvzvsfze\n'
+          'egrregergegre\n'
+          'gertggrege\n'
+          'tjytujtyaizejz'),
+  Place_Details(kosher: true, name: 'Rimon', number: 0145897859,details: ''),
+  Place_Details(kosher: true, name: 'Katsefet', number: 0212354674,details: ''),
+  Place_Details(kosher: false, name: 'Gueoula', number: 0267889744,details: ''),
+  Place_Details(kosher: true, name: 'KoshTrip', number: 0248985431,details: ''),
+  Place_Details(kosher: true, name: 'KoshTrip', number: 0248985431,details: ''),
+  Place_Details(kosher: true, name: 'KoshTrip', number: 0248985431,details: ''),
+  Place_Details(kosher: true, name: 'KoshTrip', number: 0248985431,details: ''),
+  Place_Details(kosher: true, name: 'KoshTrip', number: 0248985431,details: ''),
+  Place_Details(kosher: true, name: 'KoshTrip', number: 0248985431,details: ''),
+  Place_Details(kosher: true, name: 'KoshTrip', number: 0248985431,details: ''),
 ];
 
 class _NoticeBoardState extends State<NoticeBoard> {
   @override
   void initState() {
     super.initState();
-    initPlacesList();   // In order to populate our Advertisement list
+    initPlacesList(); // In order to populate our Advertisement list
     //Here will be the sorting of the data coming from firebase
   }
 
   List<Advertisement> advertisements = [];
 
-  void initPlacesList(){
-    for(int i = 0; i < 10; i++){
-      if(i % 2 == 0){
-        advertisements.add(Advertisement(Colors.purple[200]!, data[i].getName(),
-            data[i].getKosher(), data[i].getNumber(), Colors.grey[900]!));
-      }else{
-        advertisements.add(Advertisement(Colors.purple[400]!, data[i].getName(),
-            data[i].getKosher(), data[i].getNumber(), Colors.grey[400]!));
+  void initPlacesList() {
+    for (int i = 0; i < 10; i++) {
+      if (i % 2 == 0) {
+        advertisements.add(Advertisement(
+            Colors.purple[200]!,
+            data[i].getName(),
+            data[i].getKosher(),
+            data[i].getNumber(),
+            Colors.grey[900]!,
+            data[i].getDetails()));
+      } else {
+        advertisements.add(Advertisement(
+            Colors.purple[400]!,
+            data[i].getName(),
+            data[i].getKosher(),
+            data[i].getNumber(),
+            Colors.grey[400]!,
+            data[i].getDetails()));
       }
     }
   }
@@ -49,7 +69,7 @@ class _NoticeBoardState extends State<NoticeBoard> {
       color: Colors.amber,
       child: ListView(children: [
         Padding(
-          padding: EdgeInsets.fromLTRB(5, 0, 0, 80),
+          padding: EdgeInsets.fromLTRB(5, 0, 0, 40),
           child: Container(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -70,13 +90,16 @@ class Advertisement extends StatefulWidget {
   //   Key key,
   // }) : super(key: key);
   String name;
+  String details;
   bool kosher;
   int number;
   Color color;
-  Color expsiontilecolor;
+  Color expansiontilecolor;
+
+  var children = [];
 
   Advertisement(this.color, this.name, this.kosher, this.number,
-      this.expsiontilecolor);
+      this.expansiontilecolor, this.details);
 
   @override
   _AdvertisementState createState() => _AdvertisementState();
@@ -84,71 +107,79 @@ class Advertisement extends StatefulWidget {
 
 class _AdvertisementState extends State<Advertisement> {
   double _width = 200;
-  double _height = 150;
-
+  double _height = 110;
+  var count = 0;
+  bool _isOpen = false;
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      margin: EdgeInsets.fromLTRB(6, 6, 6, 4.0),
-      duration: Duration(milliseconds: 735),
-      child: Column(
-        children: <Widget>[
-          Image(
-              image: AssetImage(
-                  'assets/yana_logo.png'
-              )
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(0, 15.0, 0, 0),
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(20.0)
-            ),
-          ),
-          ExpansionTile(
-            tilePadding: EdgeInsets.fromLTRB(10.0, 0, 0, 0),
-            title: Text(widget.name,
-              style: TextStyle(
-                  fontFamily: 'Font2',
-                  letterSpacing: 1.5,
-                  fontWeight: FontWeight.w600,
-                  color: widget.expsiontilecolor
-              ),),
-            children: <Widget>[
-
-              Padding(
-                padding: const EdgeInsets.all(28),
-                child: Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 20.0, 0),
-                      child: CircleAvatar(
-                        backgroundImage: AssetImage(
-                            'assets/yana_logo.png'
+      width: _width,
+      height: _height,
+      margin: EdgeInsets.fromLTRB(6, 6, 6, 10.0),
+      duration: Duration(milliseconds: 800),
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            if(_isOpen){
+              _height = 110;
+              _isOpen = false;
+            }else{
+              _height += widget.details.length+30;
+              _isOpen = true;
+            }
+          });
+        },
+        child: Column(
+          children: <Widget>[
+            Card(
+              color: widget.color,
+              child: Column(
+                children: <Widget>[
+                  Cards_Title(widget.name),
+                  Visibility(
+                    visible: _isOpen,
+                    child: Row(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(10, 2, 0, 10),
+                          child: Text(
+                            widget.details,
+                            style: TextStyle(
+                                letterSpacing: 1,
+                                decorationThickness: 2,
+                                wordSpacing: 1,
+                                ),
+                          ),
                         ),
-                        radius: 40.0,
-                      ),
+                      ],
                     ),
-                    Text(
-                      'Hi everyone ! \n'
-                          'My name sdi Jonas\n'
-                          'Waht for u ?\n'
-                          'gergfvzvsfze\n'
-                          'egrregergegre\n'
-                          'gertggrege\n'
-                          'tjytujtyaizejz',
-
-                      style: TextStyle(
-                        backgroundColor: Colors.black.withOpacity(0.5),
-                      ),
-                    ),
-
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
+    );
+  }
+}
+
+class Cards_Title extends StatelessWidget {
+  @override
+  var name;
+  Cards_Title(this.name);
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.fromLTRB(10.0, 10.0, 20.0, 10.0),
+          child: CircleAvatar(
+            backgroundImage: AssetImage('assets/yana_logo.png'),
+            radius: 40.0,
+          ),
+        ),
+        Text(name),
+      ],
     );
   }
 }

@@ -47,15 +47,14 @@ class Events{
   Map<String, dynamic> toJson() {
     return {
       "eventID": this.eventID,
-      "user":  this.user,
+      "user":  this.user.toJson(),
       "creationDate":  this.creationDate,
-      "status":this.status,
+      "status": this.status,
       "startEstimate": this.startEstimate,
       "endEstimate":  this.endEstimate,
       "curNumPeople": this.curNumPeople,
-      "maxNumPeople":this.maxNumPeople,
-      "placeID":this.placeID
-
+      "maxNumPeople": this.maxNumPeople,
+      "placeID": this.placeID,
     };
 
 

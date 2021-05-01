@@ -6,6 +6,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'PAGES/AllPage.dart';
 //WIDGETS
 import 'WIDGETS/allWidgets.dart';
+// Do not delete next line!
 //AIzaSyAg2GgqVtmCLI6Ge73OdoU2xTYtIW_0Fp0
 
 /// Developers: Lidor Eliyahu Shelef, Yann Ganem, Yisrael Bar-Or and Jonas Sperling
@@ -37,6 +38,7 @@ class _MainPageState extends State<MainPage> {
     return applicationSetup();
   }
 
+//  callback function in order to allow moving between login sign up and the inner area of the application
   void callback(int type) {
     setState(() {
       pageType = type;
@@ -65,9 +67,6 @@ class _MainPageState extends State<MainPage> {
       return Login(this.callback);
     }else if(pageType == 3) {
       return Scaffold(
-//        bottomNavigationBar: hideBottomNavigationBar
-//            ? null
-//            : MyCurvedNavigationBar(pageController),
         body:Scaffold(
           body: Stack(
             children: <Widget>[

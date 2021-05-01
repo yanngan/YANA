@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -5,6 +7,7 @@ import 'AllPage.dart';
 
 class Welcome extends StatefulWidget {
 
+//  Callback function related - See main.dart callback section for more info about it
   final Function callback;
   const Welcome(this.callback);
 
@@ -15,6 +18,8 @@ class Welcome extends StatefulWidget {
 
 class _WelcomeState extends State<Welcome> {
 
+//  Variables:
+//  All the elements sizes
   var topSpace = 0.0, imageSize = 0.0, fontSizeBig = 0.0, fontSizeSmall = 0.0, fullSize = 0.0;
 
   @override
@@ -25,17 +30,26 @@ class _WelcomeState extends State<Welcome> {
     fontSizeBig = 45;
     fontSizeSmall = 30;
     fullSize = (topSpace * 1.35) + imageSize;
+
+//    In order to make this screen visible for only 7 seconds and then go to an identical screen with extra options
+    Future.delayed(Duration(seconds: 5)).then((value) => {
+      setState(() {
+        this.widget.callback(2);
+      })
+    });
+
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.amberAccent,
+      backgroundColor: Colors.amber,
       body: Container(
         child: Padding(
           padding: const EdgeInsets.only(top: 10, right: 0, left: 0, bottom: 10),
           child: Stack(
             children: [
+//              Logo Animation
               TweenAnimationBuilder(
                 tween: Tween<double>(begin: (MediaQuery.of(context).size.height / 3), end: 10),
                 duration: Duration(seconds: 2),
@@ -49,7 +63,7 @@ class _WelcomeState extends State<Welcome> {
                         Container(
                           child: Column(
                             children: <Widget>[
-                              SizedBox(
+                              SizedBox(   // In order to make sure the logo will not appear on top of the status bar
                                 height: topSpace,
                               ), // Top Spacing
                               Image(
@@ -60,16 +74,17 @@ class _WelcomeState extends State<Welcome> {
                               ), // Logo
                             ],
                           ),
-                        ), // Logo + Welcome Text
+                        ), // Logo
                       ],
                     ),
                   );
                 }
               ),
+//              Texts Animation
               TweenAnimationBuilder(
                 tween: Tween<double>(begin: 0, end: 255),
-                duration: Duration(seconds: 5),
-                curve: Curves.easeInOut,
+                duration: Duration(seconds: 4),
+                curve: Curves.easeInExpo,
                 builder: (BuildContext _, double alpha, Widget? __) {
                   return Padding(
                     padding: EdgeInsets.only(top: fullSize, right: 0, left: 0, bottom: 0),
@@ -81,42 +96,31 @@ class _WelcomeState extends State<Welcome> {
                             padding: const EdgeInsets.only(left: 0, right: 0, bottom: 0, top: 10),
                             child: Text(
                               '$appName',
-                              style: TextStyle(fontSize: fontSizeBig, fontWeight: FontWeight.bold, color: Colors.black.withAlpha(alpha.toInt())),
+                              style: TextStyle(
+                                  fontSize: fontSizeBig,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Skia",
+                                  color: Colors.black.withAlpha(alpha.toInt())
+                              ),
                             ),
                           ), // App Name
                           Padding(
                             padding: const EdgeInsets.only(left: 0, right: 0, bottom: 0, top: 3.5),
                             child: Text(
                               'You Are Not Alone',
-                              style: TextStyle(fontSize: fontSizeSmall, fontFamily: "Skia", color: Colors.black.withAlpha(alpha.toInt())),
-                            ),
-                          ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(30),
-                            child: TextButton(
-                              style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.pink.withAlpha(alpha.toInt()))
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  this.widget.callback(3);
-                                });
-                              },
-                              child: Container(
-                                child: Text(
-                                  'Enter without sign up',
-                                  style: TextStyle(fontSize: 14, color: Colors.lightBlueAccent.withAlpha(alpha.toInt())),
-                                  textAlign: TextAlign.center,
-                                ),
+                              style: TextStyle(
+                                  fontSize: fontSizeSmall,
+                                  fontFamily: "Skia",
+                                  color: Colors.black.withAlpha(alpha.toInt())
                               ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                  );
+                  ); // Welcome Text
                 }
-              ), // Spacing
+              ),
             ],
           ),
         ),

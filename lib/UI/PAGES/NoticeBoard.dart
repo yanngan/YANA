@@ -23,12 +23,12 @@ List<Place_Details> data = [
   Place_Details(kosher: true, name: 'Katsefet', number: 0212354674,details: ''),
   Place_Details(kosher: false, name: 'Gueoula', number: 0267889744,details: ''),
   Place_Details(kosher: true, name: 'KoshTrip', number: 0248985431,details: ''),
-  Place_Details(kosher: true, name: 'KoshTrip', number: 0248985431,details: ''),
-  Place_Details(kosher: true, name: 'KoshTrip', number: 0248985431,details: ''),
-  Place_Details(kosher: true, name: 'KoshTrip', number: 0248985431,details: ''),
-  Place_Details(kosher: true, name: 'KoshTrip', number: 0248985431,details: ''),
-  Place_Details(kosher: true, name: 'KoshTrip', number: 0248985431,details: ''),
-  Place_Details(kosher: true, name: 'KoshTrip', number: 0248985431,details: ''),
+  Place_Details(kosher: true, name: 'Hey Now', number: 0248985431,details: ''),
+  Place_Details(kosher: true, name: 'You are ', number: 0248985431,details: ''),
+  Place_Details(kosher: true, name: 'An all', number: 0248985431,details: ''),
+  Place_Details(kosher: true, name: 'Star get', number: 0248985431,details: ''),
+  Place_Details(kosher: true, name: 'Your game on', number: 0248985431,details: ''),
+  Place_Details(kosher: true, name: 'Go Play', number: 0248985431,details: ''),
 ];
 
 class _NoticeBoardState extends State<NoticeBoard> {
@@ -51,6 +51,7 @@ class _NoticeBoardState extends State<NoticeBoard> {
             data[i].getNumber(),
             Colors.grey[900]!,
             data[i].getDetails()));
+
       } else {
         advertisements.add(Advertisement(
             Colors.purple[400]!,
@@ -189,7 +190,7 @@ class Cards_Title extends StatelessWidget {
             radius: 40.0,
           ),
         ),
-        Text(name),
+        Padding(padding: EdgeInsets.fromLTRB(25, 0, 0, 0),child: Text(name,style: TextStyle(fontSize: 35,fontWeight: FontWeight.bold,color: Colors.grey[900], fontFamily: 'Font2'),)),
       ],
     );
   }

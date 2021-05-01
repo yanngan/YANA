@@ -2,14 +2,15 @@ class User {
 
   String userName;
   String userID;
-  String dateOfBirth;
+  String dateOfBirth;//DateTime
   String bio;
   String fbPhoto;
-  String signUpDate;
+  String signUpDate;//DateTime
   bool isBlocked;
   bool notifications;
   String nickName;
   String sex;
+
 
   //parse a json to user object
   factory User.fromJson(dynamic json) {

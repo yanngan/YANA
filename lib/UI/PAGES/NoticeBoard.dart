@@ -112,52 +112,63 @@ class _AdvertisementState extends State<Advertisement> {
   bool _isOpen = false;
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      width: _width,
-      height: _height,
-      margin: EdgeInsets.fromLTRB(6, 6, 6, 10.0),
-      duration: Duration(milliseconds: 800),
-      child: GestureDetector(
-        onTap: () {
-          setState(() {
-            if(_isOpen){
-              _height = 110;
-              _isOpen = false;
-            }else{
-              _height += widget.details.length+30;
-              _isOpen = true;
-            }
-          });
-        },
-        child: Column(
-          children: <Widget>[
-            Card(
-              color: widget.color,
-              child: Column(
-                children: <Widget>[
-                  Cards_Title(widget.name),
-                  Visibility(
-                    visible: _isOpen,
-                    child: Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(10, 2, 0, 10),
-                          child: Text(
-                            widget.details,
-                            style: TextStyle(
-                                letterSpacing: 1,
-                                decorationThickness: 2,
-                                wordSpacing: 1,
+    return SingleChildScrollView(
+      child: AnimatedContainer(
+        width: _width,
+        height: _height,
+        margin: EdgeInsets.fromLTRB(6, 6, 6, 10.0),
+        duration: Duration(milliseconds: 700),
+        child: GestureDetector(
+          onTap: () {
+            setState(() {
+              if(_isOpen){
+                _height -= widget.details.length+30;
+                _isOpen = false;
+              }else{
+                _height += widget.details.length+30;
+                _isOpen = true;
+              }
+            });
+          },
+          // I put a column in case that we want another widget in the bottom.
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: Card(
+                  color: widget.color,
+                  child: Column(
+                    children: <Widget>[
+                      //Title widget the does not change dynamically.
+                      Cards_Title(widget.name),
+                      //Advert details.
+                      Expanded(
+                        child: AnimatedOpacity(
+                          duration: Duration(milliseconds: 700),
+                          opacity: _isOpen ? 1 : 0,
+                          child: Row(
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(10, 2, 0, 10),
+                                child: Text(
+                                  widget.details,
+                                  style: TextStyle(
+                                      letterSpacing: 1,
+                                      decorationThickness: 2,
+                                      wordSpacing: 1,
+                                      ),
                                 ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

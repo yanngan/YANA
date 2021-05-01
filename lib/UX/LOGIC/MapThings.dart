@@ -1,7 +1,7 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
 
-import 'EXCEPTIONS/CLASSES/allClasses.dart';
+import 'CLASSES/allClasses.dart';
 
 class MapThings{
 

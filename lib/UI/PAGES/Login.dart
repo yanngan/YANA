@@ -30,7 +30,7 @@ class _LoginState extends State<Login> {
   void initState() {
     super.initState();
     topSpace = 45;
-    imageSize = 300;
+    imageSize = 275;
     fontSizeBig = 45;
     fontSizeSmall = 30;
     fullSize = (topSpace * 1.35) + imageSize;
@@ -163,7 +163,7 @@ class _LoginState extends State<Login> {
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Text('Enter with dummy user', style: TextStyle(fontSize: 24, color: Colors.black.withAlpha(alpha.toInt()))),
+                                    Text('Enter with Dummy user', style: TextStyle(fontSize: 24, color: Colors.black.withAlpha(alpha.toInt()))),
                                     Image(
                                         color: Colors.black.withAlpha(alpha.toInt()),
                                         height: 50,
@@ -195,7 +195,7 @@ class _LoginState extends State<Login> {
                     );
                   }
               ),
-              Image.network(imageURL), // Temp Profile Image
+//              Image.network(imageURL), // Temp Profile Image
             ],
           ),
         )
@@ -209,7 +209,13 @@ class _LoginState extends State<Login> {
  */
   void userCredentials(Map<String, String> credentials){
 //    Text to display all the user info in the toast
-    String text = "Welcome to YANA\n";
+    String text = "Welcome to YANA\nYou are a ";
+    // TODO remove next if/else before production
+    if(credentials["id"].toString() == "01234567891234567"){
+      text += " Dummy User";
+    }else{
+      text += " Human User";
+    }
     text += "\nID: " + credentials["id"].toString();
     text += "\nName: " + credentials["name"].toString();
     text += "\nEmail: " + credentials["email"].toString();

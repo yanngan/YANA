@@ -1,7 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'AllPage.dart';
 
@@ -26,16 +26,19 @@ class _WelcomeState extends State<Welcome> {
   void initState() {
     super.initState();
     topSpace = 35;
-    imageSize = 300;
+    imageSize = 275;
     fontSizeBig = 45;
     fontSizeSmall = 30;
     fullSize = (topSpace * 1.35) + imageSize;
 
 //    In order to make this screen visible for only 7 seconds and then go to an identical screen with extra options
     Future.delayed(Duration(seconds: 5)).then((value) => {
-      setState(() {
-        this.widget.callback(2);
-      })
+//      bool intrnet = checkInternetConnection()
+//      if(internet){
+        setState(() {
+          this.widget.callback(2);
+        })
+//      }
     });
 
   }
@@ -126,6 +129,19 @@ class _WelcomeState extends State<Welcome> {
         ),
       ),
     );
+  }
+
+  Future<bool> checkInternetConnection() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    while(true){
+      if (connectivityResult == ConnectivityResult.mobile) {        //  Connected to mobile network
+        return true;
+      }else if (connectivityResult == ConnectivityResult.wifi) {    //  Connected to wifi network
+        return true;
+      }else{                                                        //  Not Connected
+        // There is no internet connection - dialog for it
+      }
+    }
   }
 }
 

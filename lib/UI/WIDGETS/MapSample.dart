@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:yana/UX/LOGIC/Logic.dart';
-import 'package:yana/UX/LOGIC/MapThings.dart';
+import 'package:yana/UX/LOGIC/MapLogic.dart';
 
 import 'allWidgets.dart';
 
@@ -18,16 +18,10 @@ class MapSampleState extends State<MapSample> {
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   bool mapType = true; // true == MapType.hybrid, false == MapType.normal
 
-  static final CameraPosition _TLV = CameraPosition(
+  static final CameraPosition _TLV = CameraPosition( //init poit to be at TLV
     target: LatLng(32.085300, 34.781769),
     zoom: 14.4746,
   );
-
-  static final CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 100.151926040649414);
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +81,7 @@ class MapSampleState extends State<MapSample> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: FloatingActionButton(
-                        onPressed: ()=>MapThings.addEditeSeePoints(context),
+                        onPressed: ()=>MapLogic.addEditeSeePoints(context),
                         backgroundColor: Colors.amber,
                         child: Icon(Icons.add, color: Colors.pink,size: 30,),
                       ),
@@ -106,24 +100,37 @@ class MapSampleState extends State<MapSample> {
     controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }*/
 
+
+  /*
+  get CameraPosition and move the mape to this place
+   */
   Future<void> _goTo(CameraPosition locationToGo) async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(locationToGo));
   }
 
+  /*
+  go to the current user plase
+   */
   void jumpToCurrentLocation() async {
     CameraPosition CurrntUserLocation = await Logic.getUserLocation();
     _goTo(CurrntUserLocation);
   }
 
-
+  /*
+  dev function creat 10 fake Events and add them to the map
+   */
   void addFakePoints(BuildContext context)async{
-    var res = await MapThings.getMarkers(context);
+    var res = await MapLogic.getMarkers(context);
     setState(() {
       markers = res;
     });
   }
 
+  /*
+  switch Map Type
+  bool mapType = true; // true == MapType.hybrid, false == MapType.normal
+   */
   void switchMapType(){
     setState(() {
       mapType = !mapType;

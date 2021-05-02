@@ -5,9 +5,12 @@ import 'package:yana/UX/LOGIC/Logic.dart';
 
 import 'CLASSES/allClasses.dart';
 
-class MapThings{
+class MapLogic{
 
-
+  /*
+  return list of Markers to position on the map
+  for now it's simulate fake Events
+   */
   static getMarkers(BuildContext context) async {
     Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
     CameraPosition CurrntUserLocation = await Logic.getUserLocation();
@@ -26,6 +29,9 @@ class MapThings{
   }
 
 
+  /*
+  create alert dialog with AddSeeEvent widget
+   */
   static addEditeSeePoints(BuildContext context) async{
     showDialog(
       context: context,

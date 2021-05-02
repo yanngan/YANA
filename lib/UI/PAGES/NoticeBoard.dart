@@ -118,20 +118,25 @@ class Advertisement extends StatefulWidget {
 }
 
 class _AdvertisementState extends State<Advertisement> {
+
   double _width = 200;
   double _height = 110;
-  var count = 0;
   bool _isOpen = false;
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: AnimatedContainer(
+
         width: _width,
         height: _height,
+
         margin: EdgeInsets.fromLTRB(6, 6, 6, 10.0),
         duration: Duration(milliseconds: 700),
+
         child: GestureDetector(
           onTap: () {
+            //SetState of the open/close functionality
             setState(() {
               if (_isOpen) {
                 _height -= widget.details.length + 30;
@@ -148,6 +153,9 @@ class _AdvertisementState extends State<Advertisement> {
               Expanded(
                 flex: 1,
                 child: Container(
+
+                  //Possibility of wallpaper
+
                   // decoration: new BoxDecoration(
                   //   image: new DecorationImage(
                   //     image: AssetImage('assets/yana_logo.png'),
@@ -155,7 +163,10 @@ class _AdvertisementState extends State<Advertisement> {
                   //     alignment: Alignment.topCenter,
                   //   ),
                   // ),
+                  //Or color
                   color: widget.color,
+
+                  //Column of the "card"
                   child: Column(
                     children: <Widget>[
                       //Title widget the does not change dynamically.
@@ -194,6 +205,7 @@ class _AdvertisementState extends State<Advertisement> {
   }
 }
 
+//Advert Title Widget for easier use
 class Cards_Title extends StatelessWidget {
   @override
   var name;

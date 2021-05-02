@@ -31,5 +31,21 @@ class Place{
     }
   );
 
+  String getName(){
+    return this.name;
+  }
+
+  String getPhoneNumber(){
+    return this.phoneNum;
+  }
+
+  int getIsKosher(){
+    return this.isKosher;
+  }
+
+
+
+
+
 
 }

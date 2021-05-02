@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../PAGES/Place_Details.dart';
+import '../../UX/LOGIC/CLASSES/Place.dart';
 import '../WIDGETS/MyAppBar.dart';
 
 class NoticeBoard extends StatefulWidget {
@@ -8,35 +8,93 @@ class NoticeBoard extends StatefulWidget {
   _NoticeBoardState createState() => _NoticeBoardState();
 }
 
+//data is an array of Places to simulate the firebase data.
 List<Advertisement> advertisements = [];
-List<Place_Details> data = [
-  Place_Details(
-      kosher: false,
-      name: 'Chez Andi',
-      number: 0258795461,
-      details: 'Hi everyone ! \n'
-          'My name sdi Jonas\n'
-          'Waht for u ?\n'
-          'gergfvzvsfze\n'
-          'egrregergegre\n'
-          'gertggrege\n'
-          'tjytujtyaizejz'),
-  Place_Details(kosher: true, name: 'Rimon', number: 0145897859, details: ''),
-  Place_Details(
-      kosher: true, name: 'Katsefet', number: 0212354674, details: ''),
-  Place_Details(
-      kosher: false, name: 'Gueoula', number: 0267889744, details: ''),
-  Place_Details(
-      kosher: true, name: 'KoshTrip', number: 0248985431, details: ''),
-  Place_Details(kosher: true, name: 'Hey Now', number: 0248985431, details: ''),
-  Place_Details(
-      kosher: true, name: 'You are ', number: 0248985431, details: ''),
-  Place_Details(kosher: true, name: 'An all', number: 0248985431, details: ''),
-  Place_Details(
-      kosher: true, name: 'Star get', number: 0248985431, details: ''),
-  Place_Details(
-      kosher: true, name: 'Your game on', number: 0248985431, details: ''),
-  Place_Details(kosher: true, name: 'Go Play', number: 0248985431, details: ''),
+List<Place> data = [
+  new Place(
+    '000000001',
+    100,
+    'Chez Andi',
+    156.48797894,
+    80.236598,
+    address: "14 Yafo,Jerusalem",
+    phoneNum: "02854978756",
+    representive: "Yoram",
+    isKosher: 2,
+    ageRestrictions: 18,
+    webLink: "htpp//fgefzffcz",
+    googleMapLink: "gvzsfgvrzsfgvrs",
+  ),
+  new Place(
+    '000000041',
+    100,
+    'Katsefte',
+    156.48797894,
+    80.236598,
+    address: "14 Yafo,Jerusalem",
+    phoneNum: "02854978756",
+    representive: "Yoram",
+    isKosher: 2,
+    ageRestrictions: 18,
+    webLink: "htpp//fgefzffcz",
+    googleMapLink: "gvzsfgvrzsfgvrs",
+  ),
+  new Place(
+    '000000002',
+    100,
+    'Rimon',
+    156.48797894,
+    80.236598,
+    address: "14 Yafo,Jerusalem",
+    phoneNum: "02854978756",
+    representive: "Yoram",
+    isKosher: 2,
+    ageRestrictions: 18,
+    webLink: "htpp//fgefzffcz",
+    googleMapLink: "gvzsfgvrzsfgvrs",
+  ),
+  new Place(
+    '000000004',
+    100,
+    'Pythagore',
+    156.48797894,
+    80.236598,
+    address: "14 Yafo,Jerusalem",
+    phoneNum: "02854978756",
+    representive: "Yoram",
+    isKosher: 2,
+    ageRestrictions: 18,
+    webLink: "htpp//fgefzffcz",
+    googleMapLink: "gvzsfgvrzsfgvrs",
+  ),
+  new Place(
+    '000000006',
+    100,
+    'Jackie Chan',
+    156.48797894,
+    80.236598,
+    address: "14 Yafo,Jerusalem",
+    phoneNum: "02854978756",
+    representive: "Yoram",
+    isKosher: 2,
+    ageRestrictions: 18,
+    webLink: "htpp//fgefzffcz",
+    googleMapLink: "gvzsfgvrzsfgvrs",
+  ),
+  new Place(
+    '000000008',
+    100,
+    'Hatsarfat',
+    156.48797894,
+    80.236598,
+    address: "14 Yafo,Jerusalem",
+    phoneNum: "02854978756",
+    representive: "Yoram",
+    isKosher: 2,
+    ageRestrictions: 18,
+    webLink: "htpp//fgefzffcz",
+    googleMapLink: "gvzsfgvrzsfgvrs",
+  )
 ];
 
 class _NoticeBoardState extends State<NoticeBoard> {
@@ -47,24 +105,33 @@ class _NoticeBoardState extends State<NoticeBoard> {
     //Here will be the sorting of the data coming from firebase
   }
 
+  //Initiate all the details and colors for all the Advert Card.
   void initPlacesList() {
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < data.length; i++) {
+
+      String details = "Address: ${data[i].address},\n"
+          "Representive: ${data[i].representive},\n"
+          "Capacity: ${data[i].capacity},\n"
+          "AgeRestriction: ${data[i].ageRestrictions},\n"
+          "Link: ${data[i].webLink},\n"
+          "Map: ${data[i].googleMapLink}\n";
+
       if (i % 2 == 0) {
         advertisements.add(Advertisement(
             Colors.purple[200]!,
             data[i].getName(),
-            data[i].getKosher(),
-            data[i].getNumber(),
+            data[i].getIsKosher(),
+            data[i].getPhoneNumber(),
             Colors.grey[900]!,
-            data[i].getDetails()));
+            details));
       } else {
         advertisements.add(Advertisement(
             Colors.purple[400]!,
             data[i].getName(),
-            data[i].getKosher(),
-            data[i].getNumber(),
+            data[i].getIsKosher(),
+            data[i].getPhoneNumber(),
             Colors.grey[400]!,
-            data[i].getDetails()));
+            details));
       }
     }
   }
@@ -72,53 +139,51 @@ class _NoticeBoardState extends State<NoticeBoard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar("NoticeBoard",null,height: 50),
+      appBar: MyAppBar("NoticeBoard", null, height: 50),
       backgroundColor: Colors.amber,
       body: Padding(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-          child: Container(
-            color: Colors.amber,
-            child: ListView(children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(5, 0, 0, 40),
-                child: Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    //provisional (the algorithm is basically the same to sort the firebase)
-                    children: advertisements,
-                    // ],
-                  ),
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+        child: Container(
+          color: Colors.amber,
+          child: ListView(children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(5, 0, 0, 40),
+              child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: advertisements,
+                  // ],
                 ),
               ),
-            ]),
-          ),
-      ), // child: Center(child: Text("NoticeBoard Hi")),
+            ),
+          ]),
+        ),
+      ),
     );
   }
 }
 
+//Advertisement Widget
 class Advertisement extends StatefulWidget {
-  // const Advert({
-  //   Key key,
-  // }) : super(key: key);
-  String name;
-  String details;
-  bool kosher;
-  int number;
+
+  String adv_name;
+  String adv_details;
+  int adv_isKosher;
+  String adv_phoneNum;
   Color color;
   Color expansiontilecolor;
 
   var children = [];
 
-  Advertisement(this.color, this.name, this.kosher, this.number,
-      this.expansiontilecolor, this.details);
+  //Constructor
+  Advertisement(this.color, this.adv_name, this.adv_isKosher, this.adv_phoneNum,
+      this.expansiontilecolor, this.adv_details);
 
   @override
   _AdvertisementState createState() => _AdvertisementState();
 }
 
 class _AdvertisementState extends State<Advertisement> {
-
   double _width = 200;
   double _height = 110;
   bool _isOpen = false;
@@ -127,22 +192,19 @@ class _AdvertisementState extends State<Advertisement> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: AnimatedContainer(
-
         width: _width,
         height: _height,
-
         margin: EdgeInsets.fromLTRB(6, 6, 6, 10.0),
         duration: Duration(milliseconds: 700),
-
         child: GestureDetector(
           onTap: () {
             //SetState of the open/close functionality
             setState(() {
               if (_isOpen) {
-                _height -= widget.details.length + 30;
+                _height -= widget.adv_details.length + 30;
                 _isOpen = false;
               } else {
-                _height += widget.details.length + 30;
+                _height += widget.adv_details.length + 30;
                 _isOpen = true;
               }
             });
@@ -153,24 +215,13 @@ class _AdvertisementState extends State<Advertisement> {
               Expanded(
                 flex: 1,
                 child: Container(
-
-                  //Possibility of wallpaper
-
-                  // decoration: new BoxDecoration(
-                  //   image: new DecorationImage(
-                  //     image: AssetImage('assets/yana_logo.png'),
-                  //     fit: BoxFit.fitHeight,
-                  //     alignment: Alignment.topCenter,
-                  //   ),
-                  // ),
-                  //Or color
                   color: widget.color,
 
                   //Column of the "card"
                   child: Column(
                     children: <Widget>[
                       //Title widget the does not change dynamically.
-                      Cards_Title(widget.name),
+                      Cards_Title(widget.adv_name),
                       //Advert details.
                       Expanded(
                         child: AnimatedOpacity(
@@ -181,7 +232,7 @@ class _AdvertisementState extends State<Advertisement> {
                               Padding(
                                 padding: EdgeInsets.fromLTRB(10, 2, 0, 10),
                                 child: Text(
-                                  widget.details,
+                                  widget.adv_details,
                                   style: TextStyle(
                                     letterSpacing: 1,
                                     decorationThickness: 2,
@@ -205,7 +256,7 @@ class _AdvertisementState extends State<Advertisement> {
   }
 }
 
-//Advert Title Widget for easier use
+//Advert Title Widget
 class Cards_Title extends StatelessWidget {
   @override
   var name;

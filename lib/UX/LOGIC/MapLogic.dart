@@ -13,15 +13,15 @@ class MapLogic{
    */
   static getMarkers(BuildContext context) async {
     Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
-    CameraPosition CurrntUserLocation = await Logic.getUserLocation();
-    var latitude = CurrntUserLocation.target.latitude;
-    var longitude = CurrntUserLocation.target.longitude;
+    CameraPosition currentUserLocation = await Logic.getUserLocation();
+    var latitude = currentUserLocation.target.latitude;
+    var longitude = currentUserLocation.target.longitude;
     for(int i = 0 ;i < 10 ; i++){
-      String text = "latitude = $latitude longitude = $longitude";
+      //String text = "latitude = $latitude longitude = $longitude";
       Place tempPlace = new Place("$i",i,"name $i",latitude+i,longitude+i);
       Event tempEvent = new Event(tempPlace,"event id-$i");
       markers[MarkerId("$i")] = new MyMarker(tempEvent,markerId: MarkerId("$i"),position: LatLng(latitude+i,longitude+i),onTap: (){
-        addEditeSeePoints(context);
+        addEditSeePoints(context);
       });
     }
     return markers;
@@ -32,7 +32,7 @@ class MapLogic{
   /*
   create alert dialog with AddSeeEvent widget
    */
-  static addEditeSeePoints(BuildContext context) async{
+  static addEditSeePoints(BuildContext context) async{
     showDialog(
       context: context,
       builder: (BuildContext context) {

@@ -79,7 +79,7 @@ class MapSampleState extends State<MapSample> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: FloatingActionButton(
-                        onPressed: addFakePoints,
+                        onPressed: ()=>addFakePoints(context),
                         backgroundColor: Colors.amber,
                         child: Icon(Icons.ac_unit_sharp, color: Colors.pink,size: 30,),
                       ),
@@ -87,7 +87,7 @@ class MapSampleState extends State<MapSample> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: FloatingActionButton(
-                        onPressed: ()=>addPoints(context),
+                        onPressed: ()=>MapThings.addEditeSeePoints(context),
                         backgroundColor: Colors.amber,
                         child: Icon(Icons.add, color: Colors.pink,size: 30,),
                       ),
@@ -115,32 +115,10 @@ class MapSampleState extends State<MapSample> {
     CameraPosition CurrntUserLocation = await Logic.getUserLocation();
     _goTo(CurrntUserLocation);
   }
-  void addPoints(BuildContext context) async{
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: new Text("Add new Place ! 😋",style: TextStyle(color: Colors.amber),),
-          backgroundColor: Colors.pink,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20.0))
-          ),
-          content: AddSeeEvent(),
-          actions: <Widget>[
-            new TextButton(
-              child: new Text("OK",style: TextStyle(color: Colors.amber),),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
 
-  void addFakePoints()async{
-    var res = await MapThings.getMarkers();
+
+  void addFakePoints(BuildContext context)async{
+    var res = await MapThings.getMarkers(context);
     setState(() {
       markers = res;
     });

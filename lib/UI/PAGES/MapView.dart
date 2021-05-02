@@ -10,10 +10,12 @@ class MapView extends StatefulWidget {
 class _MapViewState extends State<MapView> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Scaffold(
+      body: Container(
 //      color: Colors.amber,
-      child: Center(
-       child: MapSample()
+        child: Center(
+         child: MapSample()
+        ),
       ),
     );
   }

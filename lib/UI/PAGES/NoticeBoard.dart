@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../PAGES/Place_Details.dart';
+import '../WIDGETS/MyAppBar.dart';
 
 class NoticeBoard extends StatefulWidget {
   @override
   _NoticeBoardState createState() => _NoticeBoardState();
 }
 
+List<Advertisement> advertisements = [];
 List<Place_Details> data = [
   Place_Details(
       kosher: false,
@@ -19,16 +21,22 @@ List<Place_Details> data = [
           'egrregergegre\n'
           'gertggrege\n'
           'tjytujtyaizejz'),
-  Place_Details(kosher: true, name: 'Rimon', number: 0145897859,details: ''),
-  Place_Details(kosher: true, name: 'Katsefet', number: 0212354674,details: ''),
-  Place_Details(kosher: false, name: 'Gueoula', number: 0267889744,details: ''),
-  Place_Details(kosher: true, name: 'KoshTrip', number: 0248985431,details: ''),
-  Place_Details(kosher: true, name: 'Hey Now', number: 0248985431,details: ''),
-  Place_Details(kosher: true, name: 'You are ', number: 0248985431,details: ''),
-  Place_Details(kosher: true, name: 'An all', number: 0248985431,details: ''),
-  Place_Details(kosher: true, name: 'Star get', number: 0248985431,details: ''),
-  Place_Details(kosher: true, name: 'Your game on', number: 0248985431,details: ''),
-  Place_Details(kosher: true, name: 'Go Play', number: 0248985431,details: ''),
+  Place_Details(kosher: true, name: 'Rimon', number: 0145897859, details: ''),
+  Place_Details(
+      kosher: true, name: 'Katsefet', number: 0212354674, details: ''),
+  Place_Details(
+      kosher: false, name: 'Gueoula', number: 0267889744, details: ''),
+  Place_Details(
+      kosher: true, name: 'KoshTrip', number: 0248985431, details: ''),
+  Place_Details(kosher: true, name: 'Hey Now', number: 0248985431, details: ''),
+  Place_Details(
+      kosher: true, name: 'You are ', number: 0248985431, details: ''),
+  Place_Details(kosher: true, name: 'An all', number: 0248985431, details: ''),
+  Place_Details(
+      kosher: true, name: 'Star get', number: 0248985431, details: ''),
+  Place_Details(
+      kosher: true, name: 'Your game on', number: 0248985431, details: ''),
+  Place_Details(kosher: true, name: 'Go Play', number: 0248985431, details: ''),
 ];
 
 class _NoticeBoardState extends State<NoticeBoard> {
@@ -38,8 +46,6 @@ class _NoticeBoardState extends State<NoticeBoard> {
     initPlacesList(); // In order to populate our Advertisement list
     //Here will be the sorting of the data coming from firebase
   }
-
-  List<Advertisement> advertisements = [];
 
   void initPlacesList() {
     for (int i = 0; i < 10; i++) {
@@ -51,7 +57,6 @@ class _NoticeBoardState extends State<NoticeBoard> {
             data[i].getNumber(),
             Colors.grey[900]!,
             data[i].getDetails()));
-
       } else {
         advertisements.add(Advertisement(
             Colors.purple[400]!,
@@ -66,22 +71,28 @@ class _NoticeBoardState extends State<NoticeBoard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.amber,
-      child: ListView(children: [
-        Padding(
-          padding: EdgeInsets.fromLTRB(5, 0, 0, 40),
+    return Scaffold(
+      appBar: MyAppBar("NoticeBoard",null,height: 50),
+      backgroundColor: Colors.amber,
+      body: Padding(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
           child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              //provisional (the algorithm is basically the same to sort the firebase)
-              children: advertisements,
-              // ],
-            ),
+            color: Colors.amber,
+            child: ListView(children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(5, 0, 0, 40),
+                child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    //provisional (the algorithm is basically the same to sort the firebase)
+                    children: advertisements,
+                    // ],
+                  ),
+                ),
+              ),
+            ]),
           ),
-        ),
-      ]),
-      // child: Center(child: Text("NoticeBoard Hi")),
+      ), // child: Center(child: Text("NoticeBoard Hi")),
     );
   }
 }
@@ -122,11 +133,11 @@ class _AdvertisementState extends State<Advertisement> {
         child: GestureDetector(
           onTap: () {
             setState(() {
-              if(_isOpen){
-                _height -= widget.details.length+30;
+              if (_isOpen) {
+                _height -= widget.details.length + 30;
                 _isOpen = false;
-              }else{
-                _height += widget.details.length+30;
+              } else {
+                _height += widget.details.length + 30;
                 _isOpen = true;
               }
             });
@@ -136,7 +147,14 @@ class _AdvertisementState extends State<Advertisement> {
             children: <Widget>[
               Expanded(
                 flex: 1,
-                child: Card(
+                child: Container(
+                  // decoration: new BoxDecoration(
+                  //   image: new DecorationImage(
+                  //     image: AssetImage('assets/yana_logo.png'),
+                  //     fit: BoxFit.fitHeight,
+                  //     alignment: Alignment.topCenter,
+                  //   ),
+                  // ),
                   color: widget.color,
                   child: Column(
                     children: <Widget>[
@@ -154,10 +172,10 @@ class _AdvertisementState extends State<Advertisement> {
                                 child: Text(
                                   widget.details,
                                   style: TextStyle(
-                                      letterSpacing: 1,
-                                      decorationThickness: 2,
-                                      wordSpacing: 1,
-                                      ),
+                                    letterSpacing: 1,
+                                    decorationThickness: 2,
+                                    wordSpacing: 1,
+                                  ),
                                 ),
                               ),
                             ],
@@ -190,7 +208,16 @@ class Cards_Title extends StatelessWidget {
             radius: 40.0,
           ),
         ),
-        Padding(padding: EdgeInsets.fromLTRB(25, 0, 0, 0),child: Text(name,style: TextStyle(fontSize: 35,fontWeight: FontWeight.bold,color: Colors.grey[900], fontFamily: 'Font2'),)),
+        Padding(
+            padding: EdgeInsets.fromLTRB(25, 0, 0, 0),
+            child: Text(
+              name,
+              style: TextStyle(
+                  fontSize: 35,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[900],
+                  fontFamily: 'Font2'),
+            )),
       ],
     );
   }

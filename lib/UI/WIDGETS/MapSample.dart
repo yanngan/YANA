@@ -101,10 +101,10 @@ class MapSampleState extends State<MapSample> {
     );
   }
 
-  Future<void> _goToTheLake() async {
+  /*Future<void> _goToTheLake() async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
-  }
+  }*/
 
   Future<void> _goTo(CameraPosition locationToGo) async {
     final GoogleMapController controller = await _controller.future;
@@ -141,7 +141,9 @@ class MapSampleState extends State<MapSample> {
 
   void addFakePoints()async{
     var res = await MapThings.getMarkers();
-
+    setState(() {
+      markers = res;
+    });
   }
 
   void switchMapType(){

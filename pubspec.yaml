@@ -56,7 +56,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-   - assets/
+    - fonts/
+    - assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -70,9 +71,13 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Skia
+    - family: Font1
       fonts:
         - asset: fonts/skia.ttf
+    - family: Font2
+      fonts:
+        - asset: fonts/Pacifico.ttf
+
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -143,7 +143,6 @@ class _LoginState extends State<Login> {
                                   userCredentials(userInfo);
                                   setState(() {
                                     imageURL = _userData!["picture"]["data"]["url"].toString();
-//                          this.widget.callback(3);
                                   });
                                 }
                               }
@@ -184,9 +183,6 @@ class _LoginState extends State<Login> {
                                   dummyUserInfo["age_range"]       =     "31";
                                   dummyUserInfo["picture_link"]    =     "https://upload.wikimedia.org/wikipedia/commons/8/8e/Adriana_Lima_2019_by_Glenn_Francis.jpg";
                                   userCredentials(dummyUserInfo);
-                                  setState(() {
-                                    this.widget.callback(3);
-                                  });
                                 }
                             ),
                           ),
@@ -232,11 +228,15 @@ class _LoginState extends State<Login> {
         textColor: Colors.white,
         fontSize: 16.0
     );
+    setState(() {
+      this.widget.callback(3);
+    });
 //    Check if user is in our database
 
 //    If user in it, log him in
 
 //    If user is'nt in it, go to signup ponces
+    
   }
 
   Future<bool> _onBackPressed() async {

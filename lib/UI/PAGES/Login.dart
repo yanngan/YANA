@@ -34,6 +34,7 @@ class _LoginState extends State<Login> {
     fontSizeBig = 45;
     fontSizeSmall = 30;
     fullSize = (topSpace * 1.35) + imageSize;
+    _checkIfIsLogged();
   }
 
   @override
@@ -143,7 +144,6 @@ class _LoginState extends State<Login> {
                                   userCredentials(userInfo);
                                   setState(() {
                                     imageURL = _userData!["picture"]["data"]["url"].toString();
-//                          this.widget.callback(3);
                                   });
                                 }
                               }
@@ -184,9 +184,6 @@ class _LoginState extends State<Login> {
                                   dummyUserInfo["age_range"]       =     "31";
                                   dummyUserInfo["picture_link"]    =     "https://upload.wikimedia.org/wikipedia/commons/8/8e/Adriana_Lima_2019_by_Glenn_Francis.jpg";
                                   userCredentials(dummyUserInfo);
-                                  setState(() {
-                                    this.widget.callback(3);
-                                  });
                                 }
                             ),
                           ),
@@ -232,6 +229,9 @@ class _LoginState extends State<Login> {
         textColor: Colors.white,
         fontSize: 16.0
     );
+    setState(() {
+      this.widget.callback(3);
+    });
 //    Check if user is in our database
 
 //    If user in it, log him in
@@ -239,13 +239,38 @@ class _LoginState extends State<Login> {
 //    If user is'nt in it, go to signup ponces
   }
 
+  Future<void> _checkIfIsLogged() async {
+    final accessToken = await FacebookAuth.instance.accessToken;
+    setState(() {
+      _checking = false;
+    });
+    if (accessToken != null) {
+       final userData = await FacebookAuth.instance.getUserData(fields: "name,email,picture.width(150),birthday,gender,age_range");
+      _accessToken = accessToken;
+      Map<String, String> loggedUserInfo = new Map<String, String>();
+      loggedUserInfo["id"]              =     userData["id"];
+      loggedUserInfo["name"]            =     userData["name"];
+      loggedUserInfo["email"]           =     userData["email"];
+      loggedUserInfo["birthday"]        =     userData["birthday"];
+      loggedUserInfo["gender"]          =     userData["gender"];
+      loggedUserInfo["age_range"]       =     userData["age_range"]["min"].toString();
+      loggedUserInfo["picture_link"]    =     userData["picture"]["data"]["url"].toString();
+      setState(() {
+        _userData = userData;
+        userCredentials(loggedUserInfo);
+      });
+    }
+  }
+
   Future<bool> _onBackPressed() async {
     bool finalResult = await showDialog(
       barrierDismissible: false,
       context: context,
       builder: (context) => new AlertDialog(
-        title: new Text('Are you sure'),
-        content: new Text('you want to exit the app?'),
+        title: new Text('Exiting the app - login'),
+        elevation: 24.0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
+        content: new Text('You want to exit the app?'),
         actions: <Widget>[
           new TextButton(
             onPressed: () {

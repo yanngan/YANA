@@ -8,6 +8,10 @@ import 'AllPage.dart';
 
 class SignIn extends StatefulWidget {
 
+//  Callback function related - See main.dart callback section for more info about it
+  final Function callback;
+  const SignIn(this.callback);
+
   @override
   _SignInState createState() => _SignInState();
 
@@ -17,18 +21,21 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(MediaQuery.of(context).size.height / 50),
-        child: AppBar(
-          backgroundColor: Colors.amber,
-          elevation: 0,
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(MediaQuery.of(context).size.height / 50),
+          child: AppBar(
+            backgroundColor: Colors.amber,
+            elevation: 0,
+          ),
         ),
-      ),
-      body: Container(
-        color: Colors.amber,
-        child: Center(
-            child: isOver18 ? signIn() : checkAge()
+        body: Container(
+          color: Colors.amber,
+          child: Center(
+              child: isOver18 ? signIn() : checkAge()
+          ),
         ),
       ),
     );
@@ -128,26 +135,34 @@ class _SignInState extends State<SignIn> {
     );
   }
 
+  Future<bool> _onBackPressed() async {
+    bool finalResult = await showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => new AlertDialog(
+        title: new Text('Exiting the app - signup'),
+        content: new Text('You want to exit the app?'),
+        actions: <Widget>[
+          new TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(false);
+            },
+            child: Text("No"),
+          ),
+          SizedBox(height: 16),
+          new TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(true);
+            },
+            child: Text("Yes"),
+          ),
+        ],
+      ),
+    );
+    return finalResult;
+  }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

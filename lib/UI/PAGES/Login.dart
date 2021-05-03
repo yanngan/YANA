@@ -34,6 +34,7 @@ class _LoginState extends State<Login> {
     fontSizeBig = 45;
     fontSizeSmall = 30;
     fullSize = (topSpace * 1.35) + imageSize;
+    _checkIfIsLogged();
   }
 
   @override
@@ -239,13 +240,38 @@ class _LoginState extends State<Login> {
     
   }
 
+  Future<void> _checkIfIsLogged() async {
+    final accessToken = await FacebookAuth.instance.accessToken;
+    setState(() {
+      _checking = false;
+    });
+    if (accessToken != null) {
+       final userData = await FacebookAuth.instance.getUserData(fields: "name,email,picture.width(150),birthday,gender,age_range");
+      _accessToken = accessToken;
+      Map<String, String> loggedUserInfo = new Map<String, String>();
+      loggedUserInfo["id"]              =     userData["id"];
+      loggedUserInfo["name"]            =     userData["name"];
+      loggedUserInfo["email"]           =     userData["email"];
+      loggedUserInfo["birthday"]        =     userData["birthday"];
+      loggedUserInfo["gender"]          =     userData["gender"];
+      loggedUserInfo["age_range"]       =     userData["age_range"]["min"].toString();
+      loggedUserInfo["picture_link"]    =     userData["picture"]["data"]["url"].toString();
+      setState(() {
+        _userData = userData;
+        userCredentials(loggedUserInfo);
+      });
+    }
+  }
+
   Future<bool> _onBackPressed() async {
     bool finalResult = await showDialog(
       barrierDismissible: false,
       context: context,
       builder: (context) => new AlertDialog(
-        title: new Text('Are you sure'),
-        content: new Text('you want to exit the app?'),
+        title: new Text('Exiting the app - login'),
+        elevation: 24.0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
+        content: new Text('You want to exit the app?'),
         actions: <Widget>[
           new TextButton(
             onPressed: () {

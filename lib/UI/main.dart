@@ -6,6 +6,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'PAGES/AllPage.dart';
 //WIDGETS
 import 'WIDGETS/allWidgets.dart';
+// Do not delete next line!
 //AIzaSyAg2GgqVtmCLI6Ge73OdoU2xTYtIW_0Fp0
 
 /// Developers: Lidor Eliyahu Shelef, Yann Ganem, Yisrael Bar-Or and Jonas Sperling
@@ -37,6 +38,7 @@ class _MainPageState extends State<MainPage> {
     return applicationSetup();
   }
 
+//  callback function in order to allow moving between login sign up and the inner area of the application
   void callback(int type) {
     setState(() {
       pageType = type;
@@ -44,9 +46,15 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget applicationSetup(){
-    if(pageType == 0){
-      return Welcome(this.callback);
-    }else if(pageType > 0 && pageType < 4){
+    if(pageType >= 0 && pageType <= 2){
+      if(pageType == 0){
+        return Welcome(this.callback);
+      }else if(pageType == 1){
+        return SignIn(this.callback);
+      }else {
+        return Login(this.callback);
+      }
+    }else if(pageType > 2 && pageType < 4){
       return WillPopScope(
         onWillPop: _onBackPressed,
         child: innerApplication(),
@@ -59,15 +67,8 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget innerApplication(){
-    if(pageType == 1){
-      return SignIn();
-    }else if(pageType == 2){
-      return Login(this.callback);
-    }else if(pageType == 3) {
+    if(pageType == 3) {
       return Scaffold(
-//        bottomNavigationBar: hideBottomNavigationBar
-//            ? null
-//            : MyCurvedNavigationBar(pageController),
         body:Scaffold(
           body: Stack(
             children: <Widget>[
@@ -151,33 +152,41 @@ class _MainPageState extends State<MainPage> {
   }
 
   Future<bool> _onBackPressed() async {
-    _logOut();
-    return true;
+    bool finalResult = await showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => new AlertDialog(
+        title: Text('Exiting the app'),
+        elevation: 24.0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('You want to exit the app? Should we log you out of Facebook as well?'),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: Text("I want to stay"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: Text("Exit, but keep me logged in"),
+            ),
+            TextButton(
+              onPressed: () {
+                _logOut();
+                Navigator.of(context).pop(true);
+              },
+              child: Text("Exit and log me out"),
+            ),
+          ],
+        ),
+      ),
+    );
+    return finalResult;
   }
-//  Future<bool> _onBackPressed() {
-//    return showDialog(
-//      context: context,
-//      builder: (context) => new AlertDialog(
-//        title: new Text('Are you sure'),
-//        content: new Text('you want to log out?'),
-//        actions: <Widget>[
-//          new GestureDetector(
-//            onTap: (){
-//              Navigator.of(context).pop(false);
-//            },
-//            child: Text("NO"),
-//          ),
-//          SizedBox(height: 16),
-//          new GestureDetector(
-//            onTap: () {
-//              this.callback(0);
-//              Navigator.pop(context);
-//            },
-//            child: Text("YES"),
-//          ),
-//        ],
-//      ),
-//    ) ?? false;
-//  }
 
 }

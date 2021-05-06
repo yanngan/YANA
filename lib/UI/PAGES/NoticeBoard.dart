@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../UX/LOGIC/CLASSES/Place.dart';
 import '../WIDGETS/MyAppBar.dart';
 
@@ -82,6 +83,48 @@ List<Place> data = [
     googleMapLink: "gvzsfgvrzsfgvrs",
   ),
   new Place(
+    '000000106',
+    100,
+    'Jackie Chan',
+    156.48797894,
+    80.236598,
+    address: "14 Yafo,Jerusalem",
+    phoneNum: "02854978756",
+    representive: "Yoram",
+    isKosher: 2,
+    ageRestrictions: 18,
+    webLink: "htpp//fgefzffcz",
+    googleMapLink: "gvzsfgvrzsfgvrs",
+  ),
+  new Place(
+    '000000082',
+    100,
+    'Jackie Chan',
+    156.48797894,
+    80.236598,
+    address: "14 Yafo,Jerusalem",
+    phoneNum: "02854978756",
+    representive: "Yoram",
+    isKosher: 2,
+    ageRestrictions: 18,
+    webLink: "htpp//fgefzffcz",
+    googleMapLink: "gvzsfgvrzsfgvrs",
+  ),
+  new Place(
+    '000000666',
+    100,
+    'Jackie Chan',
+    156.48797894,
+    80.236598,
+    address: "14 Yafo,Jerusalem",
+    phoneNum: "02854978756",
+    representive: "Yoram",
+    isKosher: 2,
+    ageRestrictions: 18,
+    webLink: "htpp//fgefzffcz",
+    googleMapLink: "gvzsfgvrzsfgvrs",
+  ),
+  new Place(
     '000000008',
     100,
     'Hatsarfat',
@@ -94,7 +137,7 @@ List<Place> data = [
     ageRestrictions: 18,
     webLink: "htpp//fgefzffcz",
     googleMapLink: "gvzsfgvrzsfgvrs",
-  )
+  ),
 ];
 
 class _NoticeBoardState extends State<NoticeBoard> {
@@ -139,25 +182,34 @@ class _NoticeBoardState extends State<NoticeBoard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar("NoticeBoard", null, height: 50),
       backgroundColor: Colors.amber,
-      body: Padding(
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-        child: Container(
-          color: Colors.amber,
-          child: ListView(children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(5, 0, 0, 40),
-              child: Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: advertisements,
-                  // ],
+      body: Stack(
+        children: [
+          Container(
+            color: Colors.amber,
+            child: ListView(children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(5, 0, 0, 40),
+                child: Container(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 85,),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: advertisements,
+                      )
+                    ],
+                    // ],
+                  ),
                 ),
               ),
-            ),
-          ]),
-        ),
+            ]),
+          ),
+          SizedBox(
+            height: 120,
+            child: MyAppBar("NoticeBoard", null, height: 120)
+          ),
+        ],
       ),
     );
   }

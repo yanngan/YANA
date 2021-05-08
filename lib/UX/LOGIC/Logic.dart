@@ -97,6 +97,33 @@ class Logic{
       new Event(new Place("demo4", -1, "name4", -1, -1),"demo4"),
       new Event(new Place("demo5", -1, "name5", -1, -1),"demo5"),
     ];
+    /*Padding(
+        padding: EdgeInsets.all(10.0),
+          child: Column(
+
+            children: [
+              SizedBox(height: 20.0),
+              Center(
+                child: FlatButton.icon(
+                  icon : Icon(Icons.login),
+                  onPressed: () {
+                    final databaseReference = FirebaseDatabase.instance.reference();
+                    var user = new User("yisrael", "yisrael id", "dateOfBirth", "bio","fhoto","signUpDate" ,false, true, "israel", "male");
+                    var userId = databaseReference.child('users/').push();
+                    userId.set(user.toJson());
+                    var place = new Places("placeID", "address", "phoneNumber", "representative", 10, "vibe", true, "openingHours", "name", 18, "webLink.com", "googleMapLink.com");
+                    var placeId = databaseReference.child('Places/').push();
+                    placeId.set(place.toJson());
+                    var event = new Events("eventID", user, "creationDate", true, "startEstimate"," endEstimate", 3, 5, "placeID");
+                    var eventId = databaseReference.child('Events/').push();
+                    eventId.set(event.toJson());
+                    },
+                    label: Text("test firebase"),
+                ),
+              ),
+            ],
+          ),
+        ),*/
   }
 
 }

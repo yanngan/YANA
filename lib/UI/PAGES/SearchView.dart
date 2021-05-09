@@ -1,8 +1,8 @@
+import '../../UX/LOGIC/CLASSES/allClasses.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:yana/UX/DB/events.dart';
-import 'package:yana/UX/DB/places.dart';
-import 'package:yana/UX/DB/user.dart';
+import '../WIDGETS/MyAppBar.dart';
+import '../../UX/LOGIC/Logic.dart';
 
 class SearchView extends StatefulWidget {
   @override
@@ -10,6 +10,19 @@ class SearchView extends StatefulWidget {
 }
 
 class _SearchViewState extends State<SearchView> {
+  // bool _initstate = false;
+
+  // List<Event> _events = [];
+
+  var _eventsList;
+  // @override
+  // void init() async {
+  //     _events = await Logic.getEventsByCondition();
+  //   setState(() {
+  //     print(_events);
+  //     _initstate = true;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -17,42 +30,125 @@ class _SearchViewState extends State<SearchView> {
     //   color: Colors.amber,
     //   child: Center(child: Text("SearchView")),
     // );
-
-
+    // if(!_initstate){
+    //   initState();
+    // }
+    double topPad = (MediaQuery.of(context).size.height / 10);
     return Scaffold(
-        body: Padding(
-        padding: EdgeInsets.all(10.0),
-          child: Column(
-
+        backgroundColor: Colors.amber,
+        body: Container(
+          child: Stack(
             children: [
-              SizedBox(height: 20.0),
-              Center(
-                child: FlatButton.icon(
-                  icon : Icon(Icons.login),
-                  onPressed: () {
-                    final databaseReference = FirebaseDatabase.instance.reference();
-                    var user = new User("yisrael", "yisrael id", "dateOfBirth", "bio","fhoto","signUpDate" ,false, true, "israel", "male");
-                    var userId = databaseReference.child('users/').push();
-                    userId.set(user.toJson());
-                    var place = new Places("placeID", "address", "phoneNumber", "representative", 10, "vibe", true, "openingHours", "name", 18, "webLink.com", "googleMapLink.com");
-                    var placeId = databaseReference.child('Places/').push();
-                    placeId.set(place.toJson());
-                    var event = new Events("eventID", user, "creationDate", true, "startEstimate"," endEstimate", 3, 5, "placeID");
-                    var eventId = databaseReference.child('Events/').push();
-                    eventId.set(event.toJson());
-                    },
-                    label: Text("test firebase"),
-                ),
+              Container(
+                child: ListView.builder(
+                    itemCount: 20,
+                    itemBuilder: (context, index) {
+                      if (index == 0) {
+                        return Padding(
+                          padding: EdgeInsets.only(top: topPad),
+                          child: Card(
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(10, 20, 36, 20),
+                              child: Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      'Note Title',
+                                      style: TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Note text',
+                                      style: TextStyle(color: Colors.grey[900]),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      } else if (index == 19) {
+                        return Padding(
+                          padding: EdgeInsets.only(bottom: topPad),
+                          child: Card(
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(10, 20, 36, 20),
+                              child: Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      'Note Title',
+                                      style: TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Note text',
+                                      style: TextStyle(color: Colors.grey[900]),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      } else {
+                        return Card(
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(10, 20, 36, 20),
+                            child: Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    'Note Title',
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Note text',
+                                    style: TextStyle(color: Colors.grey[900]),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                    }),
               ),
+              SizedBox(
+                  height: 120,
+                  child: MyAppBar(
+                      "Search",
+                      TextButton(
+                        child: Icon(Icons.search),
+                        onPressed: () => {},
+                      ),
+                      height: 120)),
             ],
+
           ),
         ),
-    );
+        extendBody: true,
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.fromLTRB(0,0,0,50),
+          child: FloatingActionButton(
+            child:Icon(Icons.search),
+            splashColor: Colors.amber,
+            backgroundColor: Colors.pink,
+            onPressed: () => {print('Button Pressed')},
 
+          ),
+        ),
+
+    );
   }
 }
-
-
-
-
-

@@ -297,8 +297,7 @@ class _LoginState extends State<Login> {
         });
         break;
     }
-
-
+//    If user is'nt in it, go to signup ponces
   }
 
   Future<void> _checkIfIsLogged() async {

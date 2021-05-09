@@ -15,11 +15,11 @@ class Event{
   Event(
     this.place,
     this.eventID,
+    this.startEstimate,
+    this.status,
       {
         this.user = "",
         this.creationDate = "",
-        this.status = -1,
-        this.startEstimate = "",
         this.endEstimate = "",
         this.curNumPeople = "",
         this.maxNumPeople = "",

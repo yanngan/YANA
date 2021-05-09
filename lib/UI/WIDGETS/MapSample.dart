@@ -17,7 +17,7 @@ class MapSampleState extends State<MapSample> {
   Completer<GoogleMapController> _controller = Completer();
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   bool mapType = true; // true == MapType.hybrid, false == MapType.normal
-
+  bool initDone = false;
   static final CameraPosition _TLV = CameraPosition( //init poit to be at TLV
     target: LatLng(32.085300, 34.781769),
     zoom: 14.4746,
@@ -25,6 +25,9 @@ class MapSampleState extends State<MapSample> {
 
   @override
   Widget build(BuildContext context) {
+    if(!initDone){
+      jumpToCurrentLocation();
+    }
     //jumpToCurrentLocation();
     return new Scaffold(
       body: GoogleMap(
@@ -113,8 +116,11 @@ class MapSampleState extends State<MapSample> {
   go to the current user plase
    */
   void jumpToCurrentLocation() async {
-    CameraPosition CurrntUserLocation = await Logic.getUserLocation();
-    _goTo(CurrntUserLocation);
+    //CameraPosition CurrntUserLocation = await Logic.getUserLocation();
+    Logic.getUserLocation().then((value){
+      initDone = true;
+      _goTo(value);
+    });
   }
 
   /*

@@ -6,10 +6,10 @@ import 'allClasses.dart';
 
 class MyMarker extends  Marker{
 
-  final Event event;
+  final Place place;
 
   const MyMarker(
-    this.event,
+    this.place,
     {required markerId,
     alpha = 1.0,
     anchor = const Offset(0.5, 1.0),

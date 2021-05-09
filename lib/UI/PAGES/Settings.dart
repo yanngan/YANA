@@ -29,7 +29,7 @@ class _SettingsState extends State<Settings> {
           SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: 120,),
+                SizedBox(height: 110,),
                 Text("Group 1", style: TextStyle(decoration: TextDecoration.underline, fontSize: 30),),
                 Container(
                   height: 300,
@@ -112,8 +112,8 @@ class _SettingsState extends State<Settings> {
             ),
           ),
           SizedBox(
-            height: 120,
-            child: MyAppBar("Setting",funcAction,height: 120,)
+            height: 110,
+            child: MyAppBar("Setting",funcAction,height: 110,)
           ),
         ],
       ),

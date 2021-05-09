@@ -30,9 +30,18 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+
   bool hideAppBar = true;
   bool hideBottomNavigationBar = false;
   PageController pageController = PageController(initialPage:currentIndex, keepPage: true,);
+
+  @override
+  void initState() {
+    super.initState();
+    // TODO This is for testing SIGNUP only!!! remove before you push it!
+    _logOut();
+  }
+
   @override
   Widget build(BuildContext context) {
     return applicationSetup();
@@ -51,7 +60,7 @@ class _MainPageState extends State<MainPage> {
         return Welcome(this.callback);
       }else if(pageType == 1){
         return SignIn(this.callback);
-      }else {
+      }else { // pageType == 2
         return Login(this.callback);
       }
     }else if(pageType > 2 && pageType < 4){

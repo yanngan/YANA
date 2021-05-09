@@ -194,7 +194,7 @@ class _WelcomeState extends State<Welcome> {
       barrierDismissible: false,
       context: context,
       builder: (context) => new AlertDialog(
-        title: new Text('Exiting the app - welcome'),
+        title: new Text('Exiting the app'),
         elevation: 24.0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
         content: new Text('You want to exit the app?'),

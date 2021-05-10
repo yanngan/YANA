@@ -1,10 +1,12 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-
 import 'AllPage.dart';
+
+const String LOGIN_REGULAR = "REGULAR_USER";
+const String LOGIN_DUMMY = "DUMMY_USER";
+const String SIGN_UP = "SIGN_UP_NEW_USER";
 
 class Login extends StatefulWidget {
 
@@ -97,7 +99,7 @@ class _LoginState extends State<Login> {
               ), // Welcome Text
               TweenAnimationBuilder(
                   tween: Tween<double>(begin: 0, end: 255),
-                  duration: Duration(seconds: 4),
+                  duration: Duration(seconds: 3),
                   curve: Curves.easeInExpo,
                   builder: (BuildContext _, double alpha, Widget? __) {
                     return Column(
@@ -141,7 +143,7 @@ class _LoginState extends State<Login> {
                                   userInfo["gender"]          =     _userData!["gender"];
                                   userInfo["age_range"]       =     _userData!["age_range"]["min"].toString();
                                   userInfo["picture_link"]    =     _userData!["picture"]["data"]["url"].toString();
-                                  userCredentials(userInfo);
+                                  userCredentials(userInfo, LOGIN_REGULAR);
                                   setState(() {
                                     imageURL = _userData!["picture"]["data"]["url"].toString();
                                   });
@@ -183,11 +185,59 @@ class _LoginState extends State<Login> {
                                   dummyUserInfo["gender"]          =     "female";
                                   dummyUserInfo["age_range"]       =     "31";
                                   dummyUserInfo["picture_link"]    =     "https://upload.wikimedia.org/wikipedia/commons/8/8e/Adriana_Lima_2019_by_Glenn_Francis.jpg";
-                                  userCredentials(dummyUserInfo);
+                                  userCredentials(dummyUserInfo, LOGIN_DUMMY);
                                 }
                             ),
                           ),
                         ), // Connect with Dummy user
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0, right: 0, bottom: 20, top: 20),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(64),
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: (alpha / 100).round().toDouble(),
+                                  primary: Colors.green.withAlpha(alpha.toInt()), // background
+                                  onPrimary: Colors.white.withAlpha(alpha.toInt()), // foreground
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text('Sign Up with Facebook', style: TextStyle(fontSize: 24)),
+                                    Image(
+                                        color: Colors.white.withAlpha(alpha.toInt()),
+                                        height: 50,
+                                        width: 50,
+                                        image: AssetImage(
+                                            'assets/facebook_logo.png'
+                                        )
+                                    ),
+                                  ],
+                                ),
+                                onPressed: () async {
+                                  List<String> permissionsWanted = const ['email', 'public_profile', 'user_birthday', 'user_gender', 'user_age_range'];
+                                  final LoginResult result = await FacebookAuth.instance.login(permissions: permissionsWanted); // by the fault we request the email and the public profile
+                                  if(result.status == LoginStatus.success) {
+                                    // In this if statement the user is logged in!
+                                    _accessToken =  result.accessToken!;
+                                    _userData = await FacebookAuth.instance.getUserData(fields: "name,email,picture.width(150),birthday,gender,age_range",);
+                                    Map<String, String> userInfo = new Map<String, String>();
+                                    userInfo["id"]              =     _userData!["id"];
+                                    userInfo["name"]            =     _userData!["name"];
+                                    userInfo["email"]           =     _userData!["email"];
+                                    userInfo["birthday"]        =     _userData!["birthday"];
+                                    userInfo["gender"]          =     _userData!["gender"];
+                                    userInfo["age_range"]       =     _userData!["age_range"]["min"].toString();
+                                    userInfo["picture_link"]    =     _userData!["picture"]["data"]["url"].toString();
+                                    userCredentials(userInfo, SIGN_UP);
+                                    setState(() {
+                                      imageURL = _userData!["picture"]["data"]["url"].toString();
+                                    });
+                                  }
+                                }
+                            ) ,
+                          ),
+                        ), // Signup
                       ],
                     );
                   }
@@ -204,8 +254,8 @@ class _LoginState extends State<Login> {
  * Function that checks the user credentials against our data base in order
  * to determine if the user is new / existing / blocked.
  */
-  void userCredentials(Map<String, String> credentials){
-//    Text to display all the user info in the toast
+  void userCredentials(Map<String, String> credentials, String functionNeeded){
+    //    Text to display all the user info in the toast
     String text = "Welcome to YANA\nYou are a ";
     // TODO remove next if/else before production
     if(credentials["id"].toString() == "01234567891234567"){
@@ -229,15 +279,25 @@ class _LoginState extends State<Login> {
         textColor: Colors.white,
         fontSize: 16.0
     );
-    setState(() {
-      this.widget.callback(3);
-    });
-//    Check if user is in our database
+    //    Check if user is in our database
 
-//    If user in it, log him in
+    //    If user in it, log him in
 
+    //    If user is'nt in it, go to signup ponces
+    switch (functionNeeded){
+      case SIGN_UP:
+        setState(() {
+          this.widget.callback(1);
+        });
+        break;
+      case LOGIN_REGULAR:
+      case LOGIN_DUMMY:
+        setState(() {
+          this.widget.callback(3);
+        });
+        break;
+    }
 //    If user is'nt in it, go to signup ponces
-    
   }
 
   Future<void> _checkIfIsLogged() async {
@@ -258,7 +318,7 @@ class _LoginState extends State<Login> {
       loggedUserInfo["picture_link"]    =     userData["picture"]["data"]["url"].toString();
       setState(() {
         _userData = userData;
-        userCredentials(loggedUserInfo);
+        userCredentials(loggedUserInfo, LOGIN_REGULAR);
       });
     }
   }
@@ -268,7 +328,7 @@ class _LoginState extends State<Login> {
       barrierDismissible: false,
       context: context,
       builder: (context) => new AlertDialog(
-        title: new Text('Exiting the app - login'),
+        title: new Text('Exiting the app'),
         elevation: 24.0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
         content: new Text('You want to exit the app?'),

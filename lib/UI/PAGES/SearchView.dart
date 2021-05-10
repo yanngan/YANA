@@ -1,12 +1,8 @@
-import 'package:firebase_core/firebase_core.dart';
+import '../../UX/LOGIC/CLASSES/allClasses.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:yana/UX/DB/events.dart';
-import 'package:yana/UX/DB/places.dart';
-import 'package:yana/UX/DB/user.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
-import 'package:yana/UX/LOGIC/CLASSES/allClasses.dart';
+import '../WIDGETS/MyAppBar.dart';
+import '../../UX/LOGIC/Logic.dart';
 
 class SearchView extends StatefulWidget {
   @override
@@ -14,22 +10,50 @@ class SearchView extends StatefulWidget {
 }
 
 class _SearchViewState extends State<SearchView> {
+  // bool _initstate = false;
 
-  void sendToFb() async{
+  // List<Event> _events = [];
+
+  var _eventsList;
+  // @override
+  // void init() async {
+  //     _events = await Logic.getEventsByCondition();
+  //   setState(() {
+  //     print(_events);
+  //     _initstate = true;
+  //   });
+  // }
+
+  void sendToFb() async {
     await Firebase.initializeApp();
     await sendPlace();
   }
+
   dynamic sendPlace() {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    var place1 = new Places("placeID", "address2", "pho111neNumbe2", "representative", 10, "vibe", true, "openingHours", "name", 18, "webLink.com", "googleMapLink.com");
+    var place1 = new Places(
+        "placeID",
+        "address2",
+        "pho111neNumbe2",
+        "representative",
+        10,
+        "vibe",
+        true,
+        "openingHours",
+        "name",
+        18,
+        "webLink.com",
+        "googleMapLink.com");
     //write to collection
-    firestore.collection('Places').doc(place1.placeID).set(place1.toJson())
-        .then((_){
+    firestore
+        .collection('Places')
+        .doc(place1.placeID)
+        .set(place1.toJson())
+        .then((_) {
       print("success!");
     });
 
-
-     //read from collection
+    //read from collection
     FirebaseFirestore.instance
         .collection('Places')
         .get()
@@ -39,11 +63,7 @@ class _SearchViewState extends State<SearchView> {
         print(doc);
       });
     });
-
-
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -51,108 +71,122 @@ class _SearchViewState extends State<SearchView> {
     //   color: Colors.amber,
     //   child: Center(child: Text("SearchView")),
     // );
-
-
+    // if(!_initstate){
+    //   initState();
+    // }
+    double topPad = (MediaQuery.of(context).size.height / 10);
     return Scaffold(
-        body: Padding(
-        padding: EdgeInsets.all(10.0),
-          child: Column(
-
-            children: [
-              SizedBox(height: 20.0),
-              Center(
-                child: FlatButton.icon(
-                  icon : Icon(Icons.login),
-                  onPressed: () {
-
-                    //realtime write
-                    final databaseReference = FirebaseDatabase.instance.reference();
-                    var user = new User("yisraeddddl", "yisrael id", "dateOfBirth", "bio","ftoto","signUpDate" ,false, true, "israel", "male");
-                    var userId = databaseReference.child('users/').child(user.userID).set(user.toJson());
-
-                    //messages
-                    var m1 = new Message("yisrael", "lidor", "ssss", "ssss");
-                    //send message to fb
-
-                    //write a chat message
-                      DatabaseReference  myRef1= databaseReference.child("rooms/").child(m1.self_name).child(m1.other_name);
-                      myRef1.push().set(m1.toJson());
-                      myRef1= databaseReference.child("rooms/").child(m1.other_name).child(m1.self_name);
-                      myRef1.push().set(m1.toJson());
-
-
-                      var self_name = "yisrael";
-                      var otherName = "lidor";
-                      DatabaseReference messageRef = databaseReference.child('rooms/').child(self_name).child(otherName);
-
-
-
-                    List<Message> messages=[] ;
-                    // messages.add(m1);
-                      //read message once
-                      messageRef.once().then((DataSnapshot data){
-                      print("*****************");
-                      // Message m2 = new Message.fromJson(data);
-                      Map<dynamic, dynamic> values = data.value;
-                      values.forEach((key, values) {
-                        messages.add(Message.fromJson(values));
-                        // print("new: ");
-                        // print(Message.fromJson(values));
-                      });
-                      //   print(messages);
-                    });
-
-                          //need to check- on change
-                    // databaseReferenceTest
-                    //     .child('MedicalCenter')
-                    //     .onValue.listen((event) {
-                    //   var snapshot = event.snapshot
-                    //
-                    //   String value = snapshot.value['Relay1']['Data'];
-                    //   print('Value is $value');
-                    //
-                    //   ...
-                    //
-                    // });
-
-
-                      // messageRef.onChildChanged;
-
-                    // onChild();
-                    // =>
-                    // myRef1.addChildEventListener(new ChildEventListener() {
-                    // messageList.clear();
-                    // for (DataSnapshot ds1:dataSnapshot.getChildren())    {
-                    // Message m1 = ds1.getValue(Message.class);
-                    // messageList.add(m1);
-                    // adapter = new Adapter(getApplicationContext(),messageList);
-                    // l1.setAdapter(adapter);
-
-                    // final refUsers = FirebaseFirestore.instance.collection('users');
-                    // await userDoc.set(newUser.toJson());
-                    sendToFb();
-
-                    //firestore
-                    var place = new Places("placeID", "address", "phoneNumber", "representative", 10, "vibe", true, "openingHours", "name", 18, "webLink.com", "googleMapLink.com");
-                    var placeId = databaseReference.child('Places/').push();
-                    placeId.set(place.toJson());
-
-                    var event = new Events("eventID", user, "creationDate", true, "startEstimate"," endEstimate", 3, 5, "placeID");
-                    var eventId = databaseReference.child('Events/').push();
-                    eventId.set(event.toJson());
-                    },
-                    label: Text("test firebase"),
-                ),
-              ),
-            ],
-          ),
+      backgroundColor: Colors.amber,
+      body: Container(
+        child: Stack(
+          children: [
+            Container(
+              child: ListView.builder(
+                  itemCount: 20,
+                  itemBuilder: (context, index) {
+                    if (index == 0) {
+                      return Padding(
+                        padding: EdgeInsets.only(top: topPad),
+                        child: Card(
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(10, 20, 36, 20),
+                            child: Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    'Note Title',
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Note text',
+                                    style: TextStyle(color: Colors.grey[900]),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    } else if (index == 19) {
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: topPad),
+                        child: Card(
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(10, 20, 36, 20),
+                            child: Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    'Note Title',
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Note text',
+                                    style: TextStyle(color: Colors.grey[900]),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Card(
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(10, 20, 36, 20),
+                          child: Container(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Note Title',
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  'Note text',
+                                  style: TextStyle(color: Colors.grey[900]),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                  }),
+            ),
+            SizedBox(
+                height: 120,
+                child: MyAppBar(
+                    "Search",
+                    TextButton(
+                      child: Icon(Icons.search),
+                      onPressed: () => {},
+                    ),
+                    height: 120)),
+          ],
         ),
+      ),
+      extendBody: true,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
+        child: FloatingActionButton(
+          child: Icon(Icons.search),
+          splashColor: Colors.amber,
+          backgroundColor: Colors.pink,
+          onPressed: () => {print('Button Pressed')},
+        ),
+      ),
     );
-
   }
 }
-
-
-
-
-

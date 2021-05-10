@@ -19,9 +19,9 @@ class MapLogic{
     for(int i = 0 ;i < 10 ; i++){
       //String text = "latitude = $latitude longitude = $longitude";
       Place tempPlace = new Place("$i",i,"name $i",latitude+i,longitude+i);
-      Event tempEvent = new Event(tempPlace,"event id-$i");
-      markers[MarkerId("$i")] = new MyMarker(tempEvent,markerId: MarkerId("$i"),position: LatLng(latitude+i,longitude+i),onTap: (){
-        addEditSeePoints(context);
+      //Event tempEvent = new Event(tempPlace,"event id-$i");
+      markers[MarkerId("$i")] = new MyMarker(tempPlace,markerId: MarkerId("$i"),position: LatLng(latitude+i,longitude+i),onTap: (){
+        seeListEventInPlace(context,tempPlace);
       });
     }
     return markers;
@@ -32,20 +32,29 @@ class MapLogic{
   /*
   create alert dialog with AddSeeEvent widget
    */
-  static addEditSeePoints(BuildContext context) async{
+  static seeListEventInPlace(BuildContext context,Place thePlace) async{
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ListEventsForMap(thePlace);
+      },
+    );
+  }
+
+  static addEditSeePoints(BuildContext context,{var theEvent}) async{
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: new Text("Add new Place ! 😋",style: TextStyle(color: Colors.amber),),
-          backgroundColor: Colors.pink,
+          title: new Text("Add new Event ! 😋",style: TextStyle(color: Colors.blueGrey),),
+          backgroundColor: Colors.amber,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(20.0))
           ),
           content: AddSeeEvent(),
           actions: <Widget>[
             new TextButton(
-              child: new Text("OK",style: TextStyle(color: Colors.amber),),
+              child: new Text("OK",style: TextStyle(color: Colors.blueGrey),),
               onPressed: () {
                 Navigator.of(context).pop();
               },

@@ -193,7 +193,7 @@ class _NoticeBoardState extends State<NoticeBoard> {
                 child: Container(
                   child: Column(
                     children: [
-                      SizedBox(height: 85,),
+                      SizedBox(height: 70,),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: advertisements,
@@ -206,8 +206,8 @@ class _NoticeBoardState extends State<NoticeBoard> {
             ]),
           ),
           SizedBox(
-            height: 120,
-            child: MyAppBar("NoticeBoard", null, height: 120)
+            height: 110,
+            child: MyAppBar("NoticeBoard", null, height: 110)
           ),
         ],
       ),
@@ -271,6 +271,7 @@ class _AdvertisementState extends State<Advertisement> {
 
                   //Column of the "card"
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       //Title widget the does not change dynamically.
                       Cards_Title(widget.adv_name),

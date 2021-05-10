@@ -27,8 +27,10 @@ class Message {
   }
 
 
-
-  // static DateTime toDateTime(Timestamp value) {
+   @override
+  String toString() {
+    return 'Message{self_name: $self_name, other_name: $other_name, message: $message, createdAt: $createdAt}';
+  } // static DateTime toDateTime(Timestamp value) {
   //   if (value == null) return null;
   //   return value.toDate();
   // }

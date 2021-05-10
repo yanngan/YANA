@@ -22,14 +22,14 @@ class _SearchViewState extends State<SearchView> {
   dynamic sendPlace() {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     var place1 = new Places("placeID", "address2", "pho111neNumbe2", "representative", 10, "vibe", true, "openingHours", "name", 18, "webLink.com", "googleMapLink.com");
-
-     firestore.collection('Places').doc(place1.placeID).set(place1.toJson())
+    //write to collection
+    firestore.collection('Places').doc(place1.placeID).set(place1.toJson())
         .then((_){
       print("success!");
     });
 
 
-     //read
+     //read from collection
     FirebaseFirestore.instance
         .collection('Places')
         .get()
@@ -39,8 +39,7 @@ class _SearchViewState extends State<SearchView> {
         print(doc);
       });
     });
-    // CollectionReference cl = firestore.collection('Places');
-    // DocumentReference documentReference=  cl.doc(documentId).get();
+
 
   }
 
@@ -66,32 +65,59 @@ class _SearchViewState extends State<SearchView> {
                   icon : Icon(Icons.login),
                   onPressed: () {
 
-                    //realtime
+                    //realtime write
                     final databaseReference = FirebaseDatabase.instance.reference();
                     var user = new User("yisraeddddl", "yisrael id", "dateOfBirth", "bio","ftoto","signUpDate" ,false, true, "israel", "male");
                     var userId = databaseReference.child('users/').child(user.userID).set(user.toJson());
 
                     //messages
-                    var m1 = new Message("self_name-yisrael", "other_name- lidor", "message", "createdAt");
+                    var m1 = new Message("yisrael", "lidor", "ssss", "ssss");
                     //send message to fb
 
-
-                      DatabaseReference  myRef1= databaseReference.child("rooms").child(m1.self_name).child(m1.other_name).child("message");
-                      myRef1.push().set(m1);
-                      myRef1= databaseReference.child("rooms").child(m1.other_name).child(m1.self_name).child("message");
-                      myRef1.push().set(m1);
-
-
+                    //write a chat message
+                      DatabaseReference  myRef1= databaseReference.child("rooms/").child(m1.self_name).child(m1.other_name);
+                      myRef1.push().set(m1.toJson());
+                      myRef1= databaseReference.child("rooms/").child(m1.other_name).child(m1.self_name);
+                      myRef1.push().set(m1.toJson());
 
 
-
-                    //read message
-                    var messageRef = databaseReference.child('rooms').child(m1.self_name).set(m1.toJson());
+                      var self_name = "yisrael";
+                      var otherName = "lidor";
+                      DatabaseReference messageRef = databaseReference.child('rooms/').child(self_name).child(otherName);
 
 
 
-                    // DatabaseReference myRef1 ;
-                    // myRef1 = database.getReference("rooms").child(Login.u1.getUserName()).child(other_name);
+                    List<Message> messages=[] ;
+                    // messages.add(m1);
+                      //read message once
+                      messageRef.once().then((DataSnapshot data){
+                      print("*****************");
+                      // Message m2 = new Message.fromJson(data);
+                      Map<dynamic, dynamic> values = data.value;
+                      values.forEach((key, values) {
+                        messages.add(Message.fromJson(values));
+                        // print("new: ");
+                        // print(Message.fromJson(values));
+                      });
+                      //   print(messages);
+                    });
+
+                          //need to check- on change
+                    // databaseReferenceTest
+                    //     .child('MedicalCenter')
+                    //     .onValue.listen((event) {
+                    //   var snapshot = event.snapshot
+                    //
+                    //   String value = snapshot.value['Relay1']['Data'];
+                    //   print('Value is $value');
+                    //
+                    //   ...
+                    //
+                    // });
+
+
+                      // messageRef.onChildChanged;
+
                     // onChild();
                     // =>
                     // myRef1.addChildEventListener(new ChildEventListener() {

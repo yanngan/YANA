@@ -56,7 +56,5 @@ class Events{
       "maxNumPeople": this.maxNumPeople,
       "placeID": this.placeID,
     };
-
-
   }
 }

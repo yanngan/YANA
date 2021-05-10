@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yana/UX/DB/user.dart';
+import 'package:yana/UX/DB/users.dart';
 
 class Chat extends StatefulWidget {
   // User user;

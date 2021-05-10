@@ -1,8 +1,5 @@
-import '../../UX/LOGIC/CLASSES/allClasses.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import '../WIDGETS/MyAppBar.dart';
-import '../../UX/LOGIC/Logic.dart';
 
 class SearchView extends StatefulWidget {
   @override
@@ -24,46 +21,6 @@ class _SearchViewState extends State<SearchView> {
   //   });
   // }
 
-  void sendToFb() async {
-    await Firebase.initializeApp();
-    await sendPlace();
-  }
-
-  dynamic sendPlace() {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-    var place1 = new Places(
-        "placeID",
-        "address2",
-        "pho111neNumbe2",
-        "representative",
-        10,
-        "vibe",
-        true,
-        "openingHours",
-        "name",
-        18,
-        "webLink.com",
-        "googleMapLink.com");
-    //write to collection
-    firestore
-        .collection('Places')
-        .doc(place1.placeID)
-        .set(place1.toJson())
-        .then((_) {
-      print("success!");
-    });
-
-    //read from collection
-    FirebaseFirestore.instance
-        .collection('Places')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        print(doc["placeID"]);
-        print(doc);
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

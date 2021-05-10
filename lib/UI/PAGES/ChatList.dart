@@ -1,6 +1,6 @@
 // import 'package:flutter/material.dart';
 // import 'package:yana/UI/PAGES/AllPage.dart';
-// import 'package:yana/UX/DB/user.dart';
+// import 'package:yana/UX/DB/users.dart';
 //
 // class ChatList extends StatefulWidget {
 //    List<User> users = [

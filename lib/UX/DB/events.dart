@@ -1,4 +1,4 @@
-import 'package:yana/UX/DB/user.dart';
+import 'package:yana/UX/DB/users.dart';
 
 class Events{
 

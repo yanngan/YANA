@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:yana/UI/PAGES/AllPage.dart';
 import 'package:yana/UX/DB/places.dart';
 import 'package:yana/UX/DB/users.dart';
 import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
 import 'package:yana/UX/DB/events.dart';
+import 'package:yana/UX/LOGIC/CLASSES/Place.dart';
 class FirebaseHelper{
 
 
@@ -25,17 +27,23 @@ class FirebaseHelper{
     });
   }
 
-  void getPlaceFromFb(){
+  List<Places> getPlaceFromFb(){
+    List<Places> places = [];
+
     //read from collection
     FirebaseFirestore.instance
         .collection('Places')
         .get()
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
-        print(doc["placeID"]);
-        print(doc);
+        print("new place: ");
+        // print(doc["placeID"]);
+        // print(doc.data());
+        // print(Places.fromJson(doc.data()));
+          places.add(Places.fromJson(doc.data()));
       });
     });
+    return places;
   }
 
 
@@ -49,15 +57,14 @@ class FirebaseHelper{
     myRef1.push().set(m1.toJson());
   }
 
-  void getMessageFromFb(var self_name,var otherName){
+  dynamic getMessageFromFb(var self_name,var otherName)  {
     final databaseReference = FirebaseDatabase.instance.reference();
     DatabaseReference messageRef = databaseReference.child('rooms/').child(self_name).child(otherName);
-    List<Message> messages=[] ;
     //read message once
-    messageRef.once().then((DataSnapshot data){
+     return messageRef.once().then((DataSnapshot data){
       Map<dynamic, dynamic> values = data.value;
       values.forEach((key, values) {
-        messages.add(Message.fromJson(values));
+        Chat.messages.add(Message.fromJson(values));
       });
     });
   }
@@ -105,4 +112,6 @@ class FirebaseHelper{
       });
     });
   }
+
+  FirebaseHelper();
 }

@@ -29,7 +29,10 @@ class Places{
       this.googleMapLink);
 
 
-  //parse a json to user object
+  @override
+  String toString() {
+    return 'Places{placeID: $placeID, address: $address, phoneNumber: $phoneNumber, representative: $representative, capacity: $capacity, vibe: $vibe, isKosher: $isKosher, openingHours: $openingHours, name: $name, ageRestrictions: $ageRestrictions, webLink: $webLink, googleMapLink: $googleMapLink}';
+  } //parse a json to user object
   factory Places.fromJson(dynamic json) {
     return Places(
       json['placeID'] as String,

@@ -90,7 +90,7 @@ class _MainPageState extends State<MainPage> {
                   print(index);
                   hideBottomNavigationBar = true;
                   switch (index) {
-                    case Chat_index:
+                    case ChatsAndEvents_index:
                       hideBottomNavigationBar = false;
                       break;
                     case SearchView_index:
@@ -111,7 +111,7 @@ class _MainPageState extends State<MainPage> {
                       break;
                     case SingUp_index:
                       break;
-                    case ChatList_index:
+                    case ChatsAndEvents_index:
                       hideBottomNavigationBar = false;
                       break;
                   }
@@ -120,7 +120,7 @@ class _MainPageState extends State<MainPage> {
                   });
                 },
                 children: [
-                  Chat(),
+                  ChatsAndEvents(),
                   SearchView(),
                   MapView(),
                   NoticeBoard(),

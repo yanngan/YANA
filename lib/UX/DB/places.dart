@@ -63,6 +63,7 @@ class Places{
       "openingHours":this.openingHours,
       "ageRestrictions":this.ageRestrictions,
       "webLink":  this.webLink,
+      "name":  this.name,
       "googleMapLink":this.googleMapLink,
     };
   }

@@ -16,6 +16,7 @@ import 'WIDGETS/allWidgets.dart';
 int currentIndex = MapView_index;
 
 void main() {
+  //Firebase.initializeApp();//.then((value) => null).onError((error, stackTrace) => null);
   runApp(
     new MaterialApp(
       home:MainPage(),
@@ -198,5 +199,7 @@ class _MainPageState extends State<MainPage> {
     );
     return finalResult;
   }
+
+
 
 }

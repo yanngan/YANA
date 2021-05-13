@@ -1,5 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:yana/UX/DB/allDB.dart';
 import 'package:yana/UX/DB/places.dart';
 import 'package:yana/UX/DB/users.dart';
 import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
@@ -29,15 +31,14 @@ class _ChatState extends State<Chat> {
             child: FlatButton.icon(
               icon : Icon(Icons.login),
               onPressed: () async{
-
+                print("hello");
 
                 Chat.messages.clear();
+                await Firebase.initializeApp();
                 var m1 = new Message("yisrael", "lidor", "test", "today");
-                FirebaseHelper fbh = new FirebaseHelper();
-                fbh.initFirebase();
-                List<Places> places = fbh.getPlaceFromFb();
-                print(places.length);
-                print(places);
+                await  FirebaseHelper.sendEventToFb(new Events("eventID", new User("userName","userID","dateOfBirth", "bio", "fbPhoto","signUpDate",false,true,"nickName","sex"), "creationDate", false, "startEstimate", "endEstimate", 0,0, "placeID"));
+                /*print(places.length);
+                print(places);*/
 
                 // fbh.sendMessageToFb(m1);
                // await fbh.getMessageFromFb("yisrael", "lidor");

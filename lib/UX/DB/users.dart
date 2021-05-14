@@ -1,4 +1,4 @@
-class User {
+class Users {
 
   String userName;
   String userID;
@@ -12,9 +12,13 @@ class User {
   String sex;
 
 
+  @override
+  String toString() {
+    return 'User{userName: $userName, userID: $userID, dateOfBirth: $dateOfBirth, bio: $bio, fbPhoto: $fbPhoto, signUpDate: $signUpDate, isBlocked: $isBlocked, notifications: $notifications, nickName: $nickName, sex: $sex}';
+  }
   //parse a json to user object
-  factory User.fromJson(dynamic json) {
-    return User(json['userName'] as String,
+  factory Users.fromJson(dynamic json) {
+    return Users(json['userName'] as String,
       json['userID'] as String,
       json['dateOfBirth'] as String,
       json['bio'] as String,
@@ -27,7 +31,7 @@ class User {
     );
   }
   //constructor
-  User(
+  Users(
       this.userName,
       this.userID,
       this.dateOfBirth,

@@ -15,8 +15,8 @@ import 'WIDGETS/allWidgets.dart';
 // Global Variables
 int currentIndex = MapView_index;
 
-void main() {
-  //Firebase.initializeApp();//.then((value) => null).onError((error, stackTrace) => null);
+void main() async {
+  await Firebase.initializeApp();
   runApp(
     new MaterialApp(
       home:MainPage(),

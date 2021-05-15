@@ -15,8 +15,7 @@ import 'WIDGETS/allWidgets.dart';
 // Global Variables
 int currentIndex = MapView_index;
 
-void main() async {
-  await Firebase.initializeApp();
+void main()  {
   runApp(
     new MaterialApp(
       home:MainPage(),
@@ -42,11 +41,15 @@ class _MainPageState extends State<MainPage> {
     super.initState();
     // TODO This is for testing SIGNUP only!!! remove before you push it!
     _logOut();
+
+      Firebase.initializeApp();
+
   }
 
   @override
   Widget build(BuildContext context) {
     return applicationSetup();
+
   }
 
 //  callback function in order to allow moving between login sign up and the inner area of the application
@@ -57,6 +60,8 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget applicationSetup(){
+
+
     if(pageType >= 0 && pageType <= 2){
       if(pageType == 0){
         return Welcome(this.callback);

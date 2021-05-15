@@ -66,12 +66,14 @@ class FirebaseHelper{
       listMessage.add(Message.fromJson(values));
     });
     return listMessage;
-
   }
 //end Messages-------------------------------------------------
 
   //start Events-------------------------------------------------
   static Future<bool> sendEventToFb(Events event) async {
+    //add to real-time firebase on place id the new event
+    FirebaseDatabase.instance.reference().child("places/").child(event.placeID).push().set(event.eventID);
+
     FirebaseFirestore fireStore = FirebaseFirestore.instance;
     //write to collection
     try {
@@ -92,17 +94,46 @@ class FirebaseHelper{
       return null;
     }
   }
+/*
+  //in case we want to find an event by place -- need to fix
+  static Future<List<Events>?> getEventsByPlaceID( String placeID) async{
+    DatabaseReference placeRef = FirebaseDatabase.instance.reference().child("places/").child(placeID);
+    DataSnapshot data = await placeRef.once();
+    Map<dynamic, dynamic> values = data.value;
+    List<Events> events = [];
+    //need to fix with await
+     values.forEach((key, values) async {
+      var doc = await FirebaseFirestore.instance.collection('Events').doc(values).get();
+      // print(doc.data());
+      if (doc.exists) {
+        events.add(Events.fromJson(doc.data()));
+        print("im here 0");
+      }
+    });
+    print("im here 1 ${events}");
+    return events;
+  }
+*/
+  //in case we want to find an event by place -- need to fix
+  static Future<List<Events>?> getEventsByPlaceID( String placeID) async{
+    DatabaseReference placeRef = FirebaseDatabase.instance.reference().child("places/").child(placeID);
+    DataSnapshot data = await placeRef.once();
+    Map<dynamic, dynamic> values = data.value;
+    
+    List<Events> events0 = await getEventsFromFb();
+    List<Events> events1 = [];
 
-  //in case we want to find an event by place
-  // static Future<Events?> getEventsByPlaceID(String eventID, String placeID) async{
-  //   final refUsers =  FirebaseFirestore.instance.collection('Events').doc(eventID);
-  //   var doc = await refUsers.get();
-  //   if (doc.exists) {
-  //     return Events.fromJson(doc.data());
-  //   } else {
-  //     return null;
-  //   }
-  // }
+    events0.forEach((event) {
+        values.forEach((key, value) {
+          if(event.eventID == value )
+            events1.add(event);
+        });
+    });
+
+    
+    print("im here 1 ${events1}");
+    return events1;
+  }
 
   static Future<List<Events>> getEventsFromFb() async {
     //read from collection

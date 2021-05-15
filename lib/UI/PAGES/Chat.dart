@@ -33,14 +33,17 @@ class _ChatState extends State<Chat> {
               onPressed: () async{
                 print("hello");
 
-                // Chat.messages.clear();
+
+
                 // await Firebase.initializeApp();
+
+                // Chat.messages.clear();
                 // var m1 = new Message("yisrael", "lidor", "test", "today");
-                // await  FirebaseHelper.sendEventToFb(new Events("eventID", new User("userName","userID","dateOfBirth", "bio", "fbPhoto","signUpDate",false,true,"nickName","sex"), "creationDate", false, "startEstimate", "endEstimate", 0,0, "placeID"));
+                // await FirebaseHelper.sendEventToFb(new Events("eventID3", new Users("userName","userID","dateOfBirth", "bio", "fbPhoto","signUpDate",false,true,"nickName","sex"), "creationDate", false, "startEstimate", "endEstimate", 0,0, "placeID"));
                 // FirebaseHelper.sendUserToFb(new User("userName", "meir", "dateOfBirth",
                 //     "bio"," fbPhoto", "signUpDate", false, true, "nickName", "sex"));
-                var u1 = await FirebaseHelper.getEventsFromFb();
-                print(u1);
+                var c1=await FirebaseHelper.getEventsByPlaceID("placeID");
+                // print(c1);
                 // fbh.sendMessageToFb(m1);
                // await fbh.getMessageFromFb("yisrael", "lidor");
                 // print(Chat.messages);

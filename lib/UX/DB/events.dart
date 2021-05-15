@@ -1,9 +1,9 @@
-import 'package:yana/UX/DB/user.dart';
+import 'package:yana/UX/DB/users.dart';
 
 class Events{
 
   String eventID;
-  User user;
+  Users user;
   String creationDate;//DateTime
   bool status;//if it active
   String startEstimate;//DateTime
@@ -26,11 +26,11 @@ class Events{
 
 
 
-  //parse a json to user object
+  //parse a json to event object
   factory Events.fromJson(dynamic json) {
     return Events(
       json['eventID'] as String,
-      json['user'] as User,
+      Users.fromJson(json['user']) ,
       json['creationDate'] as String,
       json['status'] as bool,
       json['startEstimate'] as String,
@@ -43,7 +43,11 @@ class Events{
   }
 
 
-//make a json object
+  @override
+  String toString() {
+    return 'Events{eventID: $eventID, user: $user, creationDate: $creationDate, status: $status, startEstimate: $startEstimate, endEstimate: $endEstimate, curNumPeople: $curNumPeople, maxNumPeople: $maxNumPeople, placeID: $placeID}';
+  }
+  //make a json object
   Map<String, dynamic> toJson() {
     return {
       "eventID": this.eventID,
@@ -56,7 +60,5 @@ class Events{
       "maxNumPeople": this.maxNumPeople,
       "placeID": this.placeID,
     };
-
-
   }
 }

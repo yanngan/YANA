@@ -57,8 +57,10 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - fonts/
-    - assets/
+#    - fonts/
+    - assets/profile_picture.png
+    - assets/yana_logo.png
+    - assets/facebook_logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -74,7 +76,7 @@ flutter:
   fonts:
     - family: Font1
       fonts:
-        - asset: fonts/skia.ttf
+        - asset: fonts/Raleway-SemiBold.ttf
     - family: Font2
       fonts:
         - asset: fonts/Pacifico.ttf

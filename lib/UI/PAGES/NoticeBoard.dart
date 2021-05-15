@@ -10,6 +10,7 @@ class NoticeBoard extends StatefulWidget {
 }
 
 //data is an array of Places to simulate the firebase data.
+bool One_is_Open = false;
 List<Advertisement> advertisements = [];
 List<Place> data = [
   new Place(
@@ -32,7 +33,7 @@ List<Place> data = [
     'Katsefte',
     156.48797894,
     80.236598,
-    address: "14 Yafo,Jerusalem",
+    address: "14 Yafo,Yafo",
     phoneNum: "02854978756",
     representive: "Yoram",
     isKosher: 2,
@@ -46,7 +47,7 @@ List<Place> data = [
     'Rimon',
     156.48797894,
     80.236598,
-    address: "14 Yafo,Jerusalem",
+    address: "415 Haifa",
     phoneNum: "02854978756",
     representive: "Yoram",
     isKosher: 2,
@@ -152,12 +153,12 @@ class _NoticeBoardState extends State<NoticeBoard> {
   void initPlacesList() {
     for (int i = 0; i < data.length; i++) {
 
-      String details = "Address: ${data[i].address},\n"
-          "Representive: ${data[i].representive},\n"
-          "Capacity: ${data[i].capacity},\n"
-          "AgeRestriction: ${data[i].ageRestrictions},\n"
-          "Link: ${data[i].webLink},\n"
-          "Map: ${data[i].googleMapLink}\n";
+      String details = "\u2022 Address\b: ${data[i].address}\n"
+          "\u2022 Representive\b: ${data[i].representive}\n"
+          "\u2022 Capacity\b: ${data[i].capacity}\n"
+          "\u2022 AgeRestriction\b: ${data[i].ageRestrictions}\n"
+          "\u2022 Link\b: ${data[i].webLink}\n"
+          "\u2022 Map\b: ${data[i].googleMapLink}\n";
 
       if (i % 2 == 0) {
         advertisements.add(Advertisement(
@@ -181,6 +182,7 @@ class _NoticeBoardState extends State<NoticeBoard> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.amber,
       body: Stack(
@@ -239,7 +241,6 @@ class _AdvertisementState extends State<Advertisement> {
   double _width = 200;
   double _height = 110;
   bool _isOpen = false;
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -255,8 +256,13 @@ class _AdvertisementState extends State<Advertisement> {
               if (_isOpen) {
                 _height -= widget.adv_details.length + 30;
                 _isOpen = false;
+                One_is_Open = false;
               } else {
+                if(One_is_Open){
+                    return;
+                }
                 _height += widget.adv_details.length + 30;
+                One_is_Open = true;
                 _isOpen = true;
               }
             });
@@ -284,12 +290,18 @@ class _AdvertisementState extends State<Advertisement> {
                             children: <Widget>[
                               Padding(
                                 padding: EdgeInsets.fromLTRB(10, 2, 0, 10),
-                                child: Text(
-                                  widget.adv_details,
-                                  style: TextStyle(
-                                    letterSpacing: 1,
-                                    decorationThickness: 2,
-                                    wordSpacing: 1,
+                                child: SingleChildScrollView(
+                                  child: Text(
+                                    widget.adv_details,
+                                    style: TextStyle(
+                                      fontFamily: 'Font1',
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black87,
+                                      fontSize: 20,
+                                      letterSpacing: 1,
+                                      decorationThickness: 2,
+                                      wordSpacing: 1,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -320,7 +332,7 @@ class Cards_Title extends StatelessWidget {
         Padding(
           padding: EdgeInsets.fromLTRB(10.0, 10.0, 20.0, 10.0),
           child: CircleAvatar(
-            backgroundImage: AssetImage('assets/yana_logo.png'),
+            backgroundImage: AssetImage('assets/profile_picture.png'),
             radius: 40.0,
           ),
         ),
@@ -330,7 +342,7 @@ class Cards_Title extends StatelessWidget {
               name,
               style: TextStyle(
                   fontSize: 35,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w400,
                   color: Colors.grey[900],
                   fontFamily: 'Font2'),
             )),

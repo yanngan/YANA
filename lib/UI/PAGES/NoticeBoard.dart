@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import '../../UX/LOGIC/CLASSES/Place.dart';
+import '../../UX/DB/allDB.dart';
 import '../WIDGETS/MyAppBar.dart';
 
 class NoticeBoard extends StatefulWidget {
@@ -11,8 +11,8 @@ class NoticeBoard extends StatefulWidget {
 
 //data is an array of Places to simulate the firebase data.
 List<Advertisement> advertisements = [];
-List<Place> data = [
-  new Place(
+List<Places> data = [
+  /*new Places(
     '000000001',
     100,
     'Chez Andi',
@@ -137,7 +137,7 @@ List<Place> data = [
     ageRestrictions: 18,
     webLink: "htpp//fgefzffcz",
     googleMapLink: "gvzsfgvrzsfgvrs",
-  ),
+  ),*/
 ];
 
 class _NoticeBoardState extends State<NoticeBoard> {
@@ -153,7 +153,7 @@ class _NoticeBoardState extends State<NoticeBoard> {
     for (int i = 0; i < data.length; i++) {
 
       String details = "Address: ${data[i].address},\n"
-          "Representive: ${data[i].representive},\n"
+          /*"Representive: ${data[i].representive},\n"*/
           "Capacity: ${data[i].capacity},\n"
           "AgeRestriction: ${data[i].ageRestrictions},\n"
           "Link: ${data[i].webLink},\n"
@@ -162,17 +162,17 @@ class _NoticeBoardState extends State<NoticeBoard> {
       if (i % 2 == 0) {
         advertisements.add(Advertisement(
             Colors.purple[200]!,
-            data[i].getName(),
+            /*data[i].getName(),
             data[i].getIsKosher(),
-            data[i].getPhoneNumber(),
+            data[i].getPhoneNumber(),*/
             Colors.grey[900]!,
             details));
       } else {
         advertisements.add(Advertisement(
             Colors.purple[400]!,
-            data[i].getName(),
+            /*data[i].getName(),
             data[i].getIsKosher(),
-            data[i].getPhoneNumber(),
+            data[i].getPhoneNumber(),*/
             Colors.grey[400]!,
             details));
       }
@@ -218,17 +218,18 @@ class _NoticeBoardState extends State<NoticeBoard> {
 //Advertisement Widget
 class Advertisement extends StatefulWidget {
 
-  String adv_name;
-  String adv_details;
+  /*String adv_name;
+
   int adv_isKosher;
-  String adv_phoneNum;
+  String adv_phoneNum;*/
+  String adv_details;
   Color color;
   Color expansiontilecolor;
 
   var children = [];
 
   //Constructor
-  Advertisement(this.color, this.adv_name, this.adv_isKosher, this.adv_phoneNum,
+  Advertisement(this.color, /*this.adv_name, this.adv_isKosher, this.adv_phoneNum,*/
       this.expansiontilecolor, this.adv_details);
 
   @override
@@ -253,10 +254,10 @@ class _AdvertisementState extends State<Advertisement> {
             //SetState of the open/close functionality
             setState(() {
               if (_isOpen) {
-                _height -= widget.adv_details.length + 30;
+                //_height -= widget.adv_details.length + 30;
                 _isOpen = false;
               } else {
-                _height += widget.adv_details.length + 30;
+                //_height += widget.adv_details.length + 30;
                 _isOpen = true;
               }
             });
@@ -274,7 +275,7 @@ class _AdvertisementState extends State<Advertisement> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       //Title widget the does not change dynamically.
-                      Cards_Title(widget.adv_name),
+                      Cards_Title("title"),//widget.adv_name),
                       //Advert details.
                       Expanded(
                         child: AnimatedOpacity(

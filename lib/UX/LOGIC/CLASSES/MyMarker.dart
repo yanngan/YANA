@@ -2,11 +2,11 @@ import 'dart:ui';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import 'allClasses.dart';
+import '../../DB/allDB.dart';
 
 class MyMarker extends  Marker{
 
-  final Place place;
+  final Places place;
 
   const MyMarker(
     this.place,

@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:yana/UX/LOGIC/CLASSES/allClasses.dart';
+import 'package:yana/UX/DB/allDB.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
 import 'package:yana/UX/LOGIC/MapLogic.dart';
 
 class ListEventsForMap extends StatefulWidget {
-  Place thePlace;
+  Places thePlace;
   ListEventsForMap(this.thePlace);
 
   @override
@@ -14,7 +14,7 @@ class ListEventsForMap extends StatefulWidget {
 
 class _ListEventsForMapState extends State<ListEventsForMap> {
   bool initDone = false;
-  List<Event> listEvents = [];
+  List<Events> listEvents = [];
   @override
   Widget build(BuildContext context) {
     if(!initDone){

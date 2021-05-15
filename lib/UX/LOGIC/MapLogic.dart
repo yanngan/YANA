@@ -4,6 +4,7 @@ import 'package:yana/UI/WIDGETS/allWidgets.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
 
 import 'CLASSES/allClasses.dart';
+import '../DB/allDB.dart';
 
 class MapLogic{
 
@@ -18,7 +19,8 @@ class MapLogic{
     var longitude = currentUserLocation.target.longitude;
     for(int i = 0 ;i < 10 ; i++){
       //String text = "latitude = $latitude longitude = $longitude";
-      Place tempPlace = new Place("$i",i,"name $i",latitude+i,longitude+i);
+      Places tempPlace = Places("$i", "address", "phoneNumber", "representative", 10, "vibe", true,"openingHours", "name", 21, "webLink", "googleMapLink");
+
       //Event tempEvent = new Event(tempPlace,"event id-$i");
       markers[MarkerId("$i")] = new MyMarker(tempPlace,markerId: MarkerId("$i"),position: LatLng(latitude+i,longitude+i),onTap: (){
         seeListEventInPlace(context,tempPlace);
@@ -32,7 +34,7 @@ class MapLogic{
   /*
   create alert dialog with AddSeeEvent widget
    */
-  static seeListEventInPlace(BuildContext context,Place thePlace) async{
+  static seeListEventInPlace(BuildContext context,Places thePlace) async{
     showDialog(
       context: context,
       builder: (BuildContext context) {

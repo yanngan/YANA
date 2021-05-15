@@ -32,9 +32,9 @@ class _ChatsAndEventsState extends State<ChatsAndEvents> {
                 children: [
                   TextButton(
                     child: Text("מיקומים",style: TextStyle(fontSize: 30),),
-                    onPressed: switchPage(),
+                    onPressed: switchPage,
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(whichPage?Colors.pinkAccent:Colors.pink),
+                      backgroundColor: MaterialStateProperty.all(whichPage?Colors.pinkAccent:Colors.pink[700]),
                       shadowColor: MaterialStateProperty.all(Colors.grey),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
@@ -49,20 +49,20 @@ class _ChatsAndEventsState extends State<ChatsAndEvents> {
                   ),
                   TextButton(
                     child: Text("צ'אטים",style: TextStyle(fontSize: 30),),
-                    onPressed: switchPage(),
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(whichPage?Colors.pink:Colors.pinkAccent),
-                          shadowColor: MaterialStateProperty.all(Colors.grey),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(18.0),
-                                    bottomRight: Radius.circular(18.0),
-                                  ),
-                                  side: BorderSide(color: Colors.red)
-                              )
-                          )
-                      )
+                    onPressed: switchPage,
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(whichPage?Colors.pink[700]:Colors.pinkAccent),
+                        shadowColor: MaterialStateProperty.all(Colors.grey),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(18.0),
+                                  bottomRight: Radius.circular(18.0),
+                                ),
+                                side: BorderSide(color: Colors.red)
+                            )
+                        )
+                    )
                   ),
                 ],
               ),
@@ -77,6 +77,7 @@ class _ChatsAndEventsState extends State<ChatsAndEvents> {
 
 
   switchPage(){
+    print("hello");
     setState(() {
       whichPage = !whichPage;
     });

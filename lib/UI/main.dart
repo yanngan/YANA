@@ -1,4 +1,5 @@
 //FLUTTER
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -14,7 +15,7 @@ import 'WIDGETS/allWidgets.dart';
 // Global Variables
 int currentIndex = MapView_index;
 
-void main(){
+void main()  {
   runApp(
     new MaterialApp(
       home:MainPage(),
@@ -40,11 +41,15 @@ class _MainPageState extends State<MainPage> {
     super.initState();
     // TODO This is for testing SIGNUP only!!! remove before you push it!
     _logOut();
+
+      Firebase.initializeApp();
+
   }
 
   @override
   Widget build(BuildContext context) {
     return applicationSetup();
+
   }
 
 //  callback function in order to allow moving between login sign up and the inner area of the application
@@ -55,6 +60,8 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget applicationSetup(){
+
+
     if(pageType >= 0 && pageType <= 2){
       if(pageType == 0){
         return Welcome(this.callback);
@@ -197,5 +204,7 @@ class _MainPageState extends State<MainPage> {
     );
     return finalResult;
   }
+
+
 
 }

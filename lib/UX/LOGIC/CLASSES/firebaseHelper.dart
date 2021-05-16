@@ -7,12 +7,13 @@ import 'package:yana/UX/DB/events.dart';
 /*Yisrael Bar 14/05/2021 */
 class FirebaseHelper{
 
-  //first use this method to access firebase collection - no need for real-time(messages)//update I put it on first line of main
+//first use this method to access firebase collection - no need for real-time(messages)//update I put it on first line of main
   /*static void initFirebase() async {
     await Firebase.initializeApp();
   }*/
+
 //start Places-------------------------------------------------
-  static Future<bool> sendPlaceToFb(Places place) async {
+  static Future<bool> sendPlaceToFb(Place place) async {
     FirebaseFirestore fireStore = FirebaseFirestore.instance;
     //write to collection
     try {
@@ -23,22 +24,22 @@ class FirebaseHelper{
     return true;
   }
 
-  static Future<List<Places>> getPlacesFromFb() async {
-    List<Places> places = [];
+  static Future<List<Place>> getPlacesFromFb() async {
+    List<Place> places = [];
 
     //read from collection
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Places').get();
     querySnapshot.docs.forEach((doc) {
-      places.add(Places.fromJson(doc.data()));
+      places.add(Place.fromJson(doc.data()));
     });
     return places;
   }
 
-  static Future<Places?> getPlaceByID(String placeID) async{
+  static Future<Place?> getPlaceByID(String placeID) async{
     final refUsers =  FirebaseFirestore.instance.collection('Places').doc(placeID);
     var doc = await refUsers.get();
     if (doc.exists) {
-      return Places.fromJson(doc.data());
+      return Place.fromJson(doc.data());
     } else {
       return null;
     }
@@ -69,7 +70,7 @@ class FirebaseHelper{
   }
 //end Messages-------------------------------------------------
 
-  //start Events-------------------------------------------------
+//start Events-------------------------------------------------
   static Future<bool> sendEventToFb(Events event) async {
     //add to real-time firebase on place id the new event
     FirebaseDatabase.instance.reference().child("places/").child(event.placeID).push().set(event.eventID);
@@ -130,7 +131,6 @@ class FirebaseHelper{
         });
     });
 
-    
     print("im here 1 ${events1}");
     return events1;
   }
@@ -151,7 +151,7 @@ class FirebaseHelper{
 
 
 // start users-------------------------------------------------
-  static Future<bool> sendUserToFb(Users user) async {
+  static Future<bool> sendUserToFb(User user) async {
     FirebaseFirestore fireStore = FirebaseFirestore.instance;
     //write to collection
     try {
@@ -162,22 +162,22 @@ class FirebaseHelper{
     return true;
   }
 
-  static Future<List<Users>> getUsersFromFb() async {
+  static Future<List<User>> getUsersFromFb() async {
     //read from collection
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Users').get();
-    List<Users> user = [];
+    List<User> user = [];
     querySnapshot.docs.forEach((doc) {
-      user.add(Users.fromJson(doc.data()));
+      user.add(User.fromJson(doc.data()));
     });
     return user;
   }
 
-  static Future<Users?> getCurrentUser(String userID) async{
+  static Future<User?> getCurrentUser(String userID) async{
     final refUsers =  FirebaseFirestore.instance.collection('Users').doc(userID);
     var doc = await refUsers.get();
     if (doc.exists) {
       // print("Document data:");
-      return Users.fromJson(doc.data());
+      return User.fromJson(doc.data());
     } else {
       // doc.data() will be undefined in this case
       // print("No such document!");

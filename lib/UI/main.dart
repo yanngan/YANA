@@ -53,9 +53,10 @@ class _MainPageState extends State<MainPage> {
   }
 
 //  callback function in order to allow moving between login sign up and the inner area of the application
-  void callback(int type) {
+  void callback(int type, Map<String, String> credentials) {
     setState(() {
       pageType = type;
+      userMap = credentials;
     });
   }
 
@@ -66,7 +67,7 @@ class _MainPageState extends State<MainPage> {
       if(pageType == 0){
         return Welcome(this.callback);
       }else if(pageType == 1){
-        return SignIn(this.callback);
+        return SignUp(this.callback, userMap);
       }else { // pageType == 2
         return Login(this.callback);
       }
@@ -126,7 +127,7 @@ class _MainPageState extends State<MainPage> {
                     currentIndex = index;
                   });
                 },
-                children: [
+                children: [   // TODO add the same to them as in SignUp.dart at lines ~ 25-27 (26 not sure, consult Lidor)
                   Chat(),
                   SearchView(),
                   MapView(),

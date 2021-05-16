@@ -3,7 +3,7 @@ import 'package:yana/UX/DB/users.dart';
 class Events{
 
   String eventID;
-  Users user;
+  User user;
   String creationDate;//DateTime
   bool status;//if it active
   String startEstimate;//DateTime
@@ -30,7 +30,7 @@ class Events{
   factory Events.fromJson(dynamic json) {
     return Events(
       json['eventID'] as String,
-      Users.fromJson(json['user']) ,
+      User.fromJson(json['user']) ,
       json['creationDate'] as String,
       json['status'] as bool,
       json['startEstimate'] as String,

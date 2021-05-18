@@ -48,9 +48,9 @@ class Logic{
     // todo: get the Events from DB and check that they equal
     // - if yes - return the Events
     // - else trow Error
-    Place tempP = new Place("placeID", "address", "phoneNumber", "representative", 10, "vibe", true,"openingHours", "name", 21, "webLink", "googleMapLink");
+    Place tempP = new Place("placeID", "address", "phoneNumber", "representative", 10, "vibe", true,"openingHours", "name", 21, "webLink", "googleMapLink","32.085300", "34.781769");
     User tempU = new User("userID","userName","email","sex","dateOfBirth",0,"hobbies","bio","livingArea","workArea","academicInstitution","fieldOfStudy","smoking","fbPhoto","signUpDate",false,true);
-    Events tempE = new Events("eventID",tempU , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID");
+    Events tempE = new Events("eventID","tempU" , "tempU" , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID");
     return tempE;
   }
 
@@ -62,7 +62,7 @@ class Logic{
     // - trow Error if have problem
     // - return the Events we have found
     User tempU = new User("userID","userName","email","sex","dateOfBirth",0,"hobbies","bio","livingArea","workArea","academicInstitution","fieldOfStudy","smoking","fbPhoto","signUpDate",false,true);
-    Events tempE = new Events("eventID",tempU , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID");
+    Events tempE = new Events("eventID","tempU" , "tempU" , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID");
     return tempE;
   }
 
@@ -72,12 +72,14 @@ class Logic{
     // todo: go to DB and get all the vent having the IDPlaces
     // - trow Error if have problem
     // return the List of Events we found
-    User tempU = new User("userID","userName","email","sex","dateOfBirth",0,"hobbies","bio","livingArea","workArea","academicInstitution","fieldOfStudy","smoking","fbPhoto","signUpDate",false,true);
-    Events tempE = new Events("eventID",tempU , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID");
+    // User tempU = new User("userID","userName","email","sex","dateOfBirth",0,"hobbies","bio","livingArea","workArea","academicInstitution","fieldOfStudy","smoking","fbPhoto","signUpDate",false,true);
+    // Events tempE = new Events("eventID",tempU , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID");
+    //
+    // return [
+    //   tempE,tempE,tempE,tempE,tempE,tempE,tempE,tempE,
+    // ];
+    return await FirebaseHelper.getEventsByPlaceID(IDPlaces);
 
-    return [
-      tempE,tempE,tempE,tempE,tempE,tempE,tempE,tempE,
-    ];
   }
 
   static Future<List<Place>> getAllPlaces()async{
@@ -99,14 +101,14 @@ class Logic{
     // todo: go to DB and get the Places BY IDPlaces
     // - trow Error if have problem
     // return the List of Places we found
-    Place tempP = new Place("placeID", "address", "phoneNumber", "representative", 10, "vibe", true,"openingHours", "name", 21, "webLink", "googleMapLink");
+    Place tempP = new Place("placeID", "address", "phoneNumber", "representative", 10, "vibe", true,"openingHours", "name", 21, "webLink", "googleMapLink","32.085300", "34.781769");
 
     return tempP;
   }
 
   static Future<List<Events>> getEventsByCondition({int status = -1,String startEstimate = "",String endEstimate = "",String PlacesName= "",bool going=false})async{
     User tempU = new User("userID","userName","email","sex","dateOfBirth",0,"hobbies","bio","livingArea","workArea","academicInstitution","fieldOfStudy","smoking","fbPhoto","signUpDate",false,true);
-    Events tempE = new Events("eventID",tempU , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID");
+    Events tempE = new Events("eventID","tempU" ,"tempU" , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID");
 
     return [
       tempE,tempE,tempE,tempE,tempE,tempE,tempE,tempE,

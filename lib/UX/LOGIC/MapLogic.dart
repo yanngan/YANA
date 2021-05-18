@@ -28,8 +28,8 @@ class MapLogic{
     }*/
     List<Place> places = await Logic.getAllPlaces();
     places.forEach((onePlace) {
-      markers[onePlace.placeID] = new MyMarker(onePlace,markerId: MarkerId(onePlace.placeID),position: LatLng(latitude+i,longitude+i),onTap: (){
-        seeListEventInPlace(context,onePlace);
+      markers[MarkerId(onePlace.placeID)] = new MyMarker(onePlace,markerId: MarkerId(onePlace.placeID),position: LatLng(double.parse(onePlace.latitude),double.parse(onePlace.longitude)),onTap: (){
+        seeListEventInPlace(context,onePlace);});
     });
     return markers;
 

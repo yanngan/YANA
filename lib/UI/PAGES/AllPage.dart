@@ -47,3 +47,5 @@ int pageType = 0;
  * int pageType = 3;   --> Testing
  */
 
+Map<String, String> userMap = new Map<String, String>();
+

@@ -1,4 +1,4 @@
-class Places{
+class Place{
 
   String placeID;
   String address;
@@ -14,7 +14,7 @@ class Places{
   String googleMapLink;//could be url
 
   //constructor
-  Places(
+  Place(
       this.placeID,
       this.address,
       this.phoneNumber,
@@ -29,9 +29,12 @@ class Places{
       this.googleMapLink);
 
 
-  //parse a json to user object
-  factory Places.fromJson(dynamic json) {
-    return Places(
+  @override
+  String toString() {
+    return 'Places{placeID: $placeID, address: $address, phoneNumber: $phoneNumber, representative: $representative, capacity: $capacity, vibe: $vibe, isKosher: $isKosher, openingHours: $openingHours, name: $name, ageRestrictions: $ageRestrictions, webLink: $webLink, googleMapLink: $googleMapLink}';
+  } //parse a json to place object
+  factory Place.fromJson(dynamic json) {
+    return Place(
       json['placeID'] as String,
       json['address'] as String,
       json['phoneNumber'] as String,
@@ -60,6 +63,7 @@ class Places{
       "openingHours":this.openingHours,
       "ageRestrictions":this.ageRestrictions,
       "webLink":  this.webLink,
+      "name":  this.name,
       "googleMapLink":this.googleMapLink,
     };
   }

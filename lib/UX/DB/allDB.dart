@@ -1,4 +1,4 @@
 export 'events.dart';
 export 'places.dart';
-export 'user.dart';
+export 'users.dart';
 export 'DBManager.dart';

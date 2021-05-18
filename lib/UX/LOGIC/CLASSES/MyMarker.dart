@@ -6,7 +6,7 @@ import '../../DB/allDB.dart';
 
 class MyMarker extends  Marker{
 
-  final Places place;
+  final Place place;
 
   const MyMarker(
     this.place,

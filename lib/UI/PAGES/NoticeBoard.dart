@@ -11,7 +11,7 @@ class NoticeBoard extends StatefulWidget {
 
 //data is an array of Places to simulate the firebase data.
 List<Advertisement> advertisements = [];
-List<Places> data = [
+List<Place> data = [
   /*new Places(
     '000000001',
     100,

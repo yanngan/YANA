@@ -14,18 +14,23 @@ class MapLogic{
    */
   static getMarkers(BuildContext context) async {
     Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
-    CameraPosition currentUserLocation = await Logic.getUserLocation();
+    /*CameraPosition currentUserLocation = await Logic.getUserLocation();
     var latitude = currentUserLocation.target.latitude;
     var longitude = currentUserLocation.target.longitude;
     for(int i = 0 ;i < 10 ; i++){
       //String text = "latitude = $latitude longitude = $longitude";
-      Places tempPlace = Places("$i", "address", "phoneNumber", "representative", 10, "vibe", true,"openingHours", "name", 21, "webLink", "googleMapLink");
+      Place tempPlace = Place("$i", "address", "phoneNumber", "representative", 10, "vibe", true,"openingHours", "name", 21, "webLink", "googleMapLink");
 
       //Event tempEvent = new Event(tempPlace,"event id-$i");
       markers[MarkerId("$i")] = new MyMarker(tempPlace,markerId: MarkerId("$i"),position: LatLng(latitude+i,longitude+i),onTap: (){
         seeListEventInPlace(context,tempPlace);
       });
-    }
+    }*/
+    List<Place> places = await Logic.getAllPlaces();
+    places.forEach((onePlace) {
+      markers[onePlace.placeID] = new MyMarker(onePlace,markerId: MarkerId(onePlace.placeID),position: LatLng(latitude+i,longitude+i),onTap: (){
+        seeListEventInPlace(context,onePlace);
+    });
     return markers;
 
   }
@@ -34,7 +39,7 @@ class MapLogic{
   /*
   create alert dialog with AddSeeEvent widget
    */
-  static seeListEventInPlace(BuildContext context,Places thePlace) async{
+  static seeListEventInPlace(BuildContext context,Place thePlace) async{
     showDialog(
       context: context,
       builder: (BuildContext context) {

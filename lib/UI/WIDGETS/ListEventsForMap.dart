@@ -5,7 +5,7 @@ import 'package:yana/UX/LOGIC/Logic.dart';
 import 'package:yana/UX/LOGIC/MapLogic.dart';
 
 class ListEventsForMap extends StatefulWidget {
-  Places thePlace;
+  Place thePlace;
   ListEventsForMap(this.thePlace);
 
   @override

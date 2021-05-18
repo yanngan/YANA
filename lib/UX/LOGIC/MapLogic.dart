@@ -4,6 +4,7 @@ import 'package:yana/UI/WIDGETS/allWidgets.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
 
 import 'CLASSES/allClasses.dart';
+import '../DB/allDB.dart';
 
 class MapLogic{
 
@@ -13,17 +14,23 @@ class MapLogic{
    */
   static getMarkers(BuildContext context) async {
     Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
-    CameraPosition currentUserLocation = await Logic.getUserLocation();
+    /*CameraPosition currentUserLocation = await Logic.getUserLocation();
     var latitude = currentUserLocation.target.latitude;
     var longitude = currentUserLocation.target.longitude;
     for(int i = 0 ;i < 10 ; i++){
       //String text = "latitude = $latitude longitude = $longitude";
-      Place tempPlace = new Place("$i",i,"name $i",latitude+i,longitude+i);
+      Place tempPlace = Place("$i", "address", "phoneNumber", "representative", 10, "vibe", true,"openingHours", "name", 21, "webLink", "googleMapLink");
+
       //Event tempEvent = new Event(tempPlace,"event id-$i");
       markers[MarkerId("$i")] = new MyMarker(tempPlace,markerId: MarkerId("$i"),position: LatLng(latitude+i,longitude+i),onTap: (){
         seeListEventInPlace(context,tempPlace);
       });
-    }
+    }*/
+    List<Place> places = await Logic.getAllPlaces();
+    places.forEach((onePlace) {
+      markers[MarkerId(onePlace.placeID)] = new MyMarker(onePlace,markerId: MarkerId(onePlace.placeID),position: LatLng(double.parse(onePlace.latitude),double.parse(onePlace.longitude)),onTap: (){
+        seeListEventInPlace(context,onePlace);});
+    });
     return markers;
 
   }

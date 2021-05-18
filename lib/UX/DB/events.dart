@@ -3,7 +3,8 @@ import 'package:yana/UX/DB/users.dart';
 class Events{
 
   String eventID;
-  User user;
+  String  userID;
+  String  userName;
   String creationDate;//DateTime
   bool status;//if it active
   String startEstimate;//DateTime
@@ -15,7 +16,8 @@ class Events{
   //constructor
   Events(
       this.eventID,
-      this.user,
+      this.userID,
+      this.userName,
       this.creationDate,
       this.status,
       this.startEstimate,
@@ -30,7 +32,8 @@ class Events{
   factory Events.fromJson(dynamic json) {
     return Events(
       json['eventID'] as String,
-      User.fromJson(json['user']) ,
+      json['userID'] as String,
+      json['userName'] as String,
       json['creationDate'] as String,
       json['status'] as bool,
       json['startEstimate'] as String,
@@ -45,13 +48,14 @@ class Events{
 
   @override
   String toString() {
-    return 'Events{eventID: $eventID, user: $user, creationDate: $creationDate, status: $status, startEstimate: $startEstimate, endEstimate: $endEstimate, curNumPeople: $curNumPeople, maxNumPeople: $maxNumPeople, placeID: $placeID}';
+    return 'Events{eventID: $eventID, userID: $userID, userName: $userName, creationDate: $creationDate, status: $status, startEstimate: $startEstimate, endEstimate: $endEstimate, curNumPeople: $curNumPeople, maxNumPeople: $maxNumPeople, placeID: $placeID}';
   }
   //make a json object
   Map<String, dynamic> toJson() {
     return {
       "eventID": this.eventID,
-      "user":  this.user.toJson(),
+      "userID":  this.userID,
+      "userName":  this.userName,
       "creationDate":  this.creationDate,
       "status": this.status,
       "startEstimate": this.startEstimate,

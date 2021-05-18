@@ -10,7 +10,7 @@ import 'EXCEPTIONS/CanNotGetUserLocationException.dart';
 class Logic{
 
   ///getUserLocation
-  ///try to get hes current ;ocation, if fail ->
+  ///try to get hes current location, if fail ->
   /// then try to get last know location
   ///   if fail (position == null) ->
   ///     throw CanNotGetUserLocationException
@@ -47,7 +47,7 @@ class Logic{
     // todo: get the Event from DB and check that they equal
     // - if yes - return the Event
     // - else trow Error
-    return new Event(new Place("demo", -1, "name", -1, -1),"demo");
+    return new Event(new Place("demo", -1, "name", -1, -1),"demo","2021-05-12 19:30:00",1);
   }
 
   static Future<Event> getEventByIdEvent(String IDEvent)async{
@@ -57,7 +57,7 @@ class Logic{
     // only the open once
     // - trow Error if have problem
     // - return the Event we have found
-    return new Event(new Place("demo", -1, "name", -1, -1),"demo");
+    return new Event(new Place("demo", -1, "name", -1, -1),"demo","2021-05-12 19:30:00",1);
   }
 
   static Future<List<Event>> getEventsByPlace(String IDPlace) async{
@@ -67,7 +67,13 @@ class Logic{
     // - trow Error if have problem
     // return the List of Event we found
 
-    return [new Event(new Place("demo", -1, "name", -1, -1),"demo")];
+    return [
+      new Event(new Place("demo1", -1, "name1", -1, -1),"demo1","2021-05-12 19:30:00",1),
+      new Event(new Place("demo2", -1, "name2", -1, -1),"demo2","2021-05-12 19:30:00",1),
+      new Event(new Place("demo3", -1, "name3", -1, -1),"demo3","2021-05-12 19:30:00",1),
+      new Event(new Place("demo4", -1, "name4", -1, -1),"demo4","2021-05-12 19:30:00",1),
+      new Event(new Place("demo5", -1, "name5", -1, -1),"demo5","2021-05-12 19:30:00",1),
+    ];
   }
 
   static Future<List<Place>> getAllPlaces()async{
@@ -91,11 +97,11 @@ class Logic{
 
   static Future<List<Event>> getEventsByCondition({int status = -1,String startEstimate = "",String endEstimate = "",String placeName= "",bool going=false})async{
     return [
-      new Event(new Place("demo1", -1, "name1", -1, -1),"demo1"),
-      new Event(new Place("demo2", -1, "name2", -1, -1),"demo2"),
-      new Event(new Place("demo3", -1, "name3", -1, -1),"demo3"),
-      new Event(new Place("demo4", -1, "name4", -1, -1),"demo4"),
-      new Event(new Place("demo5", -1, "name5", -1, -1),"demo5"),
+      new Event(new Place("demo1", -1, "name1", -1, -1),"demo1","2021-05-12 19:30:00",1),
+      new Event(new Place("demo2", -1, "name2", -1, -1),"demo2","2021-05-12 19:30:00",1),
+      new Event(new Place("demo3", -1, "name3", -1, -1),"demo3","2021-05-12 19:30:00",1),
+      new Event(new Place("demo4", -1, "name4", -1, -1),"demo4","2021-05-12 19:30:00",1),
+      new Event(new Place("demo5", -1, "name5", -1, -1),"demo5","2021-05-12 19:30:00",1),
     ];
     /*Padding(
         padding: EdgeInsets.all(10.0),

@@ -1,8 +1,5 @@
-import '../../UX/LOGIC/CLASSES/allClasses.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import '../WIDGETS/MyAppBar.dart';
-import '../../UX/LOGIC/Logic.dart';
 
 class SearchView extends StatefulWidget {
   @override
@@ -24,6 +21,7 @@ class _SearchViewState extends State<SearchView> {
   //   });
   // }
 
+
   @override
   Widget build(BuildContext context) {
     // return Container(
@@ -35,70 +33,18 @@ class _SearchViewState extends State<SearchView> {
     // }
     double topPad = (MediaQuery.of(context).size.height / 10);
     return Scaffold(
-        backgroundColor: Colors.amber,
-        body: Container(
-          child: Stack(
-            children: [
-              Container(
-                child: ListView.builder(
-                    itemCount: 20,
-                    itemBuilder: (context, index) {
-                      if (index == 0) {
-                        return Padding(
-                          padding: EdgeInsets.only(top: topPad),
-                          child: Card(
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(10, 20, 36, 20),
-                              child: Container(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      'Note Title',
-                                      style: TextStyle(
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    Text(
-                                      'Note text',
-                                      style: TextStyle(color: Colors.grey[900]),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      } else if (index == 19) {
-                        return Padding(
-                          padding: EdgeInsets.only(bottom: topPad),
-                          child: Card(
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(10, 20, 36, 20),
-                              child: Container(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      'Note Title',
-                                      style: TextStyle(
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    Text(
-                                      'Note text',
-                                      style: TextStyle(color: Colors.grey[900]),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      } else {
-                        return Card(
+      backgroundColor: Colors.amber,
+      body: Container(
+        child: Stack(
+          children: [
+            Container(
+              child: ListView.builder(
+                  itemCount: 20,
+                  itemBuilder: (context, index) {
+                    if (index == 0) {
+                      return Padding(
+                        padding: EdgeInsets.only(top: topPad),
+                        child: Card(
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(10, 20, 36, 20),
                             child: Container(
@@ -120,35 +66,84 @@ class _SearchViewState extends State<SearchView> {
                               ),
                             ),
                           ),
-                        );
-                      }
-                    }),
-              ),
-              SizedBox(
-                  height: 120,
-                  child: MyAppBar(
-                      "Search",
-                      TextButton(
-                        child: Icon(Icons.search),
-                        onPressed: () => {},
-                      ),
-                      height: 120)),
-            ],
-
-          ),
+                        ),
+                      );
+                    } else if (index == 19) {
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: topPad),
+                        child: Card(
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(10, 20, 36, 20),
+                            child: Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    'Note Title',
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Note text',
+                                    style: TextStyle(color: Colors.grey[900]),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Card(
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(10, 20, 36, 20),
+                          child: Container(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Note Title',
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  'Note text',
+                                  style: TextStyle(color: Colors.grey[900]),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                  }),
+            ),
+            SizedBox(
+                height: 120,
+                child: MyAppBar(
+                    "Search",
+                    TextButton(
+                      child: Icon(Icons.search),
+                      onPressed: () => {},
+                    ),
+                    height: 120)),
+          ],
         ),
-        extendBody: true,
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.fromLTRB(0,0,0,50),
-          child: FloatingActionButton(
-            child:Icon(Icons.search),
-            splashColor: Colors.amber,
-            backgroundColor: Colors.pink,
-            onPressed: () => {print('Button Pressed')},
-
-          ),
+      ),
+      extendBody: true,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
+        child: FloatingActionButton(
+          child: Icon(Icons.search),
+          splashColor: Colors.amber,
+          backgroundColor: Colors.pink,
+          onPressed: () => {print('Button Pressed')},
         ),
-
+      ),
     );
   }
 }

@@ -208,8 +208,8 @@ class _NoticeBoardState extends State<NoticeBoard> {
             ]),
           ),
           SizedBox(
-            height: 120,
-            child: MyAppBar("NoticeBoard", null, height: 120)
+            height: 110,
+            child: MyAppBar("NoticeBoard", null, height: 110)
           ),
         ],
       ),

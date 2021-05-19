@@ -3,7 +3,7 @@
 YANA is a none profit volunteering organization that is meant to connect between people.
 
 
-#### Developers: Lidor Eliyahu Shelef, Yann Moshe Ganem, Yisrael Bar-Or, Jonas Sperling
+#### Developers: Lidor Eliyahu Shelef(&Team leader), Yann Moshe Ganem, Yisrael Bar-Or, Jonas Sperling
 
 
  - [Lidor Eliyahu Shelef](https://www.linkedin.com/in/lidor-e-s/)

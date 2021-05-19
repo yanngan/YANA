@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:yana/UX/LOGIC/CLASSES/allClasses.dart';
+import 'package:yana/UX/DB/allDB.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
 import 'package:yana/UX/LOGIC/MapLogic.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ListEventsForMap extends StatefulWidget {
   Place thePlace;
@@ -14,7 +15,7 @@ class ListEventsForMap extends StatefulWidget {
 
 class _ListEventsForMapState extends State<ListEventsForMap> {
   bool initDone = false;
-  List<Event> listEvents = [];
+  List<Events> listEvents = [];
   @override
   Widget build(BuildContext context) {
     if(!initDone){
@@ -31,11 +32,14 @@ class _ListEventsForMapState extends State<ListEventsForMap> {
         appBar: null,
         body:  Container(
           color: Colors.amber,
-          child: ListView.builder(
+          child: initDone?ListView.builder(
             itemCount: listEvents.length,
             itemBuilder: (BuildContext context, int index) {
               return _createRow(index);
             }
+          ):SpinKitFadingCircle(
+            color: Colors.white,
+            size: 50.0,
           ),
         ),
       ),

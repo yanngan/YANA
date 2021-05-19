@@ -61,8 +61,6 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget applicationSetup(){
-
-
     if(pageType >= 0 && pageType <= 2){
       if(pageType == 0){
         return Welcome(this.callback);
@@ -98,7 +96,7 @@ class _MainPageState extends State<MainPage> {
                   print(index);
                   hideBottomNavigationBar = true;
                   switch (index) {
-                    case Chat_index:
+                    case ChatsAndEvents_index:
                       hideBottomNavigationBar = false;
                       break;
                     case SearchView_index:
@@ -119,7 +117,7 @@ class _MainPageState extends State<MainPage> {
                       break;
                     case SingUp_index:
                       break;
-                    case ChatList_index:
+                    case ChatsAndEvents_index:
                       hideBottomNavigationBar = false;
                       break;
                   }
@@ -128,7 +126,7 @@ class _MainPageState extends State<MainPage> {
                   });
                 },
                 children: [   // TODO add the same to them as in SignUp.dart at lines ~ 25-27 (26 not sure, consult Lidor)
-                  Chat(),
+                  ChatsAndEvents(),
                   SearchView(),
                   MapView(),
                   NoticeBoard(),

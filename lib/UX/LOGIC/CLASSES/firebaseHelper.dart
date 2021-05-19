@@ -116,10 +116,10 @@ class FirebaseHelper{
   }
 */
   //in case we want to find an event by place -- need to fix
-  static Future<List<Events>?> getEventsByPlaceID( String placeID) async{
+  static Future<List<Events>> getEventsByPlaceID( String placeID) async{
     DatabaseReference placeRef = FirebaseDatabase.instance.reference().child("places/").child(placeID);
     DataSnapshot data = await placeRef.once();
-    Map<dynamic, dynamic> values = data.value;
+    Map<dynamic, dynamic> values = data.value??{};
     
     List<Events> events0 = await getEventsFromFb();
     List<Events> events1 = [];

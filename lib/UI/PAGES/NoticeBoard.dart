@@ -264,17 +264,7 @@ class _AdvertisementState extends State<Advertisement> {
           key: UniqueKey(),
           onTap: () {
             //SetState of the open/close functionality
-
-            // if (Opened.isNotEmpty) {
-            //   Opened.forEach((e) {
-            //     print("In foreach");
-            //     e.onPressed();
-            //     e.build(e.context);
-            //   });
-            //     print("Out foreach");
-            //   Opened.clear();
-            // }
-            print(Opened);
+            
             if (Opened.isNotEmpty) {
               if(Opened.first == this){
                 onPressed();

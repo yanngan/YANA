@@ -1,6 +1,9 @@
+import 'dart:collection';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:liquid_swipe/liquid_swipe.dart';
 import '../../UX/LOGIC/CLASSES/Place.dart';
 import '../WIDGETS/MyAppBar.dart';
 
@@ -10,7 +13,7 @@ class NoticeBoard extends StatefulWidget {
 }
 
 //data is an array of Places to simulate the firebase data.
-bool One_is_Open = false;
+Queue<_AdvertisementState> Opened = Queue();
 List<Advertisement> advertisements = [];
 List<Place> data = [
   new Place(
@@ -152,7 +155,6 @@ class _NoticeBoardState extends State<NoticeBoard> {
   //Initiate all the details and colors for all the Advert Card.
   void initPlacesList() {
     for (int i = 0; i < data.length; i++) {
-
       String details = "\u2022 Address\b: ${data[i].address}\n"
           "\u2022 Representive\b: ${data[i].representive}\n"
           "\u2022 Capacity\b: ${data[i].capacity}\n"
@@ -182,7 +184,6 @@ class _NoticeBoardState extends State<NoticeBoard> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.amber,
       body: Stack(
@@ -195,7 +196,9 @@ class _NoticeBoardState extends State<NoticeBoard> {
                 child: Container(
                   child: Column(
                     children: [
-                      SizedBox(height: 70,),
+                      SizedBox(
+                        height: 70,
+                      ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: advertisements,
@@ -208,9 +211,7 @@ class _NoticeBoardState extends State<NoticeBoard> {
             ]),
           ),
           SizedBox(
-            height: 110,
-            child: MyAppBar("NoticeBoard", null, height: 110)
-          ),
+              height: 110, child: MyAppBar("NoticeBoard", null, height: 110)),
         ],
       ),
     );
@@ -219,15 +220,12 @@ class _NoticeBoardState extends State<NoticeBoard> {
 
 //Advertisement Widget
 class Advertisement extends StatefulWidget {
-
   String adv_name;
   String adv_details;
   int adv_isKosher;
   String adv_phoneNum;
   Color color;
   Color expansiontilecolor;
-
-  var children = [];
 
   //Constructor
   Advertisement(this.color, this.adv_name, this.adv_isKosher, this.adv_phoneNum,
@@ -241,6 +239,19 @@ class _AdvertisementState extends State<Advertisement> {
   double _width = 200;
   double _height = 110;
   bool _isOpen = false;
+  void onPressed() {
+    setState(() {
+      if (_isOpen) {
+        _height -= widget.adv_details.length + 30;
+        _isOpen = false;
+      } else {
+        _height += widget.adv_details.length + 30;
+        _isOpen = true;
+        Opened.add(this);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -250,22 +261,31 @@ class _AdvertisementState extends State<Advertisement> {
         margin: EdgeInsets.fromLTRB(6, 6, 6, 10.0),
         duration: Duration(milliseconds: 700),
         child: GestureDetector(
+          key: UniqueKey(),
           onTap: () {
             //SetState of the open/close functionality
-            setState(() {
-              if (_isOpen) {
-                _height -= widget.adv_details.length + 30;
-                _isOpen = false;
-                One_is_Open = false;
-              } else {
-                if(One_is_Open){
-                    return;
-                }
-                _height += widget.adv_details.length + 30;
-                One_is_Open = true;
-                _isOpen = true;
+
+            // if (Opened.isNotEmpty) {
+            //   Opened.forEach((e) {
+            //     print("In foreach");
+            //     e.onPressed();
+            //     e.build(e.context);
+            //   });
+            //     print("Out foreach");
+            //   Opened.clear();
+            // }
+            print(Opened);
+            if (Opened.isNotEmpty) {
+              if(Opened.first == this){
+                onPressed();
+                Opened.clear();
+                return;
               }
-            });
+              Opened.first.onPressed();
+              Opened.clear();
+            }
+            onPressed();
+            //) onPressed();
           },
           // I put a column in case that we want another widget in the bottom.
           child: Column(
@@ -274,13 +294,13 @@ class _AdvertisementState extends State<Advertisement> {
                 flex: 1,
                 child: Container(
                   color: widget.color,
-
                   //Column of the "card"
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       //Title widget the does not change dynamically.
-                      Cards_Title(widget.adv_name),
+                      Cards_Title(widget.adv_name,
+                          "https://upload.wikimedia.org/wikipedia/en/thumb/c/c3/Flag_of_France.svg/1200px-Flag_of_France.svg.png"),
                       //Advert details.
                       Expanded(
                         child: AnimatedOpacity(
@@ -325,14 +345,16 @@ class _AdvertisementState extends State<Advertisement> {
 class Cards_Title extends StatelessWidget {
   @override
   var name;
-  Cards_Title(this.name);
+  var fb;
+  Cards_Title(this.name, this.fb);
+
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
         Padding(
           padding: EdgeInsets.fromLTRB(10.0, 10.0, 20.0, 10.0),
           child: CircleAvatar(
-            backgroundImage: AssetImage('assets/profile_picture.png'),
+            backgroundImage: NetworkImage(fb),
             radius: 40.0,
           ),
         ),

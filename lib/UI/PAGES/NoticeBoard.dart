@@ -290,6 +290,13 @@ class _AdvertisementState extends State<Advertisement> {
                   decoration: BoxDecoration(
                     color: widget.color,
                     borderRadius: BorderRadius.circular(25),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black54,
+                        blurRadius: 4,
+                        offset: Offset(4, 8), // Shadow position
+                      ),
+                    ],
                   ),
                   //Column of the "card"
                   child: Column(

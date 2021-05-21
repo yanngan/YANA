@@ -2,9 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:liquid_swipe/liquid_swipe.dart';
-import '../../UX/LOGIC/CLASSES/Place.dart';
+import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
 import '../WIDGETS/MyAppBar.dart';
 
 class NoticeBoard extends StatefulWidget {
@@ -15,171 +13,175 @@ class NoticeBoard extends StatefulWidget {
 //data is an array of Places to simulate the firebase data.
 Queue<_AdvertisementState> Opened = Queue();
 List<Advertisement> advertisements = [];
-List<Place> data = [
-  new Place(
-    '000000001',
-    100,
-    'Chez Andi',
-    156.48797894,
-    80.236598,
-    address: "14 Yafo,Jerusalem",
-    phoneNum: "02854978756",
-    representive: "Yoram",
-    isKosher: 2,
-    ageRestrictions: 18,
-    webLink: "htpp//fgefzffcz",
-    googleMapLink: "gvzsfgvrzsfgvrs",
-  ),
-  new Place(
-    '000000041',
-    100,
-    'Katsefte',
-    156.48797894,
-    80.236598,
-    address: "14 Yafo,Yafo",
-    phoneNum: "02854978756",
-    representive: "Yoram",
-    isKosher: 2,
-    ageRestrictions: 18,
-    webLink: "htpp//fgefzffcz",
-    googleMapLink: "gvzsfgvrzsfgvrs",
-  ),
-  new Place(
-    '000000002',
-    100,
-    'Rimon',
-    156.48797894,
-    80.236598,
-    address: "415 Haifa",
-    phoneNum: "02854978756",
-    representive: "Yoram",
-    isKosher: 2,
-    ageRestrictions: 18,
-    webLink: "htpp//fgefzffcz",
-    googleMapLink: "gvzsfgvrzsfgvrs",
-  ),
-  new Place(
-    '000000004',
-    100,
-    'Pythagore',
-    156.48797894,
-    80.236598,
-    address: "14 Yafo,Jerusalem",
-    phoneNum: "02854978756",
-    representive: "Yoram",
-    isKosher: 2,
-    ageRestrictions: 18,
-    webLink: "htpp//fgefzffcz",
-    googleMapLink: "gvzsfgvrzsfgvrs",
-  ),
-  new Place(
-    '000000006',
-    100,
-    'Jackie Chan',
-    156.48797894,
-    80.236598,
-    address: "14 Yafo,Jerusalem",
-    phoneNum: "02854978756",
-    representive: "Yoram",
-    isKosher: 2,
-    ageRestrictions: 18,
-    webLink: "htpp//fgefzffcz",
-    googleMapLink: "gvzsfgvrzsfgvrs",
-  ),
-  new Place(
-    '000000106',
-    100,
-    'Jackie Chan',
-    156.48797894,
-    80.236598,
-    address: "14 Yafo,Jerusalem",
-    phoneNum: "02854978756",
-    representive: "Yoram",
-    isKosher: 2,
-    ageRestrictions: 18,
-    webLink: "htpp//fgefzffcz",
-    googleMapLink: "gvzsfgvrzsfgvrs",
-  ),
-  new Place(
-    '000000082',
-    100,
-    'Jackie Chan',
-    156.48797894,
-    80.236598,
-    address: "14 Yafo,Jerusalem",
-    phoneNum: "02854978756",
-    representive: "Yoram",
-    isKosher: 2,
-    ageRestrictions: 18,
-    webLink: "htpp//fgefzffcz",
-    googleMapLink: "gvzsfgvrzsfgvrs",
-  ),
-  new Place(
-    '000000666',
-    100,
-    'Jackie Chan',
-    156.48797894,
-    80.236598,
-    address: "14 Yafo,Jerusalem",
-    phoneNum: "02854978756",
-    representive: "Yoram",
-    isKosher: 2,
-    ageRestrictions: 18,
-    webLink: "htpp//fgefzffcz",
-    googleMapLink: "gvzsfgvrzsfgvrs",
-  ),
-  new Place(
-    '000000008',
-    100,
-    'Hatsarfat',
-    156.48797894,
-    80.236598,
-    address: "14 Yafo,Jerusalem",
-    phoneNum: "02854978756",
-    representive: "Yoram",
-    isKosher: 2,
-    ageRestrictions: 18,
-    webLink: "htpp//fgefzffcz",
-    googleMapLink: "gvzsfgvrzsfgvrs",
-  ),
-];
+bool isInitialized = false;
+// List<Place> data = [
+//   new Place(
+//     '000000001',
+//     100,
+//     'Chez Andi',
+//     156.48797894,
+//     80.236598,
+//     address: "14 Yafo,Jerusalem",
+//     phoneNum: "02854978756",
+//     representive: "Yoram",
+//     isKosher: 2,
+//     ageRestrictions: 18,
+//     webLink: "htpp//fgefzffcz",
+//     googleMapLink: "gvzsfgvrzsfgvrs",
+//   ),
+//   new Place(
+//     '000000041',
+//     100,
+//     'Katsefte',
+//     156.48797894,
+//     80.236598,
+//     address: "14 Yafo,Yafo",
+//     phoneNum: "02854978756",
+//     representive: "Yoram",
+//     isKosher: 2,
+//     ageRestrictions: 18,
+//     webLink: "htpp//fgefzffcz",
+//     googleMapLink: "gvzsfgvrzsfgvrs",
+//   ),
+//   new Place(
+//     '000000002',
+//     100,
+//     'Rimon',
+//     156.48797894,
+//     80.236598,
+//     address: "415 Haifa",
+//     phoneNum: "02854978756",
+//     representive: "Yoram",
+//     isKosher: 2,
+//     ageRestrictions: 18,
+//     webLink: "htpp//fgefzffcz",
+//     googleMapLink: "gvzsfgvrzsfgvrs",
+//   ),
+//   new Place(
+//     '000000004',
+//     100,
+//     'Pythagore',
+//     156.48797894,
+//     80.236598,
+//     address: "14 Yafo,Jerusalem",
+//     phoneNum: "02854978756",
+//     representive: "Yoram",
+//     isKosher: 2,
+//     ageRestrictions: 18,
+//     webLink: "htpp//fgefzffcz",
+//     googleMapLink: "gvzsfgvrzsfgvrs",
+//   ),
+//   new Place(
+//     '000000006',
+//     100,
+//     'Jackie Chan',
+//     156.48797894,
+//     80.236598,
+//     address: "14 Yafo,Jerusalem",
+//     phoneNum: "02854978756",
+//     representive: "Yoram",
+//     isKosher: 2,
+//     ageRestrictions: 18,
+//     webLink: "htpp//fgefzffcz",
+//     googleMapLink: "gvzsfgvrzsfgvrs",
+//   ),
+//   new Place(
+//     '000000106',
+//     100,
+//     'Jackie Chan',
+//     156.48797894,
+//     80.236598,
+//     address: "14 Yafo,Jerusalem",
+//     phoneNum: "02854978756",
+//     representive: "Yoram",
+//     isKosher: 2,
+//     ageRestrictions: 18,
+//     webLink: "htpp//fgefzffcz",
+//     googleMapLink: "gvzsfgvrzsfgvrs",
+//   ),
+//   new Place(
+//     '000000082',
+//     100,
+//     'Jackie Chan',
+//     156.48797894,
+//     80.236598,
+//     address: "14 Yafo,Jerusalem",
+//     phoneNum: "02854978756",
+//     representive: "Yoram",
+//     isKosher: 2,
+//     ageRestrictions: 18,
+//     webLink: "htpp//fgefzffcz",
+//     googleMapLink: "gvzsfgvrzsfgvrs",
+//   ),
+//   new Place(
+//     '000000666',
+//     100,
+//     'Jackie Chan',
+//     156.48797894,
+//     80.236598,
+//     address: "14 Yafo,Jerusalem",
+//     phoneNum: "02854978756",
+//     representive: "Yoram",
+//     isKosher: 2,
+//     ageRestrictions: 18,
+//     webLink: "htpp//fgefzffcz",
+//     googleMapLink: "gvzsfgvrzsfgvrs",
+//   ),
+//   new Place(
+//     '000000008',
+//     100,
+//     'Hatsarfat',
+//     156.48797894,
+//     80.236598,
+//     address: "14 Yafo,Jerusalem",
+//     phoneNum: "02854978756",
+//     representive: "Yoram",
+//     isKosher: 2,
+//     ageRestrictions: 18,
+//     webLink: "htpp//fgefzffcz",
+//     googleMapLink: "gvzsfgvrzsfgvrs",
+//   ),
+// ];
 
 class _NoticeBoardState extends State<NoticeBoard> {
   @override
   void initState() {
+    if (isInitialized) {
+      return;
+    }
     super.initState();
-    initPlacesList(); // In order to populate our Advertisement list
+    initPlacesList();
+    isInitialized = true;
+    // In order to populate our Advertisement list
     //Here will be the sorting of the data coming from firebase
   }
 
   //Initiate all the details and colors for all the Advert Card.
-  void initPlacesList() {
-    for (int i = 0; i < data.length; i++) {
-      String details = "\u2022 Address\b: ${data[i].address}\n"
-          "\u2022 Representive\b: ${data[i].representive}\n"
-          "\u2022 Capacity\b: ${data[i].capacity}\n"
-          "\u2022 AgeRestriction\b: ${data[i].ageRestrictions}\n"
-          "\u2022 Link\b: ${data[i].webLink}\n"
-          "\u2022 Map\b: ${data[i].googleMapLink}\n";
+  void initPlacesList() async {
+    var FbData = await FirebaseHelper.getPlacesFromFb();
 
-      if (i % 2 == 0) {
-        advertisements.add(Advertisement(
-            Colors.purple[200]!,
-            data[i].getName(),
-            data[i].getIsKosher(),
-            data[i].getPhoneNumber(),
-            Colors.grey[900]!,
-            details));
+    int index = 0;
+    FbData.forEach((element) {
+      String details = "\u2022 Address\b: ${element.address}\n"
+          "\u2022 Representive\b: ${element.representative}\n"
+          "\u2022 Capacity\b: ${element.capacity}\n"
+          "\u2022 AgeRestriction\b: ${element.ageRestrictions}\n"
+          "\u2022 Link\b: ${element.webLink}\n"
+          "\u2022 Opening Hour\b: ${element.openingHours}\n"
+          "\u2022 Map\b: ${element.googleMapLink}\n";
+
+      if (index % 2 == 0) {
+        advertisements.add(Advertisement(Colors.purple[200]!, element.name,
+            element.isKosher, element.phoneNumber, Colors.grey[900]!, details));
       } else {
-        advertisements.add(Advertisement(
-            Colors.purple[400]!,
-            data[i].getName(),
-            data[i].getIsKosher(),
-            data[i].getPhoneNumber(),
-            Colors.grey[400]!,
-            details));
+        advertisements.add(Advertisement(Colors.purple[400]!, element.name,
+            element.isKosher, element.phoneNumber, Colors.grey[400]!, details));
       }
-    }
+      index++;
+    });
+    setState(() {
+      advertisements;
+    });
   }
 
   @override
@@ -222,7 +224,7 @@ class _NoticeBoardState extends State<NoticeBoard> {
 class Advertisement extends StatefulWidget {
   String adv_name;
   String adv_details;
-  int adv_isKosher;
+  bool adv_isKosher;
   String adv_phoneNum;
   Color color;
   Color expansiontilecolor;
@@ -240,16 +242,18 @@ class _AdvertisementState extends State<Advertisement> {
   double _height = 110;
   bool _isOpen = false;
   void onPressed() {
-    setState(() {
-      if (_isOpen) {
-        _height -= widget.adv_details.length + 30;
-        _isOpen = false;
-      } else {
-        _height += widget.adv_details.length + 30;
-        _isOpen = true;
-        Opened.add(this);
-      }
-    });
+    if (this.mounted) {
+      setState(() {
+        if (_isOpen) {
+          _height -= widget.adv_details.length + 30;
+          _isOpen = false;
+        } else {
+          _height += widget.adv_details.length + 30;
+          _isOpen = true;
+          Opened.add(this);
+        }
+      });
+    }
   }
 
   @override
@@ -264,9 +268,9 @@ class _AdvertisementState extends State<Advertisement> {
           key: UniqueKey(),
           onTap: () {
             //SetState of the open/close functionality
-            
+
             if (Opened.isNotEmpty) {
-              if(Opened.first == this){
+              if (Opened.first == this) {
                 onPressed();
                 Opened.clear();
                 return;
@@ -275,7 +279,6 @@ class _AdvertisementState extends State<Advertisement> {
               Opened.clear();
             }
             onPressed();
-            //) onPressed();
           },
           // I put a column in case that we want another widget in the bottom.
           child: Column(

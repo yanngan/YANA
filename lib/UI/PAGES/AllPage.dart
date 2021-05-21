@@ -11,7 +11,7 @@ export 'EventsList.dart';
 export 'ChatList.dart';
 export 'ChatsAndEvents.dart';
 
-/// Developers: Lidor Eliyahu Shelef, Yann Ganem, Yisrael Bar-Or and Jonas Sperling
+/// Developers: Lidor Eliyahu Shelef (&Team leader), Yann Ganem, Yisrael Bar-Or and Jonas Sperling
 
 const appName = "YANA";
 bool isOver18 = false;

@@ -71,6 +71,10 @@ class FirebaseHelper{
 //end Messages-------------------------------------------------
 
 //start Events-------------------------------------------------
+  static String generateEventId(){
+       return FirebaseFirestore.instance.collection('Events').doc().id;
+}
+
   static Future<bool> sendEventToFb(Events event) async {
     //add to real-time firebase on place id the new event
     FirebaseDatabase.instance.reference().child("places/").child(event.placeID).push().set(event.eventID);

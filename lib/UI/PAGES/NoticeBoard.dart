@@ -260,6 +260,7 @@ class _AdvertisementState extends State<Advertisement> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: AnimatedContainer(
+
         width: _width,
         height: _height,
         margin: EdgeInsets.fromLTRB(6, 6, 6, 10.0),
@@ -286,7 +287,10 @@ class _AdvertisementState extends State<Advertisement> {
               Expanded(
                 flex: 1,
                 child: Container(
-                  color: widget.color,
+                  decoration: BoxDecoration(
+                    color: widget.color,
+                    borderRadius: BorderRadius.circular(25),
+                  ),
                   //Column of the "card"
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

@@ -84,7 +84,7 @@ class MapSampleState extends State<MapSample> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: FloatingActionButton(
-                        onPressed: ()=>MapLogic.addEditSeePoints(context),
+                        onPressed: ()=>MapLogic.addEditSeePoints(context,'add'),
                         backgroundColor: Colors.amber,
                         child: Icon(Icons.add, color: Colors.pink,size: 30,),
                       ),

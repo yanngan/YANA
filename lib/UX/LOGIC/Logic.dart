@@ -34,7 +34,7 @@ class Logic{
     return toReturn;
   }
 
-  static Future<Events> createNewEvents(Events theNewEvents) async{
+  static Future<Events?> createNewEvents(Events theNewEvents) async{
     // todo: check internet connection
 
     //todo : Check there no problem with new Events:
@@ -48,10 +48,17 @@ class Logic{
     // todo: get the Events from DB and check that they equal
     // - if yes - return the Events
     // - else trow Error
-    Place tempP = new Place("placeID", "address", "phoneNumber", "representative", 10, "vibe", true,"openingHours", "name", 21, "webLink", "googleMapLink","32.085300", "34.781769");
-    User tempU = new User("userID","userName","email","sex","dateOfBirth",0,"hobbies","bio","livingArea","workArea","academicInstitution","fieldOfStudy","smoking","fbPhoto","signUpDate",false,true);
-    Events tempE = new Events("eventID","tempU" , "tempU" , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID");
-    return tempE;
+    // Place tempP = new Place("placeID", "address", "phoneNumber", "representative", 10, "vibe", true,"openingHours", "name", 21, "webLink", "googleMapLink","32.085300", "34.781769");
+    // User tempU = new User("userID","userName","email","sex","dateOfBirth",0,"hobbies","bio","livingArea","workArea","academicInstitution","fieldOfStudy","smoking","fbPhoto","signUpDate",false,true);
+    // Events tempE = new Events("eventID","tempU" , "tempU" , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID");
+    // return tempE;
+    if(await FirebaseHelper.sendEventToFb(theNewEvents)){
+      return theNewEvents;
+    }
+    else{
+      return null;
+    }
+
   }
 
   static Future<Events> getEventsByIdEvents(String IDEvents)async{

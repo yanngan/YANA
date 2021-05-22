@@ -48,20 +48,31 @@ class MapLogic{
     );
   }
 
-  static addEditSeePoints(BuildContext context,{var theEvent}) async{
+  static addEditSeePoints(BuildContext context,String action,{var theEvent,var thePlace}) async{
+    var screen;
+    switch(action){
+      case 'add':
+        screen = AddEvent(thePlace);
+        break;
+      case 'edit':
+        screen = EditEvent(thePlace,theEvent);
+        break;
+      case 'see':
+        screen = SeeEvent(thePlace,theEvent);
+        break;
+    }
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: new Text("Add new Event ! 😋",style: TextStyle(color: Colors.blueGrey),),
           backgroundColor: Colors.amber,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(20.0))
           ),
-          content: AddSeeEvent(),
+          content: screen,
           actions: <Widget>[
             new TextButton(
-              child: new Text("OK",style: TextStyle(color: Colors.blueGrey),),
+              child: new Text("סגור",style: TextStyle(color: Colors.blueGrey),),
               onPressed: () {
                 Navigator.of(context).pop();
               },

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'AllPage.dart';
 
+
 class ChatsAndEvents extends StatefulWidget {
   @override
   _ChatsAndEventsState createState() => _ChatsAndEventsState();
@@ -31,7 +32,7 @@ class _ChatsAndEventsState extends State<ChatsAndEvents> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton(
-                    child: Text("מיקומים",style: TextStyle(fontSize: 30),),
+                    child: Text("אירועים",style: TextStyle(fontSize: 30),),
                     onPressed: switchPage,
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(whichPage?Colors.pinkAccent:Colors.pink[700]),
@@ -67,7 +68,10 @@ class _ChatsAndEventsState extends State<ChatsAndEvents> {
                 ],
               ),
             ),
-            screen,
+            Container(
+              height: MediaQuery. of(context). size. height-200,
+              child: screen,
+            ),
           ],
         ),
 

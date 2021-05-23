@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:yana/UX/DB/places.dart';
-import 'package:yana/UX/DB/users.dart';
 import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
-import 'package:yana/UX/DB/events.dart';
+import 'package:yana/UX/DB/allDB.dart';
+
 /*Yisrael Bar 14/05/2021 */
 class FirebaseHelper{
 
@@ -46,6 +45,42 @@ class FirebaseHelper{
   }
 //end Places-------------------------------------------------
 
+//start BulletinBoard-------------------------------------------------
+  static Future<bool> sendBulletinBoardToFb(BulletinBoard bulletinBoard) async {
+    FirebaseFirestore fireStore = FirebaseFirestore.instance;
+    var id = FirebaseFirestore.instance.collection('BulletinBoard').doc().id;
+    //write to collection
+    try {
+      await fireStore.collection('BulletinBoard').doc(id).set(bulletinBoard.toJson());
+    } on Exception catch (e) {
+      return false;
+    }
+    return true;
+  }
+
+  static Future<List<BulletinBoard>> getBulletinBoardFromFb() async {
+    List<BulletinBoard> bulletinBoards = [];
+
+    //read from collection
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('BulletinBoard').get();
+    querySnapshot.docs.forEach((doc) {
+      bulletinBoards.add(BulletinBoard.fromJson(doc.data()));
+    });
+    return bulletinBoards;
+  }
+
+  static Future<BulletinBoard?> getBulletinBoardByID(String id) async{
+    final refUsers =  FirebaseFirestore.instance.collection('BulletinBoard').doc(id);
+    var doc = await refUsers.get();
+    if (doc.exists) {
+      return BulletinBoard.fromJson(doc.data());
+    } else {
+      return null;
+    }
+  }
+//end BulletinBoard-------------------------------------------------
+
+
 //start Messages-------------------------------------------------
   static void sendMessageToFb(Message m1){
     //write a chat message
@@ -73,7 +108,7 @@ class FirebaseHelper{
 //start Events-------------------------------------------------
   static String generateEventId(){
        return FirebaseFirestore.instance.collection('Events').doc().id;
-}
+  }
 
   static Future<bool> sendEventToFb(Events event) async {
     //add to real-time firebase on place id the new event
@@ -134,8 +169,6 @@ class FirebaseHelper{
             events1.add(event);
         });
     });
-
-    print("im here 1 ${events1}");
     return events1;
   }
 
@@ -180,11 +213,8 @@ class FirebaseHelper{
     final refUsers =  FirebaseFirestore.instance.collection('Users').doc(userID);
     var doc = await refUsers.get();
     if (doc.exists) {
-      // print("Document data:");
       return User.fromJson(doc.data());
     } else {
-      // doc.data() will be undefined in this case
-      // print("No such document!");
       return null;
     }
   }

@@ -1,3 +1,3 @@
-export 'Event.dart';
-export 'Place.dart';
+export 'MyMarker.dart';
+export 'firebaseHelper.dart';
 export 'MyMarker.dart';

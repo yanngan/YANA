@@ -12,6 +12,8 @@ class Place{
   int ageRestrictions;
   String webLink;//could be url
   String googleMapLink;//could be url
+  String latitude;
+  String longitude;
 
   //constructor
   Place(
@@ -26,7 +28,10 @@ class Place{
       this.name,
       this.ageRestrictions,
       this.webLink,
-      this.googleMapLink);
+      this.googleMapLink,
+      this.latitude,
+      this.longitude
+      );
 
 
   @override
@@ -47,6 +52,8 @@ class Place{
       json['ageRestrictions'] as int,
       json['webLink'] as String,
       json['googleMapLink'] as String,
+      json['latitude'] as String,
+      json['longitude'] as String,
     );
   }
 
@@ -65,6 +72,8 @@ class Place{
       "webLink":  this.webLink,
       "name":  this.name,
       "googleMapLink":this.googleMapLink,
+      "latitude":this.latitude,
+      "longitude": this.longitude
     };
   }
 

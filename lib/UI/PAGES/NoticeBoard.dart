@@ -230,7 +230,7 @@ class Advertisement extends StatefulWidget {
   Color expansiontilecolor;
 
   //Constructor
-  Advertisement(this.color, this.adv_name, this.adv_isKosher, this.adv_phoneNum,
+  Advertisement(this.color, /*this.adv_name, this.adv_isKosher, this.adv_phoneNum,*/
       this.expansiontilecolor, this.adv_details);
 
   @override

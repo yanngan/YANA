@@ -7,8 +7,11 @@ export 'Settings.dart';
 export 'Welcome.dart';
 export 'SignUp.dart';
 export 'NoticeBoard.dart';
+export 'EventsList.dart';
+export 'ChatList.dart';
+export 'ChatsAndEvents.dart';
 
-/// Developers: Lidor Eliyahu Shelef, Yann Ganem, Yisrael Bar-Or and Jonas Sperling
+/// Developers: Lidor Eliyahu Shelef (&Team leader), Yann Ganem, Yisrael Bar-Or and Jonas Sperling
 
 const appName = "YANA";
 bool isOver18 = false;
@@ -25,7 +28,7 @@ bool isOver18 = false;
  */
 
 // Correct order: (after Yann see the above, delete the above and use only this below)
-const int Chat_index          = 0;
+const int ChatsAndEvents_index= 0;
 const int SearchView_index    = 1;
 const int MapView_index       = 2;
 const int NoticeBoard_index   = 3;

@@ -1,6 +1,7 @@
 //FLUTTER
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:yana/UI/PAGES/AllPage.dart';
 //WIDGETS
 import '../WIDGETS/allWidgets.dart';
 
@@ -30,6 +31,13 @@ class _SettingsState extends State<Settings> {
             child: Column(
               children: [
                 SizedBox(height: 110,),
+                Row(
+                  textDirection: TextDirection.rtl,
+                  children: [
+                    Text("שלום לך הID שלך הוא", style: TextStyle(decoration: TextDecoration.underline, fontSize: 20),),
+                    Text(userMap['id']!, style: TextStyle(decoration: TextDecoration.underline, fontSize: 20),),
+                  ],
+                ),
                 Text("Group 1", style: TextStyle(decoration: TextDecoration.underline, fontSize: 30),),
                 Container(
                   height: 300,

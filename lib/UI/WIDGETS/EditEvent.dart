@@ -5,6 +5,7 @@ import 'package:yana/UI/WIDGETS/allWidgets.dart';
 import 'package:yana/UX/DB/allDB.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
+import 'package:yana/UX/LOGIC/MapLogic.dart';
 
 
 class EditEvent extends StatefulWidget {
@@ -155,8 +156,10 @@ class _EditEventState extends State<EditEvent> {
     if(res == null){
       makeErrorAlert("אירעה שגיאה בתהליך השמירה, נסה שנית");
     }
-    Route route = MaterialPageRoute(builder: (context) => SeeEvent(widget.thePlace,widget.theEvents));
-    Navigator.pushReplacement(context, route);
+    Navigator.of(context).pop();
+    MapLogic.addEditSeePoints(context,'see',theEvent:theNewEvents,thePlace:widget.thePlace);
+    /*Route route = MaterialPageRoute(builder: (context) => SeeEvent(widget.thePlace,widget.theEvents));
+    Navigator.pushReplacement(context, route);*/
   }
 
 

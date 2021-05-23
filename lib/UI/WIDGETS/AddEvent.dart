@@ -3,7 +3,9 @@ import 'package:intl/intl.dart';
 import 'package:yana/UI/PAGES/AllPage.dart';
 import 'package:yana/UX/DB/allDB.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:yana/UX/LOGIC/CLASSES/allClasses.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
+import 'package:yana/UX/LOGIC/MapLogic.dart';
 
 import 'SeeEvent.dart';
 
@@ -149,14 +151,16 @@ class _AddEventState extends State<AddEvent> {
       makeErrorAlert("חובה למלא את כל השדות בערכים תקינים");
       return;
     }
-
-    Events theNewEvents = Events('-1',userMap['id']!,'test',formattedDate,true,startEstimate,endEstimate,1,maxNumPeople,widget.thePlace.placeID);
+    String newId = await FirebaseHelper.generateEventId();
+    Events theNewEvents = Events(newId,userMap['id']!,'test',formattedDate,true,startEstimate,endEstimate,1,maxNumPeople,widget.thePlace.placeID);
     var res = await Logic.createNewEvents(theNewEvents);
     if(res == null){
       makeErrorAlert("אירעה שגיאה בתהליך השמירה, נסה שנית");
     }
-    Route route = MaterialPageRoute(builder: (context) => SeeEvent(widget.thePlace,theNewEvents));
-    Navigator.pushReplacement(context, route);
+    // Route route = MaterialPageRoute(builder: (context) => SeeEvent(widget.thePlace,theNewEvents));
+    // Navigator.pushReplacement(context, route);
+    Navigator.of(context).pop();
+    MapLogic.addEditSeePoints(context,'see',theEvent:theNewEvents,thePlace:widget.thePlace);
   }
 
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:yana/UI/PAGES/AllPage.dart';
 import 'package:yana/UI/WIDGETS/allWidgets.dart';
 import 'package:yana/UX/DB/allDB.dart';
+import 'package:yana/UX/LOGIC/MapLogic.dart';
 
 
 class SeeEvent extends StatefulWidget {
@@ -82,8 +83,8 @@ class _SeeEventState extends State<SeeEvent> {
   }
 
   editTheEvent(){
-    Route route = MaterialPageRoute(builder: (context) => EditEvent(widget.thePlace,widget.theEvents));
-    Navigator.pushReplacement(context, route);
+    Navigator.of(context).pop();
+    MapLogic.addEditSeePoints(context,'edit',theEvent:widget.theEvents,thePlace:widget.thePlace);
   }
 
   askToJoin(){

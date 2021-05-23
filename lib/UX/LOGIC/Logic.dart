@@ -108,10 +108,15 @@ class Logic{
     // todo: go to DB and get the Places BY IDPlaces
     // - trow Error if have problem
     // return the List of Places we found
-    Place tempP = new Place("placeID", "address", "phoneNumber", "representative", 10, "vibe", true,"openingHours", "name", 21, "webLink", "googleMapLink","32.085300", "34.781769");
-
-    return tempP;
+    var tempP = await FirebaseHelper.getPlaceByID(IDPlaces);
+    return tempP!;
   }
+
+
+  static Future<List<Events>> getAllUserEvent()async{
+    return await FirebaseHelper.getEventsFromFb();
+  }
+
 
   static Future<List<Events>> getEventsByCondition({int status = -1,String startEstimate = "",String endEstimate = "",String PlacesName= "",bool going=false})async{
     User tempU = new User("userID","userName","email","sex","dateOfBirth",0,"hobbies","bio","livingArea","workArea","academicInstitution","fieldOfStudy","smoking","fbPhoto","signUpDate",false,true);

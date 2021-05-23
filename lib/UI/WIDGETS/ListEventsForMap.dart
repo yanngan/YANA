@@ -47,6 +47,7 @@ class _ListEventsForMapState extends State<ListEventsForMap> {
         new TextButton(
           child: new Text("הוסף מפגש",style: TextStyle(color: Colors.blueGrey),),
           onPressed: () {
+            Navigator.of(context).pop();
             MapLogic.addEditSeePoints(context,'add',thePlace:widget.thePlace);
           },
         ),
@@ -91,8 +92,15 @@ class _ListEventsForMapState extends State<ListEventsForMap> {
         ),
       ),
       onTap: (){
+        Navigator.of(context).pop();
         MapLogic.addEditSeePoints(context,'see',theEvent:listEvents[index],thePlace: widget.thePlace);
       },
     );
+  }
+
+  refresh(){
+    setState(() {
+      initDone = false;
+    });
   }
 }

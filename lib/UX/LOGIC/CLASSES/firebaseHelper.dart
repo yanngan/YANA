@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:yana/UX/DB/places.dart';
-import 'package:yana/UX/DB/users.dart';
 import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
-import 'package:yana/UX/DB/events.dart';
-/*Yisrael Bar 14/05/2021 */
-class FirebaseHelper{
+import 'package:yana/UX/DB/allDB.dart';
 
+/*Yisrael Bar 14/05/2021 */
+class FirebaseHelper {
 //first use this method to access firebase collection - no need for real-time(messages)//update I put it on first line of main
   /*static void initFirebase() async {
     await Firebase.initializeApp();
@@ -17,7 +15,10 @@ class FirebaseHelper{
     FirebaseFirestore fireStore = FirebaseFirestore.instance;
     //write to collection
     try {
-      await fireStore.collection('Places').doc(place.placeID).set(place.toJson());
+      await fireStore
+          .collection('Places')
+          .doc(place.placeID)
+          .set(place.toJson());
     } on Exception catch (e) {
       return false;
     }
@@ -28,15 +29,17 @@ class FirebaseHelper{
     List<Place> places = [];
 
     //read from collection
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Places').get();
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection('Places').get();
     querySnapshot.docs.forEach((doc) {
       places.add(Place.fromJson(doc.data()));
     });
     return places;
   }
 
-  static Future<Place?> getPlaceByID(String placeID) async{
-    final refUsers =  FirebaseFirestore.instance.collection('Places').doc(placeID);
+  static Future<Place?> getPlaceByID(String placeID) async {
+    final refUsers =
+        FirebaseFirestore.instance.collection('Places').doc(placeID);
     var doc = await refUsers.get();
     if (doc.exists) {
       return Place.fromJson(doc.data());
@@ -46,19 +49,67 @@ class FirebaseHelper{
   }
 //end Places-------------------------------------------------
 
+//start BulletinBoard-------------------------------------------------
+  static Future<bool> sendBulletinBoardToFb(BulletinBoard bulletinBoard) async {
+    FirebaseFirestore fireStore = FirebaseFirestore.instance;
+    var id = FirebaseFirestore.instance.collection('BulletinBoard').doc().id;
+    //write to collection
+    try {
+      await fireStore
+          .collection('BulletinBoard')
+          .doc(id)
+          .set(bulletinBoard.toJson());
+    } on Exception catch (e) {
+      return false;
+    }
+    return true;
+  }
+
+  static Future<List<BulletinBoard>> getBulletinBoardFromFb() async {
+    List<BulletinBoard> bulletinBoards = [];
+
+    //read from collection
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection('BulletinBoard').get();
+    querySnapshot.docs.forEach((doc) {
+      bulletinBoards.add(BulletinBoard.fromJson(doc.data()));
+    });
+    return bulletinBoards;
+  }
+
+  static Future<BulletinBoard?> getBulletinBoardByID(String id) async {
+    final refUsers =
+        FirebaseFirestore.instance.collection('BulletinBoard').doc(id);
+    var doc = await refUsers.get();
+    if (doc.exists) {
+      return BulletinBoard.fromJson(doc.data());
+    } else {
+      return null;
+    }
+  }
+//end BulletinBoard-------------------------------------------------
+
 //start Messages-------------------------------------------------
-  static void sendMessageToFb(Message m1){
+  static void sendMessageToFb(Message m1) {
     //write a chat message
     final databaseReference = FirebaseDatabase.instance.reference();
-    DatabaseReference  myRef1= databaseReference.child("rooms/").child(m1.self_name).child(m1.other_name);
+    DatabaseReference myRef1 = databaseReference
+        .child("rooms/")
+        .child(m1.self_name)
+        .child(m1.other_name);
     myRef1.push().set(m1.toJson());
-    myRef1= databaseReference.child("rooms/").child(m1.other_name).child(m1.self_name);
+    myRef1 = databaseReference
+        .child("rooms/")
+        .child(m1.other_name)
+        .child(m1.self_name);
     myRef1.push().set(m1.toJson());
   }
 
-  static Future<List<Message>> getMessagesFromFb(var selfName,var otherName)  async {
+  static Future<List<Message>> getMessagesFromFb(
+      var selfName, var otherName) async {
     final databaseReference = FirebaseDatabase.instance.reference();
-    DatabaseReference messageRef = databaseReference.child('rooms/').child(selfName).child(otherName);
+    DatabaseReference messageRef =
+        databaseReference.child('rooms/').child(selfName).child(otherName);
     //read message once
     DataSnapshot data = await messageRef.once();
     List<Message> listMessage = [];
@@ -71,18 +122,26 @@ class FirebaseHelper{
 //end Messages-------------------------------------------------
 
 //start Events-------------------------------------------------
-  static Future<String> generateEventId()async{
+  static Future<String> generateEventId() async {
     return await FirebaseFirestore.instance.collection('Events').doc().id;
   }
 
   static Future<bool> sendEventToFb(Events event) async {
     //add to real-time firebase on place id the new event
-    FirebaseDatabase.instance.reference().child("places/").child(event.placeID).push().set(event.eventID);
+    FirebaseDatabase.instance
+        .reference()
+        .child("places/")
+        .child(event.placeID)
+        .push()
+        .set(event.eventID);
 
     FirebaseFirestore fireStore = FirebaseFirestore.instance;
     //write to collection
     try {
-      await fireStore.collection('Events').doc(event.eventID).set(event.toJson());
+      await fireStore
+          .collection('Events')
+          .doc(event.eventID)
+          .set(event.toJson());
     } on Exception catch (e) {
       return false;
     }
@@ -90,8 +149,9 @@ class FirebaseHelper{
   }
 
   //in case the event does not exist the function return null
-  static Future<Events?> getEventByID(String eventID) async{
-    final refUsers =  FirebaseFirestore.instance.collection('Events').doc(eventID);
+  static Future<Events?> getEventByID(String eventID) async {
+    final refUsers =
+        FirebaseFirestore.instance.collection('Events').doc(eventID);
     var doc = await refUsers.get();
     if (doc.exists) {
       return Events.fromJson(doc.data());
@@ -99,6 +159,7 @@ class FirebaseHelper{
       return null;
     }
   }
+
 /*
   //in case we want to find an event by place -- need to fix
   static Future<List<Events>?> getEventsByPlaceID( String placeID) async{
@@ -120,39 +181,35 @@ class FirebaseHelper{
   }
 */
   //in case we want to find an event by place -- need to fix
-  static Future<List<Events>> getEventsByPlaceID( String placeID) async{
-    DatabaseReference placeRef = FirebaseDatabase.instance.reference().child("places/").child(placeID);
+  static Future<List<Events>> getEventsByPlaceID(String placeID) async {
+    DatabaseReference placeRef =
+        FirebaseDatabase.instance.reference().child("places/").child(placeID);
     DataSnapshot data = await placeRef.once();
-    Map<dynamic, dynamic> values = data.value??{};
-    
+    Map<dynamic, dynamic> values = data.value ?? {};
+
     List<Events> events0 = await getEventsFromFb();
     List<Events> events1 = [];
 
     events0.forEach((event) {
-        values.forEach((key, value) {
-          if(event.eventID == value )
-            events1.add(event);
-        });
+      values.forEach((key, value) {
+        if (event.eventID == value) events1.add(event);
+      });
     });
-
-    print("im here 1 ${events1}");
     return events1;
   }
 
   static Future<List<Events>> getEventsFromFb() async {
     //read from collection
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Events').get();
-    querySnapshot.docs.forEach((doc) {
-    });
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection('Events').get();
+    querySnapshot.docs.forEach((doc) {});
     List<Events> events = [];
     querySnapshot.docs.forEach((doc) {
       events.add(Events.fromJson(doc.data()));
     });
     return events;
-
   }
 //end Events-------------------------------------------------
-
 
 // start users-------------------------------------------------
   static Future<bool> sendUserToFb(User user) async {
@@ -168,7 +225,8 @@ class FirebaseHelper{
 
   static Future<List<User>> getUsersFromFb() async {
     //read from collection
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Users').get();
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection('Users').get();
     List<User> user = [];
     querySnapshot.docs.forEach((doc) {
       user.add(User.fromJson(doc.data()));
@@ -176,21 +234,18 @@ class FirebaseHelper{
     return user;
   }
 
-  static Future<User?> getCurrentUser(String userID) async{
-    final refUsers =  FirebaseFirestore.instance.collection('Users').doc(userID);
+  static Future<User?> getCurrentUser(String userID) async {
+    final refUsers = FirebaseFirestore.instance.collection('Users').doc(userID);
     var doc = await refUsers.get();
     if (doc.exists) {
-      // print("Document data:");
       return User.fromJson(doc.data());
     } else {
-      // doc.data() will be undefined in this case
-      // print("No such document!");
       return null;
     }
   }
 
-  static Future<bool> checkIfUserExists(String userID) async{
-    final refUsers =  FirebaseFirestore.instance.collection('Users').doc(userID);
+  static Future<bool> checkIfUserExists(String userID) async {
+    final refUsers = FirebaseFirestore.instance.collection('Users').doc(userID);
     var doc = await refUsers.get();
     if (doc.exists) {
       return true;

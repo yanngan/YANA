@@ -1,7 +1,9 @@
 import 'dart:collection';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
 import '../WIDGETS/MyAppBar.dart';
 
@@ -158,24 +160,24 @@ class _NoticeBoardState extends State<NoticeBoard> {
 
   //Initiate all the details and colors for all the Advert Card.
   void initPlacesList() async {
-    var FbData = await FirebaseHelper.getPlacesFromFb();
+    // var FbData = await FirebaseHelper.getPlacesFromFb();
+    var FbData = await FirebaseHelper.getBulletinBoardFromFb();
 
     int index = 0;
     FbData.forEach((element) {
-      String details = "\u2022 Address\b: ${element.address}\n"
-          "\u2022 Representive\b: ${element.representative}\n"
-          "\u2022 Capacity\b: ${element.capacity}\n"
-          "\u2022 AgeRestriction\b: ${element.ageRestrictions}\n"
-          "\u2022 Link\b: ${element.webLink}\n"
-          "\u2022 Opening Hour\b: ${element.openingHours}\n"
-          "\u2022 Map\b: ${element.googleMapLink}\n";
+      String details = "\u2022 Address\b: ${element.location}\n"
+          "\u2022 Date\b: ${element.date}\n"
+          "\u2022 Entry Price\b: ${element.entryPrice}\n"
+          "\u2022 Link\b: ${element.extraLinkName}\n"
+          "\u2022 Start Time\b: ${element.startTime}\n"
+          "\u2022 Maps\b: ${element.googleMapsLink}\n";
 
       if (index % 2 == 0) {
-        advertisements.add(Advertisement(Colors.purple[200]!, element.name,
-            element.isKosher, element.phoneNumber, Colors.grey[900]!, details));
+        advertisements.add(Advertisement(Color(0xfff3b5a5), element.bulletName,
+            element.eventIcon, Colors.grey[900]!, details,element.googleMapsLink,element.extraLink,element.extraLinkName));
       } else {
-        advertisements.add(Advertisement(Colors.purple[400]!, element.name,
-            element.isKosher, element.phoneNumber, Colors.grey[400]!, details));
+        advertisements.add(Advertisement(Color(0xfffad5b8),element.bulletName,
+            element.eventIcon, Colors.grey[900]!, details,element.googleMapsLink,element.extraLink,element.extraLinkName));
       }
       index++;
     });
@@ -224,14 +226,17 @@ class _NoticeBoardState extends State<NoticeBoard> {
 class Advertisement extends StatefulWidget {
   String adv_name;
   String adv_details;
-  bool adv_isKosher;
-  String adv_phoneNum;
+  String adv_icon;
   Color color;
   Color expansiontilecolor;
+  String adv_mapsLink;
+  String adv_extraLink;
+  String adv_extraLinkName;
 
   //Constructor
-  Advertisement(this.color, /*this.adv_name, this.adv_isKosher, this.adv_phoneNum,*/
-      this.expansiontilecolor, this.adv_details);
+  Advertisement(this.color, this.adv_name, this.adv_icon,
+      this.expansiontilecolor, this.adv_details, this.adv_mapsLink,
+      this.adv_extraLink,this.adv_extraLinkName);
 
   @override
   _AdvertisementState createState() => _AdvertisementState();
@@ -239,16 +244,33 @@ class Advertisement extends StatefulWidget {
 
 class _AdvertisementState extends State<Advertisement> {
   double _width = 200;
-  double _height = 110;
+  double _height = 100;
   bool _isOpen = false;
+  var indexof_linkname;
+  @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   indexof_linkname = widget.adv_details.indexOf(widget.adv_extraLinkName);
+  // }
+
+  void launchUrl(String url) async{
+    if(await canLaunch(url)){
+      launchUrl(url);
+    }
+    else{
+        throw "Cannot launch the url";
+    }
+  }
+
   void onPressed() {
     if (this.mounted) {
       setState(() {
         if (_isOpen) {
-          _height -= widget.adv_details.length + 30;
+          _height -= widget.adv_details.length;
           _isOpen = false;
         } else {
-          _height += widget.adv_details.length + 30;
+          _height += widget.adv_details.length;
+          print(widget.adv_details);
           _isOpen = true;
           Opened.add(this);
         }
@@ -260,7 +282,6 @@ class _AdvertisementState extends State<Advertisement> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: AnimatedContainer(
-
         width: _width,
         height: _height,
         margin: EdgeInsets.fromLTRB(6, 6, 6, 10.0),
@@ -300,31 +321,35 @@ class _AdvertisementState extends State<Advertisement> {
                   ),
                   //Column of the "card"
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       //Title widget the does not change dynamically.
-                      Cards_Title(widget.adv_name,
-                          "https://upload.wikimedia.org/wikipedia/en/thumb/c/c3/Flag_of_France.svg/1200px-Flag_of_France.svg.png"),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: Cards_Title(widget.adv_name, widget.adv_icon),
+                      ),
                       //Advert details.
                       Expanded(
                         child: AnimatedOpacity(
                           duration: Duration(milliseconds: 700),
                           opacity: _isOpen ? 1 : 0,
-                          child: Row(
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(10, 2, 0, 10),
-                                child: SingleChildScrollView(
-                                  child: Text(
-                                    widget.adv_details,
-                                    style: TextStyle(
-                                      fontFamily: 'Font1',
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black87,
-                                      fontSize: 20,
-                                      letterSpacing: 1,
-                                      decorationThickness: 2,
-                                      wordSpacing: 1,
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsets.fromLTRB(10, 2, 0, 10),
+                                  child: SingleChildScrollView(
+                                    child: AutoSizeText(
+                                      widget.adv_details,
+                                      maxLines: 8,
+                                      style: TextStyle(
+                                        fontFamily: 'Font1',
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black87,
+                                        fontSize: 18,
+                                        letterSpacing: 1,
+                                        decorationThickness: 2,
+                                        wordSpacing: 1,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -354,24 +379,24 @@ class Cards_Title extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.fromLTRB(10.0, 10.0, 20.0, 10.0),
+          padding: const EdgeInsets.fromLTRB(0,0,10,0),
           child: CircleAvatar(
             backgroundImage: NetworkImage(fb),
             radius: 40.0,
           ),
         ),
-        Padding(
-            padding: EdgeInsets.fromLTRB(25, 0, 0, 0),
-            child: Text(
-              name,
-              style: TextStyle(
-                  fontSize: 35,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.grey[900],
-                  fontFamily: 'Font2'),
-            )),
+        Text(
+          name,
+          style: TextStyle(
+              fontSize: 40,
+              fontWeight: FontWeight.w400,
+              color: Colors.grey[900],
+              fontFamily: 'Font2'),
+        ),
       ],
     );
   }

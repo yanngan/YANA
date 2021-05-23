@@ -42,7 +42,7 @@ class _EventsListState extends State<EventsList> {
       for(var oneEvents in listEvents) {
         print(oneEvents.placeID);
         //var temp = await Logic.getPlacesById(oneEvents.placeID)!;
-        var temp = await Logic.getPlacesById('Shoshana Bar')!;
+        var temp = await Logic.getPlacesById('Shoshana Bar');
         print(temp.placeID);
         PlaceByEvents[oneEvents.eventID] = temp;
       }

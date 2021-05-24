@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'AllPage.dart';
+import 'Utilities.dart';
 
 class Welcome extends StatefulWidget {
 
@@ -184,7 +184,7 @@ class _WelcomeState extends State<Welcome> {
     }
     if(internet && !isOpen){
       setState(() {
-        this.widget.callback(2, new Map<String, String>());
+        this.widget.callback(2, new Map<String, String>(), new Map<String, String>());
       });
     }
   }

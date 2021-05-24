@@ -5,14 +5,13 @@ import 'package:intl/intl.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 // Inside stuff
 import 'package:yana/UI/WIDGETS/allWidgets.dart';
 import 'package:yana/UX/DB/users.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
-import 'AllPage.dart';
+import 'Utilities.dart';
 
 // TextFields content variables for the controllers
 String fullName = "", sex = "", hobbies = "", bio = "";
@@ -142,7 +141,6 @@ class _SignUpState extends State<SignUp> {
                         child: Container(
                           height: _heightPageView,
                           width: _widthPageView,
-//                          child: testBuild(),
                           child: signUp(),
                         ),
                       ),
@@ -236,7 +234,7 @@ class _SignUpState extends State<SignUp> {
     if(sex.isEmpty){ checkerStr = "Sex missing"; }
     if(fullName.isEmpty){ checkerStr = "Name missing"; }
     print("\n\n" + checkerStr + "\n\n");
-    Future.delayed(const Duration(milliseconds: 2500), () {
+    Future.delayed(const Duration(milliseconds: 2000), () {
       bool status = false;
       if(checkerStr.isEmpty){
         btnResultText = "Success!";

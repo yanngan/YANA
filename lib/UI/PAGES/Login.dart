@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:yana/UX/DB/users.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
-import 'AllPage.dart';
+import 'Utilities.dart';
 
 const String LOGIN_REGULAR = "REGULAR_USER";
 const String LOGIN_DUMMY = "DUMMY_USER";
@@ -102,13 +103,13 @@ class _LoginState extends State<Login> {
               ), // Welcome Text
               TweenAnimationBuilder(
                   tween: Tween<double>(begin: 0, end: 255),
-                  duration: Duration(seconds: 2),
+                  duration: Duration(milliseconds: 1250),
                   curve: Curves.easeInExpo,
                   builder: (BuildContext _, double alpha, Widget? __) {
                     return Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 0, right: 0, bottom: 20, top: 20),
+                          padding: const EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(64),
                             child: ElevatedButton(
@@ -156,7 +157,7 @@ class _LoginState extends State<Login> {
                           ),
                         ), // Connect with Facebook
                         Padding(
-                          padding: const EdgeInsets.only(left: 0, right: 0, bottom: 20, top: 20),
+                          padding: const EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(64),
                             child: ElevatedButton(
@@ -204,7 +205,7 @@ class _LoginState extends State<Login> {
                           ),
                         ), // Connect with Dummy user
                         Padding(
-                          padding: const EdgeInsets.only(left: 0, right: 0, bottom: 20, top: 20),
+                          padding: const EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(64),
                             child: ElevatedButton(
@@ -251,11 +252,49 @@ class _LoginState extends State<Login> {
                             ) ,
                           ),
                         ), // Signup
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: (alpha / 100).round().toDouble(),
+                                  primary: Colors.black54.withAlpha(alpha.toInt()), // background
+                                  onPrimary: Colors.white.withAlpha(alpha.toInt()), // foreground
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 8, bottom: 8, left: 0, right: 0),
+                                  child: Column(
+                                    children: [
+                                      Text('Tester Button                  ', style: TextStyle(fontSize: 24)),
+                                      Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 4),
+                                            child: Icon(
+                                              Icons.chat,
+                                              size: 50,
+                                            ),
+                                          ),
+                                          Text('Current Chat Page', style: TextStyle(fontSize: 24)),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    this.widget.callback(4, new Map<String, String>());
+                                  });
+                                }
+                            ) ,
+                          ),
+                        ), // Test BTN
                       ],
                     );
                   }
               ),
-//              Image.network(imageURL), // Temp Profile Image
             ],
           ),
         )
@@ -268,62 +307,25 @@ class _LoginState extends State<Login> {
  * to determine if the user is new / existing / blocked.
  */
   void userCredentials(Map<String, String> credentials, String functionNeeded) async {
-//    Text to display all the user info in the toast
-//    String text = "Welcome to YANA\nYou are a ";
-//    if(credentials["id"].toString() == "01234567891234567"){
-//      text += " Dummy User";
-//    }else{
-//      text += " Human User";
-//    }
-//    text += "\nID: " + credentials["id"].toString();
-//    text += "\nName: " + credentials["name"].toString();
-//    text += "\nEmail: " + credentials["email"].toString();
-//    text += "\nBirthday: " + credentials["birthday"].toString();
-//    text += "\nGender: " + credentials["gender"].toString();
-//    text += "\nAge Range: " + credentials["age_range"].toString();
-//    text += "\nImage URL:\n" + credentials["picture_link"].toString();
     //    Check if user is in our database
-
-    // TODO this commented section is for production, instead of the Test mode below
+//    // TODO this commented section is for production, instead of the Test mode below
 //    String userId = credentials["id"].toString();
-//    bool exists = await FirebaseHelper.checkIfUserExists(userId);
-//    exists = await FirebaseHelper.checkIfUserExists(userId).then((value) => exists = value);
-//    while(true){
-//      if(exists){
-//        print("\n\n ********************************");
-//        print("\n TRUE!!!!!!!!!!!!!!!! \n");
-//        print("\n\n ********************************");
-//        Fluttertoast.showToast(
-//            msg: "Is the user exists?\n" + exists.toString(),
-//            toastLength: Toast.LENGTH_SHORT,
-//            gravity: ToastGravity.CENTER,
-//            timeInSecForIosWeb: 1,
-//            backgroundColor: Colors.red,
-//            textColor: Colors.white,
-//            fontSize: 16.0
-//        );
-//        break;
-//      }else{
-//        Fluttertoast.showToast(
-//            msg: "Is the user exists?\n" + exists.toString(),
-//            toastLength: Toast.LENGTH_SHORT,
-//            gravity: ToastGravity.CENTER,
-//            timeInSecForIosWeb: 1,
-//            backgroundColor: Colors.red,
-//            textColor: Colors.white,
-//            fontSize: 16.0
-//        );
-//      }
-//    }
-////    User? newUser = await FirebaseHelper.getCurrentUser(userId);
-//    User? newUser;
-//    FirebaseHelper.getCurrentUser(userId).then((value) => newUser);
-//    if(exists && newUser != null){
+////    userId = '01234567891234567';   // Test ID of Ariana Grande
+//    bool exists = false;
+//    User newUser = new User.isNULL('null');
+//    await Future.wait([
+//      FirebaseHelper.checkIfUserExists(userId).then((value) => exists = value),
+//      FirebaseHelper.getCurrentUser(userId).then((value) {
+//        newUser = value;
+//      }),
+//    ]);
+//    if(exists){
 //      setState(() {
 //        this.widget.callback(3, newUser.toMap());
 //      });
 //    }else{
 //      setState(() {
+//        newUser = new User.fromMap(credentials);
 //        this.widget.callback(1, credentials);
 //      });
 //    }
@@ -347,7 +349,7 @@ class _LoginState extends State<Login> {
         break;
       case LOGIN_DUMMY:
         setState(() {
-          this.widget.callback(3, credentials);
+          this.widget.callback(3, credentials, new Map<String, String>());
         });
         break;
     }

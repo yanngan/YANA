@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 //PAGES
-import 'PAGES/AllPage.dart';
+import 'PAGES/Utilities.dart';
 //WIDGETS
 import 'WIDGETS/allWidgets.dart';
 // Do not delete next line!
@@ -41,22 +41,20 @@ class _MainPageState extends State<MainPage> {
     super.initState();
     // TODO This is for testing SIGNUP only!!! remove before you push it!
     _logOut();
-
-      Firebase.initializeApp();
-
+    Firebase.initializeApp();
   }
 
   @override
   Widget build(BuildContext context) {
     return applicationSetup();
-
   }
 
 //  callback function in order to allow moving between login sign up and the inner area of the application
-  void callback(int type, Map<String, String> credentials) {
+  void callback(int type, Map<String, String> credentials, Map<String, String> _otherInfo) {
     setState(() {
       pageType = type;
       userMap = credentials;
+      otherInfo = _otherInfo;
     });
   }
 
@@ -69,6 +67,8 @@ class _MainPageState extends State<MainPage> {
       }else { // pageType == 2
         return Login(this.callback);
       }
+    }else if(pageType == 4){
+      return Chat(this.callback, otherInfo);
     }else if(pageType > 2 && pageType < 4){
       return WillPopScope(
         onWillPop: _onBackPressed,
@@ -126,7 +126,7 @@ class _MainPageState extends State<MainPage> {
                   });
                 },
                 children: [   // TODO add the same to them as in SignUp.dart at lines ~ 25-27 (26 not sure, consult Lidor)
-                  ChatsAndEvents(),
+                  ChatsAndEvents(this.callback),
                   SearchView(),
                   MapView(),
                   NoticeBoard(),
@@ -203,7 +203,5 @@ class _MainPageState extends State<MainPage> {
     );
     return finalResult;
   }
-
-
 
 }

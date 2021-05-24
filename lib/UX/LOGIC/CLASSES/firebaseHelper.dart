@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:yana/UX/DB/places.dart';
 import 'package:yana/UX/DB/users.dart';
 import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
@@ -50,9 +52,9 @@ class FirebaseHelper{
   static void sendMessageToFb(Message m1){
     //write a chat message
     final databaseReference = FirebaseDatabase.instance.reference();
-    DatabaseReference  myRef1= databaseReference.child("rooms/").child(m1.self_name).child(m1.other_name);
+    DatabaseReference  myRef1= databaseReference.child("rooms/").child(m1.selfID).child(m1.otherID);
     myRef1.push().set(m1.toJson());
-    myRef1= databaseReference.child("rooms/").child(m1.other_name).child(m1.self_name);
+    myRef1= databaseReference.child("rooms/").child(m1.otherID).child(m1.selfID);
     myRef1.push().set(m1.toJson());
   }
 
@@ -68,6 +70,22 @@ class FirebaseHelper{
     });
     return listMessage;
   }
+
+  static Future<Map<dynamic, dynamic>> getSendersInfo(var _selfID) async {
+    final databaseReference = FirebaseDatabase.instance.reference();
+    DatabaseReference sendersRef = databaseReference.child('chats_information/').child(_selfID);
+    DataSnapshot data = await sendersRef.once();
+    Map<dynamic, dynamic> values = data.value;
+    return values;
+  }
+
+  static void createNewChat(var _selfID, var _selfName, var _otherID, var _otherName){
+    final databaseReference = FirebaseDatabase.instance.reference();
+    DatabaseReference  myRef = databaseReference.child("chats_information/");
+    myRef.child(_selfID).child(_otherID).set(_otherName);
+    myRef.child(_otherID).child(_selfID).set(_selfName);
+  }
+
 //end Messages-------------------------------------------------
 
 //start Events-------------------------------------------------
@@ -149,7 +167,6 @@ class FirebaseHelper{
   }
 //end Events-------------------------------------------------
 
-
 // start users-------------------------------------------------
   static Future<bool> sendUserToFb(User user) async {
     FirebaseFirestore fireStore = FirebaseFirestore.instance;
@@ -172,20 +189,21 @@ class FirebaseHelper{
     return user;
   }
 
-  static Future<User?> getCurrentUser(String userID) async{
+  static Future<User> getCurrentUser(String userID) async {
     final refUsers =  FirebaseFirestore.instance.collection('Users').doc(userID);
     var doc = await refUsers.get();
     if (doc.exists) {
       // print("Document data:");
-      return User.fromJson(doc.data());
+      User newUser = User.fromJson(doc.data());
+      return newUser;
     } else {
       // doc.data() will be undefined in this case
       // print("No such document!");
-      return null;
+      return new User.isNULL('null');
     }
   }
 
-  static Future<bool> checkIfUserExists(String userID) async{
+  static Future<bool> checkIfUserExists(String userID) async {
     final refUsers =  FirebaseFirestore.instance.collection('Users').doc(userID);
     var doc = await refUsers.get();
     if (doc.exists) {

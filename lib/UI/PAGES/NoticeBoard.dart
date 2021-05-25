@@ -2,7 +2,9 @@ import 'dart:collection';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
 import '../WIDGETS/MyAppBar.dart';
@@ -12,155 +14,23 @@ class NoticeBoard extends StatefulWidget {
   _NoticeBoardState createState() => _NoticeBoardState();
 }
 
-//data is an array of Places to simulate the firebase data.
-Queue<_AdvertisementState> Opened = Queue();
-List<Advertisement> advertisements = [];
-bool isInitialized = false;
-// List<Place> data = [
-//   new Place(
-//     '000000001',
-//     100,
-//     'Chez Andi',
-//     156.48797894,
-//     80.236598,
-//     address: "14 Yafo,Jerusalem",
-//     phoneNum: "02854978756",
-//     representive: "Yoram",
-//     isKosher: 2,
-//     ageRestrictions: 18,
-//     webLink: "htpp//fgefzffcz",
-//     googleMapLink: "gvzsfgvrzsfgvrs",
-//   ),
-//   new Place(
-//     '000000041',
-//     100,
-//     'Katsefte',
-//     156.48797894,
-//     80.236598,
-//     address: "14 Yafo,Yafo",
-//     phoneNum: "02854978756",
-//     representive: "Yoram",
-//     isKosher: 2,
-//     ageRestrictions: 18,
-//     webLink: "htpp//fgefzffcz",
-//     googleMapLink: "gvzsfgvrzsfgvrs",
-//   ),
-//   new Place(
-//     '000000002',
-//     100,
-//     'Rimon',
-//     156.48797894,
-//     80.236598,
-//     address: "415 Haifa",
-//     phoneNum: "02854978756",
-//     representive: "Yoram",
-//     isKosher: 2,
-//     ageRestrictions: 18,
-//     webLink: "htpp//fgefzffcz",
-//     googleMapLink: "gvzsfgvrzsfgvrs",
-//   ),
-//   new Place(
-//     '000000004',
-//     100,
-//     'Pythagore',
-//     156.48797894,
-//     80.236598,
-//     address: "14 Yafo,Jerusalem",
-//     phoneNum: "02854978756",
-//     representive: "Yoram",
-//     isKosher: 2,
-//     ageRestrictions: 18,
-//     webLink: "htpp//fgefzffcz",
-//     googleMapLink: "gvzsfgvrzsfgvrs",
-//   ),
-//   new Place(
-//     '000000006',
-//     100,
-//     'Jackie Chan',
-//     156.48797894,
-//     80.236598,
-//     address: "14 Yafo,Jerusalem",
-//     phoneNum: "02854978756",
-//     representive: "Yoram",
-//     isKosher: 2,
-//     ageRestrictions: 18,
-//     webLink: "htpp//fgefzffcz",
-//     googleMapLink: "gvzsfgvrzsfgvrs",
-//   ),
-//   new Place(
-//     '000000106',
-//     100,
-//     'Jackie Chan',
-//     156.48797894,
-//     80.236598,
-//     address: "14 Yafo,Jerusalem",
-//     phoneNum: "02854978756",
-//     representive: "Yoram",
-//     isKosher: 2,
-//     ageRestrictions: 18,
-//     webLink: "htpp//fgefzffcz",
-//     googleMapLink: "gvzsfgvrzsfgvrs",
-//   ),
-//   new Place(
-//     '000000082',
-//     100,
-//     'Jackie Chan',
-//     156.48797894,
-//     80.236598,
-//     address: "14 Yafo,Jerusalem",
-//     phoneNum: "02854978756",
-//     representive: "Yoram",
-//     isKosher: 2,
-//     ageRestrictions: 18,
-//     webLink: "htpp//fgefzffcz",
-//     googleMapLink: "gvzsfgvrzsfgvrs",
-//   ),
-//   new Place(
-//     '000000666',
-//     100,
-//     'Jackie Chan',
-//     156.48797894,
-//     80.236598,
-//     address: "14 Yafo,Jerusalem",
-//     phoneNum: "02854978756",
-//     representive: "Yoram",
-//     isKosher: 2,
-//     ageRestrictions: 18,
-//     webLink: "htpp//fgefzffcz",
-//     googleMapLink: "gvzsfgvrzsfgvrs",
-//   ),
-//   new Place(
-//     '000000008',
-//     100,
-//     'Hatsarfat',
-//     156.48797894,
-//     80.236598,
-//     address: "14 Yafo,Jerusalem",
-//     phoneNum: "02854978756",
-//     representive: "Yoram",
-//     isKosher: 2,
-//     ageRestrictions: 18,
-//     webLink: "htpp//fgefzffcz",
-//     googleMapLink: "gvzsfgvrzsfgvrs",
-//   ),
-// ];
+Queue Opened = Queue();
 
 class _NoticeBoardState extends State<NoticeBoard> {
+  List<Advertisement> advertisements = [];
+  bool isInitialized = false;
+  String details = "";
+
   @override
   void initState() {
-    if (isInitialized) {
-      return;
-    }
     super.initState();
-    initPlacesList();
-    isInitialized = true;
+    initBoardwithFb();
     // In order to populate our Advertisement list
     //Here will be the sorting of the data coming from firebase
   }
 
   //Initiate all the details and colors for all the Advert Card.
-  void initPlacesList() async {
-    // var FbData = await FirebaseHelper.getPlacesFromFb();
+  void initBoardwithFb() async {
     var FbData = await FirebaseHelper.getBulletinBoardFromFb();
 
     int index = 0;
@@ -168,22 +38,43 @@ class _NoticeBoardState extends State<NoticeBoard> {
       String details = "\u2022 Address\b: ${element.location}\n"
           "\u2022 Date\b: ${element.date}\n"
           "\u2022 Entry Price\b: ${element.entryPrice}\n"
-          "\u2022 Link\b: ${element.extraLinkName}\n"
-          "\u2022 Start Time\b: ${element.startTime}\n"
-          "\u2022 Maps\b: ${element.googleMapsLink}\n";
-
+          // "\u2022 Link\b: ${element.extraLinkName}\n"
+          "\u2022 Start Time\b: ${element.startTime}\n";
+      // "\u2022 Maps\b: ${element.googleMapsLink}\n";
       if (index % 2 == 0) {
-        advertisements.add(Advertisement(Color(0xfff3b5a5), element.bulletName,
-            element.eventIcon, Colors.grey[900]!, details,element.googleMapsLink,element.extraLink,element.extraLinkName));
+        advertisements.add(Advertisement(
+            Color(0xfff3b5a5),
+            element.bulletName,
+            element.eventIcon,
+            element.googleMapsLink,
+            element.extraLink,
+            element.extraLinkName,
+            element.date,
+            element.entryPrice,
+            element.location,
+            element.startTime,
+            details));
       } else {
-        advertisements.add(Advertisement(Color(0xfffad5b8),element.bulletName,
-            element.eventIcon, Colors.grey[900]!, details,element.googleMapsLink,element.extraLink,element.extraLinkName));
+        advertisements.add(Advertisement(
+            Color(0xfffad5b8),
+            element.bulletName,
+            element.eventIcon,
+            element.googleMapsLink,
+            element.extraLink,
+            element.extraLinkName,
+            element.date,
+            element.entryPrice,
+            element.location,
+            element.startTime,
+            details));
       }
       index++;
     });
     setState(() {
       advertisements;
     });
+
+    isInitialized = true;
   }
 
   @override
@@ -203,10 +94,14 @@ class _NoticeBoardState extends State<NoticeBoard> {
                       SizedBox(
                         height: 70,
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: advertisements,
-                      )
+                      isInitialized
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: advertisements)
+                          : SpinKitFadingCircle(
+                              color: Colors.white,
+                              size: 50.0,
+                            ),
                     ],
                     // ],
                   ),
@@ -225,18 +120,30 @@ class _NoticeBoardState extends State<NoticeBoard> {
 //Advertisement Widget
 class Advertisement extends StatefulWidget {
   String adv_name;
+  String adv_location;
+  String adv_date;
+  String adv_entryPrice;
+  String adv_startTime;
   String adv_details;
   String adv_icon;
   Color color;
-  Color expansiontilecolor;
   String adv_mapsLink;
   String adv_extraLink;
   String adv_extraLinkName;
 
   //Constructor
-  Advertisement(this.color, this.adv_name, this.adv_icon,
-      this.expansiontilecolor, this.adv_details, this.adv_mapsLink,
-      this.adv_extraLink,this.adv_extraLinkName);
+  Advertisement(
+      this.color,
+      this.adv_name,
+      this.adv_icon,
+      this.adv_mapsLink,
+      this.adv_extraLink,
+      this.adv_extraLinkName,
+      this.adv_date,
+      this.adv_entryPrice,
+      this.adv_location,
+      this.adv_startTime,
+      this.adv_details);
 
   @override
   _AdvertisementState createState() => _AdvertisementState();
@@ -246,19 +153,22 @@ class _AdvertisementState extends State<Advertisement> {
   double _width = 200;
   double _height = 100;
   bool _isOpen = false;
-  var indexof_linkname;
-  @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   indexof_linkname = widget.adv_details.indexOf(widget.adv_extraLinkName);
-  // }
+  String extra_link_name_to_use = "";
+  String maps_links_to_use = "";
 
-  void launchUrl(String url) async{
-    if(await canLaunch(url)){
-      launchUrl(url);
-    }
-    else{
-        throw "Cannot launch the url";
+
+  @override
+  void initState() {
+    super.initState();
+    extra_link_name_to_use = "\u2022 Link\b: ${widget.adv_extraLinkName}\n";
+    maps_links_to_use = "\u2022 Itinerate to the Place\n";
+  }
+
+  void _launchUrl(String url) async {
+    if (await canLaunch(url)) {
+      launch(url);
+    } else {
+      throw "Cannot launch the url";
     }
   }
 
@@ -266,11 +176,10 @@ class _AdvertisementState extends State<Advertisement> {
     if (this.mounted) {
       setState(() {
         if (_isOpen) {
-          _height -= widget.adv_details.length;
+          _height -= widget.adv_details.length + extra_link_name_to_use.length + maps_links_to_use.length;
           _isOpen = false;
         } else {
-          _height += widget.adv_details.length;
-          print(widget.adv_details);
+          _height += widget.adv_details.length + extra_link_name_to_use.length + maps_links_to_use.length;
           _isOpen = true;
           Opened.add(this);
         }
@@ -324,7 +233,7 @@ class _AdvertisementState extends State<Advertisement> {
                     children: <Widget>[
                       //Title widget the does not change dynamically.
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        padding: EdgeInsets.symmetric(vertical: 10.0),
                         child: Cards_Title(widget.adv_name, widget.adv_icon),
                       ),
                       //Advert details.
@@ -338,18 +247,71 @@ class _AdvertisementState extends State<Advertisement> {
                                 child: Padding(
                                   padding: EdgeInsets.fromLTRB(10, 2, 0, 10),
                                   child: SingleChildScrollView(
-                                    child: AutoSizeText(
-                                      widget.adv_details,
-                                      maxLines: 8,
-                                      style: TextStyle(
-                                        fontFamily: 'Font1',
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black87,
-                                        fontSize: 18,
-                                        letterSpacing: 1,
-                                        decorationThickness: 2,
-                                        wordSpacing: 1,
-                                      ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        AutoSizeText(
+                                          widget.adv_details,
+                                          maxLines: 8,
+                                          style: TextStyle(
+                                            fontFamily: 'FontRaleway',
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.black87,
+                                            fontSize: 18,
+                                            letterSpacing: 1,
+                                            decorationThickness: 2,
+                                            wordSpacing: 1,
+                                          ),
+                                        ),
+                                        Container(
+                                          transform: Matrix4.translationValues(0, -20, 0),
+                                          height: double.parse(extra_link_name_to_use.length.toString()),
+                                          child: RichText(
+                                              text: new TextSpan(
+                                                  text: extra_link_name_to_use,
+                                                  style: new TextStyle(
+
+                                                    fontFamily: 'FontRaleway',
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.pink,
+                                                    fontSize: 18,
+                                                    letterSpacing: 1,
+                                                    decorationThickness: 2,
+                                                    wordSpacing: 1,
+                                                  ),
+                                                  // style: ,
+                                                  recognizer:
+                                                  new TapGestureRecognizer()
+                                                    ..onTap = () {
+                                                      _launchUrl(widget
+                                                          .adv_extraLink);
+                                                    })),
+                                        ),
+                                        Container(
+                                          transform: Matrix4.translationValues(0, -20, 0),
+                                          height: double.parse(maps_links_to_use.length.toString()),
+                                          child:
+                                          RichText(
+                                              text: new TextSpan(
+                                                  text: maps_links_to_use,
+                                                  style: new TextStyle(
+                                                    fontFamily: 'FontRaleway',
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.pink,
+                                                    fontSize: 18,
+                                                    letterSpacing: 1,
+                                                    decorationThickness: 2,
+                                                    wordSpacing: 1,
+                                                  ),
+                                                  recognizer:
+                                                  new TapGestureRecognizer()
+                                                    ..onTap = () {
+                                                      _launchUrl(widget
+                                                          .adv_mapsLink);
+                                                    })),
+                                        )
+
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -383,7 +345,7 @@ class Cards_Title extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.fromLTRB(0,0,10,0),
+          padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
           child: CircleAvatar(
             backgroundImage: NetworkImage(fb),
             radius: 40.0,
@@ -395,7 +357,7 @@ class Cards_Title extends StatelessWidget {
               fontSize: 40,
               fontWeight: FontWeight.w400,
               color: Colors.grey[900],
-              fontFamily: 'Font2'),
+              fontFamily: 'FontPacifico'),
         ),
       ],
     );

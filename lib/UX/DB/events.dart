@@ -12,6 +12,7 @@ class Events{
   int curNumPeople;
   int maxNumPeople;
   String placeID;
+  String note;
 
   //constructor
   Events(
@@ -24,7 +25,8 @@ class Events{
       this.endEstimate,
       this.curNumPeople,
       this.maxNumPeople,
-      this.placeID);
+      this.placeID,
+      this.note);
 
 
 
@@ -41,14 +43,14 @@ class Events{
       json['curNumPeople'] as int,
       json['maxNumPeople'] as int,
       json['placeID'] as String,
-
+      json['note'] as String,
     );
   }
 
 
   @override
   String toString() {
-    return 'Events{eventID: $eventID, userID: $userID, userName: $userName, creationDate: $creationDate, status: $status, startEstimate: $startEstimate, endEstimate: $endEstimate, curNumPeople: $curNumPeople, maxNumPeople: $maxNumPeople, placeID: $placeID}';
+    return 'Events{eventID: $eventID, userID: $userID, userName: $userName, creationDate: $creationDate, status: $status, startEstimate: $startEstimate, endEstimate: $endEstimate, curNumPeople: $curNumPeople, maxNumPeople: $maxNumPeople, placeID: $placeID, note: $note}';
   }
   //make a json object
   Map<String, dynamic> toJson() {
@@ -63,6 +65,7 @@ class Events{
       "curNumPeople": this.curNumPeople,
       "maxNumPeople": this.maxNumPeople,
       "placeID": this.placeID,
+      "note":this.note,
     };
   }
 }

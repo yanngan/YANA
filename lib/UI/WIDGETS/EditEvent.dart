@@ -150,7 +150,7 @@ class _EditEventState extends State<EditEvent> {
       makeErrorAlert("חובה למלא את כל השדות בערכים תקינים");
       return;
     }
-    Events theNewEvents = Events(widget.theEvents.eventID,userMap['id']!,'test',formattedDate,true,startEstimate,endEstimate,1,maxNumPeople,widget.thePlace.placeID);
+    Events theNewEvents = Events(widget.theEvents.eventID,userMap['id']!,'test',formattedDate,true,startEstimate,endEstimate,1,maxNumPeople,widget.thePlace.placeID,"");
     widget.theEvents = theNewEvents;
     var res = await Logic.createNewEvents(theNewEvents);
     if(res == null){

@@ -160,26 +160,18 @@ class FirebaseHelper {
     }
   }
 
-/*
-  //in case we want to find an event by place -- need to fix
-  static Future<List<Events>?> getEventsByPlaceID( String placeID) async{
-    DatabaseReference placeRef = FirebaseDatabase.instance.reference().child("places/").child(placeID);
-    DataSnapshot data = await placeRef.once();
-    Map<dynamic, dynamic> values = data.value;
+
+  //in case we want to find an event by place
+  static Future<List<Events>> getEventsByPlaceID(String placeID) async{
     List<Events> events = [];
     //need to fix with await
-     values.forEach((key, values) async {
-      var doc = await FirebaseFirestore.instance.collection('Events').doc(values).get();
-      // print(doc.data());
-      if (doc.exists) {
-        events.add(Events.fromJson(doc.data()));
-        print("im here 0");
-      }
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Events').where("placeID", isEqualTo: placeID).get();
+    querySnapshot.docs.forEach((doc) {
+      events.add(Events.fromJson(doc.data()));
     });
-    print("im here 1 ${events}");
     return events;
   }
-*/
+/*
   //in case we want to find an event by place -- need to fix
   static Future<List<Events>> getEventsByPlaceID(String placeID) async {
     DatabaseReference placeRef =
@@ -197,7 +189,7 @@ class FirebaseHelper {
     });
     return events1;
   }
-
+*/
   static Future<List<Events>> getEventsFromFb() async {
     //read from collection
     QuerySnapshot querySnapshot =
@@ -209,6 +201,48 @@ class FirebaseHelper {
     });
     return events;
   }
+
+  static Future<List<Events>> getEventsByStatus(bool isActive) async{
+    List<Events> events = [];
+    //need to fix with await
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Events').where("status", isEqualTo:  isActive).get();
+    querySnapshot.docs.forEach((doc) {
+      events.add(Events.fromJson(doc.data()));
+    });
+    return events;
+  }
+
+  //to get
+  static Future<List<Events>> getEventsByDate(String date) async{
+    List<Events> events = [];
+    //need to fix with await
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Events')
+        .where("startEstimate", isGreaterThanOrEqualTo:   date)
+        .where("endEstimate", isLessThanOrEqualTo:   date)
+        .get();
+    querySnapshot.docs.forEach((doc) {
+      events.add(Events.fromJson(doc.data()));
+    });
+    return events;
+  }
+
+  //to get
+  // static Future<List<Events>> getEventsBellowMaxCapacity() async{
+  //   List<Events> events = [];
+  //   //need to fix with await
+  //   QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Events').get();
+  //   querySnapshot.docs.forEach((doc) {
+  //     Events e1 =Events.fromJson(doc.data());
+  //     if( e1.curNumPeople < e1.maxNumPeople)
+  //       events.add(e1);
+  //   });
+  //   print(events);
+  //   print(events.length);
+  //
+  //   return events;
+  // }
+
+
 //end Events-------------------------------------------------
 
 // start users-------------------------------------------------
@@ -254,4 +288,9 @@ class FirebaseHelper {
     }
   }
 //end users-------------------------------------------------
+
+
+
+
+
 }

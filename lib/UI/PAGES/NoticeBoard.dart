@@ -85,7 +85,7 @@ class _NoticeBoardState extends State<NoticeBoard> {
         children: [
           Container(
             color: Colors.amber,
-            child: ListView(children: [
+            child: ListView(children: [// TODO Lidor add an empty screen option
               Padding(
                 padding: EdgeInsets.fromLTRB(5, 0, 0, 40),
                 child: Container(

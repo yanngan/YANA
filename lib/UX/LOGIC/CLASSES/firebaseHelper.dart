@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:yana/UX/DB/places.dart';
@@ -75,9 +77,11 @@ class FirebaseHelper{
     return await FirebaseFirestore.instance.collection('Events').doc().id;
   }
 
-  static Future<bool> sendEventToFb(Events event) async {
+  static Future<bool> sendEventToFb(Events event,bool thisIsANewEvent) async {
     //add to real-time firebase on place id the new event
-    FirebaseDatabase.instance.reference().child("places/").child(event.placeID).push().set(event.eventID);
+    if(thisIsANewEvent){
+      FirebaseDatabase.instance.reference().child("places/").child(event.placeID).push().set(event.eventID);
+    }
 
     FirebaseFirestore fireStore = FirebaseFirestore.instance;
     //write to collection
@@ -151,6 +155,30 @@ class FirebaseHelper{
     return events;
 
   }
+  //get all the event that the user create+ Events he going to/ask to going to
+  static Future<List<Events>> getUserEvents(String userID) async{
+    QuerySnapshot querySnapshot =  await FirebaseFirestore.instance.collection('Events').where('userID',isEqualTo: userID).get();
+    List<Events> events = [];
+    querySnapshot.docs.forEach((doc) {
+      events.add(Events.fromJson(doc.data()));
+    });
+
+    querySnapshot =  await FirebaseFirestore.instance.collection('Attendance').where('idUser',isEqualTo: userID).get();
+    for(var alias in querySnapshot.docs){
+      dynamic json = alias.data();
+      print("########## idEvent = " + json['idEvent']);
+      QuerySnapshot tempQuerySnapshot =  await FirebaseFirestore.instance.collection('Events').where('eventID',isEqualTo: json['idEvent']).get();
+      print("tempQuerySnapshot.docs.length = ${tempQuerySnapshot.docs.length}");
+      tempQuerySnapshot.docs.forEach((doc) {
+        var tempEvent = Events.fromJson(doc.data());
+        print("----------------in tempEvent------------------");
+        print(tempEvent);
+        events.add(tempEvent);
+      });
+    }
+    //print(events);
+    return events;
+  }
 //end Events-------------------------------------------------
 
 
@@ -198,5 +226,8 @@ class FirebaseHelper{
       return false;
     }
   }
+
+
+
 //end users-------------------------------------------------
 }

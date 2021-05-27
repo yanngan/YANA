@@ -22,7 +22,7 @@ class _AddEventState extends State<AddEvent> {
   @override
   Widget build(BuildContext context) {
     double width = (MediaQuery.of(context).size.width);
-    double height = ((MediaQuery.of(context).size.height)/2);
+    double height = ((MediaQuery.of(context).size.height)/2)+50;
     return  Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
@@ -35,12 +35,23 @@ class _AddEventState extends State<AddEvent> {
           ),
           child: Column(
             children: [
-              Text("hello"),
-
               createTextField('estimateDate','תאריך רצוי', 'date', ),
               createTextField('startEstimateTime','שעת התחלה', 'time', ),
               createTextField('endEstimateTime','שעת סיום', 'time', ),
-              createTextField('maxNumPeople','כמה אנשים', 'int', ),
+              Text("?כמה אנשים תרצו להיות", style: TextStyle(color: Colors.blueGrey),),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(child: Text('+',style: TextStyle(color: Colors.white),),onPressed: incrementmaxNumPeople,style:ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.pink)) ,),
+                  Container(
+                    width: 30,
+                    child: createTextField('maxNumPeople','כמה אנשים', 'int', ),
+                  ),
+                  ElevatedButton(child: Text('-',style: TextStyle(color: Colors.white),),onPressed: decrementmaxNumPeople,style:ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.pink))),
+                ],
+              ),
+              SizedBox(height: 15,),
+              createTextField('note','הערות', 'text', ),
               SizedBox(height: 30,),
               ElevatedButton(
                 style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.pink),),
@@ -58,8 +69,10 @@ class _AddEventState extends State<AddEvent> {
   createTextField(String name,String hint,String type){
     if(!this.allField.containsKey(name)){
       this.allField[name] = TextEditingController();
+      if(type == 'int'){
+        (this.allField[name]!).text = '2';
+      }
     }
-    var onTap;
     switch(type){
       case 'date':
         final format = DateFormat("yyyy-MM-dd");
@@ -112,20 +125,34 @@ class _AddEventState extends State<AddEvent> {
           },
         );
       case 'int':
-      case 'string':
-        break;
+        return TextField(
+          textAlignVertical: TextAlignVertical.center,
+          readOnly: true,
+          textAlign: TextAlign.right,
+          decoration: InputDecoration(
+              fillColor: Colors.white,
+              hintText:hint,
+              hintStyle: TextStyle(color: Colors.grey )
+          ),
+          controller: this.allField[name],
+        );
+      case 'text':
+        return Theme(
+          data: Theme.of(context).copyWith(splashColor: Colors.transparent),
+          child: TextField(
+            textAlign: TextAlign.right,
+            maxLines: 3,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              hintText:hint,
+              hintStyle: TextStyle(color: Colors.grey),
+              
+            ),
+            controller: this.allField[name],
+          ),
+        );
     }
-
-    return TextField(
-
-      textAlign: TextAlign.right,
-      decoration: InputDecoration(
-          fillColor: Colors.white,
-          hintText:hint,
-          hintStyle: TextStyle(color: Colors.grey )
-      ),
-      controller: this.allField[name],
-    );
   }
 
   saveTheEvent()async{
@@ -152,8 +179,8 @@ class _AddEventState extends State<AddEvent> {
       return;
     }
     String newId = await FirebaseHelper.generateEventId();
-    Events theNewEvents = Events(newId,userMap['id']!,'test',formattedDate,true,startEstimate,endEstimate,1,maxNumPeople,widget.thePlace.placeID);
-    var res = await Logic.createNewEvents(theNewEvents);
+    Events theNewEvents = Events(newId,userMap['id']!,'test',formattedDate,true,startEstimate,endEstimate,1,maxNumPeople,widget.thePlace.placeID,(allField['note']!).text);
+    var res = await Logic.createEditNewEvents(theNewEvents,true);
     if(res == null){
       makeErrorAlert("אירעה שגיאה בתהליך השמירה, נסה שנית");
     }
@@ -161,27 +188,6 @@ class _AddEventState extends State<AddEvent> {
     // Navigator.pushReplacement(context, route);
     Navigator.of(context).pop();
     MapLogic.addEditSeePoints(context,'see',theEvent:theNewEvents,thePlace:widget.thePlace);
-  }
-
-
-  _selectDate(TextEditingController controller)async{
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(const Duration(days: 50)),
-    ).then((value){
-      print(value.toString());
-      setState(() {
-        controller.text = value.toString();
-      });
-    });
-  }
-  _selectTime(TextEditingController controller)async{
-    controller.text = (await showTimePicker (
-      initialTime: TimeOfDay.now(),
-      context: context,
-    )).toString();
   }
 
   makeErrorAlert(String text){
@@ -205,6 +211,26 @@ class _AddEventState extends State<AddEvent> {
         );
       },
     );
+  }
+
+
+  incrementmaxNumPeople(){
+    int res = int.parse((allField['maxNumPeople']!).text);
+    if(res > 15 ){
+      return;
+    }
+    res++;
+    (allField['maxNumPeople']!).text = "$res";
+
+  }
+  decrementmaxNumPeople(){
+    int res = int.parse((allField['maxNumPeople']!).text);
+    if(res < 3){
+      return;
+    }
+    res--;
+    (allField['maxNumPeople']!).text = "$res";
+
   }
 
 }

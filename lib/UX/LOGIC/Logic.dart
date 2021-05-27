@@ -1,6 +1,7 @@
 //FLUTTER
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:yana/UI/PAGES/AllPage.dart';
 //EXCEPTIONS
 import '../DB/allDB.dart';
 import 'CLASSES/allClasses.dart';
@@ -34,7 +35,7 @@ class Logic{
     return toReturn;
   }
 
-  static Future<Events?> createNewEvents(Events theNewEvents) async{
+  static Future<Events?> createEditNewEvents(Events theNewEvents,bool thisIsANewEvent) async{
     // todo: check internet connection
 
     //todo : Check there no problem with new Events:
@@ -52,7 +53,7 @@ class Logic{
     // User tempU = new User("userID","userName","email","sex","dateOfBirth",0,"hobbies","bio","livingArea","workArea","academicInstitution","fieldOfStudy","smoking","fbPhoto","signUpDate",false,true);
     // Events tempE = new Events("eventID","tempU" , "tempU" , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID");
     // return tempE;
-    if(await FirebaseHelper.sendEventToFb(theNewEvents)){
+    if(await FirebaseHelper.sendEventToFb(theNewEvents,thisIsANewEvent)){
       return theNewEvents;
     }
     else{
@@ -69,7 +70,7 @@ class Logic{
     // - trow Error if have problem
     // - return the Events we have found
     User tempU = new User("userID","userName","email","sex","dateOfBirth",0,"hobbies","bio","livingArea","workArea","academicInstitution","fieldOfStudy","smoking","fbPhoto","signUpDate",false,true);
-    Events tempE = new Events("eventID","tempU" , "tempU" , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID");
+    Events tempE = new Events("eventID","tempU" , "tempU" , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID","blabla");
     return tempE;
   }
 
@@ -114,44 +115,16 @@ class Logic{
 
 
   static Future<List<Events>> getAllUserEvent()async{
-    return await FirebaseHelper.getEventsFromFb();
+    return await FirebaseHelper.getUserEvents(userMap['id']!);
   }
 
 
-  static Future<List<Events>> getEventsByCondition({int status = -1,String startEstimate = "",String endEstimate = "",String PlacesName= "",bool going=false})async{
-    User tempU = new User("userID","userName","email","sex","dateOfBirth",0,"hobbies","bio","livingArea","workArea","academicInstitution","fieldOfStudy","smoking","fbPhoto","signUpDate",false,true);
-    Events tempE = new Events("eventID","tempU" ,"tempU" , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID");
-
-    return [
-      tempE,tempE,tempE,tempE,tempE,tempE,tempE,tempE,
-    ];
-    /*Padding(
-        padding: EdgeInsets.all(10.0),
-          child: Column(
-
-            children: [
-              SizedBox(height: 20.0),
-              Center(
-                child: FlatButton.icon(
-                  icon : Icon(Icons.login),
-                  onPressed: () {
-                    final databaseReference = FirebaseDatabase.instance.reference();
-                    var user = new User("yisrael", "yisrael id", "dateOfBirth", "bio","fhoto","signUpDate" ,false, true, "israel", "male");
-                    var userId = databaseReference.child('users/').push();
-                    userId.set(user.toJson());
-                    var Places = new Places("PlacesID", "address", "phoneNumber", "representative", 10, "vibe", true, "openingHours", "name", 18, "webLink.com", "googleMapLink.com");
-                    var PlacesId = databaseReference.child('Places/').push();
-                    PlacesId.set(Places.toJson());
-                    var Events = new Events("EventsID", user, "creationDate", true, "startEstimate"," endEstimate", 3, 5, "PlacesID");
-                    var EventsId = databaseReference.child('Events/').push();
-                    EventsId.set(Events.toJson());
-                    },
-                    label: Text("test firebase"),
-                ),
-              ),
-            ],
-          ),
-        ),*/
+  static Future<List<Events>> getEventsByCondition({int maxNumPeople = -1,String estimateDate='',String startEstimateTime = "",String placesName= ""})async{
+    print("maxNumPeople = $maxNumPeople");
+    print("estimateDate = $estimateDate");
+    print("startEstimateTime = $startEstimateTime");
+    print("placesName = $placesName");
+    return await getAllUserEvent();
   }
 
 }

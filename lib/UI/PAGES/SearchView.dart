@@ -88,8 +88,10 @@ class _SearchViewState extends State<SearchView> {
                                 ),
                                 onPressed: incrementmaxNumPeople,
                                 style: ButtonStyle(
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(25),
+                                    shape: MaterialStateProperty.all<CircleBorder>(CircleBorder(
+                                      // borderRadius: BorderRadius.circular(25),
+                                        side: BorderSide(color: Colors.black38)
+
                                     )),
                                     backgroundColor:
                                         MaterialStateProperty.all(Colors.pink)),
@@ -112,8 +114,9 @@ class _SearchViewState extends State<SearchView> {
                                   ),
                                   onPressed: decrementmaxNumPeople,
                                   style: ButtonStyle(
-                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(25),
+                                      shape: MaterialStateProperty.all<CircleBorder>(CircleBorder(
+                                        // borderRadius: BorderRadius.circular(20),
+                                        side: BorderSide(color: Colors.black38)
                                       )),
                                       backgroundColor: MaterialStateProperty.all(
                                           Colors.pink))),
@@ -141,7 +144,8 @@ class _SearchViewState extends State<SearchView> {
                                     shadowColor: MaterialStateProperty.all<Color>(Colors.black),
                                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(25),
-                                    ))
+                                      side: BorderSide(color: Colors.black54)
+                                    )),
                                   ),
                                   child: Text(
                                     "חפש",

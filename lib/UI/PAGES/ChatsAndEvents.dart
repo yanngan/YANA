@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:yana/UX/DB/allDB.dart';
+import 'package:yana/UX/LOGIC/CLASSES/allClasses.dart';
 import 'AllPage.dart';
 
 
@@ -80,8 +82,24 @@ class _ChatsAndEventsState extends State<ChatsAndEvents> {
   }
 
 
-  switchPage(){
+  switchPage()async{
     print("hello");
+    Place p1 = new Place("placeID11", "address", "phoneNumber", "representative", 14, "vibe", true,
+        "openingHours", "yisrael name", 18, "webLink", "googleMapLink", "latitude", "longitude");
+    FirebaseHelper.sendPlaceToFb(p1);
+    Events e1 = new Events("eventID", "userID", "userName", "creationDate",
+        true, "1997-03-03 11:22", "endEstimate", 7, 10, p1.placeID, "note");
+    FirebaseHelper.sendEventToFb(e1);
+    print("*******************************\n");
+
+    // var events =await FirebaseHelper.getEventsByMaxCapacity(20);
+    // print(events.length);
+    // print("*******************************\n");
+    //  var events =await FirebaseHelper.getEventsByName("yisrael name");
+    // print(events);
+    // print(events.length);
+    print("*******************************\n");
+
     setState(() {
       whichPage = !whichPage;
     });

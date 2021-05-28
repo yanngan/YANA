@@ -14,18 +14,6 @@ class MapLogic{
    */
   static getMarkers(BuildContext context) async {
     Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
-    /*CameraPosition currentUserLocation = await Logic.getUserLocation();
-    var latitude = currentUserLocation.target.latitude;
-    var longitude = currentUserLocation.target.longitude;
-    for(int i = 0 ;i < 10 ; i++){
-      //String text = "latitude = $latitude longitude = $longitude";
-      Place tempPlace = Place("$i", "address", "phoneNumber", "representative", 10, "vibe", true,"openingHours", "name", 21, "webLink", "googleMapLink");
-
-      //Event tempEvent = new Event(tempPlace,"event id-$i");
-      markers[MarkerId("$i")] = new MyMarker(tempPlace,markerId: MarkerId("$i"),position: LatLng(latitude+i,longitude+i),onTap: (){
-        seeListEventInPlace(context,tempPlace);
-      });
-    }*/
     List<Place> places = await Logic.getAllPlaces();
     places.forEach((onePlace) {
       markers[MarkerId(onePlace.placeID)] = new MyMarker(onePlace,markerId: MarkerId(onePlace.placeID),position: LatLng(double.parse(onePlace.latitude),double.parse(onePlace.longitude)),onTap: (){
@@ -48,17 +36,17 @@ class MapLogic{
     );
   }
 
-  static addEditSeePoints(BuildContext context,String action,{var theEvent,var thePlace,bool pop=true}) async{
+  static addEditSeePoints(BuildContext context,String action,{var theEvent,var thePlace,bool totallyPop = false}) async {
     var screen;
-    switch(action){
+    switch (action) {
       case 'add':
         screen = AddEvent(thePlace);
         break;
       case 'edit':
-        screen = EditEvent(thePlace,theEvent);
+        screen = EditEvent(thePlace, theEvent);
         break;
       case 'see':
-        screen = SeeEvent(thePlace,theEvent);
+        screen = SeeEvent(thePlace, theEvent);
         break;
     }
     showDialog(
@@ -72,12 +60,47 @@ class MapLogic{
           content: screen,
           actions: <Widget>[
             new TextButton(
-              child: new Text("סגור",style: TextStyle(color: Colors.blueGrey),),
+              child: new Text(
+                "סגור", style: TextStyle(color: Colors.blueGrey),),
               onPressed: () {
-                if(pop){
-                  Navigator.of(context).pop();
-                  seeListEventInPlace(context,thePlace);
+                Navigator.of(context).pop();
+                if (!totallyPop) {
+                  print("in popTotally");
+                  seeListEventInPlace(context, thePlace);
                 }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+  static askIfReallyWantToCloseTheEditAdd(BuildContext context, Place thePlace,bool totallyPop) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.amber,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))
+          ),
+          content: Text("הנתונים לא נשמרו"),
+          actions: <Widget>[
+            TextButton(
+              child: new Text(
+                "אל תשמור", style: TextStyle(color: Colors.blueGrey),),
+              onPressed: () {
+
+                seeListEventInPlace(context, thePlace);
+              },
+            ),
+            TextButton(
+              child: new Text(
+                "ברצוני להמשיך", style: TextStyle(color: Colors.blueGrey),),
+              onPressed: () {
+
               },
             ),
           ],

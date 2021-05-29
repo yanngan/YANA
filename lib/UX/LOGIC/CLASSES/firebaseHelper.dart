@@ -229,22 +229,11 @@ class FirebaseHelper {
     });
     return events;
   }
-
-/////-------------------------not finish-------------------- work's for now but need to find another way
+//get all events by a place name
   static Future<List<Events>> getEventsByName(String name) async{
     List<Events> events = [];
-    if(name.isEmpty)
-      return events;
-    //get a place id by name
-    String placeID="";
-    //get place id from real time
-    DataSnapshot data = await FirebaseDatabase.instance.reference().child('places/').child(name).once();
-    placeID = data.value;
-    if(placeID == null)
-      return events;
-    //
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Events')
-        .where("placeID", isEqualTo: placeID)
+        .where("placeName", isGreaterThanOrEqualTo: name)
         .get();
     querySnapshot.docs.forEach((doc) {
       events.add(Events.fromJson(doc.data()));
@@ -265,17 +254,65 @@ class FirebaseHelper {
     return events;
   }
 
-  //-------------- doesn't work
+  //get all events that from a given date and more.. date <= List<events>
+  //date= 2021-03-03 then the function will returns 2021-03-03, 2021-04-04...
   static Future<List<Events>> getEventsByDate(String date) async{
     List<Events> events = [];
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Events')
-        .where("startEstimate",   arrayContains:  date)
+        .where("startEstimate",   isGreaterThanOrEqualTo:   date)
         .get();
     querySnapshot.docs.forEach((doc) {
       events.add(Events.fromJson(doc.data()));
     });
     return events;
   }
+
+  /*
+  static Future<List<Events>> getEventsByLocation(double lat, double lon, double distance) async{
+    List<Events> events = [];
+    // double lat = 0.0144927536231884;
+    // double lon = 0.0181818181818182;
+    GeoPoint userGeoPoint = user.geoPoint["geopoint"];
+    double lowerLat = userGeoPoint.latitude - (lat * distance);
+    double lowerLon = userGeoPoint.longitude - (lon * distance);
+
+    double greaterLat = userGeoPint.latitude + (lat * distance);
+    double greaterLon = userGeoPint.longitude + (lon * distance);
+
+    GeoPoint lesserGeopoint = GeoPoint(lowerLat, lowerLon);
+    GeoPoint greaterGeopoint = GeoPoint(greaterLat, greaterLon);
+    Query query = Firestore.instance
+        .collection(path)
+        .where("geoPoint.geopoint", isGreaterThan: lesserGeopoint)
+        .where("geoPoint.geopoint", isLessThan: greaterGeopoint)
+        .limit(limit);
+    return events;
+  }
+*/
+
+
+  //get events by the 3 parameters : name, max capacity, date.
+  static Future<List<Events>> getEventsBySearchCombination (
+      {String name="", int capacity=-1, String date= ""}) async{
+    List<Events> events = [];
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Events')
+          .where("startEstimate",   isGreaterThanOrEqualTo: date)
+           .get();
+         querySnapshot.docs.forEach((doc) {
+           events.add(Events.fromJson(doc.data()));
+         });
+
+  if(capacity != -1){
+    events = events.where((element) => element.maxNumPeople <= capacity).toList();
+  }
+  if(name.isNotEmpty) {
+    events = events.where((element) =>
+        element.placeName.toLowerCase().contains(name.toLowerCase())).toList();
+  }
+  return events;
+  }
+
+
 
 
 

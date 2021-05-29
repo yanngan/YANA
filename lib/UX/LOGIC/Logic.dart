@@ -69,7 +69,7 @@ class Logic{
     // - trow Error if have problem
     // - return the Events we have found
     User tempU = new User("userID","userName","email","sex","dateOfBirth",0,"hobbies","bio","livingArea","workArea","academicInstitution","fieldOfStudy","smoking","fbPhoto","signUpDate",false,true);
-    Events tempE = new Events("eventID","tempU" , "tempU" , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID","blabla");
+    Events tempE = new Events("eventID","tempU" , "tempU" , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID","Aroma","blabla");
     return tempE;
   }
 
@@ -120,7 +120,7 @@ class Logic{
 
   static Future<List<Events>> getEventsByCondition({int status = -1,String startEstimate = "",String endEstimate = "",String PlacesName= "",bool going=false})async{
     User tempU = new User("userID","userName","email","sex","dateOfBirth",0,"hobbies","bio","livingArea","workArea","academicInstitution","fieldOfStudy","smoking","fbPhoto","signUpDate",false,true);
-    Events tempE = new Events("eventID","tempU" ,"tempU" , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID","blabla");
+    Events tempE = new Events("eventID","tempU" ,"tempU" , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID","aroma","blabla");
 
     return [
       tempE,tempE,tempE,tempE,tempE,tempE,tempE,tempE,

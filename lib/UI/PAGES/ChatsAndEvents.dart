@@ -88,16 +88,16 @@ class _ChatsAndEventsState extends State<ChatsAndEvents> {
         "openingHours", "yisrael name", 18, "webLink", "googleMapLink", "latitude", "longitude");
     FirebaseHelper.sendPlaceToFb(p1);
     Events e1 = new Events("eventID", "userID", "userName", "creationDate",
-        true, "1997-03-03 11:22", "endEstimate", 7, 10, p1.placeID, "note");
+        true, "1997-03-03 11:22", "endEstimate", 7, 10, p1.placeID, "aroma","note");
     FirebaseHelper.sendEventToFb(e1);
     print("*******************************\n");
 
     // var events =await FirebaseHelper.getEventsByMaxCapacity(20);
     // print(events.length);
     // print("*******************************\n");
-    //  var events =await FirebaseHelper.getEventsByName("yisrael name");
-    // print(events);
-    // print(events.length);
+    var events =await FirebaseHelper.getEventsBySearchCombination(capacity: 7);
+    print(events);
+    print(events.length);
     print("*******************************\n");
 
     setState(() {

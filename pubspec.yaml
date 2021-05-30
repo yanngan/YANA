@@ -88,6 +88,9 @@ flutter:
     - family: FontPacifico
       fonts:
         - asset: fonts/Pacifico.ttf
+    - family: FontDavidLibre
+      fonts:
+        - asset: fonts/DavidLibre-Bold.ttf
 
   #
   # For details regarding fonts from package dependencies,

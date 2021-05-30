@@ -30,8 +30,6 @@ class Events{
       this.placeName,
       this.note);
 
-
-
   //parse a json to event object
   factory Events.fromJson(dynamic json) {
     return Events(
@@ -48,10 +46,7 @@ class Events{
       json['placeName'] as String,
       json['note'] as String,
     );
-  }
 
-
-  @override
   String toString() {
     return 'Events{eventID: $eventID, userID: $userID, userName: $userName, creationDate: $creationDate, status: $status, startEstimate: $startEstimate, endEstimate: $endEstimate, curNumPeople: $curNumPeople, maxNumPeople: $maxNumPeople, placeID: $placeID,placeName: $placeName, note: $note}';
   }

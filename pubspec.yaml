@@ -44,6 +44,8 @@ dependencies:
   auto_size_text: ^3.0.0-nullsafety.0
   flutter_spinkit: ^5.0.0
   datetime_picker_formfield: ^2.0.0
+  flutter_linkify: ^5.0.2
+  url_launcher: ^6.0.4
 
 dev_dependencies:
   flutter_test:
@@ -77,10 +79,10 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Font1
+    - family: FontRaleway
       fonts:
-        - asset: fonts/skia.ttf
-    - family: Font2
+        - asset: fonts/Raleway-SemiBold.ttf
+    - family: FontPacifico
       fonts:
         - asset: fonts/Pacifico.ttf
 

@@ -18,7 +18,7 @@ class _SeeEventState extends State<SeeEvent> {
   @override
   Widget build(BuildContext context) {
     double width = (MediaQuery.of(context).size.width);
-    double height = ((MediaQuery.of(context).size.height)/2);
+    double height = ((MediaQuery.of(context).size.height)/3);
     return  Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
@@ -31,37 +31,44 @@ class _SeeEventState extends State<SeeEvent> {
           ),
           child: Column(
             children: [
-              Text("hello"),
               Row(
                 textDirection: TextDirection.rtl,
                 children: [
-                  Text("שם יוצר האירוע:"),
-                  SizedBox(width: 30,),
-                  Text(widget.theEvents.userName),
+                  Text("שם יוצר האירוע:",textDirection: TextDirection.rtl,),
+                  SizedBox(width: 10,),
+                  Text(widget.theEvents.userName,textDirection: TextDirection.rtl,),
                 ],
               ),
               Row(
                 textDirection: TextDirection.rtl,
                 children: [
                   Text("כמה אנשים באים:",textDirection: TextDirection.rtl,),
-                  SizedBox(width: 30,),
-                  Text("${widget.theEvents.curNumPeople}"),
+                  SizedBox(width: 10,),
+                  Text("${widget.theEvents.curNumPeople}",textDirection: TextDirection.rtl,),
                 ],
               ),
               Row(
                 textDirection: TextDirection.rtl,
                 children: [
                   Text("התחלה:",textDirection: TextDirection.rtl,),
-                  SizedBox(width: 30,),
-                  Text("${widget.theEvents.startEstimate}"),
+                  SizedBox(width: 10,),
+                  Text("${widget.theEvents.startEstimate}",textDirection: TextDirection.rtl,),
                 ],
               ),
               Row(
                 textDirection: TextDirection.rtl,
                 children: [
                   Text("סיום צפוי:",textDirection: TextDirection.rtl,),
-                  SizedBox(width: 30,),
-                  Text("${widget.theEvents.endEstimate}"),
+                  SizedBox(width: 10,),
+                  Text("${widget.theEvents.endEstimate}",textDirection: TextDirection.rtl,),
+                ],
+              ),
+              Row(
+                textDirection: TextDirection.rtl,
+                children: [
+                  Text("הערות:",textDirection: TextDirection.rtl,),
+                  SizedBox(width: 10,),
+                  Text("${widget.theEvents.note}",textDirection: TextDirection.rtl,),
                 ],
               ),
               SizedBox(height: 30,),

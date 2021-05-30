@@ -2,6 +2,8 @@
 
 export 'MyCurvedNavigationBar.dart';
 export 'MyAppBar.dart';
-export 'AddSeeEvent.dart';
+export 'AddEvent.dart';
 export 'ListEventsForMap.dart';
+export 'EditEvent.dart';
+export 'SeeEvent.dart';
 export 'NeumorphismArt.dart';

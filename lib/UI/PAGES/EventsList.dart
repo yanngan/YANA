@@ -6,7 +6,7 @@ import 'package:yana/UX/LOGIC/CLASSES/allClasses.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
 import 'package:yana/UX/LOGIC/MapLogic.dart';
 
-import 'AllPage.dart';
+import 'Utilities.dart';
 
 class EventsList extends StatefulWidget {
   @override

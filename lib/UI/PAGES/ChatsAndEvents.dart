@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:yana/UX/DB/allDB.dart';
+import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
 import 'package:yana/UX/LOGIC/CLASSES/allClasses.dart';
-import 'AllPage.dart';
+import 'Utilities.dart';
 
 class ChatsAndEvents extends StatefulWidget {
+
+  final Function callback;
+  ChatsAndEvents(this.callback);
+
   @override
   _ChatsAndEventsState createState() => _ChatsAndEventsState();
 }
@@ -15,7 +20,7 @@ class _ChatsAndEventsState extends State<ChatsAndEvents> {
     var screen;
     var theBackgroundColor;
     if (whichPage) {
-      screen = ChatList();
+      screen = ChatList(this.widget.callback);
       theBackgroundColor = Colors.amber;
     } else {
       screen = EventsList();

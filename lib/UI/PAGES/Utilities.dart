@@ -13,6 +13,7 @@ export 'NoticeBoard.dart';
 export 'EventsList.dart';
 export 'ChatList.dart';
 export 'ChatsAndEvents.dart';
+export 'NotificationPage.dart';
 
 // Application Constant Keys
 
@@ -23,7 +24,7 @@ const String NeumorphismOuter       =   'NEUMORPHISM_OUTER';
 const String NeumorphismOuterChip   =   'NEUMORPHISM_OUTER_CHIP';
 const bodyColor                     =   Colors.amber;
 const senderColor                   =   bodyColor;
-const receiverColor                 =   Colors.purple;
+const receiverColor                 =   Colors.pink;
 
 // Pages indexes
 const int ChatsAndEvents_index      =   0;

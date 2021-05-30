@@ -54,7 +54,7 @@ class Logic {
     // User tempU = new User("userID","userName","email","sex","dateOfBirth",0,"hobbies","bio","livingArea","workArea","academicInstitution","fieldOfStudy","smoking","fbPhoto","signUpDate",false,true);
     // Events tempE = new Events("eventID","tempU" , "tempU" , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID");
     // return tempE;
-    if (await FirebaseHelper.sendEventToFb(theNewEvents, thisIsANewEvent)) {
+    if (await FirebaseHelper.sendEventToFb(theNewEvents)) {
       return theNewEvents;
     } else {
       return null;

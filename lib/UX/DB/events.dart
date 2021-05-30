@@ -52,6 +52,7 @@ class Events{
       json['placeName'] as String,
       json['note'] as String,
     );
+  }
 
   String toString() {
     return 'Events{eventID: $eventID, userID: $userID, userName: $userName, creationDate: $creationDate, status: $status, startEstimate: $startEstimate, endEstimate: $endEstimate, curNumPeople: $curNumPeople, maxNumPeople: $maxNumPeople, placeID: $placeID, placeName: $placeName, note: $note}';

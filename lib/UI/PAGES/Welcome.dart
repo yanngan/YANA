@@ -184,7 +184,7 @@ class _WelcomeState extends State<Welcome> {
     }
     if(internet && !isOpen){
       setState(() {
-        this.widget.callback(2, new Map<String, String>(), new Map<String, String>());
+        this.widget.callback(2, new Map<String, String>(), new Map<String, String>(), Welcome_index);
       });
     }
   }

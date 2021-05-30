@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:yana/UI/WIDGETS/allWidgets.dart';
+import 'package:yana/UI/main.dart';
 import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
 import 'package:intl/intl.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
@@ -35,6 +37,7 @@ class _ChatState extends State<Chat> {
   List<Message> messages = [];
   TextAlign textAlign = TextAlign.end;
   String messageText = "", _me = "", _meID = "", _him = "", _himID = "";
+  double bottomPadding = 14.0, topPadding = 75.0, _keyboardHeight = 0.0;
 
   @override
   void initState() {
@@ -85,6 +88,8 @@ class _ChatState extends State<Chat> {
     double inputFieldHeight = (MediaQuery.of(context).size.height / 11);
     double screenHeight = (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top);
 
+    checkKeyboard();
+
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
@@ -93,41 +98,66 @@ class _ChatState extends State<Chat> {
         body: Stack(
           children: [
             SafeArea(
-              child: SingleChildScrollView(
-                child: Container(
-                  height: screenHeight,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    verticalDirection: VerticalDirection.down,
-                    children: [
-                      Expanded(
-                        flex: 10,
-                        child: Container(
-                          alignment: Alignment.topCenter,
-                          color: bodyColor,
-                          child: ListView.separated(
-                            controller: _scrollController,
-                            separatorBuilder: (BuildContext context, int index) {
-                              return SizedBox(height: 15);
-                            },
-                            shrinkWrap: true,
-                            itemCount: messages.length,
-                            itemBuilder: (context, index){
-                              String flag = NeumorphismOuter;
-                              String _text = messages[index].message;
-                              var msgColor;
-                              Alignment msgAlignment;
-                              if(messages[index].selfName == _me/*userMap['id'].toString()*/){
-                                msgColor = senderColor;
-                                msgAlignment = Alignment.centerRight;
-                              }else{
-                                msgColor = receiverColor[300];
-                                msgAlignment = Alignment.centerLeft;
-                              }
-                              if(index == 0){
-                                return Padding(
-                                  padding: const EdgeInsets.only(top: 75.0),
-                                  child: Neumorphism(
+              child: Stack(
+                children: [
+                  Container(
+                    height: screenHeight,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      verticalDirection: VerticalDirection.down,
+                      children: [
+                        Expanded(
+                          flex: 10,
+                          child: Container(
+                            alignment: Alignment.topCenter,
+                            color: bodyColor,
+                            child: ListView.separated(
+                              controller: _scrollController,
+                              separatorBuilder: (BuildContext context, int index) {
+                                return SizedBox(height: 15);
+                              },
+                              shrinkWrap: true,
+                              itemCount: messages.length,
+                              itemBuilder: (context, index){
+                                String flag = NeumorphismOuter;
+                                String _text = messages[index].message;
+                                var msgColor;
+                                Alignment msgAlignment;
+                                if(messages[index].selfName == _me/*userMap['id'].toString()*/){
+                                  msgColor = senderColor;
+                                  msgAlignment = Alignment.centerRight;
+                                }else{
+                                  msgColor = receiverColor[300];
+                                  msgAlignment = Alignment.centerLeft;
+                                }
+                                if(index == 0){
+                                  return Padding(
+                                    padding: EdgeInsets.only(top: topPadding),
+                                    child: Neumorphism(
+                                      null,
+                                      null,
+                                      Text(_text),
+                                      type: flag,
+                                      radius: 32.0,
+                                      alignment: msgAlignment,
+                                      color: msgColor,
+                                    ),
+                                  );
+                                }else if(index == (messages.length - 1)){
+                                  return Padding(
+                                    padding: EdgeInsets.only(bottom: bottomPadding),
+                                    child: Neumorphism(
+                                      null,
+                                      null,
+                                      Text(_text),
+                                      type: flag,
+                                      radius: 32.0,
+                                      alignment: msgAlignment,
+                                      color: msgColor,
+                                    ),
+                                  );
+                                }else{
+                                  return Neumorphism(
                                     null,
                                     null,
                                     Text(_text),
@@ -135,55 +165,49 @@ class _ChatState extends State<Chat> {
                                     radius: 32.0,
                                     alignment: msgAlignment,
                                     color: msgColor,
-                                  ),
-                                );
-                              }else if(index == (messages.length - 1)){
-                                return Padding(
-                                  padding: const EdgeInsets.only(bottom: 14.0),
-                                  child: Neumorphism(
-                                    null,
-                                    null,
-                                    Text(_text),
-                                    type: flag,
-                                    radius: 32.0,
-                                    alignment: msgAlignment,
-                                    color: msgColor,
-                                  ),
-                                );
-                              }else{
-                                return Neumorphism(
-                                  null,
-                                  null,
-                                  Text(_text),
-                                  type: flag,
-                                  radius: 32.0,
-                                  alignment: msgAlignment,
-                                  color: msgColor,
-                                );
-                              }
-                            },
+                                  );
+                                }
+                              },
+                            ),
                           ),
+                        ), // Chat Messages Area // Input Message Area
+                        Expanded(
+                          flex: 1,
+                          child: SizedBox(),
+//                              Container(
+//                                height: inputFieldHeight,
+//                                color: bodyColor,
+//                                child: Neumorphism(
+//                                    null,
+//                                    inputFieldHeight,
+//                                    sendMsg(),
+//                                    type: NeumorphismInner,
+//                                    radius: 0.0,
+//                                    alignment: Alignment.bottomCenter,
+//                                    color: bodyColor
+//                                ),
+//                              )
                         ),
-                      ), // Chat Messages Area // Input Message Area
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          height: inputFieldHeight,
-                          color: bodyColor,
-                          child: Neumorphism(
-                              null,
-                              inputFieldHeight,
-                              sendMsg(),
-                              type: NeumorphismInner,
-                              radius: 0.0,
-                              alignment: Alignment.bottomCenter,
-                              color: bodyColor
-                          ),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      height: inputFieldHeight,
+                      color: bodyColor,
+                      child: Neumorphism(
+                          null,
+                          inputFieldHeight,
+                          sendMsg(),
+                          type: NeumorphismInner,
+                          radius: 0.0,
+                          alignment: Alignment.bottomCenter,
+                          color: bodyColor
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             SizedBox(
@@ -271,30 +295,27 @@ class _ChatState extends State<Chat> {
     );
   }
 
+  void checkKeyboard() {
+    _keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    double _bp = 0.0;
+    if(_keyboardHeight > 0){
+      _bp = 48.0;
+    }else{
+      _bp = 14.0;
+    }
+    setState(() {
+      bottomPadding = _bp;
+    });
+  }
+
   Future<bool> _onBackPressed() async {
     setState(() {
-      this.widget.callback(3, userMap);
+      this.widget.callback(3, userMap, otherInfo, ChatsAndEvents_index);
     });
-//    print('\n\n\n here \n\n\n');
     return false;
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

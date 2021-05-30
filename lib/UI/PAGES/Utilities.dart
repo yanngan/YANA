@@ -34,7 +34,7 @@ const int Settings_index            =   4;
 const int Welcome_index             =   5;
 const int Login_index               =   6;
 const int SingUp_index              =   7;
-const int ChatList_index            =   8;
+const int Chat_index                =   8;
 // Determine which page will be displayed to the user
 int pageType                        =   0;
 /*
@@ -47,5 +47,15 @@ int pageType                        =   0;
 // User information will be stored in here
 Map<String, String> userMap         =   new Map<String, String>();
 Map<String, String> otherInfo       =   new Map<String, String>();
+
+String aboutOrganization = "YANA is a social initiative intended to fight "
+    "against loneliness amongst young adults at the ages of 18-35(+-)."
+    "This project is meant to help people create new social circles within "
+    "safe spaces. This project will take place through an app where young "
+    "adults can update their location in any of the YANA supporting businesses, "
+    "and invite friends from the YANA platform to come and join then for "
+    "a meeting / drink / meal etc...\nWe are looking for the participation "
+    "of as many different types of people from different places in Israel "
+    "in order to maximize exposure and help as many individuals as possible.";
 
 /// Developers: Lidor Eliyahu Shelef, Yann Ganem, Yisrael Bar-Or and Jonas Sperling

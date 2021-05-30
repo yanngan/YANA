@@ -289,7 +289,7 @@ class _SignUpState extends State<SignUp> {
             backgroundColor: Colors.red,
             textColor: Colors.white,
         );
-        this.widget.callback(3, updateUserInfo);
+        this.widget.callback(3, updateUserInfo, new Map<String, String>(), MapView_index);
       });
     });
   }

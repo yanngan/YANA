@@ -21,16 +21,16 @@ class _ChatsAndEventsState extends State<ChatsAndEvents> {
     else{
       screen = EventsList();
     }
-    return SafeArea(
-      child: Scaffold(
-        appBar: null,
-        body: Column(
-          children: [
-            Container(
-              height: 80,
-              decoration: BoxDecoration(
-                color: Colors.pink,
-              ),
+    return Scaffold(
+      body: Column(
+        children: [
+          Container(
+            height: 80 + MediaQuery.of(context).padding.top,
+            decoration: BoxDecoration(
+              color: Colors.pink,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 40),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -71,17 +71,16 @@ class _ChatsAndEventsState extends State<ChatsAndEvents> {
                 ],
               ),
             ),
-            screen,
-          ],
-        ),
-
+          ),
+          screen,
+        ],
       ),
+
     );
   }
 
 
   switchPage(){
-    print("hello");
     setState(() {
       whichPage = !whichPage;
     });

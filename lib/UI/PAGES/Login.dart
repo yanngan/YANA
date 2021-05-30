@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:yana/UX/DB/users.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
 import 'Utilities.dart';
@@ -284,9 +284,14 @@ class _LoginState extends State<Login> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  setState(() {
-                                    this.widget.callback(4, new Map<String, String>());
-                                  });
+                                  Fluttertoast.showToast(
+                                      msg: "No config testing at the moment",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.TOP,
+                                      backgroundColor: Colors.green,
+                                      textColor: Colors.blue,
+                                      fontSize: 16.0
+                                  );
                                 }
                             ) ,
                           ),
@@ -308,7 +313,7 @@ class _LoginState extends State<Login> {
  */
   void userCredentials(Map<String, String> credentials, String functionNeeded) async {
     //    Check if user is in our database
-//    // TODO this commented section is for production, instead of the Test mode below
+    // TODO this commented section is for production, instead of the Test mode below
 //    String userId = credentials["id"].toString();
 ////    userId = '01234567891234567';   // Test ID of Ariana Grande
 //    bool exists = false;
@@ -329,11 +334,12 @@ class _LoginState extends State<Login> {
 //        this.widget.callback(1, credentials);
 //      });
 //    }
+
 //    TODO --> Test mode, pre production - START
     switch (functionNeeded){
       case SIGN_UP:
         setState(() {
-          this.widget.callback(1, credentials);
+          this.widget.callback(1, credentials, new Map<String, String>(), SingUp_index);
         });
         break;
       case LOGIN_REGULAR:
@@ -343,13 +349,13 @@ class _LoginState extends State<Login> {
             gravity: ToastGravity.CENTER,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.red,
-            textColor: Colors.white,
+            textColor: Colors.black54,
             fontSize: 16.0
         );
         break;
       case LOGIN_DUMMY:
         setState(() {
-          this.widget.callback(3, credentials, new Map<String, String>());
+          this.widget.callback(3, credentials, new Map<String, String>(), MapView_index);
         });
         break;
     }

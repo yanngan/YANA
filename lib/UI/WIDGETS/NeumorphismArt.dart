@@ -10,13 +10,13 @@ class Neumorphism extends StatefulWidget{
 
   /// [type], [radius], [alignment], [color] must not be null, it's required
   /// [type] - defines which kind of widget it will be
-  /// [_textObj] - the text widget, holding the display text
+  /// [_childObj] - the widget that will appear on top of the art work
   /// [_width] - width of container
   /// [_height] - height of container
   /// [radius] - corners radius
   /// [alignment] - widget alignment
   /// [color] - background color
-  final _textObj;
+  final _childObj;
   final _width;
   final _height;
   final String type;
@@ -27,7 +27,7 @@ class Neumorphism extends StatefulWidget{
   Neumorphism(
     this._width,
     this._height,
-    this._textObj,
+    this._childObj,
     {
       required this.type,
       required this.radius,
@@ -40,7 +40,7 @@ class Neumorphism extends StatefulWidget{
   _NeumorphismState createState() => _NeumorphismState(
       this._width,
       this._height,
-      this._textObj,
+      this._childObj,
       type: this.type,
       radius: this.radius,
       alignment: this.alignment,
@@ -53,13 +53,13 @@ class _NeumorphismState extends State<Neumorphism> {
 
   /// [type], [radius], [alignment], [color] must not be null, it's required
   /// [type] - defines which kind of widget it will be
-  /// [_textObj] - the text widget, holding the display text
+  /// [_childObj] - the widget that will appear on top of the art work
   /// [_width] - width of container
   /// [_height] - height of container
   /// [radius] - corners radius
   /// [alignment] - widget alignment
   /// [color] - background color
-  final _textObj;
+  final _childObj;
   final _width;
   final _height;
   final String type;
@@ -70,7 +70,7 @@ class _NeumorphismState extends State<Neumorphism> {
   _NeumorphismState(
     this._width,
     this._height,
-    this._textObj,
+    this._childObj,
     {
       required this.type,
       required this.radius,
@@ -84,13 +84,13 @@ class _NeumorphismState extends State<Neumorphism> {
     switch(this.type){
       case NeumorphismOuterChip:
         /// returns a concave neumorphism shape widget - limited to 1 row of text
-        return neumorphismOuterChip(this._textObj, this.radius, this.alignment, this.color);
+        return neumorphismOuterChip(this._childObj, this.radius, this.alignment, this.color);
       case NeumorphismOuter:
       /// returns a flat neumorphism shape widget
-        return neumorphismOuter(this._width, this._height, this._textObj, this.radius, this.alignment, this.color);
+        return neumorphismOuter(this._width, this._height, this._childObj, this.radius, this.alignment, this.color);
       case NeumorphismInner:
       /// returns a emboss neumorphism shape widget - limited to 1 row of text
-        return neumorphismInner(this._width, this._height, this._textObj, this.radius, this.alignment, this.color);
+        return neumorphismInner(this._width, this._height, this._childObj, this.radius, this.alignment, this.color);
       default:
         return Text('Some error occurred please try again.');
     }
@@ -99,7 +99,7 @@ class _NeumorphismState extends State<Neumorphism> {
   /// Limited to 1 row only, an icon can be added as well
   /// @width  - max is 2/3 of screen width - min is 20 pixels
   /// @height  - max is 2.5/3 of screen height - min is 25 pixels
-  /// [_t] : text object
+  /// [_t] : child object - must be a text related object
   /// [_r] : radius
   /// [_a] : alignment
   /// [_c] : background color
@@ -128,7 +128,7 @@ class _NeumorphismState extends State<Neumorphism> {
   /// multi rows enabled, an icon can be added as well
   /// [_w] : width  - max is 2/3 of screen width - min is 20 pixels
   /// [_h] : height  - max is 2.5/3 of screen height - min is 25 pixels
-  /// [_t] : text object
+  /// [_t] : child object
   /// [_r] : radius
   /// [_a] : alignment
   /// [_c] : background color
@@ -174,7 +174,7 @@ class _NeumorphismState extends State<Neumorphism> {
   /// multi rows enabled, an icon can be added as well, default size is full screen
   /// [_w] : width  - max is 2/3 of screen width - min is 20 pixels
   /// [_h] : height  - max is 2.5/3 of screen height - min is 25 pixels
-  /// [_t] : text object
+  /// [_t] : child object
   /// [_r] : radius
   /// [_a] : alignment
   /// [_c] : background color

@@ -220,20 +220,9 @@ class _AddEventState extends State<AddEvent> {
       return;
     }
     String newId = await FirebaseHelper.generateEventId();
-    Events theNewEvents = Events(
-        newId,
-        userMap['id']!,
-        'test',
-        formattedDate,
-        true,
-        startEstimate,
-        endEstimate,
-        1,
-        maxNumPeople,
-        widget.thePlace.placeID,
-        (allField['note']!).text);
-    var res = await Logic.createEditNewEvents(theNewEvents, true);
-    if (res == null) {
+    Events theNewEvents = Events(newId,userMap['id']!,'test',formattedDate,true,startEstimate,endEstimate,1,maxNumPeople,widget.thePlace.placeID,widget.thePlace.name,(allField['note']!).text);
+    var res = await Logic.createEditNewEvents(theNewEvents,true);
+    if(res == null){
       makeErrorAlert("אירעה שגיאה בתהליך השמירה, נסה שנית");
     }
     // Route route = MaterialPageRoute(builder: (context) => SeeEvent(widget.thePlace,theNewEvents));

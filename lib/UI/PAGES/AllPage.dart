@@ -10,6 +10,7 @@ export 'NoticeBoard.dart';
 export 'EventsList.dart';
 export 'ChatList.dart';
 export 'ChatsAndEvents.dart';
+export 'NotificationPage.dart';
 
 /// Developers: Lidor Eliyahu Shelef (&Team leader), Yann Ganem, Yisrael Bar-Or and Jonas Sperling
 

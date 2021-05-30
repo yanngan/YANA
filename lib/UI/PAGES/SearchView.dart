@@ -47,7 +47,8 @@ class _SearchViewState extends State<SearchView> {
               child: Text("חיפוש",style: TextStyle(fontSize: 40,color: Colors.white),textAlign: TextAlign.center,),
             ),
           ),
-          _seeField?Container(child: Column(
+          _seeField?Container(
+            child: Column(
             children: [
               createTextField('placeName','שם המקום', 'text', ),
               createTextField('estimateDate','תאריך רצוי', 'date', ),

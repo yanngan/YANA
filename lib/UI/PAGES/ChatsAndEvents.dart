@@ -19,7 +19,7 @@ class _ChatsAndEventsState extends State<ChatsAndEvents> {
       theBackgroundColor = Colors.amber;
     } else {
       screen = EventsList();
-      theBackgroundColor = Colors.amber[300];
+      theBackgroundColor = Colors.amber;
     }
     return Scaffold(
       backgroundColor: theBackgroundColor,

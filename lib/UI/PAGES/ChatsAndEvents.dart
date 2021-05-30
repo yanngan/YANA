@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
-import 'AllPage.dart';
-
+import 'package:yana/UX/DB/allDB.dart';
+import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
+import 'package:yana/UX/LOGIC/CLASSES/allClasses.dart';
+import 'Utilities.dart';
 
 class ChatsAndEvents extends StatefulWidget {
+
+  final Function callback;
+  ChatsAndEvents(this.callback);
+
   @override
   _ChatsAndEventsState createState() => _ChatsAndEventsState();
 }
@@ -13,14 +19,12 @@ class _ChatsAndEventsState extends State<ChatsAndEvents> {
   Widget build(BuildContext context) {
     var screen;
     var theBackgroundColor;
-    if(whichPage){
-      screen = ChatList();
+    if (whichPage) {
+      screen = ChatList(this.widget.callback);
       theBackgroundColor = Colors.amber;
-
-    }
-    else{
+    } else {
       screen = EventsList();
-      theBackgroundColor = Colors.amber[300];
+      theBackgroundColor = Colors.amber;
     }
     return Scaffold(
       backgroundColor: theBackgroundColor,
@@ -40,39 +44,45 @@ class _ChatsAndEventsState extends State<ChatsAndEvents> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextButton(
-                  child: Text("אירועים",style: TextStyle(fontSize: 30,color: Colors.white),),
-                  onPressed: (){switchPage('listEvent');},
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(whichPage?Colors.pinkAccent:Colors.pink[700]),
-                    shadowColor: MaterialStateProperty.all(Colors.grey),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(18.0),
-                          bottomLeft: Radius.circular(18.0),
-                        ),
-                        side: BorderSide(color: Colors.red)
-                      )
-                    )
-                  )
-                ),
+                    child: Text(
+                      "אירועים",
+                      style: TextStyle(fontSize: 30, color: Colors.white),
+                    ),
+                    onPressed: () {
+                      switchPage('listEvent');
+                    },
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            whichPage ? Colors.pinkAccent : Colors.pink[700]),
+                        shadowColor: MaterialStateProperty.all(Colors.grey),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(18.0),
+                                      bottomLeft: Radius.circular(18.0),
+                                    ),
+                                    side: BorderSide(color: Colors.red))))),
                 TextButton(
-                  child: Text("צ'אטים",style: TextStyle(fontSize: 30,color: Colors.white),),
-                  onPressed: (){switchPage('chat');},
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(whichPage?Colors.pink[700]:Colors.pinkAccent),
-                      shadowColor: MaterialStateProperty.all(Colors.grey),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(18.0),
-                                bottomRight: Radius.circular(18.0),
-                              ),
-                              side: BorderSide(color: Colors.red)
-                          )
-                      )
-                  )
-                ),
+                    child: Text(
+                      "צ'אטים",
+                      style: TextStyle(fontSize: 30, color: Colors.white),
+                    ),
+                    onPressed: () {
+                      switchPage('chat');
+                    },
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            whichPage ? Colors.pink[700] : Colors.pinkAccent),
+                        shadowColor: MaterialStateProperty.all(Colors.grey),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(18.0),
+                                      bottomRight: Radius.circular(18.0),
+                                    ),
+                                    side: BorderSide(color: Colors.red))))),
               ],
             ),
           ),
@@ -87,9 +97,9 @@ class _ChatsAndEventsState extends State<ChatsAndEvents> {
     );
   }
 
-
-  switchPage(String page){
-    if((page == 'chat' && whichPage) || (page == 'listEvent' && !whichPage)){//do nothing
+  switchPage(String page) {
+    if ((page == 'chat' && whichPage) || (page == 'listEvent' && !whichPage)) {
+      //do nothing
       return;
     }
     print("hello");

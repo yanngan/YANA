@@ -1,7 +1,7 @@
 //FLUTTER
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:yana/UI/PAGES/AllPage.dart';
+import 'package:yana/UI/PAGES/Utilities.dart';
 //EXCEPTIONS
 import '../DB/allDB.dart';
 import 'CLASSES/allClasses.dart';
@@ -9,33 +9,35 @@ import 'EXCEPTIONS/CanNotGetUserLocationException.dart';
 
 /// Developers: Lidor Eliyahu Shelef, Yann Ganem, Yisrael Bar-Or and Jonas Sperling
 
-class Logic{
-
+class Logic {
   ///getUserLocation
   ///try to get hes current location, if fail ->
   /// then try to get last know location
   ///   if fail (position == null) ->
   ///     throw CanNotGetUserLocationException
 
-  static Future<CameraPosition> getUserLocation() async{
+  static Future<CameraPosition> getUserLocation() async {
     Position? position;
     try {
-      position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high,timeLimit: Duration(seconds: 3));
-    }
-    catch (e){
+      position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high,
+          timeLimit: Duration(seconds: 3));
+    } catch (e) {
       position = await Geolocator.getLastKnownPosition();
     }
-    if(position == null){
+    if (position == null) {
       throw CanNotGetUserLocationException();
     }
     print(position);
     CameraPosition toReturn = CameraPosition(
-      target: LatLng(position.latitude,position.longitude),
-      zoom: 18.4746,);
+      target: LatLng(position.latitude, position.longitude),
+      zoom: 18.4746,
+    );
     return toReturn;
   }
 
-  static Future<Events?> createEditNewEvents(Events theNewEvents,bool thisIsANewEvent) async{
+  static Future<Events?> createEditNewEvents(
+      Events theNewEvents, bool thisIsANewEvent) async {
     // todo: check internet connection
 
     //todo : Check there no problem with new Events:
@@ -45,7 +47,6 @@ class Logic{
     // todo: insert into DB
     // - trow Error if have problem
 
-
     // todo: get the Events from DB and check that they equal
     // - if yes - return the Events
     // - else trow Error
@@ -53,16 +54,14 @@ class Logic{
     // User tempU = new User("userID","userName","email","sex","dateOfBirth",0,"hobbies","bio","livingArea","workArea","academicInstitution","fieldOfStudy","smoking","fbPhoto","signUpDate",false,true);
     // Events tempE = new Events("eventID","tempU" , "tempU" , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID");
     // return tempE;
-    if(await FirebaseHelper.sendEventToFb(theNewEvents,thisIsANewEvent)){
+    if (await FirebaseHelper.sendEventToFb(theNewEvents)) {
       return theNewEvents;
-    }
-    else{
+    } else {
       return null;
     }
-
   }
 
-  static Future<Events> getEventsByIdEvents(String IDEvents)async{
+  /*static Future<Events> getEventsByIdEvents(String IDEvents)async{
     // todo: check internet connection
 
     // todo: get Events from DB
@@ -70,9 +69,9 @@ class Logic{
     // - trow Error if have problem
     // - return the Events we have found
     User tempU = new User("userID","userName","email","sex","dateOfBirth",0,"hobbies","bio","livingArea","workArea","academicInstitution","fieldOfStudy","smoking","fbPhoto","signUpDate",false,true);
-    Events tempE = new Events("eventID","tempU" , "tempU" , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID","blabla");
+    Events tempE = new Events("eventID","tempU" , "tempU" , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID","Aroma","blabla");
     return tempE;
-  }
+  }*/
 
   static Future<List<Events>> getEventsByPlace(String IDPlaces) async{
     // todo: check internet connection
@@ -87,10 +86,9 @@ class Logic{
     //   tempE,tempE,tempE,tempE,tempE,tempE,tempE,tempE,
     // ];
     return await FirebaseHelper.getEventsByPlaceID(IDPlaces);
-
   }
 
-  static Future<List<Place>> getAllPlaces()async{
+  static Future<List<Place>> getAllPlaces() async {
     // todo: check internet connection
 
     // todo: go to DB and get all the Places
@@ -102,8 +100,7 @@ class Logic{
     // return [tempP,tempP,tempP,tempP];
   }
 
-
-  static Future<Place> getPlacesById(String IDPlaces) async{
+  static Future<Place> getPlacesById(String IDPlaces) async {
     // todo: check internet connection
 
     // todo: go to DB and get the Places BY IDPlaces
@@ -113,13 +110,15 @@ class Logic{
     return tempP!;
   }
 
-
-  static Future<List<Events>> getAllUserEvent()async{
+  static Future<List<Events>> getAllUserEvent() async {
     return await FirebaseHelper.getUserEvents(userMap['id']!);
   }
 
-
-  static Future<List<Events>> getEventsByCondition({int maxNumPeople = -1,String estimateDate='',String startEstimateTime = "",String placesName= ""})async{
+  static Future<List<Events>> getEventsByCondition(
+      {int maxNumPeople = -1,
+      String estimateDate = '',
+      String startEstimateTime = "",
+      String placesName = ""}) async {
     print("maxNumPeople = $maxNumPeople");
     print("estimateDate = $estimateDate");
     print("startEstimateTime = $startEstimateTime");
@@ -127,7 +126,50 @@ class Logic{
     return await getAllUserEvent();
   }
 
+
+  static Future<bool> userAskToJoinEvent(String userID,String eventID,String creatorUserID) async{
+    if(await FirebaseHelper.userAskToJoinEvent(userID,eventID,creatorUserID)){
+      return true;
+    }
+    return false;
+  }
+
+  static Future<int> getStatusEventForUser(String eventID) async{
+    int res = await FirebaseHelper.getStatusEventForUser(eventID);
+    int toReturn = -1;
+    switch(res){
+      case 0:
+        toReturn = Events.ASK;
+        break;
+      case 1:
+        toReturn = Events.GOING;
+        break;
+      case 2://event creator say no, but we not telling that to the user
+        toReturn = Events.ASK;
+        break;
+      case -1:
+        toReturn = Events.NOT_ASK_YET_AND_NOT_GOING;
+        break;
+    }
+    return toReturn;
+  }
+
+
+  static Future<List<MyNotification>> getListNotification() async{
+    List<MyNotification> myNotifications = [];
+    //get all join request user have to events he create
+    List<MyNotification> temp  = await FirebaseHelper.getUserJoinRequest(userMap['id']!);
+    temp.forEach((element) {
+      print("in getUserJoinRequest");
+      myNotifications.add(element);
+    });
+    //get all events he have be approve
+    temp  = await FirebaseHelper.getUserApprovedRequest(userMap['id']!);
+    temp.forEach((element) {
+      print("in getUserAprovedRequest ${element.type}");
+      myNotifications.add(element);
+    });
+    return myNotifications;
+  }
+
 }
-
-
-

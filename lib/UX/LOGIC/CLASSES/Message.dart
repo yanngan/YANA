@@ -1,35 +1,37 @@
 class Message {
-   String self_name;
-   String other_name;
+   String selfName;
+   String otherName;
+   String selfID;
+   String otherID;
    String message;
    String createdAt;
 
-
-  Message(this.self_name, this.other_name, this.message, this.createdAt);
+  Message(this.selfName, this.otherName, this.selfID, this.otherID, this.message, this.createdAt);
 
   Map<String, dynamic> toJson() => {
-    'self_name': self_name,
-    'other_name': other_name,
+    'selfName': selfName,
+    'otherName': otherName,
+    'selfID': selfID,
+    'otherID': otherID,
     'message': message,
     'createdAt': createdAt,
-    // 'createdAt': fromDateTimeToJson(createdAt),
   };
-
 
   //parse a json to user object
   factory Message.fromJson(dynamic json) {
     return Message(
-      json['self_name'] as String,
-      json['other_name'] as String,
+      json['selfName'] as String,
+      json['otherName'] as String,
+      json['selfID'] as String,
+      json['otherID'] as String,
       json['message'] as String,
       json['createdAt'] as String,
     );
   }
 
-
    @override
   String toString() {
-    return 'Message{self_name: $self_name, other_name: $other_name, message: $message, createdAt: $createdAt}';
+    return 'Message{selfName: $selfName, otherName: $otherName, selfID: $selfID, otherID: $otherID, message: $message, createdAt: $createdAt}';
   }
 
   // static DateTime toDateTime(Timestamp value) {
@@ -41,4 +43,5 @@ class Message {
     if (date == null) return null;
     return date.toUtc();
   }
+
 }

@@ -86,6 +86,29 @@ class User {
     );
   }
 
+  // Parse a map into a user object
+  factory User.isNULL(String value){
+    return User(
+      value,
+      value,
+      value,
+      value,
+      value,
+      0,
+      value,
+      value,
+      value,
+      value,
+      value,
+      value,
+      value,
+      value,
+      value,
+      false,
+      false,
+    );
+  }
+
   //constructor
   User(
       this.userID,

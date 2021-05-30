@@ -9,33 +9,35 @@ import 'EXCEPTIONS/CanNotGetUserLocationException.dart';
 
 /// Developers: Lidor Eliyahu Shelef, Yann Ganem, Yisrael Bar-Or and Jonas Sperling
 
-class Logic{
-
+class Logic {
   ///getUserLocation
   ///try to get hes current location, if fail ->
   /// then try to get last know location
   ///   if fail (position == null) ->
   ///     throw CanNotGetUserLocationException
 
-  static Future<CameraPosition> getUserLocation() async{
+  static Future<CameraPosition> getUserLocation() async {
     Position? position;
     try {
-      position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high,timeLimit: Duration(seconds: 3));
-    }
-    catch (e){
+      position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high,
+          timeLimit: Duration(seconds: 3));
+    } catch (e) {
       position = await Geolocator.getLastKnownPosition();
     }
-    if(position == null){
+    if (position == null) {
       throw CanNotGetUserLocationException();
     }
     print(position);
     CameraPosition toReturn = CameraPosition(
-      target: LatLng(position.latitude,position.longitude),
-      zoom: 18.4746,);
+      target: LatLng(position.latitude, position.longitude),
+      zoom: 18.4746,
+    );
     return toReturn;
   }
 
-  static Future<Events?> createEditNewEvents(Events theNewEvents,bool thisIsANewEvent) async{
+  static Future<Events?> createEditNewEvents(
+      Events theNewEvents, bool thisIsANewEvent) async {
     // todo: check internet connection
 
     //todo : Check there no problem with new Events:
@@ -45,7 +47,6 @@ class Logic{
     // todo: insert into DB
     // - trow Error if have problem
 
-
     // todo: get the Events from DB and check that they equal
     // - if yes - return the Events
     // - else trow Error
@@ -53,13 +54,11 @@ class Logic{
     // User tempU = new User("userID","userName","email","sex","dateOfBirth",0,"hobbies","bio","livingArea","workArea","academicInstitution","fieldOfStudy","smoking","fbPhoto","signUpDate",false,true);
     // Events tempE = new Events("eventID","tempU" , "tempU" , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID");
     // return tempE;
-    if(await FirebaseHelper.sendEventToFb(theNewEvents,thisIsANewEvent)){
+    if (await FirebaseHelper.sendEventToFb(theNewEvents, thisIsANewEvent)) {
       return theNewEvents;
-    }
-    else{
+    } else {
       return null;
     }
-
   }
 
   /*static Future<Events> getEventsByIdEvents(String IDEvents)async{
@@ -70,7 +69,7 @@ class Logic{
     // - trow Error if have problem
     // - return the Events we have found
     User tempU = new User("userID","userName","email","sex","dateOfBirth",0,"hobbies","bio","livingArea","workArea","academicInstitution","fieldOfStudy","smoking","fbPhoto","signUpDate",false,true);
-    Events tempE = new Events("eventID","tempU" , "tempU" , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID","blabla");
+    Events tempE = new Events("eventID","tempU" , "tempU" , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID","Aroma","blabla");
     return tempE;
   }*/
 
@@ -87,10 +86,9 @@ class Logic{
     //   tempE,tempE,tempE,tempE,tempE,tempE,tempE,tempE,
     // ];
     return await FirebaseHelper.getEventsByPlaceID(IDPlaces);
-
   }
 
-  static Future<List<Place>> getAllPlaces()async{
+  static Future<List<Place>> getAllPlaces() async {
     // todo: check internet connection
 
     // todo: go to DB and get all the Places
@@ -102,8 +100,7 @@ class Logic{
     // return [tempP,tempP,tempP,tempP];
   }
 
-
-  static Future<Place> getPlacesById(String IDPlaces) async{
+  static Future<Place> getPlacesById(String IDPlaces) async {
     // todo: check internet connection
 
     // todo: go to DB and get the Places BY IDPlaces
@@ -113,13 +110,15 @@ class Logic{
     return tempP!;
   }
 
-
-  static Future<List<Events>> getAllUserEvent()async{
+  static Future<List<Events>> getAllUserEvent() async {
     return await FirebaseHelper.getUserEvents(userMap['id']!);
   }
 
-
-  static Future<List<Events>> getEventsByCondition({int maxNumPeople = -1,String estimateDate='',String startEstimateTime = "",String placesName= ""})async{
+  static Future<List<Events>> getEventsByCondition(
+      {int maxNumPeople = -1,
+      String estimateDate = '',
+      String startEstimateTime = "",
+      String placesName = ""}) async {
     print("maxNumPeople = $maxNumPeople");
     print("estimateDate = $estimateDate");
     print("startEstimateTime = $startEstimateTime");
@@ -174,6 +173,3 @@ class Logic{
   }
 
 }
-
-
-

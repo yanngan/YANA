@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:yana/UI/PAGES/AllPage.dart';
+import 'package:yana/UI/PAGES/Utilities.dart';
 import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
 import 'package:yana/UX/DB/allDB.dart';
 
@@ -112,13 +112,13 @@ class FirebaseHelper {
     final databaseReference = FirebaseDatabase.instance.reference();
     DatabaseReference myRef1 = databaseReference
         .child("rooms/")
-        .child(m1.self_name)
-        .child(m1.other_name);
+        .child(m1.selfName)
+        .child(m1.otherName);
     myRef1.push().set(m1.toJson());
     myRef1 = databaseReference
         .child("rooms/")
-        .child(m1.other_name)
-        .child(m1.self_name);
+        .child(m1.otherName)
+        .child(m1.selfName);
     myRef1.push().set(m1.toJson());
   }
 
@@ -136,6 +136,21 @@ class FirebaseHelper {
       listMessage.add(Message.fromJson(values));
     });
     return listMessage;
+  }
+
+  static Future<Map<dynamic, dynamic>> getSendersInfo(var _selfID) async {
+    final databaseReference = FirebaseDatabase.instance.reference();
+    DatabaseReference sendersRef = databaseReference.child('chats_information/').child(_selfID);
+    DataSnapshot data = await sendersRef.once();
+    Map<dynamic, dynamic> values = data.value;
+    return values;
+  }
+
+  static void createNewChat(var _selfID, var _selfName, var _otherID, var _otherName){
+    final databaseReference = FirebaseDatabase.instance.reference();
+    DatabaseReference  myRef = databaseReference.child("chats_information/");
+    myRef.child(_selfID).child(_otherID).set(_otherName);
+    myRef.child(_otherID).child(_selfID).set(_selfName);
   }
 //end Messages-------------------------------------------------
 
@@ -332,9 +347,6 @@ class FirebaseHelper {
     }
     return events;
   }
-
-
-
 
   static Future<List<Events>> getUserEvents(String userID) async{
     QuerySnapshot querySnapshot =  await FirebaseFirestore.instance.collection('Events').where('userID',isEqualTo: userID).get();

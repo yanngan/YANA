@@ -1,7 +1,7 @@
 //FLUTTER
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:yana/UI/PAGES/AllPage.dart';
+import 'package:yana/UI/PAGES/Utilities.dart';
 //EXCEPTIONS
 import '../DB/allDB.dart';
 import 'CLASSES/allClasses.dart';

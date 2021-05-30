@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:yana/UI/PAGES/AllPage.dart';
 
 import 'package:yana/UX/LOGIC/Logic.dart';
 import 'package:yana/UX/LOGIC/MapLogic.dart';
@@ -16,7 +17,7 @@ class MapSampleState extends State<MapSample> {
 
   Completer<GoogleMapController> _controller = Completer();
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
-  bool mapType = true; // true == MapType.hybrid, false == MapType.normal
+  bool mapType = false; // true == MapType.hybrid, false == MapType.normal
   bool initDone = false;
   static final CameraPosition _TLV = CameraPosition( //init poit to be at TLV
     target: LatLng(32.085300, 34.781769),
@@ -27,6 +28,7 @@ class MapSampleState extends State<MapSample> {
   Widget build(BuildContext context) {
     if(!initDone){
       jumpToCurrentLocation();
+      addLocationsPoints();
     }
     //jumpToCurrentLocation();
     return new Scaffold(
@@ -55,6 +57,7 @@ class MapSampleState extends State<MapSample> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: FloatingActionButton(
+                        heroTag: 'mapType',
                         onPressed: switchMapType,
                         backgroundColor: Colors.amber,
                         child: Icon(mapType?Icons.satellite:Icons.map_outlined, color: Colors.pink,size: 30,),
@@ -63,6 +66,7 @@ class MapSampleState extends State<MapSample> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: FloatingActionButton(
+                        heroTag: 'location_searching',
                         onPressed: jumpToCurrentLocation,
                         backgroundColor: Colors.amber,
                         child: Icon(Icons.location_searching, color: Colors.pink,size: 30,),
@@ -76,14 +80,16 @@ class MapSampleState extends State<MapSample> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: FloatingActionButton(
-                        onPressed: ()=>addFakePoints(context),
+                        heroTag: 'notifications',
+                        onPressed: openNotifications,
                         backgroundColor: Colors.amber,
-                        child: Icon(Icons.ac_unit_sharp, color: Colors.pink,size: 30,),
+                        child: Icon(Icons.notifications, color: Colors.pink,size: 30,),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: FloatingActionButton(
+                        heroTag: 'add',
                         onPressed: ()=>MapLogic.addEditSeePoints(context,'add'),
                         backgroundColor: Colors.amber,
                         child: Icon(Icons.add, color: Colors.pink,size: 30,),
@@ -126,7 +132,7 @@ class MapSampleState extends State<MapSample> {
   /*
   dev function creat 10 fake Events and add them to the map
    */
-  void addFakePoints(BuildContext context)async{
+  void addLocationsPoints()async{
     var res = await MapLogic.getMarkers(context);
     setState(() {
       markers = res;
@@ -141,6 +147,13 @@ class MapSampleState extends State<MapSample> {
     setState(() {
       mapType = !mapType;
     });
+  }
+
+  openNotifications(){
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => NotificationPage()),
+    );
   }
 
 

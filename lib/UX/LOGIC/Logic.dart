@@ -62,7 +62,7 @@ class Logic{
 
   }
 
-  static Future<Events> getEventsByIdEvents(String IDEvents)async{
+  /*static Future<Events> getEventsByIdEvents(String IDEvents)async{
     // todo: check internet connection
 
     // todo: get Events from DB
@@ -72,7 +72,7 @@ class Logic{
     User tempU = new User("userID","userName","email","sex","dateOfBirth",0,"hobbies","bio","livingArea","workArea","academicInstitution","fieldOfStudy","smoking","fbPhoto","signUpDate",false,true);
     Events tempE = new Events("eventID","tempU" , "tempU" , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID","blabla");
     return tempE;
-  }
+  }*/
 
   static Future<List<Events>> getEventsByPlace(String IDPlaces) async{
     // todo: check internet connection
@@ -125,6 +125,52 @@ class Logic{
     print("startEstimateTime = $startEstimateTime");
     print("placesName = $placesName");
     return await getAllUserEvent();
+  }
+
+
+  static Future<bool> userAskToJoinEvent(String userID,String eventID,String creatorUserID) async{
+    if(await FirebaseHelper.userAskToJoinEvent(userID,eventID,creatorUserID)){
+      return true;
+    }
+    return false;
+  }
+
+  static Future<int> getStatusEventForUser(String eventID) async{
+    int res = await FirebaseHelper.getStatusEventForUser(eventID);
+    int toReturn = -1;
+    switch(res){
+      case 0:
+        toReturn = Events.ASK;
+        break;
+      case 1:
+        toReturn = Events.GOING;
+        break;
+      case 2://event creator say no, but we not telling that to the user
+        toReturn = Events.ASK;
+        break;
+      case -1:
+        toReturn = Events.NOT_ASK_YET_AND_NOT_GOING;
+        break;
+    }
+    return toReturn;
+  }
+
+
+  static Future<List<MyNotification>> getListNotification() async{
+    List<MyNotification> myNotifications = [];
+    //get all join request user have to events he create
+    List<MyNotification> temp  = await FirebaseHelper.getUserJoinRequest(userMap['id']!);
+    temp.forEach((element) {
+      print("in getUserJoinRequest");
+      myNotifications.add(element);
+    });
+    //get all events he have be approve
+    temp  = await FirebaseHelper.getUserApprovedRequest(userMap['id']!);
+    temp.forEach((element) {
+      print("in getUserAprovedRequest ${element.type}");
+      myNotifications.add(element);
+    });
+    return myNotifications;
   }
 
 }

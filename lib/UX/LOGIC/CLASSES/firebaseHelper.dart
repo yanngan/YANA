@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:yana/UI/PAGES/AllPage.dart';
 import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
 import 'package:yana/UX/DB/allDB.dart';
 
@@ -127,6 +128,9 @@ class FirebaseHelper {
   static Future<String> generateEventId() async {
     return await FirebaseFirestore.instance.collection('Events').doc().id;
   }
+  static Future<String> generateAttendanceId() async {
+    return await FirebaseFirestore.instance.collection('Attendance').doc().id;
+  }
 
   static Future<bool> sendEventToFb(Events event,bool thisIsANewEvent) async {
     //add to real-time firebase on place id the new event
@@ -208,14 +212,13 @@ class FirebaseHelper {
     });
     return events;
   }
-  //get all the event that the user create+ Events he going to/ask to going to
+  //get all the event that the user create+ Events he going to/ask to going
   static Future<List<Events>> getUserEvents(String userID) async{
     QuerySnapshot querySnapshot =  await FirebaseFirestore.instance.collection('Events').where('userID',isEqualTo: userID).get();
     List<Events> events = [];
     querySnapshot.docs.forEach((doc) {
       events.add(Events.fromJson(doc.data()));
     });
-
     querySnapshot =  await FirebaseFirestore.instance.collection('Attendance').where('idUser',isEqualTo: userID).get();
     for(var alias in querySnapshot.docs){
       dynamic json = alias.data();
@@ -232,6 +235,74 @@ class FirebaseHelper {
     //print(events);
     return events;
   }
+
+  //get events by the 3 parameters : name, max capacity, date.
+  static Future<List<Events>> getEventsBySearchCombination (
+      {String name="", int capacity=-1, String date= ""}) async{
+    List<Events> events = [];
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Events')
+        .where("startEstimate",   isGreaterThanOrEqualTo: date)
+        .get();
+    querySnapshot.docs.forEach((doc) {
+      events.add(Events.fromJson(doc.data()));
+    });
+
+    if(capacity != -1){
+      events = events.where((element) => element.maxNumPeople <= capacity).toList();
+    }
+    if(name.isNotEmpty) {
+      events = events.where((element) =>
+          element.placeName.toLowerCase().contains(name.toLowerCase())).toList();
+    }
+    return events;
+  }
+
+  static Future<bool> userAskToJoinEvent(String userID,String eventID,String creatorUserID) async{
+    //eventID
+    FirebaseFirestore fireStore = FirebaseFirestore.instance;
+    //write to collection
+    try {
+      await fireStore.collection('Attendance').doc(await generateAttendanceId()).set({'idEvent':eventID,'idUser':userID,'status':0,'idCreator:':creatorUserID});
+    } on Exception catch (e) {
+      return false;
+    }
+    return true;
+  }
+
+  static Future<int> getStatusEventForUser(String eventID)async{
+    QuerySnapshot querySnapshot =  await FirebaseFirestore.instance.collection('Attendance').where('idEvent',isEqualTo: eventID).get();
+    for(var alias in querySnapshot.docs){
+      dynamic json = alias.data();
+      print("########## idEvent = " + json['idEvent']);
+      if(json['idUser'] == userMap['id']! ){
+        return json['status'];
+      }
+    }
+    return 0;
+  }
+
+  static Future<List<MyNotification>> getUserJoinRequest(String idCreator)async{
+    QuerySnapshot querySnapshot =  await FirebaseFirestore.instance.collection('Attendance').where('idCreator',isEqualTo: idCreator).get();
+    List<MyNotification> myNotifications = [];
+    for(var alias in querySnapshot.docs){
+      dynamic json = alias.data();
+      myNotifications.add(new MyNotification(json['idEvent'],json['idUser'],json['idCreator'],json['status'],MyNotification.EVENTS_ASK_TO_JOIN));
+    }
+    return myNotifications;
+  }
+
+  static Future<List<MyNotification>> getUserApprovedRequest(String idUser)async{
+    QuerySnapshot querySnapshot =  await FirebaseFirestore.instance.collection('Attendance').where('idUser',isEqualTo: idUser).get();
+    List<MyNotification> myNotifications = [];
+    for(var alias in querySnapshot.docs){
+      dynamic json = alias.data();
+      if(json['status'] == 1){
+        myNotifications.add(new MyNotification(json['idEvent'],json['idUser'],json['idCreator'],json['status'],MyNotification.EVENTS_ASK_TO_JOIN_BEEN_APPROVE));
+      }
+    }
+    return myNotifications;
+  }
+
 //end Events-------------------------------------------------
 
 // start users-------------------------------------------------

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:yana/UX/DB/allDB.dart';
 import 'package:yana/UX/LOGIC/CLASSES/allClasses.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
@@ -23,18 +24,48 @@ class _EventsListState extends State<EventsList> {
     }
     return Scaffold(
       appBar: null,
+      backgroundColor: Colors.amber,
       //floatingActionButton: FloatingActionButton(onPressed: (){Logic.getAllUserEvent();},),
       body:  Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(child: Container(height:60,child: Text("אירועים שאתה פתחת\n יופיעו בצבע זה"),color: Colors.pink,)),
-              Expanded(child: Container(height:60,child: Text("אירועים שביקשת להצטרף אליהם\n יופיעו בצבע זה"),color: Colors.pink[200],)),
+              ConstrainedBox(
+                constraints: BoxConstraints.tightFor(width: 70, height: 70),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.pink),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100.0),
+                          )
+                      )
+                  ),
+                  child: Text("?",style: TextStyle(fontSize: 20,),),
+                  onPressed: (){_makeToast("אירועים שיצרת יופיעו בצבע זה",Colors.pink);},
+                ),
+              ),
+              ConstrainedBox(
+                constraints: BoxConstraints.tightFor(width: 70, height: 70),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.pink[300]),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100.0),
+                          )
+                      )
+                  ),
+                  child: Text("?",style: TextStyle(fontSize: 20),),
+                  onPressed: (){_makeToast("אירועים שביקשת להצטרף/אושרת יופיעו בצבע זה",Colors.pink[300]);},
+                ),
+              ),
             ],
           ),
           Expanded(
             child: Container(
-              color: Colors.amber[300],
+              color: Colors.amber,
               child: initDone?ListView.builder(
                   itemCount: listEvents.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -109,4 +140,17 @@ class _EventsListState extends State<EventsList> {
       ),
     );
   }
+
+  _makeToast(String str,var theColor){
+    Fluttertoast.showToast(
+        msg: str,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: theColor,
+        textColor: Colors.amber,
+        fontSize: 16.0
+    );
+  }
+
 }

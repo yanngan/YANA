@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:yana/UI/PAGES/AllPage.dart';
 import 'package:yana/UI/WIDGETS/allWidgets.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
 
@@ -20,7 +21,6 @@ class MapLogic{
         seeListEventInPlace(context,onePlace);});
     });
     return markers;
-
   }
 
 
@@ -46,7 +46,15 @@ class MapLogic{
         screen = EditEvent(thePlace, theEvent);
         break;
       case 'see':
-        screen = SeeEvent(thePlace, theEvent);
+        int statusForUser = -1;
+        if(theEvent.userID == userMap['id']!){
+          statusForUser = 2;//going
+        }
+        else{
+          statusForUser = await Logic.getStatusEventForUser(theEvent.eventID);
+        }
+
+        screen = SeeEvent(thePlace, theEvent,totallyPop);
         break;
     }
     showDialog(

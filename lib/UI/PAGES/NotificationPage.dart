@@ -147,7 +147,7 @@ class _NotificationPageState extends State<NotificationPage> {
           crossAxisAlignment:CrossAxisAlignment.start,
           children: [
             //Text('Event - ${listEvents[index].eventID}'),
-            Text('ברכות! בקשת להצטרך לאירוע אושרה, כעת תוכל לשוחח עם מארגן האירוע בצאט',style: TextStyle(fontSize: 20,color: Colors.white, ),textAlign: TextAlign.center,),
+            Text('ברכות! בקשתך להצטרף לאירוע אושרה, כעת תוכל לשוחח עם מארגן האירוע בצאט',style: TextStyle(fontSize: 20,color: Colors.white, ),textAlign: TextAlign.center,),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

@@ -4,7 +4,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:yana/UI/PAGES/Utilities.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
 import 'package:yana/UX/LOGIC/MapLogic.dart';
-
 import 'allWidgets.dart';
 
 class MapSample extends StatefulWidget {
@@ -16,7 +15,7 @@ class MapSampleState extends State<MapSample> {
 
   Completer<GoogleMapController> _controller = Completer();
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
-  bool mapType = false; // true == MapType.hybrid, false == MapType.normal
+  bool mapType = defaultMapType; // true == MapType.hybrid, false == MapType.normal
   bool initDone = false;
   static final CameraPosition _TLV = CameraPosition( //init poit to be at TLV
     target: LatLng(32.085300, 34.781769),

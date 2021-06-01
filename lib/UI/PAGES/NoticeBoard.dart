@@ -19,14 +19,19 @@ Queue Opened = Queue();
 class _NoticeBoardState extends State<NoticeBoard> {
   List<Advertisement> advertisements = [];
   bool isInitialized = false;
+  late bool _isEmptyList;
   String details = "";
 
   @override
   void initState() {
     super.initState();
-    initBoardwithFb();
-    // In order to populate our Advertisement list
-    //Here will be the sorting of the data coming from firebase
+//    initBoardwithFb();
+
+    if(advertisements.isEmpty){
+      _isEmptyList = true;
+    }else{
+      _isEmptyList = false;
+    }
   }
 
   //Initiate all the details and colors for all the Advert Card.
@@ -83,9 +88,36 @@ class _NoticeBoardState extends State<NoticeBoard> {
       backgroundColor: Colors.amber,
       body: Stack(
         children: [
-          Container(
-            color: Colors.amber,
-            child: ListView(children: [// TODO Lidor add an empty screen option
+          getBulletinBody(),
+          SizedBox(
+              height: 100, child: MyAppBar("לוח מודעות", null, height: 100)),
+        ],
+      ),
+    );
+  }
+
+  Widget getBulletinBody(){
+    if(_isEmptyList){
+      return Container(
+        color: Colors.amber,
+        child: Center(
+          child: SizedBox(
+            width: (MediaQuery.of(context).size.width / 1.5),
+            child: AutoSizeText(
+              "אין מודעות עדיין,\nאנא חזור מאוחר יותר",
+              textDirection: TextDirection.rtl,
+              maxLines: 2,
+              style: TextStyle(fontSize: 1000.0, color: Colors.black.withOpacity(0.65), fontFamily: 'FontSkia'),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      );
+    }else{
+      return Container(
+        color: Colors.amber,
+        child: ListView(
+            children: [
               Padding(
                 padding: EdgeInsets.fromLTRB(5, 0, 0, 40),
                 child: Container(
@@ -96,25 +128,22 @@ class _NoticeBoardState extends State<NoticeBoard> {
                       ),
                       isInitialized
                           ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: advertisements)
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: advertisements)
                           : SpinKitFadingCircle(
-                              color: Colors.white,
-                              size: 50.0,
-                            ),
+                        color: Colors.white,
+                        size: 50.0,
+                      ),
                     ],
-                    // ],
                   ),
                 ),
               ),
-            ]),
-          ),
-          SizedBox(
-              height: 110, child: MyAppBar("NoticeBoard", null, height: 110)),
-        ],
-      ),
-    );
+            ]
+        ),
+      );
+    }
   }
+
 }
 
 //Advertisement Widget

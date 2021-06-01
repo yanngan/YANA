@@ -16,15 +16,16 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
 
-  /// [_notification]
-  /// [_isExpandedAbout]
-  /// [_isExpandedGetHelp]
-  /// [_radius]
-  /// [userName]
-  /// @_controller'Name'
+  /// [_notification] - Determine if the user would like to get popup notifications
+  /// [_isExpandedAbout] - About section open / close variable
+  /// [_isExpandedGetHelp] - Get Help section open / close variable
+  /// [_radius] - The radius of the background of the user edit area
+  /// [userName] - The name of the user, we got it from Facebook
+  /// @_controller'Name' - [TextField] controllers in order to get all the text changes
   bool _notification = false, _isExpandedAbout = false, _isExpandedGetHelp = false;
   double _radius = 14.0;
   String userName = userMap['name'].toString();
+  late List<bool> _toggleSelections;
   TextEditingController _controllerSex = new TextEditingController();
   TextEditingController _controllerHobbies = new TextEditingController();
   TextEditingController _controllerBio = new TextEditingController();
@@ -36,19 +37,25 @@ class _SettingsState extends State<Settings> {
   TextEditingController _controllerSignUpDate = new TextEditingController();
 
   @override
+  void initState() {
+    _toggleSelections = [true, false];
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.amber,
       body: Stack(
         children: [
-          Theme(
+          Theme(  // In order to make the overScroll glow color change
             data: Theme.of(context).copyWith(
                 accentColor: Colors.amberAccent
             ),
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(height: 125,),
+                  SizedBox(height: 125,), // App Bar height space
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 10.0),
                     child: Container(
@@ -58,23 +65,35 @@ class _SettingsState extends State<Settings> {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.only(left: 10.0),
-                          child: ListTile(
-                            title: Align(
-                                alignment: Alignment(-1.313, 0),
-                                child: Text("Notifications")
-                            ),
-                            leading: Icon(Icons.notifications),
-                            trailing: Switch.adaptive(
-                                inactiveTrackColor: Colors.grey.withOpacity(0.4),
-                                inactiveThumbColor: Colors.grey[400]!.withOpacity(0.4),
-                                activeColor: Colors.green.withOpacity(0.75),
-                                activeTrackColor: Colors.green.withOpacity(0.6),
-                                value: _notification,
-                                onChanged: (val){
-                                  setState(() {
-                                    _notification =val;
-                                  });
-                                }
+                          child: Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: ListTile(
+                              title: Align(
+                                  alignment: Alignment(1.153, 0),
+                                  child: Text("התראות")
+                              ),
+                              leading: Icon(Icons.notifications),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Switch.adaptive(
+                                      inactiveTrackColor: Colors.grey.withOpacity(0.4),
+                                      inactiveThumbColor: Colors.grey[400]!.withOpacity(0.4),
+                                      activeColor: Colors.green.withOpacity(0.75),
+                                      activeTrackColor: Colors.green.withOpacity(0.6),
+                                      value: _notification,
+                                      onChanged: (val){
+                                        setState(() {
+                                          _notification = val;
+                                        });
+                                      }
+                                  ),
+                                  GestureDetector(
+                                    onTap: (){},
+                                    child: Icon(Icons.notifications_outlined, color: Colors.pink[600], size: 27.0,)
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         )
@@ -170,6 +189,7 @@ class _SettingsState extends State<Settings> {
                                 ],
                               ),
                             ),  //  About
+                            // TODO Privacy Policy + Terms of Use -> Don't Touch Yet
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10.0),
                               child: ListTile(
@@ -271,6 +291,62 @@ class _SettingsState extends State<Settings> {
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: ListTile(
                           title: Align(
+                              alignment: Alignment(-1.18, 0),
+                              child: AutoSizeText("Map Default View", maxLines: 2,)
+                          ),
+                          leading: Icon(Icons.map),
+                          trailing: ToggleButtons(
+                            isSelected: _toggleSelections,
+                            selectedColor: Colors.green,
+                            fillColor: Colors.transparent,
+                            borderWidth: 2.0,
+                            borderColor: Colors.transparent,
+                            selectedBorderColor: Colors.transparent,
+                            borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(3.0),
+                                child: Column(
+                                  children: [
+                                    Icon(Icons.map_outlined),
+                                    Text("Normal", style: TextStyle(fontSize: 12),),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(3.0),
+                                child: Column(
+                                  children: [
+                                    Icon(Icons.satellite),
+                                    Text("Satellite", style: TextStyle(fontSize: 12),),
+                                  ],
+                                ),
+                              ),
+                            ],
+                            onPressed: (int index){
+                              setState(() {
+//                                _toggleSelections[index] = !_toggleSelections[index];
+                                for(int i = 0; i < _toggleSelections.length; i++){
+                                  _toggleSelections[i] = !_toggleSelections[i];
+                                }
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),  //  Map Default State
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 10.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.amber[300]!.withOpacity(0.8),
+                        borderRadius: BorderRadius.all(Radius.circular(_radius)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: ListTile(
+                          title: Align(
                               alignment: Alignment(-1.118, 0),
                               child: Text("Delete All Chats")
                           ),
@@ -291,13 +367,13 @@ class _SettingsState extends State<Settings> {
                         child: ListTile(
                           title: Align(
                               alignment: Alignment(-1.18, 0),
-                              child: Text("Delete All Locations")
+                              child: Text("Delete All Events")
                           ),
                           leading: Icon(Icons.delete_sharp),
                         ),
                       ),
                     ),
-                  ),  //  Delete All Locations
+                  ),  //  Delete All Events
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 10.0),
                     child: Container(
@@ -310,29 +386,9 @@ class _SettingsState extends State<Settings> {
                         child: ListTile(
                           title: Align(
                               alignment: Alignment(-1.18, 0),
-                              child: Text("Map Default View")
+                              child: Text("Delete My Account")
                           ),
-                          leading: Icon(Icons.map),
-                          trailing: Icon(Icons.delete_sharp),
-                        ),
-                      ),
-                    ),
-                  ),  //  Temp
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 10.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.amber[300]!.withOpacity(0.8),
-                        borderRadius: BorderRadius.all(Radius.circular(_radius)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: ListTile(
-                          title: Align(
-                              alignment: Alignment(-1.18, 0),
-                              child: Text("Delete All Locations")
-                          ),
-                          leading: Icon(Icons.delete_sharp),
+                          leading: Icon(Icons.delete_forever),
                         ),
                       ),
                     ),
@@ -363,8 +419,8 @@ class _SettingsState extends State<Settings> {
             ),
           ),
           SizedBox(
-            height: 110,
-            child: MyAppBar("Setting", funcAction, height: 110,)
+            height: 100,
+            child: MyAppBar("הגדרות", funcAction, height: 100,)
           ),
         ],
       ),
@@ -403,7 +459,7 @@ class _SettingsState extends State<Settings> {
               Align(
                 alignment: Alignment.center,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 70.0),
+                  padding: const EdgeInsets.only(top: 89.35),
                   child: NotificationListener<OverscrollIndicatorNotification>(
                     onNotification: (overScroll) {
                       overScroll.disallowGlow();
@@ -416,20 +472,22 @@ class _SettingsState extends State<Settings> {
                         children: [
                           Column(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 50.0, bottom: 10.0),
-                                child: SizedBox(
-                                  height: textFieldsHeight,
-                                  width: _leftSideWidth,
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: AutoSizeText(
-                                      "Sex",
-                                      maxLines: 1,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              /// Not for this time period
+                              /// Do not delete the Auto-Filters widget comment
+//                              Padding(
+//                                padding: const EdgeInsets.only(top: 42.35, bottom: 10.0),
+//                                child: SizedBox(
+//                                  height: textFieldsHeight,
+//                                  width: _leftSideWidth,
+//                                  child: Align(
+//                                    alignment: Alignment.centerLeft,
+//                                    child: AutoSizeText(
+//                                      "Sex",
+//                                      maxLines: 1,
+//                                    ),
+//                                  ),
+//                                ),
+//                              ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 10.0),
                                 child: SizedBox(
@@ -547,7 +605,7 @@ class _SettingsState extends State<Settings> {
                           Column(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(top: 50.0, bottom: 10.0),
+                                padding: const EdgeInsets.only(top: 42.35, bottom: 10.0),
                                 child: Container(
                                   height: textFieldsHeight,
                                   width: _rightSideWidth,
@@ -812,7 +870,9 @@ class _SettingsState extends State<Settings> {
                             Align(
                                 alignment: Alignment.center,
                                 child: GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
                                   child: Text("Discard", style: TextStyle(fontSize: 18.0),)
                                 )
                             ),
@@ -827,7 +887,9 @@ class _SettingsState extends State<Settings> {
                             Align(
                                 alignment: Alignment.center,
                                 child: GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
                                   child: Text("Save", style: TextStyle(fontSize: 18.0),)
                                 )
                             ),

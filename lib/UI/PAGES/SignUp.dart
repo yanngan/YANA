@@ -234,7 +234,7 @@ class _SignUpState extends State<SignUp> {
     if(sex.isEmpty){ checkerStr = "Sex missing"; }
     if(fullName.isEmpty){ checkerStr = "Name missing"; }
     print("\n\n" + checkerStr + "\n\n");
-    Future.delayed(const Duration(milliseconds: 2000), () {
+    Future.delayed(const Duration(milliseconds: 1850), () {
       bool status = false;
       if(checkerStr.isEmpty){
         btnResultText = "Success!";
@@ -279,7 +279,7 @@ class _SignUpState extends State<SignUp> {
   }
 
   void logNewUserIn(Map<String, String> updateUserInfo){
-    Future.delayed(const Duration(milliseconds: 2500), () {
+    Future.delayed(const Duration(milliseconds: 2000), () {
       setState(() {
         Fluttertoast.showToast(
             msg: updateUserInfo.toString(),

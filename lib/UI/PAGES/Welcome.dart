@@ -33,7 +33,7 @@ class _WelcomeState extends State<Welcome> {
     fullSize = (topSpace * 1.35) + imageSize;
 
 //    In order to make this screen visible for only 7 seconds and then go to an identical screen with extra options
-    Future.delayed(Duration(seconds: 3)).then((value) => {
+    Future.delayed(Duration(seconds: 2)).then((value) => {
       checkInternetConnection(),
     });
 
@@ -84,7 +84,7 @@ class _WelcomeState extends State<Welcome> {
 //              Texts Animation
                 TweenAnimationBuilder(
                   tween: Tween<double>(begin: 0, end: 255),
-                  duration: Duration(seconds: 2),
+                  duration: Duration(milliseconds: 1500),
                   curve: Curves.easeInExpo,
                   builder: (BuildContext _, double alpha, Widget? __) {
                     return Padding(

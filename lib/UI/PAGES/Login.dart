@@ -103,7 +103,7 @@ class _LoginState extends State<Login> {
               ), // Welcome Text
               TweenAnimationBuilder(
                   tween: Tween<double>(begin: 0, end: 255),
-                  duration: Duration(milliseconds: 1250),
+                  duration: Duration(milliseconds: 1150),
                   curve: Curves.easeInExpo,
                   builder: (BuildContext _, double alpha, Widget? __) {
                     return Column(

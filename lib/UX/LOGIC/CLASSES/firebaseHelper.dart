@@ -216,9 +216,7 @@ class FirebaseHelper {
     FirebaseFirestore.instance.collection("Attendance")
         .where("idEvent", isEqualTo: _eventID).get().then((value){
       value.docs.forEach((element) {
-        FirebaseFirestore.instance.collection("Attendance").doc(element.id).delete().then((value){
-          // print("Success!");
-        });
+        FirebaseFirestore.instance.collection("Attendance").doc(element.id).delete();
       });
     });
 

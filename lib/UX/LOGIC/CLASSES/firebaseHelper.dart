@@ -211,6 +211,18 @@ class FirebaseHelper {
     return events;
   }
 
+  static void deleteEventByID(String _eventID){
+    FirebaseFirestore.instance.collection('Events').doc(_eventID).delete();
+    FirebaseFirestore.instance.collection("Attendance")
+        .where("idEvent", isEqualTo: _eventID).get().then((value){
+      value.docs.forEach((element) {
+        FirebaseFirestore.instance.collection("Attendance").doc(element.id).delete().then((value){
+          // print("Success!");
+        });
+      });
+    });
+
+  }
 /*
   //in case we want to find an event by place -- need to fix
   static Future<List<Events>> getEventsByPlaceID(String placeID) async {

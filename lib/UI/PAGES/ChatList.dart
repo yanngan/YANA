@@ -16,14 +16,18 @@ class ChatList extends StatefulWidget {
 
 class _ChatListState extends State<ChatList> {
 
-  String _userID = "LidorID";//userMap["id"].toString();
+  String _userID = "LidorID";//userMap["id"].toString();  // TODO change before production
   Map<dynamic, dynamic> _senders = {};
 
   @override
   void initState() {
     super.initState();
     initChatsList();
-    FirebaseHelper.createNewChat(_userID, "Lidor Name", "YisraelID", "Yisrael Name");
+//    FirebaseHelper.createNewChat(_userID, "Lidor Name", "YisraelID", "Yisrael Name");
+//    FirebaseHelper.createNewChat(_userID, "Lidor Name", "DavidID", "David Name");
+//    FirebaseHelper.createNewChat(_userID, "Lidor Name", "SvetlanaID", "Svetlana Name");
+//    FirebaseHelper.createNewChat(_userID, "Lidor Name", "DanaID", "Dana Name");
+//    FirebaseHelper.createNewChat(_userID, "Lidor Name", "ZevelID", "Zevel Name");
   }
 
   void initChatsList() async {

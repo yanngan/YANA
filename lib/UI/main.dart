@@ -40,8 +40,8 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    // TODO This is for testing SIGNUP only!!! remove before you push it!
-    _logOut();
+    // This is for testing SIGNUP only!!! remove before you push it!
+//    _logOut();
     Firebase.initializeApp();
   }
 
@@ -134,12 +134,12 @@ class _MainPageState extends State<MainPage> {
                     currentIndex = index;
                   });
                 },
-                children: [   // TODO add the same to them as in SignUp.dart at lines ~ 25-27 (26 not sure, consult Lidor)
+                children: [
                   ChatsAndEvents(this.callback),
                   SearchView(),
                   MapView(),
                   NoticeBoard(),
-                  Settings(),
+                  Settings(this.callback),
       //            Welcome(),
       //            Login(),
       //            SingUp(),

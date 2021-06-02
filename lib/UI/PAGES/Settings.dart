@@ -2,12 +2,20 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:yana/UI/PAGES/Utilities.dart';
+import 'package:yana/UX/DB/users.dart';
+import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
 //WIDGETS
 import '../WIDGETS/allWidgets.dart';
 
 class Settings extends StatefulWidget {
+
+  final Function callback;
+  Settings(this.callback);
 
   @override
   _SettingsState createState() => _SettingsState();
@@ -22,24 +30,43 @@ class _SettingsState extends State<Settings> {
   /// [_radius] - The radius of the background of the user edit area
   /// [userName] - The name of the user, we got it from Facebook
   /// @_controller'Name' - [TextField] controllers in order to get all the text changes
-  bool _notification = false, _isExpandedAbout = false, _isExpandedGetHelp = false;
+  bool _notification = userMap['notifications'].toString().toLowerCase() == 'true';
+  bool _isExpandedAbout = false, _isExpandedGetHelp = false;
   double _radius = 14.0;
   String userName = userMap['name'].toString();
   late List<bool> _toggleSelections;
-  TextEditingController _controllerSex = new TextEditingController();
-  TextEditingController _controllerHobbies = new TextEditingController();
-  TextEditingController _controllerBio = new TextEditingController();
-  TextEditingController _controllerLivingArea = new TextEditingController();
-  TextEditingController _controllerWorkArea = new TextEditingController();
-  TextEditingController _controllerAcademicInstitution = new TextEditingController();
-  TextEditingController _controllerFieldOfStudy = new TextEditingController();
-  TextEditingController _controllerSmoking = new TextEditingController();
-  TextEditingController _controllerSignUpDate = new TextEditingController();
+  late TextEditingController _controllerSex;
+  late TextEditingController _controllerHobbies;
+  late TextEditingController _controllerBio;
+  late TextEditingController _controllerLivingArea;
+  late TextEditingController _controllerWorkArea;
+  late TextEditingController _controllerAcademicInstitution;
+  late TextEditingController _controllerFieldOfStudy;
+  late TextEditingController _controllerSmoking;
+  late TextEditingController _controllerSignUpDate;
+  late User updatedUser;
+  String _hobbies = userMap['hobbies'].toString(), _bio = userMap['bio'].toString(),
+      _livingArea = userMap['livingArea'].toString(), _workArea = userMap['workArea'].toString(),
+      _academicInstitution =  userMap['academicInstitution'].toString(),
+      _fieldOfStudy = userMap['fieldOfStudy'].toString(), _smoking = userMap['smoking'].toString();
 
   @override
   void initState() {
-    _toggleSelections = [true, false];
+    _toggleSelections = [!defaultMapType, defaultMapType];
+    _updateControllers();
     super.initState();
+  }
+
+  void _updateControllers() {
+    _controllerSex = new TextEditingController(text: userMap['gender'].toString());
+    _controllerHobbies = new TextEditingController(text: _hobbies);
+    _controllerBio = new TextEditingController(text: _bio);
+    _controllerLivingArea = new TextEditingController(text: _livingArea);
+    _controllerWorkArea = new TextEditingController(text: _workArea);
+    _controllerAcademicInstitution = new TextEditingController(text: _academicInstitution);
+    _controllerFieldOfStudy = new TextEditingController(text: _fieldOfStudy);
+    _controllerSmoking = new TextEditingController(text: _smoking);
+    _controllerSignUpDate = new TextEditingController(text: userMap['signUpDate'].toString());
   }
 
   @override
@@ -85,11 +112,20 @@ class _SettingsState extends State<Settings> {
                                       onChanged: (val){
                                         setState(() {
                                           _notification = val;
+                                          userMap['notifications'] = _notification.toString();
+                                          updateUser(); // Save notifications preferences
                                         });
                                       }
                                   ),
                                   GestureDetector(
-                                    onTap: (){},
+                                    onTap: (){
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => NotificationPage()
+                                        ),
+                                      );
+                                    },
                                     child: Icon(Icons.notifications_outlined, color: Colors.pink[600], size: 27.0,)
                                   ),
                                 ],
@@ -122,26 +158,28 @@ class _SettingsState extends State<Settings> {
                       ),
                     ),
                   ),  //  User Profile
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 10.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.amber[300]!.withOpacity(0.8),
-                        borderRadius: BorderRadius.all(Radius.circular(_radius)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: ListTile(
-                          title: Align(
-                              alignment: Alignment(-1.193, 0),
-                              child: Text("Auto Filters")
-                          ),
-                          leading: Icon(Icons.filter_list),
-                          trailing: Icon(Icons.add_box),
-                        ),
-                      ),
-                    ),
-                  ),  //  Auto Filters
+                  /// Not for this time period
+                  /// Do not delete the Auto-Filters widget comment:
+//                  Padding(
+//                    padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 10.0),
+//                    child: Container(
+//                      decoration: BoxDecoration(
+//                        color: Colors.amber[300]!.withOpacity(0.8),
+//                        borderRadius: BorderRadius.all(Radius.circular(_radius)),
+//                      ),
+//                      child: Padding(
+//                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+//                        child: ListTile(
+//                          title: Align(
+//                              alignment: Alignment(-1.193, 0),
+//                              child: Text("Auto Filters")
+//                          ),
+//                          leading: Icon(Icons.filter_list),
+//                          trailing: Icon(Icons.add_box),
+//                        ),
+//                      ),
+//                    ),
+//                  ),  //  Auto Filters
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 10.0),
                     child: Container(
@@ -256,6 +294,9 @@ class _SettingsState extends State<Settings> {
                                 Padding(
                                   padding: const EdgeInsets.only(right: 10.0, left: 10.0),
                                   child: ListTile(
+                                    onTap: (){
+                                      launch(specialistNumberCall);
+                                    },
                                     title: Align(
                                       alignment: Alignment(-1.1, 0),
                                       child: Text("Call a Specialist")
@@ -266,6 +307,9 @@ class _SettingsState extends State<Settings> {
                                 Padding(
                                   padding: const EdgeInsets.only(right: 10.0, left: 10.0),
                                   child: ListTile(
+                                    onTap: (){
+                                      launch("https://wa.me/$specialistNumberSms?text=");
+                                    },
                                     title: Align(
                                       alignment: Alignment(-1.1, 0),
                                       child: Text("Text a Psychologist")
@@ -325,10 +369,17 @@ class _SettingsState extends State<Settings> {
                             ],
                             onPressed: (int index){
                               setState(() {
-//                                _toggleSelections[index] = !_toggleSelections[index];
                                 for(int i = 0; i < _toggleSelections.length; i++){
                                   _toggleSelections[i] = !_toggleSelections[i];
                                 }
+                                // _toggleSelections[0] = Normal
+                                // _toggleSelections[1] = Hybrid
+                                if(_toggleSelections[0]){
+                                  defaultMapType = false;
+                                }else if(_toggleSelections[1]){
+                                  defaultMapType = true;
+                                }
+                                savePreference();
                               });
                             },
                           ),
@@ -346,6 +397,9 @@ class _SettingsState extends State<Settings> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: ListTile(
+                          onTap: (){
+                            FirebaseHelper.deleteAllUserChats("LidorID");// TODO userMap['id']);
+                          },
                           title: Align(
                               alignment: Alignment(-1.118, 0),
                               child: Text("Delete All Chats")
@@ -365,6 +419,9 @@ class _SettingsState extends State<Settings> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: ListTile(
+                          onTap: (){
+                            FirebaseHelper.deleteAllUserEvents(userMap['id']);
+                          },
                           title: Align(
                               alignment: Alignment(-1.18, 0),
                               child: Text("Delete All Events")
@@ -384,6 +441,10 @@ class _SettingsState extends State<Settings> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: ListTile(
+                          onTap: (){
+                            FirebaseHelper.deleteUserAccount("yisrael"); // TODO userMap['id']);
+                            _logOut();
+                          },
                           title: Align(
                               alignment: Alignment(-1.18, 0),
                               child: Text("Delete My Account")
@@ -392,7 +453,7 @@ class _SettingsState extends State<Settings> {
                         ),
                       ),
                     ),
-                  ),  //  Temp
+                  ),  //  Delete My Account
                   Padding(
                     padding: const EdgeInsets.only(left: 35.0, right: 35.0, top: 10.0, bottom: 70.0),
                     child: Container(
@@ -403,9 +464,12 @@ class _SettingsState extends State<Settings> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: ListTile(
+                          onTap: (){
+                            _logOut();
+                          },
                           title: Align(
                               alignment: Alignment(-1.065, 0),
-                              child: Text("Sign-out")
+                              child: Text("Log-out")
                           ),
                           leading: ImageIcon(
                             AssetImage('assets/logout.png'),
@@ -472,22 +536,20 @@ class _SettingsState extends State<Settings> {
                         children: [
                           Column(
                             children: [
-                              /// Not for this time period
-                              /// Do not delete the Auto-Filters widget comment
-//                              Padding(
-//                                padding: const EdgeInsets.only(top: 42.35, bottom: 10.0),
-//                                child: SizedBox(
-//                                  height: textFieldsHeight,
-//                                  width: _leftSideWidth,
-//                                  child: Align(
-//                                    alignment: Alignment.centerLeft,
-//                                    child: AutoSizeText(
-//                                      "Sex",
-//                                      maxLines: 1,
-//                                    ),
-//                                  ),
-//                                ),
-//                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 42.35, bottom: 10.0),
+                                child: SizedBox(
+                                  height: textFieldsHeight,
+                                  width: _leftSideWidth,
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: AutoSizeText(
+                                      "Sex",
+                                      maxLines: 1,
+                                    ),
+                                  ),
+                                ),
+                              ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 10.0),
                                 child: SizedBox(
@@ -614,6 +676,7 @@ class _SettingsState extends State<Settings> {
                                     onChanged: (_text){
                                       setState(() {});
                                     },
+                                    enabled: false,
                                     textAlign: TextAlign.center,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
@@ -638,7 +701,9 @@ class _SettingsState extends State<Settings> {
                                   child: TextField(
                                 controller: _controllerHobbies,
                                     onChanged: (_text){
-                                      setState(() {});
+                                      setState(() {
+                                        _hobbies = _text;
+                                      });
                                     },
                                     textAlign: TextAlign.center,
                                     decoration: InputDecoration(
@@ -664,7 +729,9 @@ class _SettingsState extends State<Settings> {
                                   child: TextField(
                                 controller: _controllerBio,
                                     onChanged: (_text){
-                                      setState(() {});
+                                      setState(() {
+                                        _bio = _text;
+                                      });
                                     },
                                     textAlign: TextAlign.center,
                                     decoration: InputDecoration(
@@ -690,7 +757,9 @@ class _SettingsState extends State<Settings> {
                                   child: TextField(
                                 controller: _controllerLivingArea,
                                     onChanged: (_text){
-                                      setState(() {});
+                                      setState(() {
+                                        _livingArea = _text;
+                                      });
                                     },
                                     textAlign: TextAlign.center,
                                     decoration: InputDecoration(
@@ -716,7 +785,9 @@ class _SettingsState extends State<Settings> {
                                   child: TextField(
                                 controller: _controllerWorkArea,
                                     onChanged: (_text){
-                                      setState(() {});
+                                      setState(() {
+                                        _workArea = _text;
+                                      });
                                     },
                                     textAlign: TextAlign.center,
                                     decoration: InputDecoration(
@@ -742,7 +813,9 @@ class _SettingsState extends State<Settings> {
                                   child: TextField(
                                 controller: _controllerAcademicInstitution,
                                     onChanged: (_text){
-                                      setState(() {});
+                                      setState(() {
+                                        _academicInstitution = _text;
+                                      });
                                     },
                                     textAlign: TextAlign.center,
                                     decoration: InputDecoration(
@@ -768,7 +841,9 @@ class _SettingsState extends State<Settings> {
                                   child: TextField(
                                 controller: _controllerFieldOfStudy,
                                     onChanged: (_text){
-                                      setState(() {});
+                                      setState(() {
+                                        _fieldOfStudy = _text;
+                                      });
                                     },
                                     textAlign: TextAlign.center,
                                     decoration: InputDecoration(
@@ -794,7 +869,9 @@ class _SettingsState extends State<Settings> {
                                   child: TextField(
                                 controller: _controllerSmoking,
                                     onChanged: (_text){
-                                      setState(() {});
+                                      setState(() {
+                                        _smoking = _text;
+                                      });
                                     },
                                     textAlign: TextAlign.center,
                                     decoration: InputDecoration(
@@ -822,6 +899,7 @@ class _SettingsState extends State<Settings> {
                                     onChanged: (_text){
                                       setState(() {});
                                     },
+                                    enabled: false,
                                     textAlign: TextAlign.center,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
@@ -888,6 +966,7 @@ class _SettingsState extends State<Settings> {
                                 alignment: Alignment.center,
                                 child: GestureDetector(
                                   onTap: () {
+                                    checkThenUpdateUser();
                                     Navigator.pop(context);
                                   },
                                   child: Text("Save", style: TextStyle(fontSize: 18.0),)
@@ -916,6 +995,43 @@ class _SettingsState extends State<Settings> {
   /// App Bar tap callback function
   funcAction(){
     print("action clicked");
+  }
+
+  void updateUser() {
+    updatedUser = User.fromMap(userMap);
+    FirebaseHelper.sendUserToFb(updatedUser);
+  }
+
+  void checkThenUpdateUser() {
+    if(_hobbies.isEmpty){
+      // Toast on hobbies
+    }else if(_bio.isEmpty){
+      // Toast on bio
+    }else if(_livingArea.isEmpty){
+      // Toast on livingArea
+    }
+    userMap['hobbies'] = _hobbies;
+    userMap['bio'] = _bio;
+    userMap['livingArea'] = _livingArea;
+    userMap['workArea'] = _workArea;
+    userMap['academicInstitution'] = _academicInstitution;
+    userMap['fieldOfStudy'] = _fieldOfStudy;
+    userMap['smoking'] = _smoking;
+    updateUser();
+  }
+
+  void savePreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(MAP_TYPE_KEY, defaultMapType);
+  }
+
+  Future<void> _logOut() async {
+    await FacebookAuth.instance.logOut();
+//    _accessToken = null;
+//    _userData = null;
+    setState(() {
+      this.widget.callback(0, userMap, otherInfo, MapView_index);
+    });
   }
 
 }

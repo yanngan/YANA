@@ -112,13 +112,13 @@ class FirebaseHelper {
     final databaseReference = FirebaseDatabase.instance.reference();
     DatabaseReference myRef1 = databaseReference
         .child("rooms/")
-        .child(m1.selfName)
-        .child(m1.otherName);
+        .child(m1.selfID)
+        .child(m1.otherID);
     myRef1.push().set(m1.toJson());
     myRef1 = databaseReference
         .child("rooms/")
-        .child(m1.otherName)
-        .child(m1.selfName);
+        .child(m1.otherID)
+        .child(m1.selfID);
     myRef1.push().set(m1.toJson());
   }
 
@@ -152,6 +152,12 @@ class FirebaseHelper {
     myRef.child(_selfID).child(_otherID).set(_otherName);
     myRef.child(_otherID).child(_selfID).set(_selfName);
   }
+
+  static void deleteAllUserChats(var _selfID){
+    final databaseReference = FirebaseDatabase.instance.reference();
+    DatabaseReference  myRef = databaseReference.child("chats_information/");
+    myRef.child(_selfID).remove();
+  }
 //end Messages-------------------------------------------------
 
 //start Events-------------------------------------------------
@@ -159,6 +165,7 @@ class FirebaseHelper {
   static Future<String> generateEventId() async {
     return await FirebaseFirestore.instance.collection('Events').doc().id;
   }
+
   static Future<String> generateAttendanceId() async {
     return await FirebaseFirestore.instance.collection('Attendance').doc().id;
   }
@@ -242,8 +249,6 @@ class FirebaseHelper {
     });
     return events;
   }
-
-
 
   //get all events that active
   static Future<List<Events>> getEventsByStatus(bool isActive) async {
@@ -371,8 +376,6 @@ class FirebaseHelper {
     return events;
   }
 
-
-
   static Future<bool> userAskToJoinEvent(String userID,String eventID,String creatorUserID) async{
     //eventID
     FirebaseFirestore fireStore = FirebaseFirestore.instance;
@@ -419,6 +422,16 @@ class FirebaseHelper {
     return myNotifications;
   }
 
+  static void deleteAllUserEvents(var _userID) async {
+    await FirebaseFirestore.instance
+      .collection('Events')
+      .where("userID", isEqualTo: _userID)
+      .get().then((value){
+        value.docs.forEach((element) {
+          FirebaseFirestore.instance.collection("Events").doc(element.id).delete();
+        });
+      });
+  }
 //end Events-------------------------------------------------
 
 // start users-------------------------------------------------
@@ -468,6 +481,21 @@ class FirebaseHelper {
     }
   }
 
+  static void deleteUserAccount(var _userID) {
+    FirebaseFirestore.instance.collection('Users').doc(_userID).delete();
+  }
+
 //end users-------------------------------------------------
 
 }
+
+
+
+
+
+
+
+
+
+
+

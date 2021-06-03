@@ -55,7 +55,7 @@ class Events{
   }
 
   String toString() {
-    return 'Events{eventID: $eventID, userID: $userID, userName: $userName, creationDate: $creationDate, status: $status, startEstimate: $startEstimate, endEstimate: $endEstimate, curNumPeople: $curNumPeople, maxNumPeople: $maxNumPeople, placeID: $placeID, placeName: $placeName, note: $note}';
+    return 'Events{eventID: $eventID, userID: $userID, userName: $userName, creationDate: $creationDate, status: $status, startEstimate: $startEstimate, endEstimate: $endEstimate, curNumPeople: $curNumPeople, maxNumPeople: $maxNumPeople, placeID: $placeID, placeName: $placeName, note: $note, statusForUser: $statusForUser}';
   }
   //make a json object
   Map<String, dynamic> toJson() {

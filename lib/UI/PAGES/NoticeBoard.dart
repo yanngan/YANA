@@ -161,7 +161,7 @@ class _AdvertisementState extends State<Advertisement> {
   void initState() {
     super.initState();
     extra_link_name_to_use = "\u2022 Link\b: ${widget.adv_extraLinkName}\n";
-    maps_links_to_use = "\u2022 Itinerate to the Place\n";
+    maps_links_to_use = "Itinerate to the Place >\n";
   }
 
   void _launchUrl(String url) async {
@@ -297,7 +297,8 @@ class _AdvertisementState extends State<Advertisement> {
                                                   style: new TextStyle(
                                                     fontFamily: 'FontRaleway',
                                                     fontWeight: FontWeight.w600,
-                                                    color: Colors.pink,
+                                                    color: Colors.blueAccent,
+                                                    decoration: TextDecoration.underline,
                                                     fontSize: 18,
                                                     letterSpacing: 1,
                                                     decorationThickness: 2,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:yana/UI/WIDGETS/allWidgets.dart';
 import 'package:yana/UX/DB/allDB.dart';
 import 'package:yana/UX/LOGIC/CLASSES/allClasses.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
@@ -14,12 +16,12 @@ class EventsList extends StatefulWidget {
 }
 
 class _EventsListState extends State<EventsList> {
-  bool initDone = false;
+  bool _initDone = false;
   List<Events> listEvents = [];
   Map<String, Place> PlaceByEvents = {};
   @override
   Widget build(BuildContext context) {
-    if (!initDone) {
+    if (!_initDone) {
       _init();
     }
     return Scaffold(
@@ -28,45 +30,10 @@ class _EventsListState extends State<EventsList> {
       //floatingActionButton: FloatingActionButton(onPressed: (){Logic.getAllUserEvent();},),
       body: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ConstrainedBox(
-                constraints: BoxConstraints.tightFor(width: 70, height: 70),
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.pink),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(100.0),
-                          )
-                      )
-                  ),
-                  child: Text("?",style: TextStyle(fontSize: 20,),),
-                  onPressed: (){_makeToast("אירועים שיצרת יופיעו בצבע זה",Colors.pink);},
-                ),
-              ),
-              ConstrainedBox(
-                constraints: BoxConstraints.tightFor(width: 70, height: 70),
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.pink[300]),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(100.0),
-                          )
-                      )
-                  ),
-                  child: Text("?",style: TextStyle(fontSize: 20),),
-                  onPressed: (){_makeToast("אירועים שביקשת להצטרף/אושרת יופיעו בצבע זה",Colors.pink[300]);},
-                ),
-              ),
-            ],
-          ),
           Expanded(
             child: Container(
               color: Colors.amber,
-              child: initDone?ListView.builder(
+              child: _initDone?ListView.builder(
                   itemCount: listEvents.length,
                   itemBuilder: (BuildContext context, int index) {
                     return _createRow(index);
@@ -77,6 +44,7 @@ class _EventsListState extends State<EventsList> {
               ),
             ),
           ),
+          SizedBox(height: 50,)
         ],
       ),
     );
@@ -94,68 +62,189 @@ class _EventsListState extends State<EventsList> {
         }
         print(temp.placeID);
         PlaceByEvents[oneEvents.eventID] = temp;
+        if(oneEvents.userID != userMap['id']!){
+          oneEvents.statusForUser =  await Logic.getStatusEventForUser(oneEvents.eventID);
+        }
       }
       setState(() {
-        initDone = true;
+        _initDone = true;
       });
     });
   }
 
-  //create row in the list
-  _createRow(int index) {
-    var color = Colors.pink[500];
-    if (listEvents[index].userID != userMap['id']!) {
-      color = Colors.pink[300];
+
+
+
+
+  _createRow(int index){
+    String texeButton = "";
+    var actionButton;
+    print(listEvents[index]);
+    if (listEvents[index].userID == userMap['id']!) {
+      texeButton = "ערוך";
+      actionButton = ()async{
+        await MapLogic.addEditSeePoints(context, 'edit',
+          theEvent: listEvents[index],
+          thePlace: PlaceByEvents[listEvents[index].eventID],
+          totallyPop: true
+        );
+        setState(() {
+          _initDone = false;
+        });
+      };
     }
-    return Padding(
-      padding: const EdgeInsets.only(top: 4, right: 4, left: 4),
+    else {
+      if (listEvents[index].statusForUser == Events.ASK) {
+        texeButton = "טרם אושר";
+        actionButton = (){_makeToast("בקשתך נשלחה, וממתינה לאישור מארגן האירוע",Colors.pink);};
+      }
+      else if(listEvents[index].statusForUser == Events.GOING){
+        texeButton = "בטל הגעה";
+        actionButton = (){userCancelation(listEvents[index]);};
+      }
+      else{
+        texeButton = "שגיאה";
+        actionButton = (){_makeToast("אנו מתנצלים אירעה שגיאה במערכת",Colors.red);};
+      }
+    }
+    var theButton = Padding(
+      padding: EdgeInsets.fromLTRB(2, 0, 0, 15),
       child: InkWell(
-        child: Container(
-          height: 80,
-          decoration: BoxDecoration(
-            color: color,
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.all(Radius.circular(15)),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  //Text('Event - ${listEvents[index].eventID}'),
-                  Text(
-                    '${(PlaceByEvents[listEvents[index].eventID]!).name}',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                    ),
+        onTap: actionButton,
+        child: Neumorphism(null, null, Text(texeButton),
+          type: NeumorphismOuter,
+          radius: 32.0,
+          alignment: Alignment.centerLeft,
+          color: Colors.amber,
+        )
+      )
+    );
+
+
+    return Container(
+      foregroundDecoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        gradient: LinearGradient(
+          begin: Alignment(-1, -1),
+          end: Alignment(-1, -0.9),
+          colors: [Colors.black12, Colors.transparent],
+        ),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 3,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage((PlaceByEvents[listEvents[index].eventID]!).placeIcon),
+                    radius: 40.0,
                   ),
-                  Text(
-                    '${listEvents[index].startEstimate}',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
-                    ),
+                ),
+                SizedBox(height: 20,),
+                theButton,
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 7,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text("${(PlaceByEvents[listEvents[index].eventID]!).name}",
+                          style: TextStyle(fontSize: 20),
+                      ),
+                      Text(" - ",
+                          style: TextStyle(fontSize: 20),
+                      ),
+                      Text("${(PlaceByEvents[listEvents[index].eventID]!).city}",
+                          style: TextStyle(fontSize: 20),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text("${listEvents[index].startEstimate}",
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      Text(" : ",
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      Text("מתי",
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    ],
+                  ),
+                  Text("כמות משתתפים מקסימלית : ${(listEvents[index].maxNumPeople)}",
+                      style: TextStyle(fontSize: 15),
+                  ),
+                  Text("כמות משתתפים נוכחית : ${listEvents[index].curNumPeople}",
+                      style: TextStyle(fontSize: 15),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      InkWell(
+                        onTap: (){_launchUrl("${(PlaceByEvents[listEvents[index].eventID]!).googleMapLink}");},
+                        child: Text("${(PlaceByEvents[listEvents[index].eventID]!).address}",
+                            style: TextStyle(fontSize: 15,color: Colors.blueAccent,decoration: TextDecoration.underline),
+                        ),
+                      ),
+                      Text(" : ",
+                          style: TextStyle(fontSize: 15),
+                      ),
+                      Text("כתובת המקום",
+                          style: TextStyle(fontSize: 15),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text("${listEvents[index].note}",
+                        style: TextStyle(fontSize: 15),
+                        textAlign: TextAlign.end,
+                      ),
+                      Text(" : ",
+                          style: TextStyle(fontSize: 15),
+                      ),
+                      Text("הערות",
+                          style: TextStyle(fontSize: 15),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              Icon(
-                Icons.arrow_forward_ios_outlined,
-                color: Colors.white,
-              )
-            ],
+            ),
           ),
-        ),
-        onTap: () {
-          MapLogic.addEditSeePoints(context, 'see',
-              theEvent: listEvents[index],
-              thePlace: PlaceByEvents[listEvents[index].eventID],
-              totallyPop: true);
-        },
+        ],
       ),
     );
+  }
+
+
+
+  userCancelation(Events event)async{
+    if(await Logic.userCancelation(userMap['id']! ,event)){
+      _makeToast("בוצע ביטול",Colors.pink);
+    }
+    else{
+      _makeToast("מתנצלים אירעה שגיאה, נסה שנית מאוחר יותר",Colors.pink);
+    }
+    setState(() {
+      _initDone = false;
+    });
   }
 
   _makeToast(String str,var theColor){
@@ -168,6 +257,15 @@ class _EventsListState extends State<EventsList> {
         textColor: Colors.amber,
         fontSize: 16.0
     );
+  }
+
+  void _launchUrl(String url) async {
+    print(url);
+    if (await canLaunch(url)) {
+      launch(url);
+    } else {
+      _makeToast("סורי - הקישור לא עובד :(",Colors.pink);
+    }
   }
 
 }

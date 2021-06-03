@@ -16,7 +16,7 @@ class SearchView extends StatefulWidget {
 
 class _SearchViewState extends State<SearchView> {
   bool _initDone = false;
-  bool _seeField = true;
+  bool _seeField = false;
   List<Events> listEvents = [];
   Map<String, Place> PlaceByEvents = {};
   Map<String, TextEditingController> allField = {};

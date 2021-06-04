@@ -914,7 +914,6 @@ class _SettingsState extends State<Settings> {
                                 ),
                               ],
                             ),
-
 //                            Row(
 //                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 //                              crossAxisAlignment: CrossAxisAlignment.center,

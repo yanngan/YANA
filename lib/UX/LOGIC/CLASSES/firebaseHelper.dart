@@ -388,13 +388,58 @@ class FirebaseHelper {
     FirebaseFirestore fireStore = FirebaseFirestore.instance;
     //write to collection
     try {
-      await fireStore.collection('Attendance').doc(await generateAttendanceId()).set({'idEvent':eventID,'idUser':userID,'status':0,'idCreator:':creatorUserID});
+      await fireStore.collection('Attendance').doc(await generateAttendanceId()).set({'idEvent':eventID,'idUser':userID,'status':0,'idCreator':creatorUserID});
     } on Exception catch (e) {
       return false;
     }
     return true;
   }
 
+
+  //if approve == true -> approve , else -> reject
+  static Future<bool> approveOrRejectRequestToJoinEvent(String userID,Events theEvents,bool approve) async{
+    FirebaseFirestore fireStore = FirebaseFirestore.instance;
+    try {
+      QuerySnapshot<Map<String, dynamic>> res = await  FirebaseFirestore.instance.collection("Attendance").where("idEvent", isEqualTo : theEvents.eventID).get();
+      int status = approve?1:2;
+      for(var alias in res.docs) {
+        if(alias.data()['idUser'] == userID){
+          await FirebaseFirestore.instance.collection("Attendance").doc(alias.id).update({'status':status});
+          break;
+        }
+      }
+      if(approve){
+        await FirebaseFirestore.instance.collection('Events').doc(theEvents.eventID).update({'curNumPeople':(theEvents.curNumPeople+1)});
+      }
+      return true;
+    } on Exception catch (e)  {
+      print(e);
+      return false;
+    }
+  }
+
+  //if user been approve to join an event and regrets, use this function to cancel
+  static Future<bool> userCancelation(String userID, Events event,)async{
+    FirebaseFirestore fireStore = FirebaseFirestore.instance;
+    try {
+      QuerySnapshot<Map<String, dynamic>> res = await  FirebaseFirestore.instance.collection("Attendance").where("idEvent", isEqualTo : event.eventID).get();
+
+      for(var alias in res.docs) {
+        if(alias.data()['idUser'] == userID){
+          print("in if ${event.eventID}");
+          print(alias.data());
+          print("alias.id = ${alias.id}");
+          await FirebaseFirestore.instance.collection("Attendance").doc(alias.id).delete();
+          break;
+        }
+      }
+      await FirebaseFirestore.instance.collection('Events').doc(event.eventID).update({'curNumPeople':(event.curNumPeople-1)});
+      return true;
+    } on Exception catch (e)  {
+      print(e);
+      return false;
+    }
+  }
   static Future<int> getStatusEventForUser(String eventID)async{
     QuerySnapshot querySnapshot =  await FirebaseFirestore.instance.collection('Attendance').where('idEvent',isEqualTo: eventID).get();
     for(var alias in querySnapshot.docs){
@@ -404,7 +449,7 @@ class FirebaseHelper {
         return json['status'];
       }
     }
-    return 0;
+    return -1;
   }
 
   static Future<List<MyNotification>> getUserJoinRequest(String idCreator)async{

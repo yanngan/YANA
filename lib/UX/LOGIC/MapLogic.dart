@@ -37,27 +37,28 @@ class MapLogic{
   }
 
   static addEditSeePoints(BuildContext context,String action,{var theEvent,var thePlace,bool totallyPop = false}) async {
+    print("in addEditSeePoints");
     var screen;
     switch (action) {
       case 'add':
         screen = AddEvent(thePlace);
         break;
       case 'edit':
-        screen = EditEvent(thePlace, theEvent);
+        screen = EditEvent(thePlace, theEvent,totallyPop);
         break;
       case 'see':
-        int statusForUser = -1;
+        /*int statusForUser = -1;
         if(theEvent.userID == userMap['id']!){
           statusForUser = 2;//going
         }
         else{
           statusForUser = await Logic.getStatusEventForUser(theEvent.eventID);
-        }
+        }*/
 
         screen = SeeEvent(thePlace, theEvent,totallyPop);
         break;
     }
-    showDialog(
+    return await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(

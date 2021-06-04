@@ -10,7 +10,8 @@ import 'package:yana/UX/LOGIC/MapLogic.dart';
 class EditEvent extends StatefulWidget {
   Place thePlace;
   Events theEvents;
-  EditEvent(this.thePlace, this.theEvents);
+  bool totallyPop;
+  EditEvent(this.thePlace, this.theEvents,this.totallyPop);
   @override
   _EditEventState createState() => _EditEventState();
 }
@@ -208,8 +209,10 @@ class _EditEventState extends State<EditEvent> {
       makeErrorAlert("אירעה שגיאה בתהליך השמירה, נסה שנית");
     }
     Navigator.of(context).pop();
-    MapLogic.addEditSeePoints(context, 'see',
-        theEvent: theNewEvents, thePlace: widget.thePlace);
+    if(!widget.totallyPop){
+      MapLogic.addEditSeePoints(context, 'see',
+          theEvent: theNewEvents, thePlace: widget.thePlace);
+    }
     /*Route route = MaterialPageRoute(builder: (context) => SeeEvent(widget.thePlace,widget.theEvents));
     Navigator.pushReplacement(context, route);*/
   }

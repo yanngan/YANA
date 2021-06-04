@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:yana/UX/DB/allDB.dart';
+import 'package:yana/UX/LOGIC/CLASSES/allClasses.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
+import 'package:yana/UX/LOGIC/MapLogic.dart';
 
 class NotificationPage extends StatefulWidget {
   @override
@@ -86,13 +89,13 @@ class _NotificationPageState extends State<NotificationPage> {
                 ElevatedButton(
                   child: Text("צפה באירוע"),
                   onPressed: (){
-                    //todo!!!
+                    seeEvents(index);
                   },
                 ),
                 ElevatedButton(
                   child: Text("צפה בפרופיל"),
                   onPressed: (){
-                    //todo!!!
+                    seeProfile(index);
                   },
                 ),
               ],
@@ -107,7 +110,7 @@ class _NotificationPageState extends State<NotificationPage> {
                       child: Text("אישור"),
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
                       onPressed: (){
-                        //todo!!!
+                        approveOrRejectRequestToJoinEvent(index,true);
                       },
                     ),
                   ),
@@ -119,7 +122,7 @@ class _NotificationPageState extends State<NotificationPage> {
                       child: Text("דחייה"),
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
                       onPressed: (){
-                        //todo!!!
+                        approveOrRejectRequestToJoinEvent(index,false);
                       },
                     ),
                   ),
@@ -147,20 +150,14 @@ class _NotificationPageState extends State<NotificationPage> {
           crossAxisAlignment:CrossAxisAlignment.start,
           children: [
             //Text('Event - ${listEvents[index].eventID}'),
-            Text('ברכות! בקשת להצטרך לאירוע אושרה, כעת תוכל לשוחח עם מארגן האירוע בצאט',style: TextStyle(fontSize: 20,color: Colors.white, ),textAlign: TextAlign.center,),
+            Text('ברכות! בקשתך להצטרף לאירוע אושרה, כעת תוכל לשוחח עם מארגן האירוע בחלונית הצאט',style: TextStyle(fontSize: 20,color: Colors.white, ),textAlign: TextAlign.center,),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
                   child: Text("צפה באירוע"),
                   onPressed: (){
-                    //todo!!!
-                  },
-                ),
-                ElevatedButton(
-                  child: Text("עבור לצאט"),
-                  onPressed: (){
-                    //todo!!!
+                    seeEvents(index);
                   },
                 ),
               ],
@@ -193,7 +190,7 @@ class _NotificationPageState extends State<NotificationPage> {
                 ElevatedButton(
                   child: Text("צפה באירוע"),
                   onPressed: (){
-                    //todo!!!
+                    seeEvents(index);
                   },
                 ),
               ],
@@ -201,6 +198,41 @@ class _NotificationPageState extends State<NotificationPage> {
           ],
         ),
       ),
+    );
+  }
+
+  seeEvents(int index)async{
+    var theEvents = await FirebaseHelper.getEventByID(listNotification[index].eventsID);
+    if(theEvents == null){
+      _makeToast('אירעה תקלה, נסה שנית מאוחר יותר',Colors.pink);
+      return;
+    }
+    var thePlace = await FirebaseHelper.getPlaceByID(theEvents.placeID);
+    MapLogic.addEditSeePoints(context,'see',theEvent: theEvents,thePlace: thePlace,totallyPop: true);
+  }
+
+  seeProfile(int index)async{
+    _makeToast("שירות זה עוד לא נתמך לצערנו, עובדים על זה :)",Colors.pink); ///todo - sow pop up profile
+  }
+
+  approveOrRejectRequestToJoinEvent(int index,bool approve)async{
+    var theEvents = await FirebaseHelper.getEventByID(listNotification[index].eventsID);
+    if(theEvents == null){
+      _makeToast('אירעה תקלה, נסה שנית מאוחר יותר',Colors.pink);
+      return;
+    }
+    Logic.approveOrRejectRequestToJoinEvent(listNotification[index].userID,theEvents,approve);
+  }
+
+  _makeToast(String str,var theColor){
+    Fluttertoast.showToast(
+        msg: str,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: theColor,
+        textColor: Colors.amber,
+        fontSize: 16.0
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yana/UX/DB/users.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
 import 'Utilities.dart';
@@ -355,12 +356,19 @@ class _LoginState extends State<Login> {
         break;
       case LOGIN_DUMMY:
         setState(() {
+          userMap = credentials;
+          getPreference();
           this.widget.callback(3, credentials, new Map<String, String>(), MapView_index);
         });
         break;
     }
 //    TODO --> Test mode, pre production - END
 
+  }
+
+  void getPreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    defaultMapType = (prefs.getBool(MAP_TYPE_KEY) ?? false);
   }
 
   Future<void> _checkIfIsLogged() async {

@@ -24,17 +24,16 @@ class _MyCurvedNavigationBarState extends State<MyCurvedNavigationBar> {
       backgroundColor: Colors.transparent,
       animationCurve: Curves.easeInOut,
       index: MapView_index,
-      height: 55,
+      height: 60,
       color: Colors.amber[600]!,
       items: <Widget>[
         Padding(
           padding: const EdgeInsets.only(bottom: 5.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.dashboard, size: _iconHeight, color:Colors.red),
-              Text("Chats\nEvents", style: TextStyle(fontSize: _fontSize, color:Colors.red[700]), textAlign: TextAlign.center,),
+              Text("אירועים     \nוצ'אטים     ", style: TextStyle(fontSize: _fontSize, color:Colors.red[700]), textAlign: TextAlign.center,),
             ],
           ),
         ),  /// Chat \ Locations Page
@@ -42,10 +41,9 @@ class _MyCurvedNavigationBarState extends State<MyCurvedNavigationBar> {
           padding: const EdgeInsets.only(bottom: 5.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.search, size: _iconHeight, color:Colors.red),
-              Text("Search", style: TextStyle(fontSize: _fontSize, color:Colors.red[700]), textAlign: TextAlign.center,),
+              Text(" חיפוש ", style: TextStyle(fontSize: _fontSize, color:Colors.red[700]), textAlign: TextAlign.center,),
             ],
           ),
         ),  /// Search Page
@@ -53,10 +51,9 @@ class _MyCurvedNavigationBarState extends State<MyCurvedNavigationBar> {
           padding: const EdgeInsets.only(bottom: 5.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.map, size: _iconHeight, color:Colors.red),
-              Text("Map", style: TextStyle(fontSize: _fontSize, color:Colors.red[700]), textAlign: TextAlign.center,),
+              Text(" מפה ", style: TextStyle(fontSize: _fontSize, color:Colors.red[700]), textAlign: TextAlign.center,),
             ],
           ),
         ),  /// Map Page
@@ -64,10 +61,9 @@ class _MyCurvedNavigationBarState extends State<MyCurvedNavigationBar> {
           padding: const EdgeInsets.only(bottom: 5.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.campaign, size: _iconHeight, color:Colors.red),
-              Text("Bulletin\nBoard", style: TextStyle(fontSize: _fontSize, color:Colors.red[700]), textAlign: TextAlign.center,),
+              Text(" לוח מודעות ", style: TextStyle(fontSize: _fontSize, color:Colors.red[700]), textAlign: TextAlign.center,),
             ],
           ),
         ),  /// BulletinBoard Page
@@ -75,10 +71,9 @@ class _MyCurvedNavigationBarState extends State<MyCurvedNavigationBar> {
           padding: const EdgeInsets.only(bottom: 5.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.settings, size: _iconHeight, color:Colors.red),
-              Text("Settings", style: TextStyle(fontSize: _fontSize, color:Colors.red[700]), textAlign: TextAlign.center,),
+              Text(" הגדרות ", style: TextStyle(fontSize: _fontSize, color:Colors.red[700]), textAlign: TextAlign.center,),
             ],
           ),
         ),  /// Setting Page
@@ -87,7 +82,7 @@ class _MyCurvedNavigationBarState extends State<MyCurvedNavigationBar> {
         setState(() {
           pageController.animateToPage(
               index,
-              duration: Duration(milliseconds: 500),curve: Curves.ease
+              duration: Duration(milliseconds: 500),curve: Curves.easeInOut
           );
         });
       },

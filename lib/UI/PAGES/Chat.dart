@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:yana/UI/WIDGETS/allWidgets.dart';
-import 'package:yana/UI/main.dart';
 import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
 import 'package:intl/intl.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
@@ -243,7 +241,7 @@ class _ChatState extends State<Chat> {
           enabledBorder: InputBorder.none,
           errorBorder: InputBorder.none,
           disabledBorder: InputBorder.none,
-          hintText: 'Type a message...',
+          hintText: 'הקלד הודעה...',
           suffixIcon: IconButton(
             icon: Icon(Icons.send),
             onPressed: (){

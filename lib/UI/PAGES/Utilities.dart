@@ -18,9 +18,12 @@ export 'NotificationPage.dart';
 // Application Constant Keys
 
 const appName                       =   "YANA";
+const MAP_TYPE_KEY                  =   "MAP_TYPE";
 const String NeumorphismInner       =   'NEUMORPHISM_INNER';
 const String NeumorphismOuter       =   'NEUMORPHISM_OUTER';
 const String NeumorphismOuterChip   =   'NEUMORPHISM_OUTER_CHIP';
+const String specialistNumberCall   =   "tel://0523358539";
+const String specialistNumberSms    =   "972523558539";
 const bodyColor                     =   Colors.amber;
 const senderColor                   =   bodyColor;
 const receiverColor                 =   Colors.pink;

@@ -146,15 +146,15 @@ class _WelcomeState extends State<Welcome> {
             context: context,
             barrierDismissible: false,
             builder: (_) => AlertDialog(
-              title: Text("No Connection Found!"),
+              title: Text("לא נמצא חיבור אינטרנטי!"),
               elevation: 24.0,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text("You need to have a stable internet connection in order to log into the application."),
+                  Text("צריך להיות חיבור אינטרנטי יציב על מנת להשתמש באפליקצייה."),
                   TextButton(
-                    child: Text("I have internet now."),
+                    child: Text("יש אינטרנט עכשיו"),
                     onPressed: () {
                       if(connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi ){
                         internet = true;
@@ -164,7 +164,7 @@ class _WelcomeState extends State<Welcome> {
                         });
                       }else{
                         Fluttertoast.showToast(
-                            msg: "Please make sure you have access to a internet connection.",
+                            msg: "נא לוודא כי קיים גישה לרשת אינטרנטית כולשהי.",
                             toastLength: Toast.LENGTH_SHORT,
                             gravity: ToastGravity.BOTTOM,
                             backgroundColor: Colors.blueGrey,
@@ -194,23 +194,23 @@ class _WelcomeState extends State<Welcome> {
       barrierDismissible: false,
       context: context,
       builder: (context) => new AlertDialog(
-        title: new Text('Exiting the app'),
+        title: new Text('יציאה מהאפליקצייה'),
         elevation: 24.0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
-        content: new Text('You want to exit the app?'),
+        content: new Text('האם לצאת מהאפליקצייה?'),
         actions: <Widget>[
           new TextButton(
             onPressed: () {
               Navigator.of(context).pop(false);
             },
-            child: Text("No"),
+            child: Text("לא"),
           ),
           SizedBox(height: 16),
           new TextButton(
             onPressed: () {
               Navigator.of(context).pop(true);
             },
-            child: Text("Yes"),
+            child: Text("כן"),
           ),
         ],
       ),

@@ -48,184 +48,90 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _onBackPressed,
-      child: Container(
-        color: Colors.amber,
+      child: Directionality(
+        textDirection: TextDirection.rtl,
         child: Container(
-          alignment: Alignment.center,
-          margin: EdgeInsets.only(top: 10, bottom: 0, right: 0, left: 0),
-          child: Column(
-            children: <Widget>[
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      height: topSpace,
-                    ), // Top Spacing
-                    Image(
-                        height: imageSize,
-                        image: AssetImage(
-                            'assets/yana_logo.png'
-                        )
-                    ), // Logo
-                  ],
-                ),
-              ), // Logo
-              Container(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 0, right: 0, bottom: 0, top: 12.5),
-                      child: Text(
-                        '$appName',
-                        style: TextStyle(
-                          fontSize: fontSizeBig,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: "Skia",
-                          color: Colors.black,
-                          decoration: TextDecoration.none,
-                        ),
-                      ),
-                    ), // App Name
-                    Padding(
-                      padding: const EdgeInsets.only(left: 0, right: 0, bottom: 0, top: 3.5),
-                      child: Text(
-                        'You Are Not Alone',
-                        style: TextStyle(
-                          fontSize: fontSizeSmall,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: "Skia",
-                          color: Colors.black,
-                          decoration: TextDecoration.none,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ), // Welcome Text
-              TweenAnimationBuilder(
-                  tween: Tween<double>(begin: 0, end: 255),
-                  duration: Duration(milliseconds: 1150),
-                  curve: Curves.easeInExpo,
-                  builder: (BuildContext _, double alpha, Widget? __) {
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(64),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                elevation: (alpha / 100).round().toDouble(),
-                                primary: Colors.blue.withAlpha(alpha.toInt()), // background
-                                onPrimary: Colors.white.withAlpha(alpha.toInt()), // foreground
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text('Connect with Facebook', style: TextStyle(fontSize: 24)),
-                                  Image(
-                                    color: Colors.white.withAlpha(alpha.toInt()),
-                                    height: 50,
-                                    width: 50,
-                                    image: AssetImage(
-                                        'assets/facebook_logo.png'
-                                    )
-                                  ),
-                                ],
-                              ),
-                              onPressed: () async {
-                                List<String> permissionsWanted = const ['email', 'public_profile', 'user_birthday', 'user_gender', 'user_age_range'];
-                                final LoginResult result = await FacebookAuth.instance.login(permissions: permissionsWanted); // by the fault we request the email and the public profile
-                                if(result.status == LoginStatus.success) {
-                                  // In this if statement the user is logged in!
-                                  _accessToken =  result.accessToken!;
-                                  _userData = await FacebookAuth.instance.getUserData(fields: "name,email,picture.width(150),birthday,gender,age_range",);
-                                  Map<String, String> userInfo = new Map<String, String>();
-                                  userInfo["id"]              =     _userData!["id"];
-                                  userInfo["name"]            =     _userData!["name"];
-                                  userInfo["email"]           =     _userData!["email"];
-                                  userInfo["birthday"]        =     _userData!["birthday"];
-                                  userInfo["gender"]          =     _userData!["gender"];
-                                  userInfo["age_range"]       =     _userData!["age_range"]["min"].toString();
-                                  userInfo["picture_link"]    =     _userData!["picture"]["data"]["url"].toString();
-                                  userCredentials(userInfo, LOGIN_REGULAR);
-                                  setState(() {
-                                    imageURL = _userData!["picture"]["data"]["url"].toString();
-                                  });
-                                }
-                              }
-                          ) ,
+          color: Colors.amber,
+          child: Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.only(top: 10, bottom: 0, right: 0, left: 0),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: topSpace,
+                      ), // Top Spacing
+                      Image(
+                          height: imageSize,
+                          image: AssetImage(
+                              'assets/yana_logo.png'
+                          )
+                      ), // Logo
+                    ],
+                  ),
+                ), // Logo
+                Container(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 0, right: 0, bottom: 0, top: 12.5),
+                        child: Text(
+                          '$appName',
+                          style: TextStyle(
+                            fontSize: fontSizeBig,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "Skia",
+                            color: Colors.black,
+                            decoration: TextDecoration.none,
                           ),
-                        ), // Connect with Facebook
-                        Padding(
-                          padding: const EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(64),
-                            child: ElevatedButton(
+                        ),
+                      ), // App Name
+                      Padding(
+                        padding: const EdgeInsets.only(left: 0, right: 0, bottom: 0, top: 3.5),
+                        child: Text(
+                          'You Are Not Alone',
+                          style: TextStyle(
+                            fontSize: fontSizeSmall,
+                            fontWeight: FontWeight.normal,
+                            fontFamily: "Skia",
+                            color: Colors.black,
+                            decoration: TextDecoration.none,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ), // Welcome Text
+                TweenAnimationBuilder(
+                    tween: Tween<double>(begin: 0, end: 255),
+                    duration: Duration(milliseconds: 1150),
+                    curve: Curves.easeInExpo,
+                    builder: (BuildContext _, double alpha, Widget? __) {
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(64),
+                              child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   elevation: (alpha / 100).round().toDouble(),
-                                  primary: Colors.red.withAlpha(alpha.toInt()), // background
+                                  primary: Colors.blue.withAlpha(alpha.toInt()), // background
                                   onPrimary: Colors.white.withAlpha(alpha.toInt()), // foreground
                                 ),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Text('Enter with Dummy user', style: TextStyle(fontSize: 24, color: Colors.black.withAlpha(alpha.toInt()))),
+                                    Text('התחבר עם פייסבוק', style: TextStyle(fontSize: 24)),
                                     Image(
-                                        color: Colors.black.withAlpha(alpha.toInt()),
-                                        height: 50,
-                                        width: 50,
-                                        image: AssetImage(
-                                            'assets/facebook_logo.png'
-                                        )
-                                    ),
-                                  ],
-                                ),
-                                onPressed: () {
-                                  Map<String, String> dummyUserInfo = new Map<String, String>();
-                                  dummyUserInfo["id"]                   =     "4520991924611511";
-                                  dummyUserInfo["name"]                 =     "יאן";
-                                  dummyUserInfo["email"]                =     "adrianalima@gmail.com";
-                                  dummyUserInfo["gender"]               =     "mal";
-                                  dummyUserInfo["birthday"]             =     "12/06/1996";
-                                  dummyUserInfo["age_range"]            =     "39";
-                                  dummyUserInfo["hobbies"]              =     "Super Model, Actress";
-                                  dummyUserInfo["bio"]                  =     "Most beautiful woman in the world!";
-                                  dummyUserInfo["livingArea"]           =     "Salvador, Bahia, Brazil";
-                                  dummyUserInfo["workArea"]             =     "New York, Los Angeles";
-                                  dummyUserInfo["academicInstitution"]  =     "Creative Artists Agency";
-                                  dummyUserInfo["fieldOfStudy"]         =     "Modeling";
-                                  dummyUserInfo["smoking"]              =     "no";
-                                  dummyUserInfo["picture_link"]         =     "https://upload.wikimedia.org/wikipedia/commons/8/8e/Adriana_Lima_2019_by_Glenn_Francis.jpg";
-                                  dummyUserInfo["signUpDate"]           =     "20/09/2000";
-                                  dummyUserInfo["isBlocked"]            =     "false";
-                                  dummyUserInfo["notifications"]        =     "true";
-                                  userCredentials(dummyUserInfo, LOGIN_DUMMY);
-                                }
-                            ),
-                          ),
-                        ), // Connect with Dummy user
-                        Padding(
-                          padding: const EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(64),
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  elevation: (alpha / 100).round().toDouble(),
-                                  primary: Colors.green.withAlpha(alpha.toInt()), // background
-                                  onPrimary: Colors.white.withAlpha(alpha.toInt()), // foreground
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text('Sign Up with Facebook', style: TextStyle(fontSize: 24)),
-                                    Image(
-                                        color: Colors.white.withAlpha(alpha.toInt()),
-                                        height: 50,
-                                        width: 50,
-                                        image: AssetImage(
-                                            'assets/facebook_logo.png'
-                                        )
+                                      color: Colors.white.withAlpha(alpha.toInt()),
+                                      height: 50,
+                                      width: 50,
+                                      image: AssetImage(
+                                          'assets/facebook_logo.png'
+                                      )
                                     ),
                                   ],
                                 ),
@@ -244,66 +150,119 @@ class _LoginState extends State<Login> {
                                     userInfo["gender"]          =     _userData!["gender"];
                                     userInfo["age_range"]       =     _userData!["age_range"]["min"].toString();
                                     userInfo["picture_link"]    =     _userData!["picture"]["data"]["url"].toString();
-                                    userCredentials(userInfo, SIGN_UP);
+                                    userCredentials(userInfo, LOGIN_REGULAR);
                                     setState(() {
                                       imageURL = _userData!["picture"]["data"]["url"].toString();
                                     });
                                   }
                                 }
                             ) ,
-                          ),
-                        ), // Signup
-                        Padding(
-                          padding: const EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  elevation: (alpha / 100).round().toDouble(),
-                                  primary: Colors.black54.withAlpha(alpha.toInt()), // background
-                                  onPrimary: Colors.white.withAlpha(alpha.toInt()), // foreground
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 8, bottom: 8, left: 0, right: 0),
-                                  child: Column(
+                            ),
+                          ), // Connect with Facebook
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(64),
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: (alpha / 100).round().toDouble(),
+                                    primary: Colors.red.withAlpha(alpha.toInt()), // background
+                                    onPrimary: Colors.white.withAlpha(alpha.toInt()), // foreground
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Text('Tester Button                  ', style: TextStyle(fontSize: 24)),
-                                      Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(right: 4),
-                                            child: Icon(
-                                              Icons.chat,
-                                              size: 50,
-                                            ),
-                                          ),
-                                          Text('Current Chat Page', style: TextStyle(fontSize: 24)),
-                                        ],
+                                      Text('התחבר עם משתמש דמה', style: TextStyle(fontSize: 24, color: Colors.black.withAlpha(alpha.toInt()))),
+                                      Image(
+                                          color: Colors.black.withAlpha(alpha.toInt()),
+                                          height: 50,
+                                          width: 50,
+                                          image: AssetImage(
+                                              'assets/facebook_logo.png'
+                                          )
                                       ),
                                     ],
                                   ),
-                                ),
-                                onPressed: () {
-                                  Fluttertoast.showToast(
-                                      msg: "No config testing at the moment",
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.TOP,
-                                      backgroundColor: Colors.green,
-                                      textColor: Colors.blue,
-                                      fontSize: 16.0
-                                  );
-                                }
-                            ) ,
-                          ),
-                        ), // Test BTN
-                      ],
-                    );
-                  }
-              ),
-            ],
-          ),
-        )
+                                  onPressed: () {
+                                    Map<String, String> dummyUserInfo = new Map<String, String>();
+                                    dummyUserInfo["id"]                   =     "4520991924611511";
+                                    dummyUserInfo["name"]                 =     "יאן";
+                                    dummyUserInfo["email"]                =     "adrianalima@gmail.com";
+                                    dummyUserInfo["gender"]               =     "mal";
+                                    dummyUserInfo["birthday"]             =     "12/06/1996";
+                                    dummyUserInfo["age_range"]            =     "39";
+                                    dummyUserInfo["hobbies"]              =     "Super Model, Actress";
+                                    dummyUserInfo["bio"]                  =     "Most beautiful woman in the world!";
+                                    dummyUserInfo["livingArea"]           =     "Salvador, Bahia, Brazil";
+                                    dummyUserInfo["workArea"]             =     "New York, Los Angeles";
+                                    dummyUserInfo["academicInstitution"]  =     "Creative Artists Agency";
+                                    dummyUserInfo["fieldOfStudy"]         =     "Modeling";
+                                    dummyUserInfo["smoking"]              =     "no";
+                                    dummyUserInfo["picture_link"]         =     "https://upload.wikimedia.org/wikipedia/commons/8/8e/Adriana_Lima_2019_by_Glenn_Francis.jpg";
+                                    dummyUserInfo["signUpDate"]           =     "20/09/2000";
+                                    dummyUserInfo["isBlocked"]            =     "false";
+                                    dummyUserInfo["notifications"]        =     "true";
+                                    userCredentials(dummyUserInfo, LOGIN_DUMMY);
+                                  }
+                              ),
+                            ),
+                          ), // Connect with Dummy user
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(64),
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: (alpha / 100).round().toDouble(),
+                                    primary: Colors.green.withAlpha(alpha.toInt()), // background
+                                    onPrimary: Colors.white.withAlpha(alpha.toInt()), // foreground
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text('הרשמה עם פייסבוק', style: TextStyle(fontSize: 24)),
+                                      Image(
+                                          color: Colors.white.withAlpha(alpha.toInt()),
+                                          height: 50,
+                                          width: 50,
+                                          image: AssetImage(
+                                              'assets/facebook_logo.png'
+                                          )
+                                      ),
+                                    ],
+                                  ),
+                                  onPressed: () async {
+                                    List<String> permissionsWanted = const ['email', 'public_profile', 'user_birthday', 'user_gender', 'user_age_range'];
+                                    final LoginResult result = await FacebookAuth.instance.login(permissions: permissionsWanted); // by the fault we request the email and the public profile
+                                    if(result.status == LoginStatus.success) {
+                                      // In this if statement the user is logged in!
+                                      _accessToken =  result.accessToken!;
+                                      _userData = await FacebookAuth.instance.getUserData(fields: "name,email,picture.width(150),birthday,gender,age_range",);
+                                      Map<String, String> userInfo = new Map<String, String>();
+                                      userInfo["id"]              =     _userData!["id"];
+                                      userInfo["name"]            =     _userData!["name"];
+                                      userInfo["email"]           =     _userData!["email"];
+                                      userInfo["birthday"]        =     _userData!["birthday"];
+                                      userInfo["gender"]          =     _userData!["gender"];
+                                      userInfo["age_range"]       =     _userData!["age_range"]["min"].toString();
+                                      userInfo["picture_link"]    =     _userData!["picture"]["data"]["url"].toString();
+                                      userCredentials(userInfo, SIGN_UP);
+                                      setState(() {
+                                        imageURL = _userData!["picture"]["data"]["url"].toString();
+                                      });
+                                    }
+                                  }
+                              ) ,
+                            ),
+                          ), // Signup
+                        ],
+                      );
+                    }
+                ),
+              ],
+            ),
+          )
+        ),
       ),
     );
   }
@@ -345,7 +304,7 @@ class _LoginState extends State<Login> {
         break;
       case LOGIN_REGULAR:
         Fluttertoast.showToast(
-            msg: "Please long in with the dummy user\n\n\n\n\n\t\t\t\t\tOr Watch The World Burn!",
+            msg: "אנא התחבר עם משתמש דמה!\n\n\n\n\n\t\t\t\t\tאו צפה בעולם נשרף!!",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.CENTER,
             timeInSecForIosWeb: 1,

@@ -61,22 +61,11 @@ class Logic {
     }
   }
 
-  /*static Future<Events> getEventsByIdEvents(String IDEvents)async{
-    // todo: check internet connection
-
-    // todo: get Events from DB
-    // only the open once
-    // - trow Error if have problem
-    // - return the Events we have found
-    User tempU = new User("userID","userName","email","sex","dateOfBirth",0,"hobbies","bio","livingArea","workArea","academicInstitution","fieldOfStudy","smoking","fbPhoto","signUpDate",false,true);
-    Events tempE = new Events("eventID","tempU" , "tempU" , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID","Aroma","blabla");
-    return tempE;
-  }*/
 
   static Future<List<Events>> getEventsByPlace(String IDPlaces) async{
-    // todo: check internet connection
+    /// todo: check internet connection
 
-    // todo: go to DB and get all the vent having the IDPlaces
+    /// todo: go to DB and get all the vent having the IDPlaces
     // - trow Error if have problem
     // return the List of Events we found
     // User tempU = new User("userID","userName","email","sex","dateOfBirth",0,"hobbies","bio","livingArea","workArea","academicInstitution","fieldOfStudy","smoking","fbPhoto","signUpDate",false,true);
@@ -89,9 +78,9 @@ class Logic {
   }
 
   static Future<List<Place>> getAllPlaces() async {
-    // todo: check internet connection
+    /// todo: check internet connection
 
-    // todo: go to DB and get all the Places
+    /// todo: go to DB and get all the Places
     // - trow Error if have problem
     // return the List of Places we found
 
@@ -101,9 +90,9 @@ class Logic {
   }
 
   static Future<Place> getPlacesById(String IDPlaces) async {
-    // todo: check internet connection
+    /// todo: check internet connection
 
-    // todo: go to DB and get the Places BY IDPlaces
+    /// todo: go to DB and get the Places BY IDPlaces
     // - trow Error if have problem
     // return the List of Places we found
     var tempP = await FirebaseHelper.getPlaceByID(IDPlaces);
@@ -114,16 +103,15 @@ class Logic {
     return await FirebaseHelper.getUserEvents(userMap['id']!);
   }
 
-  static Future<List<Events>> getEventsByCondition(
-      {int maxNumPeople = -1,
-      String estimateDate = '',
-      String startEstimateTime = "",
-      String placesName = ""}) async {
+  static Future<List<Events>> getEventsByCondition({int maxNumPeople = -1,String estimateDate = '',String startEstimateTime = "",String placesName = ""}) async {
     print("maxNumPeople = $maxNumPeople");
     print("estimateDate = $estimateDate");
     print("startEstimateTime = $startEstimateTime");
     print("placesName = $placesName");
-    return await getAllUserEvent();
+    if(maxNumPeople == -1){
+      maxNumPeople = 100;
+    }
+    return await FirebaseHelper.getEventsBySearchCombination(name:placesName,capacity:maxNumPeople,date:  estimateDate );
   }
 
 
@@ -132,6 +120,10 @@ class Logic {
       return true;
     }
     return false;
+  }
+
+  static Future<bool> approveOrRejectRequestToJoinEvent(String userID,Events theEvents,bool approve) async{
+    return await FirebaseHelper.approveOrRejectRequestToJoinEvent(userID,theEvents,approve);
   }
 
   static Future<int> getStatusEventForUser(String eventID) async{
@@ -170,6 +162,10 @@ class Logic {
       myNotifications.add(element);
     });
     return myNotifications;
+  }
+
+  static Future<bool> userCancelation(String userID,Events event)async{
+    return await FirebaseHelper.userCancelation(userID, event);
   }
 
 }

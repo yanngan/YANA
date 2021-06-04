@@ -183,11 +183,11 @@ class _LoginState extends State<Login> {
                                 ),
                                 onPressed: () {
                                   Map<String, String> dummyUserInfo = new Map<String, String>();
-                                  dummyUserInfo["id"]                   =     "01234567891234567";
-                                  dummyUserInfo["name"]                 =     "Adriana Lima";
+                                  dummyUserInfo["id"]                   =     "4520991924611511";
+                                  dummyUserInfo["name"]                 =     "יאן";
                                   dummyUserInfo["email"]                =     "adrianalima@gmail.com";
-                                  dummyUserInfo["gender"]               =     "female";
-                                  dummyUserInfo["birthday"]             =     "12/06/1981";
+                                  dummyUserInfo["gender"]               =     "mal";
+                                  dummyUserInfo["birthday"]             =     "12/06/1996";
                                   dummyUserInfo["age_range"]            =     "39";
                                   dummyUserInfo["hobbies"]              =     "Super Model, Actress";
                                   dummyUserInfo["bio"]                  =     "Most beautiful woman in the world!";

@@ -1,13 +1,16 @@
 //FLUTTER
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 //PAGES
+import 'NOTIFICATION/NotificationClasses.dart';
 import 'PAGES/Utilities.dart';
 //WIDGETS
 import 'WIDGETS/allWidgets.dart';
+import 'package:overlay_support/overlay_support.dart';
 // Do not delete next line!
 //AIzaSyAg2GgqVtmCLI6Ge73OdoU2xTYtIW_0Fp0
 
@@ -18,9 +21,11 @@ int currentIndex = MapView_index;
 
 void main()  {
   runApp(
-    new MaterialApp(
-      home:MainPage(),
-      debugShowCheckedModeBanner: false,  /// It removes the debug banner
+      OverlaySupport(
+      child: new MaterialApp(
+        home:MainPage(),
+        debugShowCheckedModeBanner: false,  /// It removes the debug banner
+      ),
     )
   );
 }
@@ -36,6 +41,7 @@ class _MainPageState extends State<MainPage> {
   bool hideAppBar = true;
   bool hideBottomNavigationBar = false;
   PageController pageController = PageController(initialPage:currentIndex, keepPage: true,);
+  late final FirebaseMessaging _messaging;
 
   @override
   void initState() {
@@ -51,6 +57,8 @@ class _MainPageState extends State<MainPage> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+    registerNotification();
+    checkForInitialMessage();
     return applicationSetup();
   }
 
@@ -208,4 +216,74 @@ class _MainPageState extends State<MainPage> {
     return finalResult;
   }
 
+
+
+
+  void registerNotification() async {
+    // 1. Initialize the Firebase app
+    await Firebase.initializeApp();
+
+    // 2. Instantiate Firebase Messaging
+    _messaging = FirebaseMessaging.instance;
+
+    // 3. On iOS, this helps to take the user permissions
+    NotificationSettings settings = await _messaging.requestPermission(
+      alert: true,
+      badge: true,
+      provisional: false,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+
+      // For handling the received notifications
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        // Parse the message received
+        PushNotification notification = PushNotification(
+          title: message.notification?.title,
+          body: message.notification?.body,
+        );
+        print(message.notification?.title);
+        print(message.notification?.body);
+        if (notification != null) {
+          // For displaying the notification as an overlay
+          showSimpleNotification(
+            Text(notification.title??"ERROR"),
+            subtitle: Text(notification.body??"ERROR"),
+            leading: NotificationPage(),
+            background: Colors.pink,
+            duration: Duration(seconds: 3),
+          );
+        }
+
+      });
+
+
+      FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+    } else {
+      print('User declined or has not accepted permission');
+    }
+  }
+
+}
+
+Future _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("Handling a background message: ${message.messageId}");
+}
+
+
+// For handling notification when the app is in terminated state
+checkForInitialMessage() async {
+  //await Firebase.initializeApp();
+  RemoteMessage? initialMessage =
+  await FirebaseMessaging.instance.getInitialMessage();
+
+  if (initialMessage != null) {
+    PushNotification notification = PushNotification(
+      title: initialMessage.notification?.title,
+      body: initialMessage.notification?.body,
+    );
+  }
 }

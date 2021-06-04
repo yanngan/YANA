@@ -3,7 +3,7 @@ description: A new Flutter application that is all about connecting between indi
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -26,8 +26,8 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-#  TODO -- Before production make sure everything is up to date, and check options for upgrading
-#  TODO --    prereleases into final releases
+  #  TODO -- Before production make sure everything is up to date, and check options for upgrading
+  #  TODO --    prereleases into final releases
   cupertino_icons: ^1.0.3
   curved_navigation_bar: ^0.4.0-nullsafety.0
   google_maps_flutter: ^2.0.3 # Do Not Update This Library Above ^2.0.3!!! ( Ask L )
@@ -36,6 +36,7 @@ dependencies:
   firebase_database: ^7.0.0
   firebase_analytics: ^8.1.0
   firebase_auth: ^1.2.0
+  firebase_messaging: ^10.0.0
   cloud_firestore: ^2.2.0
   fluttertoast: ^8.0.7
   flutter_facebook_auth: ^3.4.0
@@ -47,6 +48,7 @@ dependencies:
   flutter_linkify: ^5.0.2
   url_launcher: ^6.0.4
   shared_preferences: ^2.0.6
+  overlay_support: ^1.2.1
 
 dev_dependencies:
   flutter_test:

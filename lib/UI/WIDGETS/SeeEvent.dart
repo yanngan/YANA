@@ -85,7 +85,7 @@ class _SeeEventState extends State<SeeEvent> {
                 onPressed: editTheEvent,
               ):ElevatedButton(
                 style: ButtonStyle(backgroundColor: MaterialStateProperty.all(widget.theEvents.statusForUser == Events.NOT_ASK_YET_AND_NOT_GOING ||widget.theEvents.statusForUser == Events.DONT_KNOW ?Colors.pink:Colors.grey),),
-                child: Text("בקש להצטרף"),
+                child: Text("בקש להצטרף"),/// todo if have be approve by admin show "בטל הגעה"
                 onPressed: askToJoin,
               )):SizedBox(height: 30,),
             ],
@@ -96,7 +96,9 @@ class _SeeEventState extends State<SeeEvent> {
   }
 
   _init()async{
+    print("in _init");
     widget.theEvents.statusForUser =  await Logic.getStatusEventForUser(widget.theEvents.eventID);
+    print("init done statusForUser = ${widget.theEvents.statusForUser} ");
     setState(() {
       _initDone = true;
     });
@@ -120,12 +122,15 @@ class _SeeEventState extends State<SeeEvent> {
     else{
       _makeToast("בקשה כבר נשלחה בעבר");
     }
+    setState(() {
+      _initDone = false;
+    });
   }
 
   _makeToast(String str){
     Fluttertoast.showToast(
         msg: str,
-        toastLength: Toast.LENGTH_SHORT,
+        toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.green,

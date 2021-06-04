@@ -14,6 +14,8 @@ class Place{
   String googleMapLink;//could be url
   String latitude;
   String longitude;
+  String placeIcon;
+  String city;
 
   //constructor
   Place(
@@ -30,13 +32,15 @@ class Place{
       this.webLink,
       this.googleMapLink,
       this.latitude,
-      this.longitude
+      this.longitude,
+      this.placeIcon,
+      this.city
       );
 
 
   @override
   String toString() {
-    return 'Places{placeID: $placeID, address: $address, phoneNumber: $phoneNumber, representative: $representative, capacity: $capacity, vibe: $vibe, isKosher: $isKosher, openingHours: $openingHours, name: $name, ageRestrictions: $ageRestrictions, webLink: $webLink, googleMapLink: $googleMapLink}';
+    return 'Places{placeID: $placeID, address: $address, phoneNumber: $phoneNumber, representative: $representative, capacity: $capacity, vibe: $vibe, isKosher: $isKosher, openingHours: $openingHours, name: $name, ageRestrictions: $ageRestrictions, webLink: $webLink, googleMapLink: $googleMapLink, placeIcon: $placeIcon}';
   } //parse a json to place object
   factory Place.fromJson(dynamic json) {
     return Place(
@@ -54,6 +58,8 @@ class Place{
       json['googleMapLink'] as String,
       json['latitude'] as String,
       json['longitude'] as String,
+      json['placeIcon'] as String,
+      json['city'] as String,
     );
   }
 
@@ -73,7 +79,9 @@ class Place{
       "name":  this.name,
       "googleMapLink":this.googleMapLink,
       "latitude":this.latitude,
-      "longitude": this.longitude
+      "longitude": this.longitude,
+      "placeIcon": this.placeIcon,
+      "city": this.city,
     };
   }
 

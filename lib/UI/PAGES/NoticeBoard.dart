@@ -19,19 +19,14 @@ Queue Opened = Queue();
 class _NoticeBoardState extends State<NoticeBoard> {
   List<Advertisement> advertisements = [];
   bool isInitialized = false;
-  late bool _isEmptyList;
+//  late bool _isEmptyList;
+  bool _isEmptyList = true;
   String details = "";
 
   @override
   void initState() {
     super.initState();
-//    initBoardwithFb();
-
-    if(advertisements.isEmpty){
-      _isEmptyList = true;
-    }else{
-      _isEmptyList = false;
-    }
+    initBoardwithFb();
   }
 
   //Initiate all the details and colors for all the Advert Card.
@@ -80,6 +75,11 @@ class _NoticeBoardState extends State<NoticeBoard> {
     });
 
     isInitialized = true;
+    if(advertisements.isEmpty /*&& isInitialized*/){
+      _isEmptyList = true;
+    }else{
+      _isEmptyList = false;
+    }
   }
 
   @override

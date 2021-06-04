@@ -119,17 +119,20 @@ class _NeumorphismState extends State<Neumorphism> {
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Align(
         alignment: _a,
-        child: Container(
-          constraints: BoxConstraints(minWidth: 20, maxWidth: _maxWidth, minHeight: 25.0, maxHeight: _maxHeight),
-          child: Chip(
-            backgroundColor: _c,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(_r))),
-            elevation: 3.5,
-            label: Padding(
-              padding: const EdgeInsets.only(bottom: 6.0),
-              child: _t,
+        child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Container(
+            constraints: BoxConstraints(minWidth: 20, maxWidth: _maxWidth, minHeight: 25.0, maxHeight: _maxHeight),
+            child: Chip(
+              backgroundColor: _c,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(_r))),
+              elevation: 3.5,
+              label: Padding(
+                padding: const EdgeInsets.only(bottom: 6.0),
+                child: _t,
+              ),
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
         ),
       ),
@@ -151,31 +154,34 @@ class _NeumorphismState extends State<Neumorphism> {
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Align(
         alignment: _a,
-        child: Container(
-          constraints: BoxConstraints(minWidth: 20, maxWidth: _maxWidth, minHeight: 25.0, maxHeight: _maxHeight),
-          width: _w,
-          height: _h,
-          decoration: BoxDecoration(
-            color: _c,
-            borderRadius: BorderRadius.all(Radius.circular(_r)),
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 15.0,
-                offset: Offset(-3.0, -2.0),
-                color: Colors.white.withOpacity(0.3),
-                spreadRadius: 0.5,
-              ),
-              BoxShadow(
-                blurRadius: 13.0,
-                offset: Offset(3.2, 2.2),
-                color: Colors.black.withOpacity(0.25),
-                spreadRadius: 0.5,
-              ),
-            ],
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(top: 10, bottom: 10, left: 14, right: 14),
-            child: _t,
+        child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Container(
+            constraints: BoxConstraints(minWidth: 20, maxWidth: _maxWidth, minHeight: 25.0, maxHeight: _maxHeight),
+            width: _w,
+            height: _h,
+            decoration: BoxDecoration(
+              color: _c,
+              borderRadius: BorderRadius.all(Radius.circular(_r)),
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 15.0,
+                  offset: Offset(-3.0, -2.0),
+                  color: Colors.white.withOpacity(0.3),
+                  spreadRadius: 0.5,
+                ),
+                BoxShadow(
+                  blurRadius: 13.0,
+                  offset: Offset(3.2, 2.2),
+                  color: Colors.black.withOpacity(0.25),
+                  spreadRadius: 0.5,
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 10, left: 14, right: 14),
+              child: _t,
+            ),
           ),
         ),
       ),
@@ -242,23 +248,26 @@ class _NeumorphismState extends State<Neumorphism> {
               ),
             ),
           ),  //  Right Shadow
-          Container(
-            constraints: BoxConstraints(minWidth: 100, maxWidth: _maxWidth, minHeight: 25.0, maxHeight: _maxHeight),
-            width: _w,
-            height: _h,
-            foregroundDecoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(_r),
-              gradient: LinearGradient(
-                begin: Alignment(-1, -1),
-                end: Alignment(-0.85, -1),
-                colors: [Colors.black12, Colors.transparent],
+          Directionality(
+            textDirection: TextDirection.rtl,
+            child: Container(
+              constraints: BoxConstraints(minWidth: 100, maxWidth: _maxWidth, minHeight: 25.0, maxHeight: _maxHeight),
+              width: _w,
+              height: _h,
+              foregroundDecoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(_r),
+                gradient: LinearGradient(
+                  begin: Alignment(-1, -1),
+                  end: Alignment(-0.85, -1),
+                  colors: [Colors.black12, Colors.transparent],
+                ),
+              ),
+              child: Align(
+                alignment: Alignment.center,
+                child: _t,
               ),
             ),
-            child: Align(
-              alignment: Alignment.center,
-              child: _t,
-            ),
-          ),  //  Left Shadow
+          ),  //  Left Shadow + child
         ],
       ),
     );

@@ -32,7 +32,7 @@ class _SearchViewState extends State<SearchView> {
         body: Column(
           children: [
             Container(
-              height: 130,
+              height: 100,
               width: (MediaQuery.of(context).size.width),
               decoration: BoxDecoration(
                 color: Colors.pink,
@@ -45,7 +45,7 @@ class _SearchViewState extends State<SearchView> {
                 padding: const EdgeInsets.only(top: 40),
                 child: Text(
                   "חיפוש",
-                  style: TextStyle(fontSize: 40, color: Colors.white),
+                  style: TextStyle(fontSize: 30, color: Colors.white),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -356,6 +356,7 @@ class _SearchViewState extends State<SearchView> {
                 });
               });
             },
+            resetIcon: Icon(Icons.cancel_outlined),
           ),
         );
       case 'time':
@@ -382,6 +383,7 @@ class _SearchViewState extends State<SearchView> {
                 });
               });
             },
+            resetIcon: Icon(Icons.cancel_outlined),
           ),
         );
       case 'int':
@@ -402,16 +404,28 @@ class _SearchViewState extends State<SearchView> {
           child: TextField(
             textAlign: TextAlign.right,
             decoration: InputDecoration(
-                fillColor: Colors.white,
-                hintText: hint,
-                hintStyle: TextStyle(color: Colors.black38)),
+              fillColor: Colors.white,
+              hintText: hint,
+              hintStyle: TextStyle(color: Colors.black38),
+              suffixIcon: IconButton(
+                icon: Icon(Icons.cancel_outlined),
+                onPressed: (){
+                  allField[name]!.text = "";
+                },
+              ),
+            ),
             controller: this.allField[name],
+
           ),
         );
     }
   }
 
   incrementmaxNumPeople() {
+    if((allField['maxNumPeople']!).text == '-'){
+      (allField['maxNumPeople']!).text = '2';
+      return;
+    }
     int res = int.parse((allField['maxNumPeople']!).text);
     if (res > 15) {
       return;
@@ -423,6 +437,7 @@ class _SearchViewState extends State<SearchView> {
   decrementmaxNumPeople() {
     int res = int.parse((allField['maxNumPeople']!).text);
     if (res < 3) {
+      (allField['maxNumPeople']!).text = '-';
       return;
     }
     res--;

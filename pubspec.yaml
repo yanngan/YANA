@@ -47,6 +47,7 @@ dependencies:
   datetime_picker_formfield: ^2.0.0
   flutter_linkify: ^5.0.2
   url_launcher: ^6.0.4
+  overlay_support: ^1.2.1
 
 dev_dependencies:
   flutter_test:

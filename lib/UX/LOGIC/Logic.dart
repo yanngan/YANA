@@ -103,16 +103,15 @@ class Logic {
     return await FirebaseHelper.getUserEvents(userMap['id']!);
   }
 
-  static Future<List<Events>> getEventsByCondition(
-      {int maxNumPeople = -1,
-      String estimateDate = '',
-      String startEstimateTime = "",
-      String placesName = ""}) async {
+  static Future<List<Events>> getEventsByCondition({int maxNumPeople = -1,String estimateDate = '',String startEstimateTime = "",String placesName = ""}) async {
     print("maxNumPeople = $maxNumPeople");
     print("estimateDate = $estimateDate");
     print("startEstimateTime = $startEstimateTime");
     print("placesName = $placesName");
-    return await getAllUserEvent();
+    if(maxNumPeople == -1){
+      maxNumPeople = 100;
+    }
+    return await FirebaseHelper.getEventsBySearchCombination(name:placesName,capacity:maxNumPeople,date:  estimateDate );
   }
 
 

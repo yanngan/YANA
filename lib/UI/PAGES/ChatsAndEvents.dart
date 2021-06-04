@@ -32,7 +32,7 @@ class _ChatsAndEventsState extends State<ChatsAndEvents> {
       body: Column(
         children: [
           Container(
-            height: 130,
+            height: 110,
             decoration: BoxDecoration(
               color: Colors.pink,
               shape: BoxShape.rectangle,
@@ -40,50 +40,60 @@ class _ChatsAndEventsState extends State<ChatsAndEvents> {
                 bottom: Radius.circular(1000),
               ),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 12.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  TextButton(
                     child: Text(
                       "אירועים",
-                      style: TextStyle(fontSize: 30, color: Colors.white),
+                      style: TextStyle(fontSize: 25, color: Colors.white),
                     ),
                     onPressed: () {
                       switchPage('listEvent');
                     },
                     style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            whichPage ? Colors.pinkAccent : Colors.pink[700]),
-                        shadowColor: MaterialStateProperty.all(Colors.grey),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(18.0),
-                                      bottomLeft: Radius.circular(18.0),
-                                    ),
-                                    side: BorderSide(color: Colors.red))))),
-                TextButton(
+                      backgroundColor: MaterialStateProperty.all(
+                          whichPage ? Colors.pinkAccent : Colors.pink[700]),
+                      shadowColor: MaterialStateProperty.all(Colors.grey),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(18.0),
+                            bottomLeft: Radius.circular(18.0),
+                          ),
+                          side: BorderSide(color: Colors.red)
+                        )
+                      )
+                    )
+                  ),
+                  TextButton(
                     child: Text(
                       "צ'אטים",
-                      style: TextStyle(fontSize: 30, color: Colors.white),
+                      style: TextStyle(fontSize: 25, color: Colors.white),
                     ),
                     onPressed: () {
                       switchPage('chat');
                     },
                     style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            whichPage ? Colors.pink[700] : Colors.pinkAccent),
-                        shadowColor: MaterialStateProperty.all(Colors.grey),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(18.0),
-                                      bottomRight: Radius.circular(18.0),
-                                    ),
-                                    side: BorderSide(color: Colors.red))))),
-              ],
+                      backgroundColor: MaterialStateProperty.all(
+                          whichPage ? Colors.pink[700] : Colors.pinkAccent),
+                      shadowColor: MaterialStateProperty.all(Colors.grey),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(18.0),
+                            bottomRight: Radius.circular(18.0),
+                          ),
+                          side: BorderSide(color: Colors.red)
+                        )
+                      )
+                    )
+                  ),
+                ],
+              ),
             ),
           ),
           Expanded(

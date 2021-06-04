@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:yana/UI/PAGES/Utilities.dart';
 
@@ -84,7 +86,7 @@ class _NeumorphismState extends State<Neumorphism> {
     switch(this.type){
       case NeumorphismOuterChip:
         /// returns a concave neumorphism shape widget - limited to 1 row of text
-        return neumorphismOuterChip(this._childObj, this.radius, this.alignment, this.color);
+        return neumorphismOuterChip(this._width, this._height, this._childObj, this.radius, this.alignment, this.color);
       case NeumorphismOuter:
       /// returns a flat neumorphism shape widget
         return neumorphismOuter(this._width, this._height, this._childObj, this.radius, this.alignment, this.color);
@@ -97,16 +99,22 @@ class _NeumorphismState extends State<Neumorphism> {
   }
 
   /// Limited to 1 row only, an icon can be added as well
-  /// @width  - max is 2/3 of screen width - min is 20 pixels
-  /// @height  - max is 2.5/3 of screen height - min is 25 pixels
+  /// [_w] : max-width  - default max-width is 2/3 of screen width - min is 20 pixels
+  /// [_h] : max-height  - default max-height is 2.5/3 of screen height - min is 25 pixels
   /// [_t] : child object - must be a text related object
   /// [_r] : radius
   /// [_a] : alignment
   /// [_c] : background color
-  Widget neumorphismOuterChip( _t, _r, _a, _c){
+  Widget neumorphismOuterChip(_w, _h, _t, _r, _a, _c){
     // Max width and height for the widget
+    if(_w == null){ _w = 0; }
+    if(_h == null){ _h = 0; }
+    _w = double.parse(_w.toString());
+    _h = double.parse(_h.toString());
     double _maxWidth = ((MediaQuery.of(context).size.width / 3) * 2);
     double _maxHeight = ((MediaQuery.of(context).size.height / 3) * 2.5);
+    if(_maxWidth > _w){ _maxWidth = _w; }
+    if(_maxHeight > _h){ _maxHeight = _h; }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Align(
@@ -117,7 +125,10 @@ class _NeumorphismState extends State<Neumorphism> {
             backgroundColor: _c,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(_r))),
             elevation: 3.5,
-            label: _t,
+            label: Padding(
+              padding: const EdgeInsets.only(bottom: 6.0),
+              child: _t,
+            ),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
         ),

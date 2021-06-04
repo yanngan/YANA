@@ -123,7 +123,7 @@ class _ChatState extends State<Chat> {
                                 String _text = messages[index].message;
                                 var msgColor;
                                 Alignment msgAlignment;
-                                if(messages[index].selfName == _me/*userMap['id'].toString()*/){
+                                if(messages[index].selfName == _me){
                                   msgColor = senderColor;
                                   msgAlignment = Alignment.centerRight;
                                 }else{
@@ -190,7 +190,7 @@ class _ChatState extends State<Chat> {
                         ),
                       ],
                     ),
-                  ),
+                  ),  // Messages History
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
@@ -206,7 +206,7 @@ class _ChatState extends State<Chat> {
                           color: bodyColor
                       ),
                     ),
-                  ),
+                  ),  // Input field
                 ],
               ),
             ),

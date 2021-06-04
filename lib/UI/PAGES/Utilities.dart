@@ -18,13 +18,14 @@ export 'NotificationPage.dart';
 // Application Constant Keys
 
 const appName                       =   "YANA";
-bool isOver18                       =   false;
 const String NeumorphismInner       =   'NEUMORPHISM_INNER';
 const String NeumorphismOuter       =   'NEUMORPHISM_OUTER';
 const String NeumorphismOuterChip   =   'NEUMORPHISM_OUTER_CHIP';
 const bodyColor                     =   Colors.amber;
 const senderColor                   =   bodyColor;
 const receiverColor                 =   Colors.pink;
+bool isOver18                       =   false;
+bool defaultMapType                 =   false;
 
 // Pages indexes
 const int ChatsAndEvents_index      =   0;

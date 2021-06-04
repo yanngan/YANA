@@ -2,24 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:yana/UI/PAGES/TestPage.dart';
 import 'package:yana/UI/WIDGETS/allWidgets.dart';
 import 'package:yana/UX/DB/allDB.dart';
-import 'package:yana/UX/LOGIC/CLASSES/allClasses.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
 import 'package:yana/UX/LOGIC/MapLogic.dart';
-
 import 'Utilities.dart';
 
 class EventsList extends StatefulWidget {
+
   @override
   _EventsListState createState() => _EventsListState();
+
 }
 
 class _EventsListState extends State<EventsList> {
   bool _initDone = false;
   List<Events> listEvents = [];
-  Map<String, Place> PlaceByEvents = {};
+  Map<String, Place> placeByEvents = {};
+
   @override
   Widget build(BuildContext context) {
     if (!_initDone) {
@@ -34,19 +34,20 @@ class _EventsListState extends State<EventsList> {
           Expanded(
             child: Container(
               color: Colors.amber,
-              child: _initDone?ListView.builder(
-                  itemCount: listEvents.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return _createRow(index);
-                  }
-              ):SpinKitFadingCircle(
+              child: _initDone
+              ? ListView.builder(
+                itemCount: listEvents.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return _createRow(index);
+                }
+              )
+              : SpinKitFadingCircle(
                 color: Colors.white,
                 size: 50.0,
               ),
             ),
           ),
           SizedBox(height: 50,),
-
         ],
       ),
     );
@@ -63,7 +64,7 @@ class _EventsListState extends State<EventsList> {
           continue;
         }
         print(temp.placeID);
-        PlaceByEvents[oneEvents.eventID] = temp;
+        placeByEvents[oneEvents.eventID] = temp;
         if(oneEvents.userID != userMap['id']!){
           oneEvents.statusForUser =  await Logic.getStatusEventForUser(oneEvents.eventID);
         }
@@ -74,10 +75,6 @@ class _EventsListState extends State<EventsList> {
     });
   }
 
-
-
-
-
   _createRow(int index){
     String texeButton = "";
     var actionButton;
@@ -87,15 +84,14 @@ class _EventsListState extends State<EventsList> {
       actionButton = ()async{
         await MapLogic.addEditSeePoints(context, 'edit',
           theEvent: listEvents[index],
-          thePlace: PlaceByEvents[listEvents[index].eventID],
+          thePlace: placeByEvents[listEvents[index].eventID],
           totallyPop: true
         );
         setState(() {
           _initDone = false;
         });
       };
-    }
-    else {
+    }else {
       if (listEvents[index].statusForUser == Events.ASK) {
         texeButton = "טרם אושר";
         actionButton = (){_makeToast("בקשתך נשלחה, וממתינה לאישור מארגן האירוע",Colors.pink);};
@@ -122,7 +118,6 @@ class _EventsListState extends State<EventsList> {
       )
     );
 
-
     return Container(
       foregroundDecoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
@@ -142,7 +137,7 @@ class _EventsListState extends State<EventsList> {
                 Padding(
                   padding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                   child: CircleAvatar(
-                    backgroundImage: NetworkImage((PlaceByEvents[listEvents[index].eventID]!).placeIcon),
+                    backgroundImage: NetworkImage((placeByEvents[listEvents[index].eventID]!).placeIcon),
                     radius: 40.0,
                   ),
                 ),
@@ -163,13 +158,13 @@ class _EventsListState extends State<EventsList> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text("${(PlaceByEvents[listEvents[index].eventID]!).name}",
+                      Text("${(placeByEvents[listEvents[index].eventID]!).name}",
                           style: TextStyle(fontSize: 20),
                       ),
                       Text(" - ",
                           style: TextStyle(fontSize: 20),
                       ),
-                      Text("${(PlaceByEvents[listEvents[index].eventID]!).city}",
+                      Text("${(placeByEvents[listEvents[index].eventID]!).city}",
                           style: TextStyle(fontSize: 20),
                       ),
                     ],
@@ -198,8 +193,8 @@ class _EventsListState extends State<EventsList> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       InkWell(
-                        onTap: (){_launchUrl("${(PlaceByEvents[listEvents[index].eventID]!).googleMapLink}");},
-                        child: Text("${(PlaceByEvents[listEvents[index].eventID]!).address}",
+                        onTap: (){_launchUrl("${(placeByEvents[listEvents[index].eventID]!).googleMapLink}");},
+                        child: Text("${(placeByEvents[listEvents[index].eventID]!).address}",
                             style: TextStyle(fontSize: 15,color: Colors.blueAccent,decoration: TextDecoration.underline),
                         ),
                       ),
@@ -235,8 +230,6 @@ class _EventsListState extends State<EventsList> {
     );
   }
 
-
-
   userCancelation(Events event)async{
     if(await Logic.userCancelation(userMap['id']! ,event)){
       _makeToast("בוצע ביטול",Colors.pink);
@@ -269,6 +262,5 @@ class _EventsListState extends State<EventsList> {
       _makeToast("סורי - הקישור לא עובד :(",Colors.pink);
     }
   }
-
 
 }

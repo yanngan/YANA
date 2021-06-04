@@ -168,7 +168,7 @@ class _ChatState extends State<Chat> {
                               },
                             ),
                           ),
-                        ), // Chat Messages Area // Input Message Area
+                        ),  // Chat Messages Area
                         Expanded(
                           flex: 1,
                           child: SizedBox(),
@@ -185,7 +185,7 @@ class _ChatState extends State<Chat> {
 //                                    color: bodyColor
 //                                ),
 //                              )
-                        ),
+                        ),  // Input Message Area
                       ],
                     ),
                   ),  // Messages History
@@ -195,13 +195,13 @@ class _ChatState extends State<Chat> {
                       height: inputFieldHeight,
                       color: bodyColor,
                       child: Neumorphism(
-                          null,
-                          inputFieldHeight,
-                          sendMsg(),
-                          type: NeumorphismInner,
-                          radius: 0.0,
-                          alignment: Alignment.bottomCenter,
-                          color: bodyColor
+                        null,
+                        inputFieldHeight,
+                        sendMsg(),
+                        type: NeumorphismInner,
+                        radius: 0.0,
+                        alignment: Alignment.bottomCenter,
+                        color: bodyColor
                       ),
                     ),
                   ),  // Input field

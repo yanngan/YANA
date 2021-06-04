@@ -914,7 +914,6 @@ class _SettingsState extends State<Settings> {
                                 ),
                               ],
                             ),
-
 //                            Row(
 //                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 //                              crossAxisAlignment: CrossAxisAlignment.center,
@@ -1338,14 +1337,14 @@ class _SettingsState extends State<Settings> {
                                     onTap: () {
                                       Navigator.pop(context);
                                     },
-                                    child: Text("Discard", style: TextStyle(fontSize: 18.0),)
+                                    child: Text("בטל", style: TextStyle(fontSize: 18.0),)
                                   )
                               ),
                               type: NeumorphismOuterChip,
                               radius: 32.0,
                               alignment: Alignment.center,
                               color: bodyColor[600]!.withOpacity(0.95),
-                            ),
+                            ),  //  Discard
                             Neumorphism(
                               _w / 2.25,
                               41.0,
@@ -1356,14 +1355,14 @@ class _SettingsState extends State<Settings> {
                                       checkThenUpdateUser();
                                       Navigator.pop(context);
                                     },
-                                    child: Text("Save", style: TextStyle(fontSize: 18.0),)
+                                    child: Text("שמור", style: TextStyle(fontSize: 18.0),)
                                   )
                               ),
                               type: NeumorphismOuterChip,
                               radius: 32.0,
                               alignment: Alignment.center,
                               color: bodyColor[600]!.withOpacity(0.95),
-                            ),
+                            ),  //  Save
                           ],
                         ),
                       ],

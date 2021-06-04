@@ -1,7 +1,7 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:yana/UI/PAGES/Utilities.dart';
 import 'package:yana/UX/DB/allDB.dart';
@@ -29,28 +29,30 @@ class _SearchViewState extends State<SearchView> {
     }
     return Scaffold(
         backgroundColor: Colors.amber,
-        body: Column(
-          children: [
-            Container(
-              height: 100,
-              width: (MediaQuery.of(context).size.width),
-              decoration: BoxDecoration(
-                color: Colors.pink,
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(1000),
+        body: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Column(
+            children: [
+              Container(
+                height: 100,
+                width: (MediaQuery.of(context).size.width),
+                decoration: BoxDecoration(
+                  color: Colors.pink,
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(1000),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 40),
+                  child: Text(
+                    "חיפוש",
+                    style: TextStyle(fontSize: 30, color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 40),
-                child: Text(
-                  "חיפוש",
-                  style: TextStyle(fontSize: 30, color: Colors.white),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-            _seeField
+              _seeField
                 ? Container(
                     child: Column(
                       children: [
@@ -125,14 +127,6 @@ class _SearchViewState extends State<SearchView> {
                         ),
                         Row(
                           children: [
-                            IconButton(
-                              icon: Icon(
-                                Icons.keyboard_arrow_up,
-                                size: 30,
-                                color: Colors.pink,
-                              ),
-                              onPressed: _toggleSearch,
-                            ),
                             SizedBox(
                               width: (MediaQuery.of(context).size.width) - 50,
                               child: Padding(
@@ -155,6 +149,14 @@ class _SearchViewState extends State<SearchView> {
                                 ),
                               ),
                             ),
+                            IconButton(
+                              icon: Icon(
+                                Icons.keyboard_arrow_up,
+                                size: 30,
+                                color: Colors.pink,
+                              ),
+                              onPressed: _toggleSearch,
+                            ),
                           ],
                         ),
                       ],
@@ -168,22 +170,23 @@ class _SearchViewState extends State<SearchView> {
                     ),
                     onPressed: _toggleSearch,
                   ),
-            Expanded(
-              child: Container(
-                color: Colors.amber[300],
-                child: _initDone
-                    ? ListView.builder(
-                        itemCount: listEvents.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return _createRow(index);
-                        })
-                    : SpinKitFadingCircle(
-                        color: Colors.white,
-                        size: 50.0,
-                      ),
+              Expanded(
+                child: Container(
+                  color: Colors.amber[300],
+                  child: _initDone
+                      ? ListView.builder(
+                          itemCount: listEvents.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return _createRow(index);
+                          })
+                      : SpinKitFadingCircle(
+                          color: Colors.white,
+                          size: 50.0,
+                        ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ));
   }
 
@@ -251,11 +254,13 @@ class _SearchViewState extends State<SearchView> {
     });
   }
 
-  //creat row in the list
+  // create row in the list
   _createRow(int index) {
     var color = Color(0xfff39e58);
+    var _icon = Icons.edit;
     if (listEvents[index].userID != userMap['id']!) {
       color = Color(0xfff7ba88);
+      _icon = Icons.remove_red_eye;
     }
     return Padding(
       padding: EdgeInsets.fromLTRB(8, 6, 15, 6),
@@ -306,7 +311,7 @@ class _SearchViewState extends State<SearchView> {
                 ],
               ),
               Icon(
-                Icons.arrow_forward_ios_outlined,
+                _icon,
                 color: Colors.grey[900],
               )
             ],
@@ -331,7 +336,7 @@ class _SearchViewState extends State<SearchView> {
     }
     switch (type) {
       case 'date':
-        final format = DateFormat("yyyy-MM-dd");
+        final format = intl.DateFormat("yyyy-MM-dd");
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: DateTimeField(
@@ -350,7 +355,7 @@ class _SearchViewState extends State<SearchView> {
                 setState(() {
                   if (value != null) {
                     (this.allField[name]!).text =
-                        DateFormat('yyyy-MM-dd').format(value);
+                        intl.DateFormat('yyyy-MM-dd').format(value);
                     print((this.allField[name]!).text);
                   }
                 });
@@ -360,7 +365,7 @@ class _SearchViewState extends State<SearchView> {
           ),
         );
       case 'time':
-        final format = DateFormat("hh:mm:ss");
+        final format = intl.DateFormat("hh:mm:ss");
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: DateTimeField(

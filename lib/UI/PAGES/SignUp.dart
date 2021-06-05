@@ -14,14 +14,18 @@ import 'package:yana/UX/DB/users.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
 import 'Utilities.dart';
 
-// TextFields content variables for the controllers
+/// User properties field in order to save them later:
+/// [fullName], [sex], [hobbies], [livingArea], [workArea],
+/// [academicInstitution], [fieldOfStudy], [smoking], [photoURL]
+/// Submit button default color:
+/// [dynamicColor]
 String fullName = "", sex = "", hobbies = "", bio = "";
 String livingArea = "", workArea = "", academicInstitution = "", fieldOfStudy = "";
 String smoking = "";
 String photoURL = "";
-// Submit button default color
 var dynamicColor = Colors.blue;
 
+// ignore: must_be_immutable
 class SignUp extends StatefulWidget {
 
 //  Callback function related - See main.dart callback section for more info about it
@@ -36,6 +40,24 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
 
+  /// [duration] - Animation default duration
+  /// [_widthPageView] - Max [PageView] width
+  /// [_heightPageView] - Max [PageView] height
+  /// [heightDivider] - Divider height
+  /// [widthDivider] - Divider width
+  /// [page] - Default page
+  /// [_liquidController] - Controller to the liquid swipe object
+  /// [_checked18], [_checkedTou], [_checkedPp], [_checkedNotifications], [_checked_5] - Checkbox booleans for the check
+  /// [streamController] - Controller for the stream builder
+  /// [change] - [PageView] + [StreamBuilder] boolean variable in order to detect a change
+  /// [clr] - Colors object in order to get a easier way to config all color changes in each page
+  /// [btnText] - Submit button text
+  /// [_duration] - Animation duration update
+  /// [dur] - Animation duration update
+  /// [containerW] - Each element width
+  /// [containerH] - Each element height
+  /// [pages] - List of pages to the [PageView]
+  /// @_controller'Name' - [TextField] controllers in order to get all the text changes
   // Animation default duration
   static const int duration = 700; // 700
   static double _widthPageView = 350, _heightPageView = 600;
@@ -92,8 +114,8 @@ class _SignUpState extends State<SignUp> {
     _controllerSmoking = new TextEditingController(text: smoking);
   }
 
+  /// Method to fill all the necessary daa from the facebook object we got
   void fillFromFacebook() {
-    print("\n\n******************\n" + this.widget.userCredentials.toString() + "\n******************\n\n");
     fullName = this.widget.userCredentials["name"].toString();
     sex = this.widget.userCredentials["gender"].toString();
     int age = int.parse(this.widget.userCredentials["age_range"].toString());
@@ -101,6 +123,7 @@ class _SignUpState extends State<SignUp> {
     photoURL = this.widget.userCredentials["picture_link"].toString();
   }
 
+  /// We need to dispose all the controllers at the end of this widget session
   @override
   void dispose() {
     super.dispose();
@@ -219,7 +242,7 @@ class _SignUpState extends State<SignUp> {
 
   }
 
-  // Logic - checking that everything that is a must is filled and valid
+  /// Logic - checking that everything that is a must is filled and valid
   void checkUserCredentials() {
     String checkerStr = "", btnResultText = "";
     dur = 1000;
@@ -282,6 +305,7 @@ class _SignUpState extends State<SignUp> {
     });
   }
 
+  /// After checking everything and saving it, log the new user in
   void logNewUserIn(Map<String, String> updateUserInfo){
     Future.delayed(const Duration(milliseconds: 2000), () {
       setState(() {
@@ -351,6 +375,7 @@ class _SignUpState extends State<SignUp> {
 
   // Pages dots to indicate which page is the current one
 
+  /// Method that build the dots that indicates which page is the current page
   Widget _buildDot(int index) {
     double selectedOne = Curves.easeOut.transform(
       max(
@@ -374,7 +399,11 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  // Signup body (Swiping area) building
+  /// Signup body (Swiping area) building
+  /// [_widthPageView] - [PageView] Width
+  /// [_heightPageView] - [PageView] height
+  /// [_padding] - Each element padding
+  /// [pages] -  - List of pages to the [PageView] - Here we populate it with the pages
   Widget signUp(){
 
     // Body sizes
@@ -1271,7 +1300,7 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  // Each page swipe callback function
+  /// Each page swipe callback function
   pageChangeCallback(int lpage) {
     setState(() {
       page = lpage;

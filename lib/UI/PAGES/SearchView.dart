@@ -24,6 +24,7 @@ class _SearchViewState extends State<SearchView> {
 
   @override
   Widget build(BuildContext context) {
+    double _searchWidth = ((MediaQuery.of(context).size.width) / 2);
     if (!_initDone) {
       _init();
     }
@@ -88,7 +89,7 @@ class _SearchViewState extends State<SearchView> {
                                   '+',
                                   style: TextStyle(color: Colors.white,fontSize: 20),
                                 ),
-                                onPressed: incrementmaxNumPeople,
+                                onPressed: incrementMaxNumPeople,
                                 style: ButtonStyle(
                                     shape: MaterialStateProperty.all<CircleBorder>(CircleBorder(
                                       // borderRadius: BorderRadius.circular(25),
@@ -114,7 +115,7 @@ class _SearchViewState extends State<SearchView> {
                                     '-',
                                     style: TextStyle(color: Colors.white,fontSize: 27),
                                   ),
-                                  onPressed: decrementmaxNumPeople,
+                                  onPressed: decrementMaxNumPeople,
                                   style: ButtonStyle(
                                       shape: MaterialStateProperty.all<CircleBorder>(CircleBorder(
                                         // borderRadius: BorderRadius.circular(20),
@@ -126,26 +127,30 @@ class _SearchViewState extends State<SearchView> {
                           ],
                         ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            SizedBox(
-                              width: (MediaQuery.of(context).size.width) - 50,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ElevatedButton(
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                    MaterialStateProperty.all(Colors.pink),
-                                    shadowColor: MaterialStateProperty.all<Color>(Colors.black),
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(25),
-                                      side: BorderSide(color: Colors.black54)
-                                    )),
+                            Padding(
+                              padding: EdgeInsets.only(left: (_searchWidth / 3.5)),
+                              child: SizedBox(
+                                width: _searchWidth,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                      MaterialStateProperty.all(Colors.pink),
+                                      shadowColor: MaterialStateProperty.all<Color>(Colors.black),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(25),
+                                        side: BorderSide(color: Colors.black54)
+                                      )),
+                                    ),
+                                    child: Text(
+                                      "חפש",
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    onPressed: _doSearch,
                                   ),
-                                  child: Text(
-                                    "חפש",
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  onPressed: _doSearch,
                                 ),
                               ),
                             ),
@@ -196,6 +201,7 @@ class _SearchViewState extends State<SearchView> {
       for (var oneEvents in listEvents) {
         print(oneEvents.placeID);
         var temp = await Logic.getPlacesById(oneEvents.placeID);
+        // ignore: unnecessary_null_comparison
         if (temp == null) {
           listEvents.remove(oneEvents);
           continue;
@@ -256,26 +262,27 @@ class _SearchViewState extends State<SearchView> {
 
   // create row in the list
   _createRow(int index) {
-    var color = Color(0xfff39e58);
+    Color _color = Colors.amber;
     var _icon = Icons.edit;
     if (listEvents[index].userID != userMap['id']!) {
-      color = Color(0xfff7ba88);
+      _color = Colors.pink[300]!;
       _icon = Icons.remove_red_eye;
     }
     return Padding(
       padding: EdgeInsets.fromLTRB(8, 6, 15, 6),
       child: InkWell(
         child: Container(
-          height: 95,
+          height: 70,
           decoration: BoxDecoration(
-            color: color,
+            color: _color,
             shape: BoxShape.rectangle,
             borderRadius: BorderRadius.all(Radius.circular(15)),
             boxShadow: [
               BoxShadow(
-                color: Colors.black54,
-                blurRadius: 4,
-                offset: Offset(4, 8), // Shadow position
+                blurRadius: 5.0,
+                offset: Offset(3, 2),
+                color: Colors.black.withOpacity(0.35),
+                spreadRadius: 0.5,
               ),
             ],
           ),
@@ -284,10 +291,7 @@ class _SearchViewState extends State<SearchView> {
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(0,9,0,9),
-                child: CircleAvatar(
-                  backgroundImage: AssetImage('assets/yana_logo.png'),
-                  radius: 40.0,
-                ),
+                child: Image(image: AssetImage('assets/yana_logo.png')),
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -338,7 +342,7 @@ class _SearchViewState extends State<SearchView> {
       case 'date':
         final format = intl.DateFormat("yyyy-MM-dd");
         return Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(3.0),
           child: DateTimeField(
             textAlign: TextAlign.right,
             format: format,
@@ -367,7 +371,7 @@ class _SearchViewState extends State<SearchView> {
       case 'time':
         final format = intl.DateFormat("hh:mm:ss");
         return Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(3.0),
           child: DateTimeField(
             textAlign: TextAlign.right,
             format: format,
@@ -405,7 +409,7 @@ class _SearchViewState extends State<SearchView> {
         );
       case 'text':
         return Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(3.0),
           child: TextField(
             textAlign: TextAlign.right,
             decoration: InputDecoration(
@@ -426,7 +430,7 @@ class _SearchViewState extends State<SearchView> {
     }
   }
 
-  incrementmaxNumPeople() {
+  incrementMaxNumPeople() {
     if((allField['maxNumPeople']!).text == '-'){
       (allField['maxNumPeople']!).text = '2';
       return;
@@ -439,7 +443,7 @@ class _SearchViewState extends State<SearchView> {
     (allField['maxNumPeople']!).text = "$res";
   }
 
-  decrementmaxNumPeople() {
+  decrementMaxNumPeople() {
     int res = int.parse((allField['maxNumPeople']!).text);
     if (res < 3) {
       (allField['maxNumPeople']!).text = '-';
@@ -448,4 +452,5 @@ class _SearchViewState extends State<SearchView> {
     res--;
     (allField['maxNumPeople']!).text = "$res";
   }
+
 }

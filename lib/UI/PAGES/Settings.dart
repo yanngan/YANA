@@ -14,6 +14,7 @@ import '../WIDGETS/allWidgets.dart';
 
 class Settings extends StatefulWidget {
 
+//  Callback function related - See main.dart callback section for more info about it
   final Function callback;
   Settings(this.callback);
 
@@ -28,8 +29,11 @@ class _SettingsState extends State<Settings> {
   /// [_isExpandedAbout] - About section open / close variable
   /// [_isExpandedGetHelp] - Get Help section open / close variable
   /// [_radius] - The radius of the background of the user edit area
+  /// [_paddingRight], [_paddingLeft] - Column of user info sides padding
   /// [userName] - The name of the user, we got it from Facebook
+  /// [_toggleSelections] - a list of booleans that represent the map default views
   /// @_controller'Name' - [TextField] controllers in order to get all the text changes
+  /// [_hobbies], [_bio], [_livingArea], [_workArea], [_academicInstitution], [_fieldOfStudy], [_smoking] - User properties field in order to save them later
   bool _notification = userMap['notifications'].toString().toLowerCase() == 'true';
   bool _isExpandedAbout = false, _isExpandedGetHelp = false;
   double _radius = 14.0, _paddingRight = 30.0, _paddingLeft = 25.0;
@@ -57,6 +61,7 @@ class _SettingsState extends State<Settings> {
     super.initState();
   }
 
+  /// Initialize all the controllers with default text from the user object
   void _updateControllers() {
     _controllerSex = new TextEditingController(text: userMap['gender'].toString());
     _controllerHobbies = new TextEditingController(text: _hobbies);
@@ -308,7 +313,7 @@ class _SettingsState extends State<Settings> {
                                   }else if(_toggleSelections[1]){
                                     defaultMapType = true;
                                   }
-                                  savePreference();
+                                  saveDefaultMapPreference();
                                 });
                               },
                             ),
@@ -469,7 +474,7 @@ class _SettingsState extends State<Settings> {
             ),
             SizedBox(
               height: 100,
-              child: MyAppBar("הגדרות", funcAction, height: 100,)
+              child: MyAppBar("הגדרות", appBarTapFunction, height: 100,)
             ),
           ],
         ),
@@ -477,17 +482,15 @@ class _SettingsState extends State<Settings> {
     );
   }
 
-  /// [userPhotoURL]
-  /// [_h]
-  /// [_w]
-  /// [textFieldsHeight]
-  /// [_leftSideWidth]
-  /// [_rightSideWidth]
+  /// [userPhotoURL] - User profile photo
+  /// [_h] - Height of user editing area
+  /// [_w] - Width of user editing area
+  /// [textFieldsHeight] - Max height of each [TextField]
   void _openUserEditSheet(){
     String userPhotoURL = "";
     double _h = ((MediaQuery.of(context).size.height / 3) * 1.75);
     double _w = ((MediaQuery.of(context).size.width / 2) * 1.45);
-    double textFieldsHeight = 35.0, _leftSideWidth = _w / 3.0, _rightSideWidth = ((_w / 1.5) - 5.0);
+    double textFieldsHeight = 35.0;
     userPhotoURL = userMap["picture_link"].toString();
     showModalBottomSheet(
       context: context,
@@ -1380,22 +1383,42 @@ class _SettingsState extends State<Settings> {
   }
 
   /// App Bar tap callback function
-  funcAction(){
+  appBarTapFunction(){
     print("action clicked");
   }
 
+  /// Method in order to update the user in our database
   void updateUser() {
     updatedUser = User.fromMap(userMap);
     FirebaseHelper.sendUserToFb(updatedUser);
   }
 
+  /// Method to check that the user didn't leave any required area empty
   void checkThenUpdateUser() {
     if(_hobbies.isEmpty){
-      // Toast on hobbies
+      Fluttertoast.showToast(
+          msg: "תחביבים לא יכול להישאר ריק",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          fontSize: 16.0
+      );
     }else if(_bio.isEmpty){
-      // Toast on bio
+      Fluttertoast.showToast(
+          msg: "תמצית לא יכול להישאר ריק",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          fontSize: 16.0
+      );
     }else if(_livingArea.isEmpty){
-      // Toast on livingArea
+      Fluttertoast.showToast(
+          msg: "איזור מגורים לא יכול להישאר ריק",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          fontSize: 16.0
+      );
     }
     userMap['hobbies'] = _hobbies;
     userMap['bio'] = _bio;
@@ -1407,11 +1430,13 @@ class _SettingsState extends State<Settings> {
     updateUser();
   }
 
-  void savePreference() async {
+  /// Method to save user default map preferences
+  void saveDefaultMapPreference() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(MAP_TYPE_KEY, defaultMapType);
   }
 
+  /// Method to log the user out the application ( without closing it )
   Future<void> _logOut() async {
     await FacebookAuth.instance.logOut();
 //    _accessToken = null;

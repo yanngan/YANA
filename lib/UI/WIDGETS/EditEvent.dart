@@ -7,6 +7,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
 import 'package:yana/UX/LOGIC/MapLogic.dart';
 
+// ignore: must_be_immutable
 class EditEvent extends StatefulWidget {
   Place thePlace;
   Events theEvents;

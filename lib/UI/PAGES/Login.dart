@@ -328,6 +328,7 @@ class _LoginState extends State<Login> {
   void getPreference() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     defaultMapType = (prefs.getBool(MAP_TYPE_KEY) ?? false);
+    whichPage = (prefs.getBool(CHATS_EVENTS_TYPE_KEY) ?? false);
   }
 
   Future<void> _checkIfIsLogged() async {

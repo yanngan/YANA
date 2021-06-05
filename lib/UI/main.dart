@@ -46,8 +46,6 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    // This is for testing SIGNUP only!!! remove before you push it!
-//    _logOut();
     Firebase.initializeApp().then((value){
       registerNotification();
       checkForInitialMessage();
@@ -217,9 +215,6 @@ class _MainPageState extends State<MainPage> {
     return finalResult;
   }
 
-
-
-
   void registerNotification() async {
     // 1. Initialize the Firebase app
     //await Firebase.initializeApp();
@@ -298,4 +293,5 @@ checkForInitialMessage() async {
       body: initialMessage.notification?.body,
     );
   }
+
 }

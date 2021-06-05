@@ -7,13 +7,19 @@ import 'package:yana/UX/LOGIC/Logic.dart';
 import 'package:yana/UX/LOGIC/MapLogic.dart';
 
 class NotificationPage extends StatefulWidget {
+
   @override
   _NotificationPageState createState() => _NotificationPageState();
+
 }
 
 class _NotificationPageState extends State<NotificationPage> {
+
+  /// [_initDone] - A boolean flag that represents that the [listNotification] has been initialized
+  /// [listNotification] - A [List] of [MyNotification] representing all the current user related notifications
   bool _initDone = false;
   List<MyNotification> listNotification = [];
+
   @override
   Widget build(BuildContext context) {
     if(!_initDone){
@@ -45,16 +51,18 @@ class _NotificationPageState extends State<NotificationPage> {
     );
   }
 
-  _init()async{
+  /// Initialized the page + variables
+  _init() async{
     listNotification = await Logic.getListNotification();
-    //print(listNotification);
-    _initDone = true;
-    setState(() {});
+    setState(() {
+      _initDone = true;
+    });
   }
 
+  /// Method that creates a row to the list of the notifications
+  /// [index] - Represents the index of the list we want to create a row for
   _createRow(int index){
     print(listNotification[index]);
-
     switch(listNotification[index].type){
       case MyNotification.EVENTS_ASK_TO_JOIN: //MyNotification.EVENTS_ASK_TO_JOIN
         print("EVENTS_ASK_TO_JOIN");
@@ -68,7 +76,9 @@ class _NotificationPageState extends State<NotificationPage> {
     }
   }
 
-  _createAskToJoin(index){
+  /// Method that create a row of type [MyNotification.EVENTS_ASK_TO_JOIN]
+  /// [index] - Represents the index of the list we want to create a row for
+  _createAskToJoin(int index){
     return Padding(
       padding: const EdgeInsets.only(top: 4,right: 4,left: 4),
       child: Container(
@@ -138,6 +148,8 @@ class _NotificationPageState extends State<NotificationPage> {
     );
   }
 
+  /// Method that create a row of type [MyNotification.EVENTS_ASK_TO_JOIN_BEEN_APPROVE]
+  /// [index] - Represents the index of the list we want to create a row for
   _createBeenApprove(int index){
     return Padding(
       padding: const EdgeInsets.only(top: 4,right: 4,left: 4),
@@ -171,6 +183,8 @@ class _NotificationPageState extends State<NotificationPage> {
     );
   }
 
+  /// Method that create a row of type [MyNotification.EVENTS_CHANGE]
+  /// [index] - Represents the index of the list we want to create a row for
   _createEventHaveChange(int index){
     return Padding(
       padding: const EdgeInsets.only(top: 4,right: 4,left: 4),
@@ -204,7 +218,8 @@ class _NotificationPageState extends State<NotificationPage> {
     );
   }
 
-  seeEvents(int index)async{
+  /// [index] - Represents the index of the list we want to see the event for
+  seeEvents(int index) async {
     var theEvents = await FirebaseHelper.getEventByID(listNotification[index].eventsID);
     if(theEvents == null){
       _makeToast('אירעה תקלה, נסה שנית מאוחר יותר',Colors.pink);
@@ -214,11 +229,14 @@ class _NotificationPageState extends State<NotificationPage> {
     MapLogic.addEditSeePoints(context,'see',theEvent: theEvents,thePlace: thePlace,totallyPop: true);
   }
 
-  seeProfile(int index)async{
-    _makeToast("שירות זה עוד לא נתמך לצערנו, עובדים על זה :)",Colors.pink); ///todo - sow pop up profile
+  /// [index] - Represents the index of the list we want to see the profile for
+  seeProfile(int index) async {
+    _makeToast("שירות זה עוד לא נתמך לצערנו, עובדים על זה :)",Colors.pink); /// TODO - show pop up profile of other user ( Like current user in Settings.dart )
   }
 
-  approveOrRejectRequestToJoinEvent(int index,bool approve)async{
+  /// [index] - Represents the index of the list we want to approve / reject
+  /// [approve] - A boolean flag that indicates if we need to approve or denied the request
+  approveOrRejectRequestToJoinEvent(int index, bool approve) async {
     var theEvents = await FirebaseHelper.getEventByID(listNotification[index].eventsID);
     if(theEvents == null){
       _makeToast('אירעה תקלה, נסה שנית מאוחר יותר',Colors.pink);
@@ -227,7 +245,8 @@ class _NotificationPageState extends State<NotificationPage> {
     Logic.approveOrRejectRequestToJoinEvent(listNotification[index].userID,theEvents,approve);
   }
 
-  _makeToast(String str,var theColor){
+  /// Creates a toast message with [str] text and [theColor] color
+  _makeToast(String str, var theColor){
     Fluttertoast.showToast(
         msg: str,
         toastLength: Toast.LENGTH_SHORT,
@@ -238,4 +257,25 @@ class _NotificationPageState extends State<NotificationPage> {
         fontSize: 16.0
     );
   }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

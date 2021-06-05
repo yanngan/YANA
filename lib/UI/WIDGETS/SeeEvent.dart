@@ -6,14 +6,17 @@ import 'package:yana/UX/DB/allDB.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
 import 'package:yana/UX/LOGIC/MapLogic.dart';
 
-
+// ignore: must_be_immutable
 class SeeEvent extends StatefulWidget {
+
   Place thePlace;
   Events theEvents;
   bool totallyPop;//in use to know if totally close the edit screen
   SeeEvent(this.thePlace,this.theEvents,this.totallyPop);
+
   @override
   _SeeEventState createState() => _SeeEventState();
+
 }
 
 class _SeeEventState extends State<SeeEvent> {

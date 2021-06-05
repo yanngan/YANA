@@ -5,16 +5,16 @@ class Events{
   String eventID;
   String  userID;
   String  userName;
-  String creationDate;//DateTime
-  bool status;//if it active
-  String startEstimate;//DateTime
-  String endEstimate;//DateTime
+  String creationDate; // DateTime
+  bool status; // if it active
+  String startEstimate; // DateTime
+  String endEstimate; // DateTime
   int curNumPeople;
   int maxNumPeople;
   String placeID;
   String placeName;
   String note;
-  int statusForUser;//0-not ask+not going , 1-ask, 2-going '-1'-don't know
+  int statusForUser; // 0-not ask+not going , 1-ask, 2-going '-1'-don't know
   static const NOT_ASK_YET_AND_NOT_GOING = 0;
   static const ASK = 1;
   static const GOING = 2;

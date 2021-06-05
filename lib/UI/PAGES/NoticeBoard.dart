@@ -16,9 +16,9 @@ class NoticeBoard extends StatefulWidget {
 }
 
 Queue _opened = Queue();
+List<Advertisement> advertisements = [];
 
 class _NoticeBoardState extends State<NoticeBoard> {
-  List<Advertisement> advertisements = [];
   bool isInitialized = false;
 //  late bool _isEmptyList;
   bool _isEmptyList = true;
@@ -36,14 +36,13 @@ class _NoticeBoardState extends State<NoticeBoard> {
 
     int index = 0;
     FbData.forEach((element) {
-      String details = "\u2022 Address\b: ${element.location}\n"
-          "\u2022 Date\b: ${element.date}\n"
-          "\u2022 Entry Price\b: ${element.entryPrice}\n"
-          // "\u2022 Link\b: ${element.extraLinkName}\n"
-          "\u2022 Start Time\b: ${element.startTime}\n";
-      // "\u2022 Maps\b: ${element.googleMapsLink}\n";
+      String details = "\u2022 כתובת\b: ${element.location}\n"
+          "\u2022 תאריך\b: ${element.date}\n"
+          "\u2022 עלות כניסה\b: ${element.entryPrice}\n"
+          "\u2022 זמן התחלה\b: ${element.startTime}\n";
       if (index % 2 == 0) {
         advertisements.add(Advertisement(
+            this.context,
             Color(0xfff3b5a5),
             element.bulletName,
             element.eventIcon,
@@ -57,6 +56,7 @@ class _NoticeBoardState extends State<NoticeBoard> {
             details));
       } else {
         advertisements.add(Advertisement(
+          this.context,
             Color(0xfffad5b8),
             element.bulletName,
             element.eventIcon,
@@ -119,12 +119,14 @@ class _NoticeBoardState extends State<NoticeBoard> {
                         height: 70,
                       ),
                       isInitialized
-                          ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: advertisements)
+                          ? Center(
+                            child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: advertisements),
+                          )
                           : SpinKitFadingCircle(
                         color: Colors.white,
-                        size: 50.0,
+                        size: (MediaQuery.of(context).size.width / 1.5),
                       ),
                     ],
                   ),
@@ -151,9 +153,11 @@ class Advertisement extends StatefulWidget {
   String adv_mapsLink;
   String adv_extraLink;
   String adv_extraLinkName;
+  BuildContext pagecontext;
 
   //Constructor
   Advertisement(
+      this.pagecontext,
       this.color,
       this.adv_name,
       this.adv_icon,
@@ -180,9 +184,11 @@ class _AdvertisementState extends State<Advertisement> {
 
   @override
   void initState() {
+    _height = (MediaQuery.of(widget.pagecontext).size.height / 9);
+    _width = (MediaQuery.of(widget.pagecontext).size.width - 20);
     super.initState();
-    extra_link_name_to_use = "\u2022 Link\b: ${widget.adv_extraLinkName}\n";
-    maps_links_to_use = "Itinerate to the Place >\n";
+    extra_link_name_to_use = "\u2022${widget.adv_extraLinkName}\n";
+    maps_links_to_use = "\u2022 ניתוב למקום >\n";
   }
 
   void _launchUrl(String url) async {
@@ -197,10 +203,10 @@ class _AdvertisementState extends State<Advertisement> {
     if (this.mounted) {
       setState(() {
         if (_isOpen) {
-          _height -= widget.adv_details.length + extra_link_name_to_use.length + maps_links_to_use.length;
+          _height -= widget.adv_details.length + extra_link_name_to_use.length + maps_links_to_use.length + 40;
           _isOpen = false;
         } else {
-          _height += widget.adv_details.length + extra_link_name_to_use.length + maps_links_to_use.length;
+          _height += widget.adv_details.length + extra_link_name_to_use.length + maps_links_to_use.length + 40;
           _isOpen = true;
           _opened.add(this);
         }
@@ -214,8 +220,8 @@ class _AdvertisementState extends State<Advertisement> {
       child: AnimatedContainer(
         width: _width,
         height: _height,
-        margin: EdgeInsets.fromLTRB(6, 6, 6, 10.0),
-        duration: Duration(milliseconds: 700),
+        margin: EdgeInsets.fromLTRB(6, 6, 6, 20.0),
+        duration: Duration(milliseconds: 500),
         child: GestureDetector(
           key: UniqueKey(),
           onTap: () {
@@ -238,6 +244,7 @@ class _AdvertisementState extends State<Advertisement> {
               Expanded(
                 flex: 1,
                 child: Container(
+                  width: _width-(MediaQuery.of(widget.pagecontext).size.width / 10),
                   decoration: BoxDecoration(
                     color: widget.color,
                     borderRadius: BorderRadius.circular(25),
@@ -286,15 +293,15 @@ class _AdvertisementState extends State<Advertisement> {
                                         ),
                                         Container(
                                           transform: Matrix4.translationValues(0, -20, 0),
-                                          height: double.parse(extra_link_name_to_use.length.toString()),
+                                          // height: double.parse(extra_link_name_to_use.length.toString()),
                                           child: RichText(
                                               text: new TextSpan(
                                                   text: extra_link_name_to_use,
                                                   style: new TextStyle(
-
                                                     fontFamily: 'FontRaleway',
                                                     fontWeight: FontWeight.w600,
-                                                    color: Colors.pink,
+                                                    color: Colors.blueAccent,
+                                                    decoration: TextDecoration.underline,
                                                     fontSize: 18,
                                                     letterSpacing: 1,
                                                     decorationThickness: 2,
@@ -309,8 +316,8 @@ class _AdvertisementState extends State<Advertisement> {
                                                     })),
                                         ),
                                         Container(
-                                          transform: Matrix4.translationValues(0, -20, 0),
-                                          height: double.parse(maps_links_to_use.length.toString()),
+                                          transform: Matrix4.translationValues(0, -40, 0),
+                                          // height: double.parse(maps_links_to_use.length.toString()),
                                           child:
                                           RichText(
                                               text: new TextSpan(
@@ -364,19 +371,19 @@ class Cards_Title extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+          padding: EdgeInsets.fromLTRB(20, 0, 10, 0),
           child: CircleAvatar(
             backgroundImage: NetworkImage(fb),
-            radius: 40.0,
+            radius: 30.0,
           ),
         ),
         Text(
           name,
           style: TextStyle(
-              fontSize: 40,
+              fontSize: 30,
               fontWeight: FontWeight.w400,
               color: Colors.grey[900],
               fontFamily: 'FontPacifico'),

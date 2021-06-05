@@ -31,6 +31,7 @@ class _EventsListState extends State<EventsList> {
       //floatingActionButton: FloatingActionButton(onPressed: (){Logic.getAllUserEvent();},),
       body: Column(
         children: [
+          TextButton(onPressed: (){Logic.sendTestNotification();}, child: Text("testNotification")),
           Expanded(
             child: Container(
               color: Colors.amber,

@@ -148,3 +148,4 @@ class PushNotification {
 Future _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.messageId}");
 }
+

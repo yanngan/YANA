@@ -477,6 +477,18 @@ class FirebaseHelper {
     return myNotifications;
   }
 
+
+  //get all Attendance Id-User for an Event
+  static Future<List<String>> getAllAttendanceIdUserForANEvent(String idEvent)async{
+    QuerySnapshot querySnapshot =  await FirebaseFirestore.instance.collection('Attendance').where('idEvent',isEqualTo: idEvent).get();
+    List<String> idUser = [];
+    for(var alias in querySnapshot.docs){
+      dynamic json = alias.data();
+      idUser.add(json['idUser']);
+    }
+    return idUser;
+  }
+
   static void deleteAllUserEvents(var _userID) async {
     await FirebaseFirestore.instance
       .collection('Events')
@@ -538,6 +550,21 @@ class FirebaseHelper {
 
   static void deleteUserAccount(var _userID) {
     FirebaseFirestore.instance.collection('Users').doc(_userID).delete();
+  }
+
+  //save the Firebase Cloud Messaging user token into Users
+  static void saveUserRegistrationToken(String userID,String registrationToken)async{
+    await FirebaseFirestore.instance.collection('Users').doc(userID).update({'notificationToken':registrationToken});
+  }
+
+  static Future<String> getTokenNotificationForAUser(String userID)async{
+    final refUsers = FirebaseFirestore.instance.collection('Users').doc(userID);
+    var doc = await refUsers.get();
+    if (doc.exists) {
+      return (doc.data()??{})['notificationToken']??"";
+    } else {
+      return "";
+    }
   }
 
 //end users-------------------------------------------------

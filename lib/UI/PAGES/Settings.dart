@@ -31,14 +31,15 @@ class _SettingsState extends State<Settings> {
   /// [_radius] - The radius of the background of the user edit area
   /// [_paddingRight], [_paddingLeft] - Column of user info sides padding
   /// [userName] - The name of the user, we got it from Facebook
-  /// [_toggleSelections] - a list of booleans that represent the map default views
+  /// [_toggleSelectionsMap] - a list of booleans that represent the map default views
+  /// [_toggleSelectionsChatsEvents] - a list of booleans that represent the chats / events default page
   /// @_controller'Name' - [TextField] controllers in order to get all the text changes
   /// [_hobbies], [_bio], [_livingArea], [_workArea], [_academicInstitution], [_fieldOfStudy], [_smoking] - User properties field in order to save them later
   bool _notification = userMap['notifications'].toString().toLowerCase() == 'true';
   bool _isExpandedAbout = false, _isExpandedGetHelp = false;
   double _radius = 14.0, _paddingRight = 30.0, _paddingLeft = 25.0;
   String userName = userMap['name'].toString();
-  late List<bool> _toggleSelections;
+  late List<bool> _toggleSelectionsMap, _toggleSelectionsChatsEvents;
   late TextEditingController _controllerSex;
   late TextEditingController _controllerHobbies;
   late TextEditingController _controllerBio;
@@ -56,7 +57,8 @@ class _SettingsState extends State<Settings> {
 
   @override
   void initState() {
-    _toggleSelections = [!defaultMapType, defaultMapType];
+    _toggleSelectionsMap = [!defaultMapType, defaultMapType];
+    _toggleSelectionsChatsEvents = [whichPage, !whichPage];
     _updateControllers();
     super.initState();
   }
@@ -274,7 +276,7 @@ class _SettingsState extends State<Settings> {
                             ),
                             leading: Icon(Icons.map),
                             trailing: ToggleButtons(
-                              isSelected: _toggleSelections,
+                              isSelected: _toggleSelectionsMap,
                               selectedColor: Colors.green,
                               fillColor: Colors.transparent,
                               borderWidth: 2.0,
@@ -303,14 +305,14 @@ class _SettingsState extends State<Settings> {
                               ],
                               onPressed: (int index){
                                 setState(() {
-                                  for(int i = 0; i < _toggleSelections.length; i++){
-                                    _toggleSelections[i] = !_toggleSelections[i];
+                                  for(int i = 0; i < _toggleSelectionsMap.length; i++){
+                                    _toggleSelectionsMap[i] = !_toggleSelectionsMap[i];
                                   }
                                   // _toggleSelections[0] = Normal
                                   // _toggleSelections[1] = Hybrid
-                                  if(_toggleSelections[0]){
+                                  if(_toggleSelectionsMap[0]){
                                     defaultMapType = false;
-                                  }else if(_toggleSelections[1]){
+                                  }else if(_toggleSelectionsMap[1]){
                                     defaultMapType = true;
                                   }
                                   saveDefaultMapPreference();
@@ -321,6 +323,69 @@ class _SettingsState extends State<Settings> {
                         ),
                       ),
                     ),  //  Map Default State
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 10.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.amber[300]!.withOpacity(0.8),
+                          borderRadius: BorderRadius.all(Radius.circular(_radius)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: ListTile(
+                            title: Align(
+                                alignment: Alignment(1.5, 0),
+                                child: AutoSizeText("עמוד אירועים וצ'אטים", maxLines: 2,)
+                            ),
+                            leading: Icon(Icons.map),
+                            trailing: ToggleButtons(
+                              isSelected: _toggleSelectionsChatsEvents,
+                              selectedColor: Colors.green,
+                              fillColor: Colors.transparent,
+                              borderWidth: 2.0,
+                              borderColor: Colors.transparent,
+                              selectedBorderColor: Colors.transparent,
+                              borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(3.0),
+                                  child: Column(
+                                    children: [
+                                      Icon(Icons.chat),
+                                      Text("צ'אטים", style: TextStyle(fontSize: 12),),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(3.0),
+                                  child: Column(
+                                    children: [
+                                      Icon(Icons.event),
+                                      Text("אירועים", style: TextStyle(fontSize: 12),),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                              onPressed: (int index){
+                                setState(() {
+                                  for(int i = 0; i < _toggleSelectionsChatsEvents.length; i++){
+                                    _toggleSelectionsChatsEvents[i] = !_toggleSelectionsChatsEvents[i];
+                                  }
+                                  // _toggleSelections[0] = Normal
+                                  // _toggleSelections[1] = Hybrid
+                                  if(_toggleSelectionsChatsEvents[0]){
+                                    whichPage = true;
+                                  }else if(_toggleSelectionsChatsEvents[1]){
+                                    whichPage = false;
+                                  }
+                                  saveDefaultChatsEventsPreference();
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),  //  Chats / Events default page
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 10.0),
                       child: ClipRRect(
@@ -474,7 +539,7 @@ class _SettingsState extends State<Settings> {
             ),
             SizedBox(
               height: 100,
-              child: MyAppBar("הגדרות", appBarTapFunction, height: 100,)
+              child: MyAppBar("הגדרות", null, height: 100,)
             ),
           ],
         ),
@@ -1434,6 +1499,12 @@ class _SettingsState extends State<Settings> {
   void saveDefaultMapPreference() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(MAP_TYPE_KEY, defaultMapType);
+  }
+
+  /// Method to save user default map preferences
+  void saveDefaultChatsEventsPreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(CHATS_EVENTS_TYPE_KEY, whichPage);
   }
 
   /// Method to log the user out the application ( without closing it )

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import '../PAGES/Utilities.dart';
 
+// ignore: must_be_immutable
 class MyCurvedNavigationBar extends StatefulWidget {
 
   PageController pageController;
@@ -14,9 +15,12 @@ class MyCurvedNavigationBar extends StatefulWidget {
 
 class _MyCurvedNavigationBarState extends State<MyCurvedNavigationBar> {
 
+  /// [pageController] - Controller that allows us to controll the navigation bar
+  /// [_iconHeight] - Each icon desired height
+  /// [_fontSize] - Each icon text font size
   PageController pageController;
-  _MyCurvedNavigationBarState(this.pageController);
   double _iconHeight = 25.0, _fontSize = 9.0;
+  _MyCurvedNavigationBarState(this.pageController);
 
   @override
   Widget build(BuildContext context) {
@@ -88,4 +92,5 @@ class _MyCurvedNavigationBarState extends State<MyCurvedNavigationBar> {
       },
     );
   }
+
 }

@@ -4,20 +4,26 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:yana/UI/PAGES/Utilities.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
 import 'package:yana/UX/LOGIC/MapLogic.dart';
-import 'allWidgets.dart';
 
 class MapSample extends StatefulWidget {
+
   @override
   State<MapSample> createState() => MapSampleState();
+
 }
 
 class MapSampleState extends State<MapSample> {
 
+  /// [_controller] - [GoogleMapController] allows us to control the map
+  /// [markers] - [Map] of all the places on the map
+  /// [mapType] - Represent the map type ( normal / hybrid ) - defaulted to [defaultMapType]
+  /// [initDone] - boolean flag that represent that all the markers loading is complete
+  /// [_tlv] - Default location to Tel-Aviv Israel
   Completer<GoogleMapController> _controller = Completer();
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   bool mapType = defaultMapType; // true == MapType.hybrid, false == MapType.normal
   bool initDone = false;
-  static final CameraPosition _TLV = CameraPosition( //init poit to be at TLV
+  static final CameraPosition _tlv = CameraPosition( //init poit to be at TLV
     target: LatLng(32.085300, 34.781769),
     zoom: 14.4746,
   );
@@ -36,7 +42,7 @@ class MapSampleState extends State<MapSample> {
           zoomControlsEnabled: false,   // False reason -> could'nt figure out how to move it's position from our custom navigation bar
           zoomGesturesEnabled: true,
           mapType: mapType ? MapType.hybrid : MapType.normal,
-          initialCameraPosition: _TLV,
+          initialCameraPosition: _tlv,
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);
           },
@@ -63,16 +69,16 @@ class MapSampleState extends State<MapSample> {
                         backgroundColor: Colors.amber,
                         child: Icon(mapType?Icons.satellite:Icons.map_outlined, color: Colors.pink,size: 30,),
                       ),
-                    ),
+                    ),  // Change map type
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: FloatingActionButton(
-                        heroTag: 'location_searching',
+                        heroTag: 'current_user_location',
                         onPressed: jumpToCurrentLocation,
                         backgroundColor: Colors.amber,
                         child: Icon(Icons.location_searching, color: Colors.pink,size: 30,),
                       ),
-                    ),
+                    ),  // Focus on current user geo location
                   ],
                 ),
                 Column(
@@ -86,16 +92,16 @@ class MapSampleState extends State<MapSample> {
                         backgroundColor: Colors.amber,
                         child: Icon(Icons.notifications, color: Colors.pink,size: 30,),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: FloatingActionButton(
-                        heroTag: 'add',
-                        onPressed: ()=>MapLogic.addEditSeePoints(context,'add'),
-                        backgroundColor: Colors.amber,
-                        child: Icon(Icons.add, color: Colors.pink,size: 30,),
-                      ),
-                    ),
+                    ),  // Open notifications page
+//                    Padding(
+//                      padding: const EdgeInsets.all(8.0),
+//                      child: FloatingActionButton(
+//                        heroTag: 'add',
+//                        onPressed: ()=> MapLogic.addEditSeePoints(context,'add'),
+//                        backgroundColor: Colors.amber,
+//                        child: Icon(Icons.add, color: Colors.pink,size: 30,),
+//                      ),
+//                    ),
                   ],
                 )
               ],
@@ -105,34 +111,24 @@ class MapSampleState extends State<MapSample> {
     );
   }
 
-  /*Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
-  }*/
 
-
-  /*
-  get CameraPosition and move the mape to this place
-   */
+  /// Get [CameraPosition] and move the map to this place coordinates
+  /// [locationToGo] - Represent the wanted place [CameraPosition]
   Future<void> _goTo(CameraPosition locationToGo) async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(locationToGo));
   }
 
-  /*
-  go to the current user plase
-   */
+  /// Go to current user place in the map
   void jumpToCurrentLocation() async {
-    //CameraPosition CurrntUserLocation = await Logic.getUserLocation();
     Logic.getUserLocation().then((value){
       initDone = true;
       _goTo(value);
     });
   }
 
-  /*
-  dev function creat 10 fake Events and add them to the map
-   */
+  /// [res] - Temporary variable to hold all the markers
+  /// [markers] - Initialized
   void addLocationsPoints()async{
     var res = await MapLogic.getMarkers(context);
     setState(() {
@@ -140,24 +136,19 @@ class MapSampleState extends State<MapSample> {
     });
   }
 
-  /*
-  switch Map Type
-  bool mapType = true; // true == MapType.hybrid, false == MapType.normal
-   */
+  /// Switched the map type using [mapType] variable change
   void switchMapType(){
     setState(() {
       mapType = !mapType;
     });
   }
 
+  /// Opens the notifications page
   openNotifications(){
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => NotificationPage()),
     );
   }
-
-
-
 
 }

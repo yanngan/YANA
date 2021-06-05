@@ -1,11 +1,14 @@
 //FLUTTER
+import 'dart:convert';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:yana/UI/PAGES/Utilities.dart';
-//EXCEPTIONS
 import '../DB/allDB.dart';
 import 'CLASSES/allClasses.dart';
 import 'EXCEPTIONS/CanNotGetUserLocationException.dart';
+import 'package:http/http.dart' as http;
 
 /// Developers: Lidor Eliyahu Shelef, Yann Ganem, Yisrael Bar-Or and Jonas Sperling
 
@@ -36,24 +39,21 @@ class Logic {
     return toReturn;
   }
 
-  static Future<Events?> createEditNewEvents(
-      Events theNewEvents, bool thisIsANewEvent) async {
-    // TODO: check internet connection
-
-    // TODO: Check there no problem with new Events:
-    // - Places and time not in other Events
-    // - all needed data is in the Events
-
-    // TODO: insert into DB
-    // - trow Error if have problem
-
-    // TODO: get the Events from DB and check that they equal
-    // - if yes - return the Events
-    // - else trow Error
-    // Place tempP = new Place("placeID", "address", "phoneNumber", "representative", 10, "vibe", true,"openingHours", "name", 21, "webLink", "googleMapLink","32.085300", "34.781769");
-    // User tempU = new User("userID","userName","email","sex","dateOfBirth",0,"hobbies","bio","livingArea","workArea","academicInstitution","fieldOfStudy","smoking","fbPhoto","signUpDate",false,true);
-    // Events tempE = new Events("eventID","tempU" , "tempU" , "creationDate", true, "startEstimate", "endEstimate", 10, 12, "placeID");
-    // return tempE;
+  static Future<Events?> createEditNewEvents(Events theNewEvents, bool thisIsANewEvent) async {
+    if(!thisIsANewEvent){
+      FirebaseHelper.getAllAttendanceIdUserForANEvent(theNewEvents.eventID).then((idUsers)async{
+        String title = "מארגן האירוע שינה את פרטי האירוע";
+        String body = "מארגן האירוע שינה את פרטי האירוע שאליו נרשמת";
+        List<String> tokens = [];
+        for(var idUser in idUsers){
+          String theToken = await Logic.getTokenNotificationForAUser(idUser);
+          if(theToken!=""){
+            tokens.add(theToken);
+          }
+        }
+        Logic.callOnFcmApiSendPushNotifications(tokens,title,body);
+      });
+    }
     if (await FirebaseHelper.sendEventToFb(theNewEvents)) {
       return theNewEvents;
     } else {
@@ -114,6 +114,11 @@ class Logic {
   }
 
   static Future<bool> userAskToJoinEvent(String userID,String eventID,String creatorUserID) async{
+    Logic.getTokenNotificationForAUser(creatorUserID).then((token){
+      String title = "יש לך בקשת הצטרפות";
+      String body = "ישנה בקשת הצטרפות אשר ממתינה לך עבור אירוע שאותה יצרת";
+      Logic.callOnFcmApiSendPushNotifications([token], title, body);
+    });
     if(await FirebaseHelper.userAskToJoinEvent(userID,eventID,creatorUserID)){
       return true;
     }
@@ -121,6 +126,13 @@ class Logic {
   }
 
   static Future<bool> approveOrRejectRequestToJoinEvent(String userID,Events theEvents,bool approve) async{
+    if(approve){
+      Logic.getTokenNotificationForAUser(userID).then((token){
+        String title = "בקשתך להצטרף לאירוע אושרה!";
+        String body = "בקשתך להצטרך לאירוע אושרה על-ידי מארגן האירוע";
+        Logic.callOnFcmApiSendPushNotifications([token], title, body);
+      });
+    }
     return await FirebaseHelper.approveOrRejectRequestToJoinEvent(userID,theEvents,approve);
   }
 
@@ -162,7 +174,66 @@ class Logic {
   }
 
   static Future<bool> userCancelation(String userID,Events event)async{
+    Logic.getTokenNotificationForAUser(event.userID).then((token){
+      String title = "משתתף ביטל את הגעתו";
+      String body = "משתתף שהיה אמור לבוא לאירוע שיצרת ביטל את הגעתו";
+      callOnFcmApiSendPushNotifications([token],title,body);
+    });
     return await FirebaseHelper.userCancelation(userID, event);
   }
 
+  static saveMyRegistrationToken()async{
+    FirebaseMessaging _messaging = FirebaseMessaging.instance;
+    String registrationToken = await _messaging.getToken()??"";
+    FirebaseHelper.saveUserRegistrationToken(userMap['id']!,registrationToken);
+  }
+
+  static Future<String> getTokenNotificationForAUser(String userID)async{
+    return FirebaseHelper.getTokenNotificationForAUser(userID);
+  }
+
+
+  static sendTestNotification()async{
+    FirebaseMessaging _messaging = FirebaseMessaging.instance;
+    String registrationToken = await _messaging.getToken()??"";
+    String title = "כותרת!!!";
+    String body = "תכולה";
+    callOnFcmApiSendPushNotifications([registrationToken],title,body);
+  }
+
+
+  //use this function to send notification to users
+  //based on - https://stackoverflow.com/questions/54380063/flutter-how-can-i-send-push-notification-programmatically-with-fcm
+  static Future<bool> callOnFcmApiSendPushNotifications(List<String> idsTokens,String title,String body) async {
+
+    final postUrl = Uri.parse('https://fcm.googleapis.com/fcm/send');
+    final data = {
+      "registration_ids" : idsTokens,
+      "collapse_key" : "type_a",
+      "notification" : {
+        "title": title,
+        "body" : body,
+      }
+    };
+
+    final headers = {
+      'content-type': 'application/json',
+      'Authorization': 'key=AAAAWCoywHc:APA91bEQubuHl4R-lZLnPG5LSbVHlO6LiQB9cKjaXrowsY_4RlZYu9E8X1VdiylN7QFF-9jnBY8OgGRINGgvnC1CnnM0KRLtymkTNCsLw92M2X3rcZCS09aZGRUn3UGH6Jfbtz0CTmJ1'
+    };
+
+    final response = await http.post(postUrl,
+        body: json.encode(data),
+        encoding: Encoding.getByName('utf-8'),
+        headers: headers);
+
+    if (response.statusCode == 200) {
+      // on success do sth
+      print('test ok push CFM');
+      return true;
+    } else {
+      print(' CFM error');
+      // on failure do sth
+      return false;
+    }
+  }
 }

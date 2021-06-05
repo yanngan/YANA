@@ -185,10 +185,10 @@ class _LoginState extends State<Login> {
                                   ),
                                   onPressed: () {
                                     Map<String, String> dummyUserInfo = new Map<String, String>();
-                                    dummyUserInfo["id"]                   =     "4520991924611511";
-                                    dummyUserInfo["name"]                 =     "יאן";
+                                    dummyUserInfo["id"]                   =     "01234567891234567";
+                                    dummyUserInfo["name"]                 =     "Adriana Lima";
                                     dummyUserInfo["email"]                =     "adrianalima@gmail.com";
-                                    dummyUserInfo["gender"]               =     "mal";
+                                    dummyUserInfo["gender"]               =     "female";
                                     dummyUserInfo["birthday"]             =     "12/06/1996";
                                     dummyUserInfo["age_range"]            =     "39";
                                     dummyUserInfo["hobbies"]              =     "Super Model, Actress";
@@ -197,7 +197,7 @@ class _LoginState extends State<Login> {
                                     dummyUserInfo["workArea"]             =     "New York, Los Angeles";
                                     dummyUserInfo["academicInstitution"]  =     "Creative Artists Agency";
                                     dummyUserInfo["fieldOfStudy"]         =     "Modeling";
-                                    dummyUserInfo["smoking"]              =     "no";
+                                    dummyUserInfo["smoking"]              =     "no baby";
                                     dummyUserInfo["picture_link"]         =     "https://upload.wikimedia.org/wikipedia/commons/8/8e/Adriana_Lima_2019_by_Glenn_Francis.jpg";
                                     dummyUserInfo["signUpDate"]           =     "20/09/2000";
                                     dummyUserInfo["isBlocked"]            =     "false";

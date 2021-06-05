@@ -4,6 +4,7 @@ import 'package:yana/UX/LOGIC/CLASSES/allClasses.dart';
 
 import 'Utilities.dart';
 
+// ignore: must_be_immutable
 class ChatList extends StatefulWidget {
 
   Map<String, String> otherInfo = new Map<String, String>();

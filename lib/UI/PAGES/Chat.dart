@@ -9,16 +9,13 @@ import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
 
 import 'Utilities.dart';
 
+// ignore: must_be_immutable
 class Chat extends StatefulWidget {
-  // User user;
-  // const Chat(
-  //   this.user,
-  //    Key? key,
-  // ) : super(key: key);
-  static List<Message> messages = [];
 
+  static List<Message> messages = [];
+  /// Other user info map of data
   Map<String, String> otherInfo = new Map<String, String>();
-  //  Callback function related - See main.dart callback section for more info about it
+//  Callback function related - See main.dart callback section for more info about it
   final Function callback;
   Chat(this.callback, this.otherInfo);
 
@@ -29,7 +26,17 @@ class Chat extends StatefulWidget {
 
 class _ChatState extends State<Chat> {
 
-//  Map<String, String> _otherInfo = {};
+  /// [_scrollController] - Controller for the chat scrolling logic
+  /// [_controllerInput] - [TextField] controller in order to apply the input changes
+  /// [messages] - List of all the chat history [List] of [Message]
+  /// [textAlign] - Text align object in order to determine which  side of the screen the message will be
+  /// [messageText] - Text of each message
+  /// [_me] - Current user name
+  /// [_meID] - Current user ID
+  /// [_him] - Other user name
+  /// [_himID] - Other user ID
+  /// [bottomPadding], [topPadding] - Top / Bottom padding
+  /// [_keyboardHeight] - The height of the keyboard by default ( in order to keep looks when the keyboard is open )
   ScrollController _scrollController = new ScrollController();
   TextEditingController _controllerInput = new TextEditingController();
   List<Message> messages = [];
@@ -47,6 +54,7 @@ class _ChatState extends State<Chat> {
     getMessages();
   }
 
+  /// Method to get all the messages
   void getMessages() {
    final databaseReference = FirebaseDatabase.instance.reference();
    DatabaseReference messageRef = databaseReference.child('rooms/').child(_meID).child(_himID);
@@ -67,6 +75,7 @@ class _ChatState extends State<Chat> {
    );
   }
 
+  /// Method to get the last message height in order to apply extra padding
   int lastMsgHeight(String str){
     int _h = 0;
     int occurrences = '\n'.allMatches(str).length;
@@ -75,10 +84,11 @@ class _ChatState extends State<Chat> {
     return _h;
   }
 
+  /// [inputFieldHeight] - height of the input area
+  /// [screenHeight] - The height of the screen minus the status bar + last message height
   @override
   Widget build(BuildContext context){
-//    double _bodyWidth = ((MediaQuery.of(context).size.width / 100) * 99);
-//    double _bodyHeight = ((MediaQuery.of(context).size.height / 10) * 9);
+    /// Timer in order to "scroll" to the last message without the user noticing
     Timer(Duration(microseconds: 1), () => _scrollController.jumpTo(
       _scrollController.position.maxScrollExtent + lastMsgHeight(messages[messages.length - 1].message))
     );
@@ -218,6 +228,7 @@ class _ChatState extends State<Chat> {
     );
   }
 
+  /// Method that send a message to the firebase database
   Widget sendMsg() {
     RegExp regExpEn = new RegExp(
       r"([A-Z,a-z])",
@@ -293,6 +304,7 @@ class _ChatState extends State<Chat> {
     );
   }
 
+  /// Method that checks if the keyboard is open and if he is, updated the bottom padding accordingly
   void checkKeyboard() {
     _keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     double _bp = 0.0;

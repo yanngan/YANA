@@ -6,6 +6,7 @@ import 'Utilities.dart';
 
 class ChatsAndEvents extends StatefulWidget {
 
+//  Callback function related - See main.dart callback section for more info about it
   final Function callback;
   ChatsAndEvents(this.callback);
 
@@ -13,13 +14,16 @@ class ChatsAndEvents extends StatefulWidget {
   _ChatsAndEventsState createState() => _ChatsAndEventsState();
 }
 
+/// [_whichPage] - determine which page is selected ( Events / Chats )
 class _ChatsAndEventsState extends State<ChatsAndEvents> {
-  bool whichPage = false;
+
+  bool _whichPage = whichPage;
+
   @override
   Widget build(BuildContext context) {
     var screen;
     var theBackgroundColor;
-    if (whichPage) {
+    if (_whichPage) {
       screen = ChatList(this.widget.callback);
       theBackgroundColor = Colors.amber;
     } else {
@@ -56,7 +60,7 @@ class _ChatsAndEventsState extends State<ChatsAndEvents> {
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
-                          whichPage ? Colors.pinkAccent : Colors.pink[700]),
+                          _whichPage ? Colors.pinkAccent : Colors.pink[700]),
                       shadowColor: MaterialStateProperty.all(Colors.grey),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
@@ -79,7 +83,7 @@ class _ChatsAndEventsState extends State<ChatsAndEvents> {
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
-                          whichPage ? Colors.pink[700] : Colors.pinkAccent),
+                          _whichPage ? Colors.pink[700] : Colors.pinkAccent),
                       shadowColor: MaterialStateProperty.all(Colors.grey),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
@@ -107,14 +111,15 @@ class _ChatsAndEventsState extends State<ChatsAndEvents> {
     );
   }
 
+  /// Method in order to switch between pages ( Events / Chats )
   switchPage(String page) {
-    if ((page == 'chat' && whichPage) || (page == 'listEvent' && !whichPage)) {
+    if ((page == 'chat' && _whichPage) || (page == 'listEvent' && !_whichPage)) {
       //do nothing
       return;
     }
     print("hello");
     setState(() {
-      whichPage = !whichPage;
+      _whichPage = !_whichPage;
     });
   }
 }

@@ -132,13 +132,12 @@ class _EventsListState extends State<EventsList> {
           Expanded(
             flex: 3,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Padding(
                   padding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                   child: CircleAvatar(
                     backgroundImage: NetworkImage((placeByEvents[listEvents[index].eventID]!).placeIcon),
-                    radius: 40.0,
+                    radius: 35.0,
                   ),
                 ),
                 SizedBox(height: 20,),
@@ -149,7 +148,7 @@ class _EventsListState extends State<EventsList> {
           Expanded(
             flex: 7,
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.end,

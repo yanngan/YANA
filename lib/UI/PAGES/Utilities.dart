@@ -16,7 +16,6 @@ export 'ChatsAndEvents.dart';
 export 'NotificationPage.dart';
 
 // Application Constant Keys
-
 const appName                       =   "YANA";
 const MAP_TYPE_KEY                  =   "MAP_TYPE";
 const String NeumorphismInner       =   'NEUMORPHISM_INNER';
@@ -29,6 +28,7 @@ const senderColor                   =   bodyColor;
 const receiverColor                 =   Colors.pink;
 bool isOver18                       =   false;
 bool defaultMapType                 =   false;
+bool whichPage                      =   false;
 
 // Pages indexes
 const int ChatsAndEvents_index      =   0;
@@ -49,10 +49,13 @@ int pageType                        =   0;
  * int pageType = 3;   --> Inner App
  * int pageType = 10;  --> Testing
  */
-// User information will be stored in here
+
+/// This User information will be stored in here
 Map<String, String> userMap         =   new Map<String, String>();
+/// Other User information will be stored in here
 Map<String, String> otherInfo       =   new Map<String, String>();
 
+/// [appName] about text
 String aboutOrganization = "YANA is a social initiative intended to fight "
     "against loneliness amongst young adults at the ages of 18-35(+-)."
     "This project is meant to help people create new social circles within "

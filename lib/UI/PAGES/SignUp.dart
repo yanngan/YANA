@@ -1,7 +1,8 @@
 // Libraries
 import 'dart:async';
 import 'dart:math';
-import 'package:intl/intl.dart';
+//import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,14 +14,18 @@ import 'package:yana/UX/DB/users.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
 import 'Utilities.dart';
 
-// TextFields content variables for the controllers
+/// User properties field in order to save them later:
+/// [fullName], [sex], [hobbies], [livingArea], [workArea],
+/// [academicInstitution], [fieldOfStudy], [smoking], [photoURL]
+/// Submit button default color:
+/// [dynamicColor]
 String fullName = "", sex = "", hobbies = "", bio = "";
 String livingArea = "", workArea = "", academicInstitution = "", fieldOfStudy = "";
 String smoking = "";
 String photoURL = "";
-// Submit button default color
 var dynamicColor = Colors.blue;
 
+// ignore: must_be_immutable
 class SignUp extends StatefulWidget {
 
 //  Callback function related - See main.dart callback section for more info about it
@@ -35,6 +40,24 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
 
+  /// [duration] - Animation default duration
+  /// [_widthPageView] - Max [PageView] width
+  /// [_heightPageView] - Max [PageView] height
+  /// [heightDivider] - Divider height
+  /// [widthDivider] - Divider width
+  /// [page] - Default page
+  /// [_liquidController] - Controller to the liquid swipe object
+  /// [_checked18], [_checkedTou], [_checkedPp], [_checkedNotifications], [_checked_5] - Checkbox booleans for the check
+  /// [streamController] - Controller for the stream builder
+  /// [change] - [PageView] + [StreamBuilder] boolean variable in order to detect a change
+  /// [clr] - Colors object in order to get a easier way to config all color changes in each page
+  /// [btnText] - Submit button text
+  /// [_duration] - Animation duration update
+  /// [dur] - Animation duration update
+  /// [containerW] - Each element width
+  /// [containerH] - Each element height
+  /// [pages] - List of pages to the [PageView]
+  /// @_controller'Name' - [TextField] controllers in order to get all the text changes
   // Animation default duration
   static const int duration = 700; // 700
   static double _widthPageView = 350, _heightPageView = 600;
@@ -46,7 +69,7 @@ class _SignUpState extends State<SignUp> {
   // Button Related
   final streamController = StreamController<bool>.broadcast();
   var change = false;
-  var clr = Colors.red, btnText = "Submit", _duration = 1000, dur = 1000;
+  var clr = Colors.red, btnText = "שלח", _duration = 1000, dur = 1000;
   double containerW = 300, containerH = 75;
 
   /*
@@ -91,8 +114,8 @@ class _SignUpState extends State<SignUp> {
     _controllerSmoking = new TextEditingController(text: smoking);
   }
 
+  /// Method to fill all the necessary daa from the facebook object we got
   void fillFromFacebook() {
-    print("\n\n******************\n" + this.widget.userCredentials.toString() + "\n******************\n\n");
     fullName = this.widget.userCredentials["name"].toString();
     sex = this.widget.userCredentials["gender"].toString();
     int age = int.parse(this.widget.userCredentials["age_range"].toString());
@@ -100,6 +123,7 @@ class _SignUpState extends State<SignUp> {
     photoURL = this.widget.userCredentials["picture_link"].toString();
   }
 
+  /// We need to dispose all the controllers at the end of this widget session
   @override
   void dispose() {
     super.dispose();
@@ -125,97 +149,100 @@ class _SignUpState extends State<SignUp> {
       onWillPop: _onBackPressed,
       child: Scaffold(
         backgroundColor: Colors.amber,
-        body: Stack(
-          children: [
-            SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  SizedBox(height: 110,),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(32.0),
-                        child: Container(
-                          height: _heightPageView,
-                          width: _widthPageView,
-                          child: signUp(),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: AnimatedContainer(
-                margin: EdgeInsets.only(bottom: 15),
-                decoration: BoxDecoration(
-                  border: Border.all(color: dynamicColor, width: 5),
-//                  border: Border.all(color: Colors.black, width: 5),
-                  borderRadius: BorderRadius.circular(16.0),
-                  color: clr,
-                ),
-                duration: Duration(milliseconds: _duration),
-                width: containerW,
-                height: containerH,
-                child: StreamBuilder<bool>(
-                  stream: streamController.stream,
-                  initialData: false,
-                  builder: (context, snapshot){
-                    return AnimatedSwitcher(
-                      duration: Duration(milliseconds: 500),
-//                    transitionBuilder: (child, animation) => ScaleTransition(scale: animation, child: child,),
-//                    transitionBuilder: (child, animation) => SizeTransition(sizeFactor: animation, child: child,),
-                      transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child,),
-                      child: snapshot.data!
-                          ? SizedBox(
-                          width: 35,
-//                          height: 50,
-                          child: CircularProgressIndicator()
-                      )
-                          : Container(
-                        width: containerW,
-                        height: containerH,
+        body: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Stack(
+            children: [
+              SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    SizedBox(height: 110,),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(11.0),
-                          child: ElevatedButton(
-                            onPressed: (){
-                              setState(() {
-                                change = !change;
-                                streamController.add(change);
-                                clr = Colors.green;
-                                containerW = 75;
-                                checkUserCredentials();
-                              });
-                            },
-                            child: Text(btnText, style: TextStyle(color: Colors.white),),
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.cyan[600],
-                            ),
+                          borderRadius: BorderRadius.circular(32.0),
+                          child: Container(
+                            height: _heightPageView,
+                            width: _widthPageView,
+                            child: signUp(),
                           ),
                         ),
                       ),
-                    );
-                  },
+                    ),
+                  ],
                 ),
               ),
-            ),
-            SizedBox(
-                height: 110,
-                child: MyAppBar("Sign Up", null, height: 110,)
-            ), // Appbar
-          ],
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: AnimatedContainer(
+                  margin: EdgeInsets.only(bottom: 15),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: dynamicColor, width: 5),
+//                  border: Border.all(color: Colors.black, width: 5),
+                    borderRadius: BorderRadius.circular(16.0),
+                    color: clr,
+                  ),
+                  duration: Duration(milliseconds: _duration),
+                  width: containerW,
+                  height: containerH,
+                  child: StreamBuilder<bool>(
+                    stream: streamController.stream,
+                    initialData: false,
+                    builder: (context, snapshot){
+                      return AnimatedSwitcher(
+                        duration: Duration(milliseconds: 500),
+//                    transitionBuilder: (child, animation) => ScaleTransition(scale: animation, child: child,),
+//                    transitionBuilder: (child, animation) => SizeTransition(sizeFactor: animation, child: child,),
+                        transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child,),
+                        child: snapshot.data!
+                            ? SizedBox(
+                            width: 35,
+//                          height: 50,
+                            child: CircularProgressIndicator()
+                        )
+                            : Container(
+                          width: containerW,
+                          height: containerH,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(11.0),
+                            child: ElevatedButton(
+                              onPressed: (){
+                                setState(() {
+                                  change = !change;
+                                  streamController.add(change);
+                                  clr = Colors.green;
+                                  containerW = 75;
+                                  checkUserCredentials();
+                                });
+                              },
+                              child: Text(btnText, style: TextStyle(color: Colors.white),),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.cyan[600],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(
+                  height: 110,
+                  child: MyAppBar("Sign Up", null, height: 110,)
+              ), // Appbar
+            ],
+          ),
         ),
       ),
     );
 
   }
 
-  // Logic - checking that everything that is a must is filled and valid
+  /// Logic - checking that everything that is a must is filled and valid
   void checkUserCredentials() {
     String checkerStr = "", btnResultText = "";
     dur = 1000;
@@ -251,7 +278,7 @@ class _SignUpState extends State<SignUp> {
         btnText = btnResultText;
         if(status){
           DateTime now = new DateTime.now();
-          String formattedDate = new DateFormat('dd-MM-yyyy').format(now);
+          String formattedDate = new intl.DateFormat('dd-MM-yyyy').format(now);
           Map<String, String> newUserInfo = new Map<String, String>();
           newUserInfo["id"]                =      this.widget.userCredentials["id"].toString();
           newUserInfo["name"]              =      this.widget.userCredentials["name"].toString();
@@ -278,6 +305,7 @@ class _SignUpState extends State<SignUp> {
     });
   }
 
+  /// After checking everything and saving it, log the new user in
   void logNewUserIn(Map<String, String> updateUserInfo){
     Future.delayed(const Duration(milliseconds: 2000), () {
       setState(() {
@@ -347,6 +375,7 @@ class _SignUpState extends State<SignUp> {
 
   // Pages dots to indicate which page is the current one
 
+  /// Method that build the dots that indicates which page is the current page
   Widget _buildDot(int index) {
     double selectedOne = Curves.easeOut.transform(
       max(
@@ -370,7 +399,11 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  // Signup body (Swiping area) building
+  /// Signup body (Swiping area) building
+  /// [_widthPageView] - [PageView] Width
+  /// [_heightPageView] - [PageView] height
+  /// [_padding] - Each element padding
+  /// [pages] -  - List of pages to the [PageView] - Here we populate it with the pages
   Widget signUp(){
 
     // Body sizes
@@ -407,7 +440,7 @@ class _SignUpState extends State<SignUp> {
                     SizedBox(
                       width: _widthPageView - 150,
                       child: AutoSizeText(
-                        'Create your $appName user!',
+                        'צור את משתמש ה $appName שלך!',
                         maxLines: 2,
                         style: TextStyle(
                           fontSize: 30,
@@ -458,7 +491,7 @@ class _SignUpState extends State<SignUp> {
                                 enabledBorder: InputBorder.none,
                                 errorBorder: InputBorder.none,
                                 disabledBorder: InputBorder.none,
-                                hintText: 'Full Name',
+                                hintText: 'שם מלא',
                               ),
                             ),
                           ),
@@ -497,7 +530,7 @@ class _SignUpState extends State<SignUp> {
                                 enabledBorder: InputBorder.none,
                                 errorBorder: InputBorder.none,
                                 disabledBorder: InputBorder.none,
-                                hintText: 'Sex',
+                                hintText: 'מין',
                               ),
                             ),
                           ),
@@ -536,7 +569,7 @@ class _SignUpState extends State<SignUp> {
                                 enabledBorder: InputBorder.none,
                                 errorBorder: InputBorder.none,
                                 disabledBorder: InputBorder.none,
-                                hintText: 'Hobbies',
+                                hintText: 'תחביבים',
                               ),
                             ),
                           ),
@@ -575,7 +608,7 @@ class _SignUpState extends State<SignUp> {
                                 enabledBorder: InputBorder.none,
                                 errorBorder: InputBorder.none,
                                 disabledBorder: InputBorder.none,
-                                hintText: 'Bio',
+                                hintText: 'תמצית',
                               ),
                             ),
                           ),
@@ -613,7 +646,7 @@ class _SignUpState extends State<SignUp> {
                     SizedBox(
                       width: _widthPageView - 150,
                       child: AutoSizeText(
-                        'Create your $appName user!',
+                        'צור את משתמש ה $appName שלך!',
                         maxLines: 2,
                         style: TextStyle(
                           fontSize: 30,
@@ -664,7 +697,7 @@ class _SignUpState extends State<SignUp> {
                                 enabledBorder: InputBorder.none,
                                 errorBorder: InputBorder.none,
                                 disabledBorder: InputBorder.none,
-                                hintText: 'Where do you live?',
+                                hintText: 'איזור מגורים',
                               ),
                             ),
                           ),
@@ -703,7 +736,7 @@ class _SignUpState extends State<SignUp> {
                                 enabledBorder: InputBorder.none,
                                 errorBorder: InputBorder.none,
                                 disabledBorder: InputBorder.none,
-                                hintText: 'Where do you work?',
+                                hintText: 'מיקום עבודה',
                               ),
                             ),
                           ),
@@ -742,7 +775,7 @@ class _SignUpState extends State<SignUp> {
                                 enabledBorder: InputBorder.none,
                                 errorBorder: InputBorder.none,
                                 disabledBorder: InputBorder.none,
-                                hintText: 'Academic Institution',
+                                hintText: 'מוסד לימודים',
                               ),
                             ),
                           ),
@@ -781,7 +814,7 @@ class _SignUpState extends State<SignUp> {
                                 enabledBorder: InputBorder.none,
                                 errorBorder: InputBorder.none,
                                 disabledBorder: InputBorder.none,
-                                hintText: 'Field of Study',
+                                hintText: 'מה אתם לומדים',
                               ),
                             ),
                           ),
@@ -819,7 +852,7 @@ class _SignUpState extends State<SignUp> {
                     SizedBox(
                       width: _widthPageView - 150,
                       child: AutoSizeText(
-                        'Create your $appName user!',
+                        'צור את משתמש ה $appName שלך!',
                         maxLines: 2,
                         style: TextStyle(
                           fontSize: 30,
@@ -870,7 +903,7 @@ class _SignUpState extends State<SignUp> {
                                 enabledBorder: InputBorder.none,
                                 errorBorder: InputBorder.none,
                                 disabledBorder: InputBorder.none,
-                                hintText: 'Smoking?',
+                                hintText: 'עישון',
                               ),
                             ),
                           ),
@@ -1010,7 +1043,7 @@ class _SignUpState extends State<SignUp> {
                     SizedBox(
                       width: _widthPageView - 150,
                       child: AutoSizeText(
-                        'Create your $appName user!',
+                        'צור את משתמש ה $appName שלך!',
                         maxLines: 2,
                         style: TextStyle(
                           fontSize: 30,
@@ -1044,7 +1077,7 @@ class _SignUpState extends State<SignUp> {
                       Padding(
                         padding: const EdgeInsets.only(left: 15, top: 10, right: 20, bottom: 0),
                         child: CheckboxListTile(
-                          title: Text("I'm over 18 years old."),
+                          title: Text("אני מעל גיל 18"),
                           secondary: Icon(Icons.accessibility_new),
                           controlAffinity: ListTileControlAffinity.leading,
                           value: _checked18,
@@ -1074,7 +1107,7 @@ class _SignUpState extends State<SignUp> {
                       Padding(
                         padding: const EdgeInsets.only(left: 15, top: 10, right: 20, bottom: 0),
                         child: CheckboxListTile(
-                          title: Text("I agree to the term of use."),
+                          title: Text("קראתי והסכמתי לתנאי השימוש"),
                           secondary: Icon(Icons.miscellaneous_services),
                           controlAffinity: ListTileControlAffinity.leading,
                           value: _checkedTou,
@@ -1104,7 +1137,7 @@ class _SignUpState extends State<SignUp> {
                       Padding(
                         padding: const EdgeInsets.only(left: 15, top: 10, right: 20, bottom: 0),
                         child: CheckboxListTile(
-                          title: Text("I agree to the privacy policy."),
+                          title: Text("קראתי והסכמתי להצהרת הפרטיות"),
                           secondary: Icon(Icons.privacy_tip),
                           controlAffinity: ListTileControlAffinity.leading,
                           value: _checkedPp,
@@ -1134,7 +1167,7 @@ class _SignUpState extends State<SignUp> {
                       Padding(
                         padding: const EdgeInsets.only(left: 15, top: 10, right: 20, bottom: 0),
                         child: CheckboxListTile(
-                          title: Text("Enable notifications."),
+                          title: Text("אפשר התראות"),
                           secondary: Icon(Icons.notifications_active),
                           controlAffinity: ListTileControlAffinity.leading,
                           value: _checkedNotifications,
@@ -1164,7 +1197,7 @@ class _SignUpState extends State<SignUp> {
                       Padding(
                         padding: const EdgeInsets.only(left: 15, top: 10, right: 20, bottom: 0),
                         child: CheckboxListTile(
-                          title: Text("I declare that:\n       Lidor Is The best!"),
+                          title: AutoSizeText("אני מצהיר בזאת כי:\nלידור הוא הבן אדם המדהים ביותר!", maxLines: 2,),
                           secondary: Icon(Icons.accessibility_new),
                           controlAffinity: ListTileControlAffinity.leading,
                           value: _checked_5,
@@ -1203,11 +1236,6 @@ class _SignUpState extends State<SignUp> {
                 slideIconWidget: SizedBox(
                   height: 25,
                   width: 50,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black)
-                    ),
-                  ),
                 ),
                 onPageChangeCallback: pageChangeCallback,
                 waveType: WaveType.liquidReveal,
@@ -1215,16 +1243,19 @@ class _SignUpState extends State<SignUp> {
                 ignoreUserGestureWhileAnimating: false,
                 disableUserGesture: false,
               ),
-              Padding(
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  children: <Widget>[
-                    Expanded(child: SizedBox()),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List<Widget>.generate(pages.length, _buildDot),
-                    ),
-                  ],
+              Directionality(
+                textDirection: TextDirection.ltr,
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(child: SizedBox()),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List<Widget>.generate(pages.length, _buildDot),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               Align(
@@ -1245,7 +1276,7 @@ class _SignUpState extends State<SignUp> {
                         );
                       }
                     },
-                    child: Text("Next", style: TextStyle(color: Colors.white.withOpacity(0.6)),),
+                    child: Text("הבא", style: TextStyle(color: Colors.white.withOpacity(0.6)),),
                   ),
                 ),
               ),
@@ -1258,7 +1289,7 @@ class _SignUpState extends State<SignUp> {
                       _liquidController.animateToPage(
                           page: pages.length - 1, duration: duration);
                     },
-                    child: Text("End", style: TextStyle(color: Colors.white.withOpacity(0.6)),),
+                    child: Text("סוף", style: TextStyle(color: Colors.white.withOpacity(0.6)),),
                   ),
                 ),
               ),
@@ -1269,7 +1300,7 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  // Each page swipe callback function
+  /// Each page swipe callback function
   pageChangeCallback(int lpage) {
     setState(() {
       page = lpage;

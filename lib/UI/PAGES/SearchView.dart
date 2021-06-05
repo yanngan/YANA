@@ -1,7 +1,7 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:yana/UI/PAGES/Utilities.dart';
 import 'package:yana/UX/DB/allDB.dart';
@@ -24,33 +24,36 @@ class _SearchViewState extends State<SearchView> {
 
   @override
   Widget build(BuildContext context) {
+    double _searchWidth = ((MediaQuery.of(context).size.width) / 2);
     if (!_initDone) {
       _init();
     }
     return Scaffold(
         backgroundColor: Colors.amber,
-        body: Column(
-          children: [
-            Container(
-              height: 100,
-              width: (MediaQuery.of(context).size.width),
-              decoration: BoxDecoration(
-                color: Colors.pink,
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(1000),
+        body: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Column(
+            children: [
+              Container(
+                height: 100,
+                width: (MediaQuery.of(context).size.width),
+                decoration: BoxDecoration(
+                  color: Colors.pink,
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(1000),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 40),
+                  child: Text(
+                    "חיפוש",
+                    style: TextStyle(fontSize: 30, color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 40),
-                child: Text(
-                  "חיפוש",
-                  style: TextStyle(fontSize: 30, color: Colors.white),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-            _seeField
+              _seeField
                 ? Container(
                     child: Column(
                       children: [
@@ -86,7 +89,7 @@ class _SearchViewState extends State<SearchView> {
                                   '+',
                                   style: TextStyle(color: Colors.white,fontSize: 20),
                                 ),
-                                onPressed: incrementmaxNumPeople,
+                                onPressed: incrementMaxNumPeople,
                                 style: ButtonStyle(
                                     shape: MaterialStateProperty.all<CircleBorder>(CircleBorder(
                                       // borderRadius: BorderRadius.circular(25),
@@ -112,7 +115,7 @@ class _SearchViewState extends State<SearchView> {
                                     '-',
                                     style: TextStyle(color: Colors.white,fontSize: 27),
                                   ),
-                                  onPressed: decrementmaxNumPeople,
+                                  onPressed: decrementMaxNumPeople,
                                   style: ButtonStyle(
                                       shape: MaterialStateProperty.all<CircleBorder>(CircleBorder(
                                         // borderRadius: BorderRadius.circular(20),
@@ -124,7 +127,33 @@ class _SearchViewState extends State<SearchView> {
                           ],
                         ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: (_searchWidth / 3.5)),
+                              child: SizedBox(
+                                width: _searchWidth,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                      MaterialStateProperty.all(Colors.pink),
+                                      shadowColor: MaterialStateProperty.all<Color>(Colors.black),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(25),
+                                        side: BorderSide(color: Colors.black54)
+                                      )),
+                                    ),
+                                    child: Text(
+                                      "חפש",
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    onPressed: _doSearch,
+                                  ),
+                                ),
+                              ),
+                            ),
                             IconButton(
                               icon: Icon(
                                 Icons.keyboard_arrow_up,
@@ -132,28 +161,6 @@ class _SearchViewState extends State<SearchView> {
                                 color: Colors.pink,
                               ),
                               onPressed: _toggleSearch,
-                            ),
-                            SizedBox(
-                              width: (MediaQuery.of(context).size.width) - 50,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ElevatedButton(
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                    MaterialStateProperty.all(Colors.pink),
-                                    shadowColor: MaterialStateProperty.all<Color>(Colors.black),
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(25),
-                                      side: BorderSide(color: Colors.black54)
-                                    )),
-                                  ),
-                                  child: Text(
-                                    "חפש",
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  onPressed: _doSearch,
-                                ),
-                              ),
                             ),
                           ],
                         ),
@@ -168,22 +175,23 @@ class _SearchViewState extends State<SearchView> {
                     ),
                     onPressed: _toggleSearch,
                   ),
-            Expanded(
-              child: Container(
-                color: Colors.amber[300],
-                child: _initDone
-                    ? ListView.builder(
-                        itemCount: listEvents.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return _createRow(index);
-                        })
-                    : SpinKitFadingCircle(
-                        color: Colors.white,
-                        size: 50.0,
-                      ),
+              Expanded(
+                child: Container(
+                  color: Colors.amber[300],
+                  child: _initDone
+                      ? ListView.builder(
+                          itemCount: listEvents.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return _createRow(index);
+                          })
+                      : SpinKitFadingCircle(
+                          color: Colors.white,
+                          size: 50.0,
+                        ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ));
   }
 
@@ -193,6 +201,7 @@ class _SearchViewState extends State<SearchView> {
       for (var oneEvents in listEvents) {
         print(oneEvents.placeID);
         var temp = await Logic.getPlacesById(oneEvents.placeID);
+        // ignore: unnecessary_null_comparison
         if (temp == null) {
           listEvents.remove(oneEvents);
           continue;
@@ -251,26 +260,29 @@ class _SearchViewState extends State<SearchView> {
     });
   }
 
-  //creat row in the list
+  // create row in the list
   _createRow(int index) {
-    var color = Color(0xfff39e58);
+    Color _color = Colors.amber;
+    var _icon = Icons.edit;
     if (listEvents[index].userID != userMap['id']!) {
-      color = Color(0xfff7ba88);
+      _color = Colors.pink[300]!;
+      _icon = Icons.remove_red_eye;
     }
     return Padding(
       padding: EdgeInsets.fromLTRB(8, 6, 15, 6),
       child: InkWell(
         child: Container(
-          height: 95,
+          height: 70,
           decoration: BoxDecoration(
-            color: color,
+            color: _color,
             shape: BoxShape.rectangle,
             borderRadius: BorderRadius.all(Radius.circular(15)),
             boxShadow: [
               BoxShadow(
-                color: Colors.black54,
-                blurRadius: 4,
-                offset: Offset(4, 8), // Shadow position
+                blurRadius: 5.0,
+                offset: Offset(3, 2),
+                color: Colors.black.withOpacity(0.35),
+                spreadRadius: 0.5,
               ),
             ],
           ),
@@ -279,10 +291,7 @@ class _SearchViewState extends State<SearchView> {
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(0,9,0,9),
-                child: CircleAvatar(
-                  backgroundImage: AssetImage('assets/yana_logo.png'),
-                  radius: 40.0,
-                ),
+                child: Image(image: AssetImage('assets/yana_logo.png')),
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -306,7 +315,7 @@ class _SearchViewState extends State<SearchView> {
                 ],
               ),
               Icon(
-                Icons.arrow_forward_ios_outlined,
+                _icon,
                 color: Colors.grey[900],
               )
             ],
@@ -331,9 +340,9 @@ class _SearchViewState extends State<SearchView> {
     }
     switch (type) {
       case 'date':
-        final format = DateFormat("yyyy-MM-dd");
+        final format = intl.DateFormat("yyyy-MM-dd");
         return Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(3.0),
           child: DateTimeField(
             textAlign: TextAlign.right,
             format: format,
@@ -350,7 +359,7 @@ class _SearchViewState extends State<SearchView> {
                 setState(() {
                   if (value != null) {
                     (this.allField[name]!).text =
-                        DateFormat('yyyy-MM-dd').format(value);
+                        intl.DateFormat('yyyy-MM-dd').format(value);
                     print((this.allField[name]!).text);
                   }
                 });
@@ -360,9 +369,9 @@ class _SearchViewState extends State<SearchView> {
           ),
         );
       case 'time':
-        final format = DateFormat("hh:mm:ss");
+        final format = intl.DateFormat("hh:mm:ss");
         return Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(3.0),
           child: DateTimeField(
             textAlign: TextAlign.right,
             format: format,
@@ -400,7 +409,7 @@ class _SearchViewState extends State<SearchView> {
         );
       case 'text':
         return Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(3.0),
           child: TextField(
             textAlign: TextAlign.right,
             decoration: InputDecoration(
@@ -421,7 +430,7 @@ class _SearchViewState extends State<SearchView> {
     }
   }
 
-  incrementmaxNumPeople() {
+  incrementMaxNumPeople() {
     if((allField['maxNumPeople']!).text == '-'){
       (allField['maxNumPeople']!).text = '2';
       return;
@@ -434,7 +443,7 @@ class _SearchViewState extends State<SearchView> {
     (allField['maxNumPeople']!).text = "$res";
   }
 
-  decrementmaxNumPeople() {
+  decrementMaxNumPeople() {
     int res = int.parse((allField['maxNumPeople']!).text);
     if (res < 3) {
       (allField['maxNumPeople']!).text = '-';
@@ -443,4 +452,5 @@ class _SearchViewState extends State<SearchView> {
     res--;
     (allField['maxNumPeople']!).text = "$res";
   }
+
 }

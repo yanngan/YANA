@@ -1,9 +1,8 @@
 import 'dart:collection';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
@@ -14,7 +13,7 @@ class NoticeBoard extends StatefulWidget {
   _NoticeBoardState createState() => _NoticeBoardState();
 }
 
-Queue Opened = Queue();
+Queue _opened = Queue();
 
 class _NoticeBoardState extends State<NoticeBoard> {
   List<Advertisement> advertisements = [];
@@ -86,12 +85,15 @@ class _NoticeBoardState extends State<NoticeBoard> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.amber,
-      body: Stack(
-        children: [
-          getBulletinBody(),
-          SizedBox(
-              height: 100, child: MyAppBar("לוח מודעות", null, height: 100)),
-        ],
+      body: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Stack(
+          children: [
+            getBulletinBody(),
+            SizedBox(
+                height: 100, child: MyAppBar("לוח מודעות", null, height: 100)),
+          ],
+        ),
       ),
     );
   }
@@ -210,7 +212,7 @@ class _AdvertisementState extends State<Advertisement> {
         } else {
           _height += widget.adv_details.length + extra_link_name_to_use.length + maps_links_to_use.length;
           _isOpen = true;
-          Opened.add(this);
+          _opened.add(this);
         }
       });
     }
@@ -229,14 +231,14 @@ class _AdvertisementState extends State<Advertisement> {
           onTap: () {
             //SetState of the open/close functionality
 
-            if (Opened.isNotEmpty) {
-              if (Opened.first == this) {
+            if (_opened.isNotEmpty) {
+              if (_opened.first == this) {
                 onPressed();
-                Opened.clear();
+                _opened.clear();
                 return;
               }
-              Opened.first.onPressed();
-              Opened.clear();
+              _opened.first.onPressed();
+              _opened.clear();
             }
             onPressed();
           },

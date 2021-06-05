@@ -27,16 +27,19 @@ class _NotificationPageState extends State<NotificationPage> {
         backgroundColor: Colors.pink,
       ),
       backgroundColor: Colors.amber,
-      body: Container(
-        color: Colors.amber,
-        child: _initDone?ListView.builder(
-            itemCount: listNotification.length,
-            itemBuilder: (BuildContext context, int index) {
-              return _createRow(index);
-            }
-        ):SpinKitFadingCircle(
-          color: Colors.white,
-          size: 50.0,
+      body: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Container(
+          color: Colors.amber,
+          child: _initDone?ListView.builder(
+              itemCount: listNotification.length,
+              itemBuilder: (BuildContext context, int index) {
+                return _createRow(index);
+              }
+          ):SpinKitFadingCircle(
+            color: Colors.white,
+            size: 50.0,
+          ),
         ),
       ),
     );

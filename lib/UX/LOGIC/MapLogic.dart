@@ -23,7 +23,6 @@ class MapLogic{
     return markers;
   }
 
-
   /*
   create alert dialog with AddSeeEvent widget
    */
@@ -54,7 +53,6 @@ class MapLogic{
         else{
           statusForUser = await Logic.getStatusEventForUser(theEvent.eventID);
         }*/
-
         screen = SeeEvent(thePlace, theEvent,totallyPop);
         break;
     }
@@ -85,7 +83,6 @@ class MapLogic{
     );
   }
 
-
   static askIfReallyWantToCloseTheEditAdd(BuildContext context, Place thePlace,bool totallyPop) {
     showDialog(
       context: context,
@@ -108,9 +105,7 @@ class MapLogic{
             TextButton(
               child: new Text(
                 "ברצוני להמשיך", style: TextStyle(color: Colors.blueGrey),),
-              onPressed: () {
-
-              },
+              onPressed: () {},
             ),
           ],
         );
@@ -158,7 +153,5 @@ class MapLogic{
   //     },
   //   );
   // }
-
-
 
 }

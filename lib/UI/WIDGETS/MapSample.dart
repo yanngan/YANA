@@ -30,15 +30,18 @@ class MapSampleState extends State<MapSample> {
     }
     //jumpToCurrentLocation();
     return new Scaffold(
-      body: GoogleMap(
-        zoomControlsEnabled: false,   // False reason -> could'nt figure out how to move it's position from our custom navigation bar
-        zoomGesturesEnabled: true,
-        mapType: mapType ? MapType.hybrid : MapType.normal,
-        initialCameraPosition: _TLV,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-        markers: Set<Marker>.of(markers.values),
+      body: Directionality(
+        textDirection: TextDirection.rtl,
+        child: GoogleMap(
+          zoomControlsEnabled: false,   // False reason -> could'nt figure out how to move it's position from our custom navigation bar
+          zoomGesturesEnabled: true,
+          mapType: mapType ? MapType.hybrid : MapType.normal,
+          initialCameraPosition: _TLV,
+          onMapCreated: (GoogleMapController controller) {
+            _controller.complete(controller);
+          },
+          markers: Set<Marker>.of(markers.values),
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Padding(

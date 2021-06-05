@@ -61,11 +61,10 @@ class Logic {
     }
   }
 
-
   static Future<List<Events>> getEventsByPlace(String IDPlaces) async{
-    /// todo: check internet connection
+    /// TODO: check internet connection
 
-    /// todo: go to DB and get all the vent having the IDPlaces
+    /// TODO: go to DB and get all the vent having the IDPlaces
     // - trow Error if have problem
     // return the List of Events we found
     // User tempU = new User("userID","userName","email","sex","dateOfBirth",0,"hobbies","bio","livingArea","workArea","academicInstitution","fieldOfStudy","smoking","fbPhoto","signUpDate",false,true);
@@ -78,9 +77,9 @@ class Logic {
   }
 
   static Future<List<Place>> getAllPlaces() async {
-    /// todo: check internet connection
+    /// TODO: check internet connection
 
-    /// todo: go to DB and get all the Places
+    /// TODO: go to DB and get all the Places
     // - trow Error if have problem
     // return the List of Places we found
 
@@ -90,9 +89,9 @@ class Logic {
   }
 
   static Future<Place> getPlacesById(String IDPlaces) async {
-    /// todo: check internet connection
+    /// TODO: check internet connection
 
-    /// todo: go to DB and get the Places BY IDPlaces
+    /// TODO: go to DB and get the Places BY IDPlaces
     // - trow Error if have problem
     // return the List of Places we found
     var tempP = await FirebaseHelper.getPlaceByID(IDPlaces);
@@ -113,7 +112,6 @@ class Logic {
     }
     return await FirebaseHelper.getEventsBySearchCombination(name:placesName,capacity:maxNumPeople,date:  estimateDate );
   }
-
 
   static Future<bool> userAskToJoinEvent(String userID,String eventID,String creatorUserID) async{
     Logic.getTokenNotificationForAUser(creatorUserID).then((token){
@@ -157,7 +155,6 @@ class Logic {
     }
     return toReturn;
   }
-
 
   static Future<List<MyNotification>> getListNotification() async{
     List<MyNotification> myNotifications = [];

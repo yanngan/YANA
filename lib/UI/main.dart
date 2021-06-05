@@ -286,8 +286,7 @@ Future _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.messageId}");
 }
 
-
-// For handling notification when the app is in terminated state
+/// For handling notification when the app is in terminated state
 checkForInitialMessage() async {
   //await Firebase.initializeApp();
   RemoteMessage? initialMessage =

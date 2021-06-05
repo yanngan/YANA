@@ -210,8 +210,6 @@ class Logic {
   static Future<bool> callOnFcmApiSendPushNotifications(List<String> idsTokens,String title,String body) async {
 
     final postUrl = Uri.parse('https://fcm.googleapis.com/fcm/send');
-    FirebaseMessaging _messaging = FirebaseMessaging.instance;
-    //String registrationToken = await _messaging.getToken()??"";
     final data = {
       "registration_ids" : idsTokens,
       "collapse_key" : "type_a",

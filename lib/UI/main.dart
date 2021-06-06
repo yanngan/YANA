@@ -46,9 +46,10 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    // This is for testing SIGNUP only!!! remove before you push it!
-//    _logOut();
-    Firebase.initializeApp();
+    Firebase.initializeApp().then((value){
+      registerNotification();
+      checkForInitialMessage();
+    });
   }
 
   @override
@@ -57,8 +58,6 @@ class _MainPageState extends State<MainPage> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    registerNotification();
-    checkForInitialMessage();
     return applicationSetup();
   }
 
@@ -216,12 +215,9 @@ class _MainPageState extends State<MainPage> {
     return finalResult;
   }
 
-
-
-
   void registerNotification() async {
     // 1. Initialize the Firebase app
-    await Firebase.initializeApp();
+    //await Firebase.initializeApp();
 
     // 2. Instantiate Firebase Messaging
     _messaging = FirebaseMessaging.instance;
@@ -234,6 +230,10 @@ class _MainPageState extends State<MainPage> {
       sound: true,
     );
 
+    //the Notification token to this device
+    String token = await _messaging.getToken()??"";
+    print("token = $token");
+
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       print('User granted permission');
 
@@ -244,16 +244,24 @@ class _MainPageState extends State<MainPage> {
           title: message.notification?.title,
           body: message.notification?.body,
         );
-        print(message.notification?.title);
-        print(message.notification?.body);
+        print("PushNotification.title = ${message.notification?.title}");
+        print("PushNotification.body = ${message.notification?.body}");
         if (notification != null) {
           // For displaying the notification as an overlay
           showSimpleNotification(
             Text(notification.title??"ERROR"),
             subtitle: Text(notification.body??"ERROR"),
-            leading: NotificationPage(),
+            leading: Icon(Icons.notifications),
             background: Colors.pink,
             duration: Duration(seconds: 3),
+            trailing: TextButton(
+                onPressed: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => NotificationPage()),
+                  );
+                },
+                child: Icon(Icons.arrow_forward_ios_outlined,color: Colors.amber,))
           );
         }
 
@@ -285,4 +293,5 @@ checkForInitialMessage() async {
       body: initialMessage.notification?.body,
     );
   }
+
 }

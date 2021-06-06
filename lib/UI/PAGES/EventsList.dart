@@ -31,6 +31,7 @@ class _EventsListState extends State<EventsList> {
       //floatingActionButton: FloatingActionButton(onPressed: (){Logic.getAllUserEvent();},),
       body: Column(
         children: [
+          TextButton(onPressed: (){Logic.sendTestNotification();}, child: Text("testNotification")),
           Expanded(
             child: Container(
               color: Colors.amber,
@@ -58,7 +59,7 @@ class _EventsListState extends State<EventsList> {
       listEvents = value;
       for (var oneEvents in listEvents) {
         print(oneEvents.placeID);
-        var temp = await Logic.getPlacesById(oneEvents.placeID);
+        var temp = await Logic.getPlaceById(oneEvents.placeID);
         if (temp == null) {
           listEvents.remove(oneEvents);
           continue;

@@ -200,7 +200,7 @@ class _SearchViewState extends State<SearchView> {
       listEvents = value;
       for (var oneEvents in listEvents) {
         print(oneEvents.placeID);
-        var temp = await Logic.getPlacesById(oneEvents.placeID);
+        var temp = await Logic.getPlaceById(oneEvents.placeID);
         // ignore: unnecessary_null_comparison
         if (temp == null) {
           listEvents.remove(oneEvents);
@@ -239,7 +239,7 @@ class _SearchViewState extends State<SearchView> {
       listEvents = value;
       for (var oneEvents in listEvents) {
         print(oneEvents.placeID);
-        var temp = await Logic.getPlacesById(oneEvents.placeID);
+        var temp = await Logic.getPlaceById(oneEvents.placeID);
         if (temp == null) {
           listEvents.remove(oneEvents);
           continue;

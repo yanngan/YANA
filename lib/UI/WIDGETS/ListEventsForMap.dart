@@ -5,6 +5,7 @@ import 'package:yana/UX/LOGIC/Logic.dart';
 import 'package:yana/UX/LOGIC/MapLogic.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+// ignore: must_be_immutable
 class ListEventsForMap extends StatefulWidget {
   Place thePlace;
   ListEventsForMap(this.thePlace);

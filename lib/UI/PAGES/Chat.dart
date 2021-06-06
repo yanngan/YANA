@@ -98,6 +98,16 @@ class _ChatState extends State<Chat> {
 
     checkKeyboard();
 
+    var _backButton = Padding(
+      padding: EdgeInsets.only(right: 25.0),
+      child: TextButton(
+        child: Icon(Icons.arrow_forward_ios, color: Colors.black,),
+          onPressed: (){
+            _onBackPressed();
+          },
+      ) ,
+    );
+
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
@@ -219,8 +229,8 @@ class _ChatState extends State<Chat> {
               ),
             ),
             SizedBox(
-                height: 110,
-                child: MyAppBar(_him, null, height: 110,)
+                height: 100,
+                child: MyAppBar(_him, _backButton, height: 100,)
             ),
           ],
         ),
@@ -318,6 +328,7 @@ class _ChatState extends State<Chat> {
     });
   }
 
+  /// Method that fires when the user press the back button
   Future<bool> _onBackPressed() async {
     setState(() {
       this.widget.callback(3, userMap, otherInfo, ChatsAndEvents_index);

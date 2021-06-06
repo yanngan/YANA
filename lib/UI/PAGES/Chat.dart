@@ -269,19 +269,29 @@ class _ChatState extends State<Chat> {
             icon: Icon(Icons.send),
             onPressed: ()async{
               if(messageText.isEmpty){ return; }
+              // _controllerInput.clear();
+
               //check if the message is free of Curses
               final filter = ProfanityFilter.filterAdditionally(["bla"]);
-              filter.censor(messageText, replaceWith:"***");
-              print(messageText);
+              if (filter.hasProfanity(messageText))
+                return;//display --- clean your language ---
+
+              // while( filter.hasProfanity(messageText))
+              //   messageText = filter.censor(messageText);
+
+              // print(messageText);
               DateTime now = new DateTime.now();
               String formattedDate = new DateFormat('dd-MM-yyyy hh:mm').format(now);
               Message message = Message(_me, _him, _meID, _himID, messageText, formattedDate);
-              print(message.toString());
+              // print(message.toString());
               FirebaseHelper.sendMessageToFb(message);
               //send a notification to other user to tell him he got a new message
               //get other user token
               String otherToken =  await FirebaseHelper.getTokenNotificationForAUser(_himID);
-              if(otherToken.isEmpty)return;
+              if(otherToken.isEmpty){
+                _controllerInput.clear();
+                return;
+              }
               Logic.sendPushNotificationsToUsers([otherToken], NotificationTitle, _him + " שלח/ה לך הודעה ");
               _controllerInput.clear();
             },

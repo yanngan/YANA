@@ -6,6 +6,7 @@ import 'package:yana/UI/WIDGETS/allWidgets.dart';
 import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
 import 'package:intl/intl.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
+import 'package:yana/UX/LOGIC/Logic.dart';
 
 import 'Utilities.dart';
 
@@ -265,13 +266,22 @@ class _ChatState extends State<Chat> {
           hintText: 'הקלד הודעה...',
           suffixIcon: IconButton(
             icon: Icon(Icons.send),
-            onPressed: (){
+            onPressed: ()async{
               if(messageText.isEmpty){ return; }
+              //check if the message is free of Curses
+              bool flagCurses = checkForCurses(messageText);
+              if (flagCurses)return;//todo - need to display the user an alert
+              
               DateTime now = new DateTime.now();
               String formattedDate = new DateFormat('dd-MM-yyyy hh:mm').format(now);
               Message message = Message(_me, _him, _meID, _himID, messageText, formattedDate);
               print(message.toString());
               FirebaseHelper.sendMessageToFb(message);
+              //send a notification to other user to tell him he got a new message
+              //get other user token
+              String otherToken =  await FirebaseHelper.getTokenNotificationForAUser(_himID);
+              if(otherToken.isEmpty)return;
+              Logic.sendPushNotificationsToUsers([otherToken], NotificationTitle, _him + " שלח/ה לך הודעה ");
               _controllerInput.clear();
             },
           ),
@@ -333,6 +343,12 @@ class _ChatState extends State<Chat> {
     setState(() {
       this.widget.callback(3, userMap, otherInfo, ChatsAndEvents_index);
     });
+    return false;
+  }
+//in case there is no Curses return false else true
+  bool checkForCurses(String messageText) {
+
+
     return false;
   }
 

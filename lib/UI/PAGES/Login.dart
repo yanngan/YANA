@@ -191,8 +191,8 @@ class _LoginState extends State<Login> {
                                     dummyUserInfo["gender"]               =     "female";
                                     dummyUserInfo["birthday"]             =     "12/06/1996";
                                     dummyUserInfo["age_range"]            =     "39";
-                                    dummyUserInfo["hobbies"]              =     "Super Model, Actress";
-                                    dummyUserInfo["bio"]                  =     "Most beautiful woman in the world!";
+                                    dummyUserInfo["hobbies"]              =     "JAVA,C++,D&D";
+                                    dummyUserInfo["bio"]                  =     "חדשה בג'רוז :)";
                                     dummyUserInfo["livingArea"]           =     "Salvador, Bahia, Brazil";
                                     dummyUserInfo["workArea"]             =     "New York, Los Angeles";
                                     dummyUserInfo["academicInstitution"]  =     "Creative Artists Agency";

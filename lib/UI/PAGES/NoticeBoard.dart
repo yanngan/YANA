@@ -18,6 +18,7 @@ List<Advertisement> advertisements = [];
 
 class _NoticeBoardState extends State<NoticeBoard> {
   bool isInitialized = false;
+
 //  late bool _isEmptyList;
   bool _isEmptyList = true;
   String details = "";
@@ -54,7 +55,7 @@ class _NoticeBoardState extends State<NoticeBoard> {
             details));
       } else {
         advertisements.add(Advertisement(
-          this.context,
+            this.context,
             Color(0xfffad5b8),
             element.bulletName,
             element.eventIcon,
@@ -74,9 +75,9 @@ class _NoticeBoardState extends State<NoticeBoard> {
     });
 
     isInitialized = true;
-    if(advertisements.isEmpty /*&& isInitialized*/){
+    if (advertisements.isEmpty /*&& isInitialized*/) {
       _isEmptyList = true;
-    }else{
+    } else {
       _isEmptyList = false;
     }
   }
@@ -98,8 +99,8 @@ class _NoticeBoardState extends State<NoticeBoard> {
     );
   }
 
-  Widget getBulletinBody(){
-    if(_isEmptyList){
+  Widget getBulletinBody() {
+    if (_isEmptyList) {
       return Container(
         color: Colors.amber,
         child: Center(
@@ -109,45 +110,45 @@ class _NoticeBoardState extends State<NoticeBoard> {
               "אין מודעות עדיין,\nאנא חזור מאוחר יותר",
               textDirection: TextDirection.rtl,
               maxLines: 2,
-              style: TextStyle(fontSize: 1000.0, color: Colors.black.withOpacity(0.65), fontFamily: 'FontSkia'),
+              style: TextStyle(
+                  fontSize: 1000.0,
+                  color: Colors.black.withOpacity(0.65),
+                  fontFamily: 'FontSkia'),
               textAlign: TextAlign.center,
             ),
           ),
         ),
       );
-    }else{
+    } else {
       return Container(
         color: Colors.amber,
-        child: ListView(
-            children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(5, 0, 0, 40),
-                child: Container(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 70,
-                      ),
-                      isInitialized
-                          ? Center(
-                            child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: advertisements),
-                          )
-                          : SpinKitFadingCircle(
-                        color: Colors.white,
-                        size: (MediaQuery.of(context).size.width / 1.5),
-                      ),
-                    ],
+        child: ListView(children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(5, 0, 0, 40),
+            child: Container(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 70,
                   ),
-                ),
+                  isInitialized
+                      ? Center(
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: advertisements),
+                        )
+                      : SpinKitFadingCircle(
+                          color: Colors.white,
+                          size: (MediaQuery.of(context).size.width / 1.5),
+                        ),
+                ],
               ),
-            ]
-        ),
+            ),
+          ),
+        ]),
       );
     }
   }
-
 }
 
 //Advertisement Widget
@@ -191,11 +192,10 @@ class _AdvertisementState extends State<Advertisement> {
   String extra_link_name_to_use = "";
   String maps_links_to_use = "";
 
-
   @override
   void initState() {
     _height = (MediaQuery.of(widget.pagecontext).size.height / 9);
-    _width = (MediaQuery.of(widget.pagecontext).size.width - 20);
+    _width = (MediaQuery.of(widget.pagecontext).size.width);
     super.initState();
     extra_link_name_to_use = "\u2022${widget.adv_extraLinkName}\n";
     maps_links_to_use = "\u2022 ניתוב למקום >\n";
@@ -213,10 +213,16 @@ class _AdvertisementState extends State<Advertisement> {
     if (this.mounted) {
       setState(() {
         if (_isOpen) {
-          _height -= widget.adv_details.length + extra_link_name_to_use.length + maps_links_to_use.length + 40;
+          _height -= widget.adv_details.length +
+              extra_link_name_to_use.length +
+              maps_links_to_use.length +
+              20;
           _isOpen = false;
         } else {
-          _height += widget.adv_details.length + extra_link_name_to_use.length + maps_links_to_use.length + 40;
+          _height += widget.adv_details.length +
+              extra_link_name_to_use.length +
+              maps_links_to_use.length +
+              20;
           _isOpen = true;
           _opened.add(this);
         }
@@ -235,7 +241,7 @@ class _AdvertisementState extends State<Advertisement> {
         child: GestureDetector(
           key: UniqueKey(),
           onTap: () {
-            //SetState of the open/close functionality
+            // SetState of the open/close functionality
 
             if (_opened.isNotEmpty) {
               if (_opened.first == this) {
@@ -254,26 +260,67 @@ class _AdvertisementState extends State<Advertisement> {
               Expanded(
                 flex: 1,
                 child: Container(
-                  width: _width-(MediaQuery.of(widget.pagecontext).size.width / 10),
+                  width: _width,
                   decoration: BoxDecoration(
                     color: widget.color,
                     borderRadius: BorderRadius.circular(25),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black54,
-                        blurRadius: 4,
-                        offset: Offset(4, 8), // Shadow position
+                        blurRadius: 5.0,
+                        offset: Offset(3, 2),
+                        color: Colors.black.withOpacity(0.35),
+                        spreadRadius: 0.5, // Shadow position
                       ),
                     ],
                   ),
-                  //Column of the "card"
+
+                  ///Column of the "card"
                   child: Column(
                     children: <Widget>[
-                      //Title widget the does not change dynamically.
+                      ///Title widget the does not change dynamically.
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10.0),
-                        child: Cards_Title(widget.adv_name, widget.adv_icon),
+                        padding: EdgeInsets.symmetric(vertical: 12.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(20, 0, 10, 0),
+                              child: CircleAvatar(
+                                backgroundImage: NetworkImage(widget.adv_icon),
+                                radius: 30.0,
+                              ),
+                            ),
+                            Text(
+                              widget.adv_name,
+                              style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.grey[900],
+                                  fontFamily: 'FontPacifico'),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 10, 15, 0),
+                              child: IconButton(
+                                  onPressed: () {
+                                    if (_opened.isNotEmpty) {
+                                      if (_opened.first == this) {
+                                        onPressed();
+                                        _opened.clear();
+                                        return;
+                                      }
+                                      _opened.first.onPressed();
+                                      _opened.clear();
+                                    }
+                                    onPressed();
+                                  },
+                                  icon: Icon(Icons.arrow_circle_down)),
+                            ),
+                          ],
+                        ),
                       ),
+
+                      ///End of Title Part.
                       //Advert details.
                       Expanded(
                         child: AnimatedOpacity(
@@ -283,10 +330,11 @@ class _AdvertisementState extends State<Advertisement> {
                             children: [
                               Expanded(
                                 child: Padding(
-                                  padding: EdgeInsets.fromLTRB(10, 2, 0, 10),
+                                  padding: EdgeInsets.fromLTRB(10, 2, 10, 10),
                                   child: SingleChildScrollView(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         AutoSizeText(
                                           widget.adv_details,
@@ -295,14 +343,15 @@ class _AdvertisementState extends State<Advertisement> {
                                             fontFamily: 'FontRaleway',
                                             fontWeight: FontWeight.w600,
                                             color: Colors.black87,
-                                            fontSize: 18,
+                                            fontSize: 16,
                                             letterSpacing: 1,
                                             decorationThickness: 2,
                                             wordSpacing: 1,
                                           ),
                                         ),
                                         Container(
-                                          transform: Matrix4.translationValues(0, -20, 0),
+                                          transform: Matrix4.translationValues(
+                                              0, -20, 0),
                                           // height: double.parse(extra_link_name_to_use.length.toString()),
                                           child: RichText(
                                               text: new TextSpan(
@@ -311,45 +360,46 @@ class _AdvertisementState extends State<Advertisement> {
                                                     fontFamily: 'FontRaleway',
                                                     fontWeight: FontWeight.w600,
                                                     color: Colors.blueAccent,
-                                                    decoration: TextDecoration.underline,
-                                                    fontSize: 18,
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                    fontSize: 16,
                                                     letterSpacing: 1,
                                                     decorationThickness: 2,
                                                     wordSpacing: 1,
                                                   ),
                                                   // style: ,
                                                   recognizer:
-                                                  new TapGestureRecognizer()
-                                                    ..onTap = () {
-                                                      _launchUrl(widget
-                                                          .adv_extraLink);
-                                                    })),
+                                                      new TapGestureRecognizer()
+                                                        ..onTap = () {
+                                                          _launchUrl(widget
+                                                              .adv_extraLink);
+                                                        })),
                                         ),
                                         Container(
-                                          transform: Matrix4.translationValues(0, -40, 0),
+                                          transform: Matrix4.translationValues(
+                                              0, -40, 0),
                                           // height: double.parse(maps_links_to_use.length.toString()),
-                                          child:
-                                          RichText(
+                                          child: RichText(
                                               text: new TextSpan(
                                                   text: maps_links_to_use,
                                                   style: new TextStyle(
                                                     fontFamily: 'FontRaleway',
                                                     fontWeight: FontWeight.w600,
                                                     color: Colors.blueAccent,
-                                                    decoration: TextDecoration.underline,
-                                                    fontSize: 18,
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                    fontSize: 16,
                                                     letterSpacing: 1,
                                                     decorationThickness: 2,
                                                     wordSpacing: 1,
                                                   ),
                                                   recognizer:
-                                                  new TapGestureRecognizer()
-                                                    ..onTap = () {
-                                                      _launchUrl(widget
-                                                          .adv_mapsLink);
-                                                    })),
+                                                      new TapGestureRecognizer()
+                                                        ..onTap = () {
+                                                          _launchUrl(widget
+                                                              .adv_mapsLink);
+                                                        })),
                                         )
-
                                       ],
                                     ),
                                   ),
@@ -372,33 +422,40 @@ class _AdvertisementState extends State<Advertisement> {
 }
 
 //Advert Title Widget
-class Cards_Title extends StatelessWidget {
-  @override
-  var name;
-  var fb;
-  Cards_Title(this.name, this.fb);
-
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.fromLTRB(20, 0, 10, 0),
-          child: CircleAvatar(
-            backgroundImage: NetworkImage(fb),
-            radius: 30.0,
-          ),
-        ),
-        Text(
-          name,
-          style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.w400,
-              color: Colors.grey[900],
-              fontFamily: 'FontPacifico'),
-        ),
-      ],
-    );
-  }
-}
+// class Cards_Title extends StatelessWidget {
+//   @override
+//   var name;
+//   var fb;
+//   Cards_Title(this.name, this.fb);
+//
+//   Widget build(BuildContext context) {
+//     return Center(
+//       child: Row(
+//         mainAxisAlignment: MainAxisAlignment.center,
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: <Widget>[
+//           Padding(
+//             padding: EdgeInsets.fromLTRB(20, 0, 10, 0),
+//             child: CircleAvatar(
+//               backgroundImage: NetworkImage(fb),
+//               radius: 30.0,
+//             ),
+//           ),
+//           Text(
+//             name,
+//             style: TextStyle(
+//                 fontSize: 30,
+//                 fontWeight: FontWeight.w400,
+//                 color: Colors.grey[900],
+//                 fontFamily: 'FontPacifico'),
+//           ),
+//
+//           Padding(
+//             padding: const EdgeInsets.fromLTRB(0, 10, 15, 0),
+//             child: IconButton(onPressed: () {}, icon: Icon(Icons.arrow_circle_down),splashColor: Colors.green,),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

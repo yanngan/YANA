@@ -7,6 +7,7 @@ import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
 import 'package:intl/intl.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
+import 'package:profanity_filter/profanity_filter.dart';
 
 import 'Utilities.dart';
 
@@ -269,9 +270,9 @@ class _ChatState extends State<Chat> {
             onPressed: ()async{
               if(messageText.isEmpty){ return; }
               //check if the message is free of Curses
-              bool flagCurses = checkForCurses(messageText);
-              if (flagCurses)return;//todo - need to display the user an alert
-              
+              final filter = ProfanityFilter.filterAdditionally(["bla"]);
+              filter.censor(messageText, replaceWith:"***");
+              print(messageText);
               DateTime now = new DateTime.now();
               String formattedDate = new DateFormat('dd-MM-yyyy hh:mm').format(now);
               Message message = Message(_me, _him, _meID, _himID, messageText, formattedDate);
@@ -345,12 +346,7 @@ class _ChatState extends State<Chat> {
     });
     return false;
   }
-//in case there is no Curses return false else true
-  bool checkForCurses(String messageText) {
 
-
-    return false;
-  }
 
 }
 

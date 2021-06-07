@@ -89,7 +89,7 @@ class Logic {
 
   /// Returns all the events that the user create / applied for
   static Future<List<Events>> getAllUserEvent() async {
-    return await FirebaseHelper.getUserEvents(userMap['id']!);
+    return await FirebaseHelper.getUserEvents(userMap['userID']!);
   }
 
   /// [maxNumPeople] - Represents the maximum amount of people allowed in the event ( if == -1 gets default to 1000 )

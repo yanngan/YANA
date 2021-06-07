@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:yana/UI/WIDGETS/EmptyScreen.dart';
 import 'package:yana/UI/WIDGETS/allWidgets.dart';
 import 'package:yana/UX/DB/allDB.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
@@ -28,7 +29,6 @@ class _EventsListState extends State<EventsList> {
     return Scaffold(
       appBar: null,
       backgroundColor: Colors.amber,
-      //floatingActionButton: FloatingActionButton(onPressed: (){Logic.getAllUserEvent();},),
       body: Column(
         children: [
           TextButton(onPressed: (){Logic.sendTestNotification();}, child: Text("testNotification")),
@@ -36,12 +36,12 @@ class _EventsListState extends State<EventsList> {
             child: Container(
               color: Colors.amber,
               child: _initDone
-              ? ListView.builder(
-                itemCount: listEvents.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return _createRow(index);
-                }
-              )
+              ? (listEvents.length == 0 ? EmptyScreen(maxLines: 3, text: "לא קיימים הקשורים לחשבונך ברגע זה, עליך להירשם או לבקש להצטרף לאירוע") : ListView.builder(
+                  itemCount: listEvents.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return _createRow(index);
+                  }
+              ))
               : SpinKitFadingCircle(
                 color: Colors.white,
                 size: 50.0,
@@ -66,7 +66,7 @@ class _EventsListState extends State<EventsList> {
         }
         print(temp.placeID);
         placeByEvents[oneEvents.eventID] = temp;
-        if(oneEvents.userID != userMap['id']!){
+        if(oneEvents.userID != userMap['userID']!){
           oneEvents.statusForUser =  await Logic.getStatusEventForUser(oneEvents.eventID);
         }
       }

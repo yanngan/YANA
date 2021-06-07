@@ -46,6 +46,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+<!--    TODO check facebook duplicates    -->
 <!--        Facebook Related <-> Do Not Touch!      -->
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>

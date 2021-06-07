@@ -50,7 +50,7 @@ class MapSampleState extends State<MapSample> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: Padding(
+      floatingActionButton: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Padding(
             padding: const EdgeInsets.only(bottom: 60),

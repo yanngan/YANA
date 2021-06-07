@@ -60,7 +60,8 @@ class _ChatListState extends State<ChatList> {
             onTap: (){
               this.widget.otherInfo = {"name": _senders[key], "id" : key};
               setState(() {
-                this.widget.callback(4, userMap, this.widget.otherInfo, Chat_index);
+//                this.widget.callback(4, userMap, this.widget.otherInfo, Chat_index);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Chat(this.widget.otherInfo)));
               });
             },
             child: Neumorphism(

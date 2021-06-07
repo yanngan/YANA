@@ -274,12 +274,20 @@ class _ChatState extends State<Chat> {
             icon: Icon(Icons.send),
             onPressed: ()async{
               if(messageText.isEmpty){ return; }
-              messageText ="hello fuck you ";
+              // messageText ="hello fuck you ";
               // messageText ="fuck you";
               // messageText ="Hello assume you";
               // messageText ="assume you hello";
-
-
+              String test ="hello world";
+              print("*"+messageText+"*");
+              print("*"+test+"*");
+              print("******************");
+              // for(int i=0; i< messageText.length; i++){
+              //     print(messageText[i]==test[i]);
+              // }
+              // print("******************");
+              print(messageText+"=="+test);
+              print(messageText == test);
               print("***********************************0\n");
               //check if the message is free of Curses
               if (hasProfanity(messageText))

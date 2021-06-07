@@ -464,13 +464,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.1"
-  profanity_filter:
-    dependency: "direct main"
-    description:
-      name: profanity_filter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0-nullsafety.0"
   provider:
     dependency: transitive
     description:

@@ -9,7 +9,6 @@ import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
 import 'package:intl/intl.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
-import 'package:profanity_filter/profanity_filter.dart';
 
 import 'Utilities.dart';
 
@@ -94,7 +93,7 @@ class _ChatState extends State<Chat> {
   Widget build(BuildContext context){
     /// Timer in order to "scroll" to the last message without the user noticing
     Timer(Duration(microseconds: 1), () => _scrollController.jumpTo(
-      _scrollController.position.maxScrollExtent + lastMsgHeight(messages[messages.length - 1].message))
+      _scrollController.position.maxScrollExtent + lastMsgHeight(messages[messages.length - 1].message))// TODO fix - Invalid value: Valid value range is empty: -1
     );
 
     double inputFieldHeight = (MediaQuery.of(context).size.height / 11);
@@ -271,33 +270,30 @@ class _ChatState extends State<Chat> {
             icon: Icon(Icons.send),
             onPressed: ()async{
               if(messageText.isEmpty){ return; }
-              // _controllerInput.clear();
+              messageText ="hello fuck you ";
+              // messageText ="fuck you";
+              // messageText ="Hello assume you";
+              // messageText ="assume you hello";
+
+
               print("***********************************0\n");
               //check if the message is free of Curses
-
-              final filter = ProfanityFilter.filterAdditionally(englishProfanityList);
-              if (filter.hasProfanity(messageText))
+              if (hasProfanity(messageText))
                 {
-                  filter.hasProfanity(messageText);
-                  List<String> wordsFound = filter.getAllProfanity(messageText);
-                  print(wordsFound.toString());
+                  List<String> wordsFound = getAllProfanity(messageText);
+                  // print(wordsFound.toString());
                   _makeToast("תוכן הבא זוהה כפוגעני: "+wordsFound.toString(), Colors.red);
                   print("***********************************1\n");
                   _controllerInput.clear();
-
-                  return;//display --- clean your language ---
+                  return;
                 }
               print("***********************************2\n");
 
-              // while( filter.hasProfanity(messageText))
-              //   messageText = filter.censor(messageText);
-
-              // print(messageText);
               DateTime now = new DateTime.now();
               String formattedDate = new DateFormat('dd-MM-yyyy hh:mm').format(now);
               Message message = Message(_me, _him, _meID, _himID, messageText, formattedDate);
-              // print(message.toString());
-              FirebaseHelper.sendMessageToFb(message);
+              // FirebaseHelper.sendMessageToFb(message);
+
               //send a notification to other user to tell him he got a new message
               //get other user token
               String otherToken =  await FirebaseHelper.getTokenNotificationForAUser(_himID);
@@ -384,12 +380,20 @@ class _ChatState extends State<Chat> {
   bool hasProfanity(String inputString) {
     print("***********************************3\n");
     bool isProfane = false;
-    englishProfanityList.forEach((word) {
-      print(inputString.toLowerCase().split(' '));
-      print("***********************************4\n");
-      if (inputString.toLowerCase().split(' ').contains(word.toLowerCase())) {
-        print("***********************************88\n");
-        isProfane = true;
+    List<String> messageTextList= inputString.toLowerCase().split(' ');
+    print(messageTextList.toString());
+    // englishProfanityList.forEach((word) {
+    //   if (messageTextList.contains(word)) {
+    //     print("***********************************88\n");
+    //     isProfane = true;
+    //   }
+    // });
+
+    messageTextList.forEach((element) {
+      print(englishProfanityList.contains(element));
+      if( englishProfanityList.contains(element) ){
+            isProfane = true;
+          print("***********************************88\n");
       }
     });
     return isProfane;

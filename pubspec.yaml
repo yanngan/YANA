@@ -50,7 +50,6 @@ dependencies:
   shared_preferences: ^2.0.6
   overlay_support: ^1.2.1
   http: ^0.13.3
-  profanity_filter: ^2.0.0-nullsafety.0
 
 dev_dependencies:
   flutter_test:

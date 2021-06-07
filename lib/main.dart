@@ -6,10 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 //PAGES
-import 'NOTIFICATION/NotificationClasses.dart';
-import 'PAGES/Utilities.dart';
+import 'UI/NOTIFICATION/NotificationClasses.dart';
+import 'UI/PAGES/Utilities.dart';
 //WIDGETS
-import 'WIDGETS/allWidgets.dart';
+import 'UI/WIDGETS/allWidgets.dart';
 import 'package:overlay_support/overlay_support.dart';
 // Do not delete next line!
 //AIzaSyAg2GgqVtmCLI6Ge73OdoU2xTYtIW_0Fp0
@@ -260,6 +260,7 @@ class _MainPageState extends State<MainPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => NotificationPage()),
+                    /// todo - if title contain "הודעה חדשה" go to chats page
                   );
                 },
                 child: Icon(Icons.arrow_forward_ios_outlined,color: Colors.amber,))

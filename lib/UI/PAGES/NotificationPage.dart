@@ -242,7 +242,12 @@ class _NotificationPageState extends State<NotificationPage> {
       _makeToast('אירעה תקלה, נסה שנית מאוחר יותר',Colors.pink);
       return;
     }
-    Logic.approveOrRejectRequestToJoinEvent(listNotification[index].userID,theEvents,approve);
+    var theOtherUser = await FirebaseHelper.getCurrentUser(listNotification[index].userID);
+    if(theOtherUser == null){
+      _makeToast("אירעה שגיאה, עמכם הסליחה",Colors.red);
+      return;
+    }
+    Logic.approveOrRejectRequestToJoinEvent(theOtherUser,theEvents,approve);
   }
 
   /// Creates a toast message with [str] text and [theColor] color

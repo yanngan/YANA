@@ -31,7 +31,7 @@ class _EventsListState extends State<EventsList> {
       backgroundColor: Colors.amber,
       body: Column(
         children: [
-          TextButton(onPressed: (){Logic.sendTestNotification();}, child: Text("testNotification")),
+          //TextButton(onPressed: (){Logic.sendTestNotification();}, child: Text("testNotification")),
           Expanded(
             child: Container(
               color: Colors.amber,

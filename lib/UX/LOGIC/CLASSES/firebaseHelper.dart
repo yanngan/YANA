@@ -344,7 +344,7 @@ class FirebaseHelper {
     List<Events> events = [];
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('Events')
-        .where("startEstimate", isGreaterThanOrEqualTo: date)
+        .where("startEstimate", isGreaterThanOrEqualTo: date)///todo - make this to return a specific day
         .get();
     querySnapshot.docs.forEach((doc) {
       events.add(Events.fromJson(doc.data()));

@@ -128,15 +128,16 @@ class Logic {
   /// [theEvent] - Represent the current event
   /// [approve] - boolean flag to indicate whether the user is approved to the event or denied
   /// @return type - boolean that represent success / failure
-  static Future<bool> approveOrRejectRequestToJoinEvent(String userID, Events theEvent, bool approve) async {
+  static Future<bool> approveOrRejectRequestToJoinEvent(User otheUser, Events theEvent, bool approve) async {
     if(approve){
-      Logic.getTokenNotificationForAUser(userID).then((token){
+      Logic.getTokenNotificationForAUser(otheUser.userID).then((token){
         String title = "בקשתך להצטרף לאירוע אושרה!";
         String body = "בקשתך להצטרך לאירוע אושרה על-ידי מארגן האירוע";
         Logic.sendPushNotificationsToUsers([token], title, body);
       });
+      FirebaseHelper.createNewChat(userMap['id']!, userMap['name']!,otheUser.userID, otheUser.userName);
     }
-    return await FirebaseHelper.approveOrRejectRequestToJoinEvent(userID, theEvent, approve);
+    return await FirebaseHelper.approveOrRejectRequestToJoinEvent(otheUser.userID, theEvent, approve);
   }
 
   /// [eventID] - Represent current user request status of the given event
@@ -173,13 +174,13 @@ class Logic {
     // get all join request user have to events he create
     List<MyNotification> temp  = await FirebaseHelper.getUserJoinRequest(userMap['id']!);
     temp.forEach((element) {
-      print("in getUserJoinRequest");
+      //print("in getUserJoinRequest");
       myNotifications.add(element);
     });
     // get all events he have be approve
     temp  = await FirebaseHelper.getUserApprovedRequest(userMap['id']!);
     temp.forEach((element) {
-      print("in getUserAprovedRequest ${element.type}");
+      //print("in getUserAprovedRequest ${element.type}");
       myNotifications.add(element);
     });
     return myNotifications;

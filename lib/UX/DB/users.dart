@@ -1,11 +1,12 @@
 class User {
 
   String userID;
-  String userName;
+  String name;
   String email;
-  String sex;
-  String dateOfBirth;//DateTime
-  int age;
+  String gender;
+  String birthday;//DateTime
+  // ignore: non_constant_identifier_names
+  int age_range;
   String hobbies;
   String bio;
   String livingArea;
@@ -22,10 +23,11 @@ class User {
   String toString() {
     return 'User{'
         'userID: $userID, '
-        'userName: $userName, '
+        'name: $name, '
         'email: $email, '
-        'sex: $sex, '
-        'dateOfBirth: $dateOfBirth, '
+        'gender: $gender, '
+        'birthday: $birthday, '
+        'age_range: $age_range, '
         'hobbies: $hobbies, '
         'bio: $bio, '
         'livingArea: $livingArea, '
@@ -44,11 +46,11 @@ class User {
   factory User.fromJson(dynamic json) {
     return User(
       json['userID'] as String,
-      json['userName'] as String,
+      json['name'] as String,
       json['email'] as String,
-      json['sex'] as String,
-      json['dateOfBirth'] as String,
-      json['age'] as int,
+      json['gender'] as String,
+      json['birthday'] as String,
+      json['age_range'] as int,
       json['hobbies'] as String,
       json['bio'] as String,
       json['livingArea'] as String,
@@ -79,7 +81,7 @@ class User {
       userInfo["academicInstitution"].toString(),
       userInfo["fieldOfStudy"].toString(),
       userInfo["smoking"].toString(),
-      userInfo["picture_link"].toString(),
+      userInfo["fbPhoto"].toString(),
       userInfo["signUpDate"].toString(),
       (userInfo["isBlocked"].toString().toLowerCase() == 'true'),
       (userInfo["notifications"].toString().toLowerCase() == 'true'),
@@ -112,11 +114,11 @@ class User {
   //constructor
   User(
       this.userID,
-      this.userName,
+      this.name,
       this.email,
-      this.sex,
-      this.dateOfBirth,
-      this.age,
+      this.gender,
+      this.birthday,
+      this.age_range,
       this.hobbies,
       this.bio,
       this.livingArea,
@@ -134,11 +136,11 @@ class User {
   Map<String, dynamic> toJson() {
     return {
       "userID": this.userID,
-      "userName": this.userName,
+      "name": this.name,
       "email":this.email,
-      "sex":this.sex,
-      "dateOfBirth": this.dateOfBirth,
-      "age": this.age,
+      "gender":this.gender,
+      "birthday": this.birthday,
+      "age_range": this.age_range,
       "hobbies":this.hobbies,
       "bio":this.bio,
       "livingArea":this.livingArea,
@@ -157,11 +159,11 @@ class User {
   Map<String, String> toMap(){
     return {
       "userID": this.userID,
-      "userName": this.userName,
+      "name": this.name,
       "email":this.email,
-      "sex":this.sex,
-      "dateOfBirth": this.dateOfBirth,
-      "age": this.age.toString(),
+      "gender":this.gender,
+      "birthday": this.birthday,
+      "age_range": this.age_range.toString(),
       "hobbies":this.hobbies,
       "bio":this.bio,
       "livingArea":this.livingArea,

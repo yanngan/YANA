@@ -35,7 +35,7 @@ class _SearchViewState extends State<SearchView> {
           child: Column(
             children: [
               Container(
-                height: 100,
+                height: appBarHeight,
                 width: (MediaQuery.of(context).size.width),
                 decoration: BoxDecoration(
                   color: Colors.pink,
@@ -265,7 +265,7 @@ class _SearchViewState extends State<SearchView> {
   _createRow(int index) {
     Color _color = Colors.amber;
     var _icon = Icons.edit;
-    if (listEvents[index].userID != userMap['id']!) {
+    if (listEvents[index].userID != userMap['userID']!) {
       _color = Colors.pink[300]!;
       _icon = Icons.remove_red_eye;
     }

@@ -40,7 +40,11 @@ class _SettingsState extends State<Settings> {
   double _radius = 14.0, _paddingRight = 30.0, _paddingLeft = 25.0;
   String userName = userMap['name'].toString();
   late List<bool> _toggleSelectionsMap, _toggleSelectionsChatsEvents;
+  late TextEditingController _controllerName;
+  late TextEditingController _controllerEmail;
   late TextEditingController _controllerSex;
+  late TextEditingController _controllerBirthday;
+  late TextEditingController _controllerAgeRange;
   late TextEditingController _controllerHobbies;
   late TextEditingController _controllerBio;
   late TextEditingController _controllerLivingArea;
@@ -65,7 +69,11 @@ class _SettingsState extends State<Settings> {
 
   /// Initialize all the controllers with default text from the user object
   void _updateControllers() {
+    _controllerName = new TextEditingController(text: userMap['name'].toString());
+    _controllerEmail = new TextEditingController(text: userMap['email'].toString());
     _controllerSex = new TextEditingController(text: userMap['gender'].toString());
+    _controllerBirthday = new TextEditingController(text: userMap['birthday'].toString());
+    _controllerAgeRange = new TextEditingController(text: userMap['age_range'].toString());
     _controllerHobbies = new TextEditingController(text: _hobbies);
     _controllerBio = new TextEditingController(text: _bio);
     _controllerLivingArea = new TextEditingController(text: _livingArea);
@@ -538,8 +546,8 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             SizedBox(
-              height: 100,
-              child: MyAppBar("הגדרות", null, height: 100,)
+              height: appBarHeight,
+              child: MyAppBar("הגדרות", null, height: appBarHeight,)
             ),
           ],
         ),
@@ -556,7 +564,7 @@ class _SettingsState extends State<Settings> {
     double _h = ((MediaQuery.of(context).size.height / 3) * 1.75);
     double _w = ((MediaQuery.of(context).size.width / 2) * 1.45);
     double textFieldsHeight = 35.0;
-    userPhotoURL = userMap["picture_link"].toString();
+    userPhotoURL = userMap["fbPhoto"].toString();
     showModalBottomSheet(
       context: context,
       builder: (context){
@@ -597,7 +605,7 @@ class _SettingsState extends State<Settings> {
                                     child: Align(
                                       alignment: Alignment.centerRight,
                                       child: AutoSizeText(
-                                        "מין",
+                                        "שם",
                                         maxLines: 1,
                                       ),
                                     ),
@@ -608,16 +616,102 @@ class _SettingsState extends State<Settings> {
                                   child: Padding(
                                     padding: EdgeInsets.only(top: 42.35, bottom: 10.0, left: _paddingLeft),
                                     child: TextField(
-                                      controller: _controllerSex,
+                                      controller: _controllerName,
                                       onChanged: (_text){
                                         setState(() {});
                                       },
-                                      enabled: false,
+                                      readOnly: true,
                                       textAlign: TextAlign.center,
                                       decoration: InputDecoration(
                                         border: InputBorder.none,
                                         focusedBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(color: Colors.black),
+                                          borderSide: BorderSide(color: Colors.black26),
+                                        ),
+                                        enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.black26),
+                                        ),
+                                        errorBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                        hintText: 'שם',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),  //  Name - Read Only
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 10.0, bottom: 10.0, right: _paddingRight),
+                                    child: Align(
+                                      alignment: Alignment.centerRight,
+                                      child: AutoSizeText(
+                                        "אימייל",
+                                        maxLines: 1,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 10.0, bottom: 10.0, left: _paddingLeft),
+                                    child: TextField(
+                                      controller: _controllerEmail,
+                                      onChanged: (_text){
+                                        setState(() {});
+                                      },
+                                      readOnly: true,
+                                      textAlign: TextAlign.center,
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.black26),
+                                        ),
+                                        enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.black26),
+                                        ),
+                                        errorBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                        hintText: 'אימייל',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),  //  Email - Read Only
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 10.0, bottom: 10.0, right: _paddingRight),
+                                    child: Align(
+                                      alignment: Alignment.centerRight,
+                                      child: AutoSizeText(
+                                        "מין",
+                                        maxLines: 1,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 10.0, bottom: 10.0, left: _paddingLeft),
+                                    child: TextField(
+                                      controller: _controllerSex,
+                                      onChanged: (_text){
+                                        setState(() {});
+                                      },
+                                      readOnly: true,
+                                      textAlign: TextAlign.center,
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.black26),
                                         ),
                                         enabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(color: Colors.black26),
@@ -630,7 +724,92 @@ class _SettingsState extends State<Settings> {
                                   ),
                                 ),
                               ],
-                            ),
+                            ),  //  Gender - Read Only
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 10.0, bottom: 10.0, right: _paddingRight),
+                                    child: Align(
+                                      alignment: Alignment.centerRight,
+                                      child: AutoSizeText(
+                                        "יום הולדת",
+                                        maxLines: 1,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 10.0, bottom: 10.0, left: _paddingLeft),
+                                    child: TextField(
+                                      controller: _controllerBirthday,
+                                      onChanged: (_text){
+                                        setState(() {});
+                                      },
+                                      readOnly: true,
+                                      textAlign: TextAlign.center,
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.black26),
+                                        ),
+                                        enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.black26),
+                                        ),
+                                        errorBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                        hintText: 'יום הולדת',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),  //  Birthday - Read Only
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 10.0, bottom: 10.0, right: _paddingRight),
+                                    child: Align(
+                                      alignment: Alignment.centerRight,
+                                      child: AutoSizeText(
+                                        "גיל",
+                                        maxLines: 1,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 10.0, bottom: 10.0, left: _paddingLeft),
+                                    child: TextField(
+                                      controller: _controllerAgeRange,
+                                      onChanged: (_text){
+                                        setState(() {});
+                                      },
+                                      textAlign: TextAlign.center,
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.black),
+                                        ),
+                                        enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.black26),
+                                        ),
+                                        errorBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                        hintText: 'גיל',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),  //  Age
                             Row(
                               children: [
                                 Expanded(
@@ -674,7 +853,7 @@ class _SettingsState extends State<Settings> {
                                   ),
                                 ),
                               ],
-                            ),
+                            ),  //  Hobbies
                             Row(
                               children: [
                                 Expanded(
@@ -718,7 +897,7 @@ class _SettingsState extends State<Settings> {
                                   ),
                                 ),
                               ],
-                            ),
+                            ),  //  Bio
                             Row(
                               children: [
                                 Expanded(
@@ -762,7 +941,7 @@ class _SettingsState extends State<Settings> {
                                   ),
                                 ),
                               ],
-                            ),
+                            ),  //  Living Area
                             Row(
                               children: [
                                 Expanded(
@@ -806,7 +985,7 @@ class _SettingsState extends State<Settings> {
                                   ),
                                 ),
                               ],
-                            ),
+                            ),  //  Work Area
                             Row(
                               children: [
                                 Expanded(
@@ -850,7 +1029,7 @@ class _SettingsState extends State<Settings> {
                                   ),
                                 ),
                               ],
-                            ),
+                            ),  //  Academic Institution
                             Row(
                               children: [
                                 Expanded(
@@ -894,7 +1073,7 @@ class _SettingsState extends State<Settings> {
                                   ),
                                 ),
                               ],
-                            ),
+                            ),  //  Field Of Study
                             Row(
                               children: [
                                 Expanded(
@@ -938,7 +1117,7 @@ class _SettingsState extends State<Settings> {
                                   ),
                                 ),
                               ],
-                            ),
+                            ),  //  Smoking
                             Row(
                               children: [
                                 Expanded(
@@ -981,7 +1160,7 @@ class _SettingsState extends State<Settings> {
                                   ),
                                 ),
                               ],
-                            ),
+                            ),  //  Sign Up Date
 //                            Row(
 //                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 //                              crossAxisAlignment: CrossAxisAlignment.center,

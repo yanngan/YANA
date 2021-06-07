@@ -149,7 +149,7 @@ class _LoginState extends State<Login> {
                                     userInfo["birthday"]        =     _userData!["birthday"];
                                     userInfo["gender"]          =     _userData!["gender"];
                                     userInfo["age_range"]       =     _userData!["age_range"]["min"].toString();
-                                    userInfo["picture_link"]    =     _userData!["picture"]["data"]["url"].toString();
+                                    userInfo["fbPhoto"]         =     _userData!["picture"]["data"]["url"].toString();
                                     userCredentials(userInfo, LOGIN_REGULAR);
                                     setState(() {
                                       imageURL = _userData!["picture"]["data"]["url"].toString();
@@ -159,102 +159,102 @@ class _LoginState extends State<Login> {
                             ) ,
                             ),
                           ), // Connect with Facebook
-                          Padding(
-                            padding: const EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(64),
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: (alpha / 100).round().toDouble(),
-                                    primary: Colors.red.withAlpha(alpha.toInt()), // background
-                                    onPrimary: Colors.white.withAlpha(alpha.toInt()), // foreground
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text('התחבר עם משתמש דמה', style: TextStyle(fontSize: 24, color: Colors.black.withAlpha(alpha.toInt()))),
-                                      Image(
-                                          color: Colors.black.withAlpha(alpha.toInt()),
-                                          height: 50,
-                                          width: 50,
-                                          image: AssetImage(
-                                              'assets/facebook_logo.png'
-                                          )
-                                      ),
-                                    ],
-                                  ),
-                                  onPressed: () {
-                                    Map<String, String> dummyUserInfo = new Map<String, String>();
-                                    dummyUserInfo["id"]                   =     "01234567891234567";
-                                    dummyUserInfo["name"]                 =     "Adriana Lima";
-                                    dummyUserInfo["email"]                =     "adrianalima@gmail.com";
-                                    dummyUserInfo["gender"]               =     "female";
-                                    dummyUserInfo["birthday"]             =     "12/06/1996";
-                                    dummyUserInfo["age_range"]            =     "39";
-                                    dummyUserInfo["hobbies"]              =     "JAVA,C++,D&D";
-                                    dummyUserInfo["bio"]                  =     "חדשה בג'רוז :)";
-                                    dummyUserInfo["livingArea"]           =     "Salvador, Bahia, Brazil";
-                                    dummyUserInfo["workArea"]             =     "New York, Los Angeles";
-                                    dummyUserInfo["academicInstitution"]  =     "Creative Artists Agency";
-                                    dummyUserInfo["fieldOfStudy"]         =     "Modeling";
-                                    dummyUserInfo["smoking"]              =     "no baby";
-                                    dummyUserInfo["picture_link"]         =     "https://upload.wikimedia.org/wikipedia/commons/8/8e/Adriana_Lima_2019_by_Glenn_Francis.jpg";
-                                    dummyUserInfo["signUpDate"]           =     "20/09/2000";
-                                    dummyUserInfo["isBlocked"]            =     "false";
-                                    dummyUserInfo["notifications"]        =     "true";
-                                    userCredentials(dummyUserInfo, LOGIN_DUMMY);
-                                  }
-                              ),
-                            ),
-                          ), // Connect with Dummy user
-                          Padding(
-                            padding: const EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(64),
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: (alpha / 100).round().toDouble(),
-                                    primary: Colors.green.withAlpha(alpha.toInt()), // background
-                                    onPrimary: Colors.white.withAlpha(alpha.toInt()), // foreground
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text('הרשמה עם פייסבוק', style: TextStyle(fontSize: 24)),
-                                      Image(
-                                          color: Colors.white.withAlpha(alpha.toInt()),
-                                          height: 50,
-                                          width: 50,
-                                          image: AssetImage(
-                                              'assets/facebook_logo.png'
-                                          )
-                                      ),
-                                    ],
-                                  ),
-                                  onPressed: () async {
-                                    List<String> permissionsWanted = const ['email', 'public_profile', 'user_birthday', 'user_gender', 'user_age_range'];
-                                    final LoginResult result = await FacebookAuth.instance.login(permissions: permissionsWanted); // by the fault we request the email and the public profile
-                                    if(result.status == LoginStatus.success) {
-                                      // In this if statement the user is logged in!
-                                      _accessToken =  result.accessToken!;
-                                      _userData = await FacebookAuth.instance.getUserData(fields: "name,email,picture.width(150),birthday,gender,age_range",);
-                                      Map<String, String> userInfo = new Map<String, String>();
-                                      userInfo["id"]              =     _userData!["id"];
-                                      userInfo["name"]            =     _userData!["name"];
-                                      userInfo["email"]           =     _userData!["email"];
-                                      userInfo["birthday"]        =     _userData!["birthday"];
-                                      userInfo["gender"]          =     _userData!["gender"];
-                                      userInfo["age_range"]       =     _userData!["age_range"]["min"].toString();
-                                      userInfo["picture_link"]    =     _userData!["picture"]["data"]["url"].toString();
-                                      userCredentials(userInfo, SIGN_UP);
-                                      setState(() {
-                                        imageURL = _userData!["picture"]["data"]["url"].toString();
-                                      });
-                                    }
-                                  }
-                              ) ,
-                            ),
-                          ), // Signup
+//                          Padding(
+//                            padding: const EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
+//                            child: ClipRRect(
+//                              borderRadius: BorderRadius.circular(64),
+//                              child: ElevatedButton(
+//                                  style: ElevatedButton.styleFrom(
+//                                    elevation: (alpha / 100).round().toDouble(),
+//                                    primary: Colors.red.withAlpha(alpha.toInt()), // background
+//                                    onPrimary: Colors.white.withAlpha(alpha.toInt()), // foreground
+//                                  ),
+//                                  child: Row(
+//                                    mainAxisSize: MainAxisSize.min,
+//                                    children: [
+//                                      Text('התחבר עם משתמש דמה', style: TextStyle(fontSize: 24, color: Colors.black.withAlpha(alpha.toInt()))),
+//                                      Image(
+//                                          color: Colors.black.withAlpha(alpha.toInt()),
+//                                          height: 50,
+//                                          width: 50,
+//                                          image: AssetImage(
+//                                              'assets/facebook_logo.png'
+//                                          )
+//                                      ),
+//                                    ],
+//                                  ),
+//                                  onPressed: () { // TODO getCurrentUser(String userID)
+//                                    Map<String, String> dummyUserInfo = new Map<String, String>();
+//                                    dummyUserInfo["userID"]               =     "01234567891234567";
+//                                    dummyUserInfo["name"]                 =     "Adriana Lima";
+//                                    dummyUserInfo["email"]                =     "adrianalima@gmail.com";
+//                                    dummyUserInfo["gender"]               =     "female";
+//                                    dummyUserInfo["birthday"]             =     "12/06/1996";
+//                                    dummyUserInfo["age_range"]            =     "39";
+//                                    dummyUserInfo["hobbies"]              =     "Super Model, Actress";
+//                                    dummyUserInfo["bio"]                  =     "Most beautiful woman in the world!";
+//                                    dummyUserInfo["livingArea"]           =     "Salvador, Bahia, Brazil";
+//                                    dummyUserInfo["workArea"]             =     "New York, Los Angeles";
+//                                    dummyUserInfo["academicInstitution"]  =     "Creative Artists Agency";
+//                                    dummyUserInfo["fieldOfStudy"]         =     "Modeling";
+//                                    dummyUserInfo["smoking"]              =     "no baby";
+//                                    dummyUserInfo["fbPhoto"]              =     "https://upload.wikimedia.org/wikipedia/commons/8/8e/Adriana_Lima_2019_by_Glenn_Francis.jpg";
+//                                    dummyUserInfo["signUpDate"]           =     "20/09/2000";
+//                                    dummyUserInfo["isBlocked"]            =     "false";
+//                                    dummyUserInfo["notifications"]        =     "true";
+//                                    userCredentials(dummyUserInfo, LOGIN_DUMMY);
+//                                  }
+//                              ),
+//                            ),
+//                          ), // Connect with Dummy user
+//                          Padding(
+//                            padding: const EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
+//                            child: ClipRRect(
+//                              borderRadius: BorderRadius.circular(64),
+//                              child: ElevatedButton(
+//                                  style: ElevatedButton.styleFrom(
+//                                    elevation: (alpha / 100).round().toDouble(),
+//                                    primary: Colors.green.withAlpha(alpha.toInt()), // background
+//                                    onPrimary: Colors.white.withAlpha(alpha.toInt()), // foreground
+//                                  ),
+//                                  child: Row(
+//                                    mainAxisSize: MainAxisSize.min,
+//                                    children: [
+//                                      Text('הרשמה עם פייסבוק', style: TextStyle(fontSize: 24)),
+//                                      Image(
+//                                          color: Colors.white.withAlpha(alpha.toInt()),
+//                                          height: 50,
+//                                          width: 50,
+//                                          image: AssetImage(
+//                                              'assets/facebook_logo.png'
+//                                          )
+//                                      ),
+//                                    ],
+//                                  ),
+//                                  onPressed: () async {
+//                                    List<String> permissionsWanted = const ['email', 'public_profile', 'user_birthday', 'user_gender', 'user_age_range'];
+//                                    final LoginResult result = await FacebookAuth.instance.login(permissions: permissionsWanted); // by the fault we request the email and the public profile
+//                                    if(result.status == LoginStatus.success) {
+//                                      // In this if statement the user is logged in!
+//                                      _accessToken =  result.accessToken!;
+//                                      _userData = await FacebookAuth.instance.getUserData(fields: "name,email,picture.width(150),birthday,gender,age_range",);
+//                                      Map<String, String> userInfo = new Map<String, String>();
+//                                      userInfo["id"]              =     _userData!["id"];
+//                                      userInfo["name"]            =     _userData!["name"];
+//                                      userInfo["email"]           =     _userData!["email"];
+//                                      userInfo["birthday"]        =     _userData!["birthday"];
+//                                      userInfo["gender"]          =     _userData!["gender"];
+//                                      userInfo["age_range"]       =     _userData!["age_range"]["min"].toString();
+//                                      userInfo["fbPhoto"]         =     _userData!["picture"]["data"]["url"].toString();
+//                                      userCredentials(userInfo, SIGN_UP);
+//                                      setState(() {
+//                                        imageURL = _userData!["picture"]["data"]["url"].toString();
+//                                      });
+//                                    }
+//                                  }
+//                              ) ,
+//                            ),
+//                          ), // Signup
                         ],
                       );
                     }
@@ -274,53 +274,57 @@ class _LoginState extends State<Login> {
   void userCredentials(Map<String, String> credentials, String functionNeeded) async {
     //    Check if user is in our database
     // TODO this commented section is for production, instead of the Test mode below
-//    String userId = credentials["id"].toString();
-////    userId = '01234567891234567';   // Test ID of Ariana Grande
-//    bool exists = false;
-//    User newUser = new User.isNULL('null');
-//    await Future.wait([
-//      FirebaseHelper.checkIfUserExists(userId).then((value) => exists = value),
-//      FirebaseHelper.getCurrentUser(userId).then((value) {
-//        newUser = value;
-//      }),
-//    ]);
-//    if(exists){
-//      setState(() {
-//        this.widget.callback(3, newUser.toMap());
-//      });
-//    }else{
-//      setState(() {
-//        newUser = new User.fromMap(credentials);
-//        this.widget.callback(1, credentials);
-//      });
-//    }
+    String userId = credentials["id"].toString();
+//    userId = '01234567891234567';   // Test ID of Adriana Lima
+    bool exists = false;
+    User newUser = new User.isNULL('null');
+    await Future.wait([
+      FirebaseHelper.checkIfUserExists(userId).then((value) => exists = value),
+      FirebaseHelper.getCurrentUser(userId).then((value) {
+        if(value != null){
+          newUser = value;
+        }
+      }),
+    ]);
+    if(exists){
+      setState(() {
+        userMap = newUser.toMap();
+        this.widget.callback(3, newUser.toMap(), otherInfo, MapView_index);
+      });
+    }else{
+      setState(() {
+        newUser = new User.fromMap(credentials);
+        this.widget.callback(1, credentials, otherInfo, MapView_index);
+      });
+    }
 
 //    TODO --> Test mode, pre production - START
-    switch (functionNeeded){
-      case SIGN_UP:
-        setState(() {
-          this.widget.callback(1, credentials, new Map<String, String>(), SingUp_index);
-        });
-        break;
-      case LOGIN_REGULAR:
-        Fluttertoast.showToast(
-            msg: "אנא התחבר עם משתמש דמה!\n\n\n\n\n\t\t\t\t\tאו צפה בעולם נשרף!!",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.black54,
-            fontSize: 16.0
-        );
-        break;
-      case LOGIN_DUMMY:
-        setState(() {
-          userMap = credentials;
-          getPreference();
-          this.widget.callback(3, credentials, new Map<String, String>(), MapView_index);
-        });
-        break;
-    }
+//    switch (functionNeeded){
+//      case SIGN_UP:
+//        setState(() {
+//          this.widget.callback(1, credentials, new Map<String, String>(), SingUp_index);
+//        });
+//        break;
+//      case LOGIN_REGULAR:
+//      case LOGIN_DUMMY:
+//        if(functionNeeded == LOGIN_REGULAR){
+//          Fluttertoast.showToast(
+//              msg: "אנא התחבר עם משתמש דמה!\n\n\n\n\n\t\t\t\t\tאו צפה בעולם נשרף!!",
+//              toastLength: Toast.LENGTH_SHORT,
+//              gravity: ToastGravity.CENTER,
+//              timeInSecForIosWeb: 1,
+//              backgroundColor: Colors.red,
+//              textColor: Colors.black54,
+//              fontSize: 16.0
+//          );
+//        }
+//        setState(() {
+//          userMap = credentials;
+//          getPreference();
+//          this.widget.callback(3, credentials, new Map<String, String>(), MapView_index);
+//        });
+//        break;
+//    }
 //    TODO --> Test mode, pre production - END
 
   }
@@ -346,10 +350,17 @@ class _LoginState extends State<Login> {
       loggedUserInfo["birthday"]        =     userData["birthday"];
       loggedUserInfo["gender"]          =     userData["gender"];
       loggedUserInfo["age_range"]       =     userData["age_range"]["min"].toString();
-      loggedUserInfo["picture_link"]    =     userData["picture"]["data"]["url"].toString();
+      loggedUserInfo["fbPhoto"]         =     userData["picture"]["data"]["url"].toString();
+
+      bool exists = false;
+      await Future.wait([
+       FirebaseHelper.checkIfUserExists(loggedUserInfo["id"].toString()).then((value) => exists = value),
+      ]);
       setState(() {
         _userData = userData;
-        userCredentials(loggedUserInfo, LOGIN_REGULAR);
+        if(exists){
+          userCredentials(loggedUserInfo, LOGIN_REGULAR);
+        }
       });
     }
   }

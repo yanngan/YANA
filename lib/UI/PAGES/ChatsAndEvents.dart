@@ -36,7 +36,7 @@ class _ChatsAndEventsState extends State<ChatsAndEvents> {
       body: Column(
         children: [
           Container(
-            height: 110,
+            height: appBarHeight,
             decoration: BoxDecoration(
               color: Colors.pink,
               shape: BoxShape.rectangle,

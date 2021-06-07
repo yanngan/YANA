@@ -135,7 +135,7 @@ class Logic {
         String body = "בקשתך להצטרך לאירוע אושרה על-ידי מארגן האירוע";
         Logic.sendPushNotificationsToUsers([token], title, body);
       });
-      FirebaseHelper.createNewChat(userMap['id']!, userMap['name']!,otheUser.userID, otheUser.userName);
+      FirebaseHelper.createNewChat(userMap['id']!, userMap['name']!,otheUser.userID, otheUser.name);
     }
     return await FirebaseHelper.approveOrRejectRequestToJoinEvent(otheUser.userID, theEvent, approve);
   }

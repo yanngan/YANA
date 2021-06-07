@@ -35,7 +35,7 @@ class _SearchViewState extends State<SearchView> {
           child: Column(
             children: [
               Container(
-                height: 100,
+                height: appBarHeight,
                 width: (MediaQuery.of(context).size.width),
                 decoration: BoxDecoration(
                   color: Colors.pink,
@@ -65,7 +65,7 @@ class _SearchViewState extends State<SearchView> {
                         SizedBox(height: 15,),
                         createTextField(
                           'estimateDate',
-                          'תאריך רצוי',
+                          'החל מאיזה תאריך',/// todo - after yisrael make this to look for a specific day-> change the text here
                           'date',
                         ),
                         SizedBox(height: 15,),
@@ -83,32 +83,6 @@ class _SearchViewState extends State<SearchView> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(0,0,10,0),
-                              child: ElevatedButton(
-                                child: Text(
-                                  '+',
-                                  style: TextStyle(color: Colors.white,fontSize: 20),
-                                ),
-                                onPressed: incrementMaxNumPeople,
-                                style: ButtonStyle(
-                                    shape: MaterialStateProperty.all<CircleBorder>(CircleBorder(
-                                      // borderRadius: BorderRadius.circular(25),
-                                        side: BorderSide(color: Colors.black38)
-
-                                    )),
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.pink)),
-                              ),
-                            ),
-                            Container(
-                              width: 20,
-                              child: createTextField(
-                                'maxNumPeople',
-                                'כמות מקסימלית של אנשים באירוע',
-                                'int',
-                              ),
-                            ),
-                            Padding(
                               padding: const EdgeInsets.fromLTRB(16,0,0,0),
                               child: ElevatedButton(
                                   child: Text(
@@ -119,11 +93,38 @@ class _SearchViewState extends State<SearchView> {
                                   style: ButtonStyle(
                                       shape: MaterialStateProperty.all<CircleBorder>(CircleBorder(
                                         // borderRadius: BorderRadius.circular(20),
-                                        side: BorderSide(color: Colors.black38)
+                                        //side: BorderSide(color: Colors.black38)
                                       )),
                                       backgroundColor: MaterialStateProperty.all(
                                           Colors.pink))),
                             ),
+                            Container(
+                              width: 20,
+                              child: createTextField(
+                                'maxNumPeople',
+                                'כמות מקסימלית של אנשים באירוע',
+                                'int',
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(0,0,10,0),
+                              child: ElevatedButton(
+                                child: Text(
+                                  '+',
+                                  style: TextStyle(color: Colors.white,fontSize: 20),
+                                ),
+                                onPressed: incrementMaxNumPeople,
+                                style: ButtonStyle(
+                                    shape: MaterialStateProperty.all<CircleBorder>(CircleBorder(
+                                      // borderRadius: BorderRadius.circular(25),
+                                      //side: BorderSide(color: Colors.black38)
+
+                                    )),
+                                    backgroundColor:
+                                    MaterialStateProperty.all(Colors.pink)),
+                              ),
+                            ),
+
                           ],
                         ),
                         Row(
@@ -142,7 +143,7 @@ class _SearchViewState extends State<SearchView> {
                                       shadowColor: MaterialStateProperty.all<Color>(Colors.black),
                                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(25),
-                                        side: BorderSide(color: Colors.black54)
+                                        //side: BorderSide(color: Colors.black54)
                                       )),
                                     ),
                                     child: Text(
@@ -264,7 +265,7 @@ class _SearchViewState extends State<SearchView> {
   _createRow(int index) {
     Color _color = Colors.amber;
     var _icon = Icons.edit;
-    if (listEvents[index].userID != userMap['id']!) {
+    if (listEvents[index].userID != userMap['userID']!) {
       _color = Colors.pink[300]!;
       _icon = Icons.remove_red_eye;
     }

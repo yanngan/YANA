@@ -28,6 +28,7 @@ const String specialistNumberSms    =   "972523558539";
 const bodyColor                     =   Colors.amber;
 const senderColor                   =   bodyColor;
 const receiverColor                 =   Colors.pink;
+const double appBarHeight           =   100.0;
 bool isOver18                       =   false;
 bool defaultMapType                 =   false;
 bool whichPage                      =   false;

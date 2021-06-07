@@ -2,7 +2,9 @@ import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:yana/UI/WIDGETS/allWidgets.dart';
+import 'package:yana/UI/PAGES/Profanity.dart';
 import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
 import 'package:intl/intl.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
@@ -270,11 +272,22 @@ class _ChatState extends State<Chat> {
             onPressed: ()async{
               if(messageText.isEmpty){ return; }
               // _controllerInput.clear();
-
+              print("***********************************0\n");
               //check if the message is free of Curses
-              final filter = ProfanityFilter.filterAdditionally(["bla"]);
+
+              final filter = ProfanityFilter.filterAdditionally(englishProfanityList);
               if (filter.hasProfanity(messageText))
-                return;//display --- clean your language ---
+                {
+                  filter.hasProfanity(messageText);
+                  List<String> wordsFound = filter.getAllProfanity(messageText);
+                  print(wordsFound.toString());
+                  _makeToast("תוכן הבא זוהה כפוגעני: "+wordsFound.toString(), Colors.red);
+                  print("***********************************1\n");
+                  _controllerInput.clear();
+
+                  return;//display --- clean your language ---
+                }
+              print("***********************************2\n");
 
               // while( filter.hasProfanity(messageText))
               //   messageText = filter.censor(messageText);
@@ -356,8 +369,42 @@ class _ChatState extends State<Chat> {
     });
     return false;
   }
+  _makeToast(String str,var theColor) {
+    Fluttertoast.showToast(
+        msg: str,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: theColor,
+        textColor: Colors.amber,
+        fontSize: 16.0
+    );
+  }
 
+  bool hasProfanity(String inputString) {
+    print("***********************************3\n");
+    bool isProfane = false;
+    englishProfanityList.forEach((word) {
+      print(inputString.toLowerCase().split(' '));
+      print("***********************************4\n");
+      if (inputString.toLowerCase().split(' ').contains(word.toLowerCase())) {
+        print("***********************************88\n");
+        isProfane = true;
+      }
+    });
+    return isProfane;
+  }
+  List<String> getAllProfanity(String inputString) {
+    List<String> found = [];
+    englishProfanityList.forEach((word) {
+      if (inputString.toLowerCase().contains(word)) {
+        found.add(word);
+      }
+    });
+    return found;
+  }
 
+  // var newList = new List.from(list1)..addAll(list2);
 }
 
 

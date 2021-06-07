@@ -6,7 +6,7 @@ import 'package:yana/UI/PAGES/Utilities.dart';
 import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
 import 'package:yana/UX/DB/allDB.dart';
 
-/*Yisrael Bar 14/05/2021 */
+/// Yisrael Bar, Lidor Eliyahu Shelef, Yann Moshe Ganem
 class FirebaseHelper {
 //first use this method to access firebase collection - no need for real-time(messages)
 // update I put it on first line of main
@@ -14,7 +14,7 @@ class FirebaseHelper {
     await Firebase.initializeApp();
   }*/
 
-//start Places-------------------------------------------------
+/// start Places-------------------------------------------------
   //send to the firebase A new Place or update existing one
   static Future<bool> sendPlaceToFb(Place place) async {
     //add to real-time firebase on place name the place id
@@ -60,9 +60,9 @@ class FirebaseHelper {
       return null;
     }
   }
-//end Places-------------------------------------------------
+/// end Places-------------------------------------------------
 
-//start BulletinBoard-------------------------------------------------
+/// start BulletinBoard-------------------------------------------------
   //send BulletinBoard obj to firebase
   static Future<bool> sendBulletinBoardToFb(BulletinBoard bulletinBoard) async {
     FirebaseFirestore fireStore = FirebaseFirestore.instance;
@@ -105,7 +105,7 @@ class FirebaseHelper {
   }
 //end BulletinBoard-------------------------------------------------
 
-//start Messages-------------------------------------------------
+/// start Messages-------------------------------------------------
   //send a new message to firebase realtime - store the message on both the sender and the receiver branch's
   static void sendMessageToFb(Message m1) {
     //write a chat message
@@ -158,9 +158,9 @@ class FirebaseHelper {
     DatabaseReference  myRef = databaseReference.child("chats_information/");
     myRef.child(_selfID).remove();
   }
-//end Messages-------------------------------------------------
+/// end Messages-------------------------------------------------
 
-//start Events-------------------------------------------------
+/// start Events-------------------------------------------------
   //generate event id to put in event object
   static Future<String> generateEventId() async {
     return await FirebaseFirestore.instance.collection('Events').doc().id;
@@ -344,7 +344,7 @@ class FirebaseHelper {
     List<Events> events = [];
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('Events')
-        .where("startEstimate", isGreaterThanOrEqualTo: date)
+        .where("startEstimate", isGreaterThanOrEqualTo: date)///todo - make this to return a specific day
         .get();
     querySnapshot.docs.forEach((doc) {
       events.add(Events.fromJson(doc.data()));
@@ -499,9 +499,9 @@ class FirebaseHelper {
         });
       });
   }
-//end Events-------------------------------------------------
+/// end Events-------------------------------------------------
 
-// start users-------------------------------------------------
+/// start Users-------------------------------------------------
   //send to firebase new user or update existing one
   static Future<bool> sendUserToFb(User user) async {
     FirebaseFirestore fireStore = FirebaseFirestore.instance;
@@ -548,6 +548,7 @@ class FirebaseHelper {
     }
   }
 
+  // Delete the user entire account
   static void deleteUserAccount(var _userID) {
     FirebaseFirestore.instance.collection('Users').doc(_userID).delete();
   }
@@ -567,7 +568,7 @@ class FirebaseHelper {
     }
   }
 
-//end users-------------------------------------------------
+/// end Users-------------------------------------------------
 
 }
 

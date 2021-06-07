@@ -36,6 +36,7 @@ class _MyCurvedNavigationBarState extends State<MyCurvedNavigationBar> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              SizedBox(height: 10,),
               Icon(Icons.dashboard, size: _iconHeight, color:Colors.red),
               Text("אירועים     \nוצ'אטים     ", style: TextStyle(fontSize: _fontSize, color:Colors.red[700]), textAlign: TextAlign.center,),
             ],

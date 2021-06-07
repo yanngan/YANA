@@ -6,7 +6,6 @@ import 'package:yana/UI/WIDGETS/allWidgets.dart';
 import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
 import 'package:intl/intl.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
-
 import 'Utilities.dart';
 
 // ignore: must_be_immutable
@@ -14,13 +13,14 @@ class Chat extends StatefulWidget {
 
   static List<Message> messages = [];
   /// Other user info map of data
-  Map<String, String> otherInfo = new Map<String, String>();
+  Map<String, String> _otherInfo = new Map<String, String>();
 //  Callback function related - See main.dart callback section for more info about it
-  final Function callback;
-  Chat(this.callback, this.otherInfo);
+//  final Function callback;
+  Chat(this._otherInfo);
+//  Chat(this.callback, this.otherInfo);
 
   @override
-  _ChatState createState() => _ChatState();
+  _ChatState createState() => _ChatState(this._otherInfo);
 
 }
 
@@ -43,14 +43,17 @@ class _ChatState extends State<Chat> {
   TextAlign textAlign = TextAlign.end;
   String messageText = "", _me = "", _meID = "", _him = "", _himID = "";
   double bottomPadding = 14.0, topPadding = 75.0, _keyboardHeight = 0.0;
+  Map<String, String> _otherInfo = new Map<String, String>();
+
+  _ChatState(this._otherInfo);
 
   @override
   void initState() {
     super.initState();
     _me = userMap['name'].toString();
     _meID = userMap['id'].toString();
-    _him = otherInfo['name'].toString();
-    _himID = otherInfo['id'].toString();
+    _him = _otherInfo['name'].toString();
+    _himID = _otherInfo['id'].toString();
     getMessages();
   }
 
@@ -229,8 +232,8 @@ class _ChatState extends State<Chat> {
               ),
             ),
             SizedBox(
-                height: 100,
-                child: MyAppBar(_him, _backButton, height: 100,)
+                height: appBarHeight,
+                child: MyAppBar(_him, _backButton, height: appBarHeight,)
             ),
           ],
         ),
@@ -331,7 +334,8 @@ class _ChatState extends State<Chat> {
   /// Method that fires when the user press the back button
   Future<bool> _onBackPressed() async {
     setState(() {
-      this.widget.callback(3, userMap, otherInfo, ChatsAndEvents_index);
+//      this.widget.callback(3, userMap, otherInfo, ChatsAndEvents_index);
+    Navigator.pop(context);
     });
     return false;
   }

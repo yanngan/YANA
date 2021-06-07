@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:yana/UI/WIDGETS/EmptyScreen.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
 import '../WIDGETS/MyAppBar.dart';
+import 'Utilities.dart';
 
 class NoticeBoard extends StatefulWidget {
   @override
@@ -92,34 +94,19 @@ class _NoticeBoardState extends State<NoticeBoard> {
           children: [
             getBulletinBody(),
             SizedBox(
-                height: 100, child: MyAppBar("לוח מודעות", null, height: 100)),
+              height: appBarHeight,
+              child: MyAppBar("לוח מודעות", null, height: appBarHeight)
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget getBulletinBody() {
-    if (_isEmptyList) {
-      return Container(
-        color: Colors.amber,
-        child: Center(
-          child: SizedBox(
-            width: (MediaQuery.of(context).size.width / 1.5),
-            child: AutoSizeText(
-              "אין מודעות עדיין,\nאנא חזור מאוחר יותר",
-              textDirection: TextDirection.rtl,
-              maxLines: 2,
-              style: TextStyle(
-                  fontSize: 1000.0,
-                  color: Colors.black.withOpacity(0.65),
-                  fontFamily: 'FontSkia'),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ),
-      );
-    } else {
+  Widget getBulletinBody(){
+    if(_isEmptyList){
+      return EmptyScreen(text: "אין מודעות עדיין,\nאנא חזור מאוחר יותר");
+    }else{
       return Container(
         color: Colors.amber,
         child: ListView(children: [

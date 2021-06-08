@@ -95,12 +95,28 @@ class _AddEventState extends State<AddEvent> {
           SizedBox(
             height: 30,
           ),
-          ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.pink),
-            ),
-            child: Text("שמור"),
-            onPressed: saveTheEvent,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.pink),
+                ),
+                child: Text("שמור"),
+                onPressed: saveTheEvent,
+              ),
+              TextButton(
+                child: new Text(
+                  "סגור", style: TextStyle(color: Colors.blueGrey),),
+                onPressed: () {
+                  Navigator.of(context).pop();
+//                  if (!totallyPop) {
+//                    print("in popTotally");
+//                    seeListEventInPlace(context, thePlace);
+//                  }
+                },
+              ),
+            ],
           ),
         ]),
       ),
@@ -220,7 +236,7 @@ class _AddEventState extends State<AddEvent> {
       return;
     }
     String newId = await FirebaseHelper.generateEventId();
-    Events theNewEvents = Events(newId,userMap['id']!,'test',formattedDate,true,startEstimate,endEstimate,1,maxNumPeople,widget.thePlace.placeID,widget.thePlace.name,(allField['note']!).text);
+    Events theNewEvents = Events(newId,userMap['userID']!,'test',formattedDate,true,startEstimate,endEstimate,1,maxNumPeople,widget.thePlace.placeID,widget.thePlace.name,(allField['note']!).text);
     var res = await Logic.createEditNewEvents(theNewEvents,true);
     if(res == null){
       makeErrorAlert("אירעה שגיאה בתהליך השמירה, נסה שנית");

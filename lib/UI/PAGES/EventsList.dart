@@ -10,10 +10,8 @@ import 'package:yana/UX/LOGIC/MapLogic.dart';
 import 'Utilities.dart';
 
 class EventsList extends StatefulWidget {
-
   @override
   _EventsListState createState() => _EventsListState();
-
 }
 
 class _EventsListState extends State<EventsList> {
@@ -36,19 +34,25 @@ class _EventsListState extends State<EventsList> {
             child: Container(
               color: Colors.amber,
               child: _initDone
-              ? (listEvents.length == 0 ? EmptyScreen(maxLines: 3, text: "לא קיימים הקשורים לחשבונך ברגע זה, עליך להירשם או לבקש להצטרף לאירוע") : ListView.builder(
-                  itemCount: listEvents.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return _createRow(index);
-                  }
-              ))
-              : SpinKitFadingCircle(
-                color: Colors.white,
-                size: 50.0,
-              ),
+                  ? (listEvents.length == 0
+                      ? EmptyScreen(
+                          maxLines: 3,
+                          text:
+                              "לא קיימים הקשורים לחשבונך ברגע זה, עליך להירשם או לבקש להצטרף לאירוע")
+                      : ListView.builder(
+                          itemCount: listEvents.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return _createRow(index);
+                          }))
+                  : SpinKitFadingCircle(
+                      color: Colors.white,
+                      size: 50.0,
+                    ),
             ),
           ),
-          SizedBox(height: 50,),
+          SizedBox(
+            height: 50,
+          ),
         ],
       ),
     );
@@ -66,8 +70,9 @@ class _EventsListState extends State<EventsList> {
         }
         // print(temp.placeID);
         placeByEvents[oneEvents.eventID] = temp;
-        if(oneEvents.userID != userMap['userID']!){
-          oneEvents.statusForUser =  await Logic.getStatusEventForUser(oneEvents.eventID);
+        if (oneEvents.userID != userMap['userID']!) {
+          oneEvents.statusForUser =
+              await Logic.getStatusEventForUser(oneEvents.eventID);
         }
       }
       setState(() {
@@ -76,48 +81,52 @@ class _EventsListState extends State<EventsList> {
     });
   }
 
-  _createRow(int index){
-    String texeButton = "";
+  _createRow(int index) {
+    String textButton = "";
     var actionButton;
-    // print(listEvents[index]);
-    if (listEvents[index].userID == userMap['id']!) {
-      texeButton = "ערוך";
-      actionButton = ()async{
+    print(listEvents[index]);
+    if (listEvents[index].userID == userMap['userID']!) {
+      textButton = "ערוך";
+      actionButton = () async {
         await MapLogic.addEditSeePoints(context, 'edit',
-          theEvent: listEvents[index],
-          thePlace: placeByEvents[listEvents[index].eventID],
-          totallyPop: true
-        );
+            theEvent: listEvents[index],
+            thePlace: placeByEvents[listEvents[index].eventID],
+            totallyPop: true);
         setState(() {
           _initDone = false;
         });
       };
-    }else {
+    } else {
       if (listEvents[index].statusForUser == Events.ASK) {
-        texeButton = "טרם אושר";
-        actionButton = (){_makeToast("בקשתך נשלחה, וממתינה לאישור מארגן האירוע",Colors.pink);};
-      }
-      else if(listEvents[index].statusForUser == Events.GOING){
-        texeButton = "בטל הגעה";
-        actionButton = (){userCancelation(listEvents[index]);};
-      }
-      else{
-        texeButton = "שגיאה";
-        actionButton = (){_makeToast("אנו מתנצלים אירעה שגיאה במערכת",Colors.red);};
+        textButton = "טרם אושר";
+        actionButton = () {
+          _makeToast("בקשתך נשלחה, וממתינה לאישור מארגן האירוע", Colors.pink);
+        };
+      } else if (listEvents[index].statusForUser == Events.GOING) {
+        textButton = "בטל הגעה";
+        actionButton = () {
+          userCancelation(listEvents[index]);
+        };
+      } else {
+        textButton = "שגיאה";
+        actionButton = () {
+          _makeToast("אנו מתנצלים אירעה שגיאה במערכת", Colors.red);
+        };
       }
     }
     var theButton = Padding(
-      padding: EdgeInsets.fromLTRB(2, 0, 0, 15),
-      child: InkWell(
-        onTap: actionButton,
-        child: Neumorphism(null, null, Text(texeButton),
-          type: NeumorphismOuter,
-          radius: 32.0,
-          alignment: Alignment.centerLeft,
-          color: Colors.amber,
-        )
-      )
-    );
+        padding: EdgeInsets.fromLTRB(2, 0, 0, 15),
+        child: InkWell(
+            onTap: actionButton,
+            child: Neumorphism(
+              null,
+              null,
+              Text(textButton),
+              type: NeumorphismOuter,
+              radius: 32.0,
+              alignment: Alignment.centerLeft,
+              color: Colors.amber,
+            )));
 
     return Container(
       foregroundDecoration: BoxDecoration(
@@ -137,11 +146,14 @@ class _EventsListState extends State<EventsList> {
                 Padding(
                   padding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                   child: CircleAvatar(
-                    backgroundImage: NetworkImage((placeByEvents[listEvents[index].eventID]!).placeIcon),
+                    backgroundImage: NetworkImage(
+                        (placeByEvents[listEvents[index].eventID]!).placeIcon),
                     radius: 35.0,
                   ),
                 ),
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 theButton,
               ],
             ),
@@ -158,66 +170,89 @@ class _EventsListState extends State<EventsList> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text("${(placeByEvents[listEvents[index].eventID]!).name}",
-                          style: TextStyle(fontSize: 20),
+                      Text(
+                        "${(placeByEvents[listEvents[index].eventID]!).name}",
+                        style: TextStyle(fontSize: 20),
                       ),
-                      Text(" - ",
-                          style: TextStyle(fontSize: 20),
+                      Text(
+                        " - ",
+                        style: TextStyle(fontSize: 20),
                       ),
-                      Text("${(placeByEvents[listEvents[index].eventID]!).city}",
-                          style: TextStyle(fontSize: 20),
+                      Text(
+                        "${(placeByEvents[listEvents[index].eventID]!).city}",
+                        style: TextStyle(fontSize: 20),
                       ),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text("${listEvents[index].startEstimate}",
+                      Text(
+                        "${listEvents[index].startEstimate}",
                         style: TextStyle(fontSize: 15),
                       ),
-                      Text(" : ",
+                      Text(
+                        " : ",
                         style: TextStyle(fontSize: 15),
                       ),
-                      Text("מתי",
+                      Text(
+                        "מתי",
                         style: TextStyle(fontSize: 15),
                       ),
                     ],
                   ),
-                  Text("כמות משתתפים מקסימלית : ${(listEvents[index].maxNumPeople)}",
-                      style: TextStyle(fontSize: 15),
+                  Text(
+                    "כמות משתתפים מקסימלית : ${(listEvents[index].maxNumPeople)}",
+                    style: TextStyle(fontSize: 15),
                   ),
-                  Text("כמות משתתפים נוכחית : ${listEvents[index].curNumPeople}",
-                      style: TextStyle(fontSize: 15),
+                  Text(
+                    "כמות משתתפים נוכחית : ${listEvents[index].curNumPeople}",
+                    style: TextStyle(fontSize: 15),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       InkWell(
-                        onTap: (){_launchUrl("${(placeByEvents[listEvents[index].eventID]!).googleMapLink}");},
-                        child: Text("${(placeByEvents[listEvents[index].eventID]!).address}",
-                            style: TextStyle(fontSize: 15,color: Colors.blueAccent,decoration: TextDecoration.underline),
+                        onTap: () {
+                          _launchUrl(
+                              "${(placeByEvents[listEvents[index].eventID]!).googleMapLink}");
+                        },
+                        child: Text(
+                          "${(placeByEvents[listEvents[index].eventID]!).address}",
+                          style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.blueAccent,
+                              decoration: TextDecoration.underline),
                         ),
                       ),
-                      Text(" : ",
-                          style: TextStyle(fontSize: 15),
+                      Text(
+                        " : ",
+                        style: TextStyle(fontSize: 15),
                       ),
-                      Text("כתובת המקום",
-                          style: TextStyle(fontSize: 15),
+                      Text(
+                        "כתובת המקום",
+                        style: TextStyle(fontSize: 15),
                       ),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text("${listEvents[index].note}",
+                      Flexible(
+                        child: Text(
+                          "${listEvents[index].note}",
+                          style: TextStyle(fontSize: 15),
+                          textAlign: TextAlign.end,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Text(
+                        " : ",
                         style: TextStyle(fontSize: 15),
-                        textAlign: TextAlign.end,
                       ),
-                      Text(" : ",
-                          style: TextStyle(fontSize: 15),
-                      ),
-                      Text("הערות",
-                          style: TextStyle(fontSize: 15),
+                      Text(
+                        "הערות",
+                        style: TextStyle(fontSize: 15),
                       ),
                     ],
                   ),
@@ -230,19 +265,18 @@ class _EventsListState extends State<EventsList> {
     );
   }
 
-  userCancelation(Events event)async{
-    if(await Logic.userCancelation(userMap['id']! ,event)){
-      _makeToast("בוצע ביטול",Colors.pink);
-    }
-    else{
-      _makeToast("מתנצלים אירעה שגיאה, נסה שנית מאוחר יותר",Colors.pink);
+  userCancelation(Events event) async {
+    if (await Logic.userCancelation(userMap['id']!, event)) {
+      _makeToast("בוצע ביטול", Colors.pink);
+    } else {
+      _makeToast("מתנצלים אירעה שגיאה, נסה שנית מאוחר יותר", Colors.pink);
     }
     setState(() {
       _initDone = false;
     });
   }
 
-  _makeToast(String str,var theColor){
+  _makeToast(String str, var theColor) {
     Fluttertoast.showToast(
         msg: str,
         toastLength: Toast.LENGTH_SHORT,
@@ -250,8 +284,7 @@ class _EventsListState extends State<EventsList> {
         timeInSecForIosWeb: 1,
         backgroundColor: theColor,
         textColor: Colors.amber,
-        fontSize: 16.0
-    );
+        fontSize: 16.0);
   }
 
   void _launchUrl(String url) async {
@@ -259,8 +292,7 @@ class _EventsListState extends State<EventsList> {
     if (await canLaunch(url)) {
       launch(url);
     } else {
-      _makeToast("סורי - הקישור לא עובד :(",Colors.pink);
+      _makeToast("סורי - הקישור לא עובד :(", Colors.pink);
     }
   }
-
 }

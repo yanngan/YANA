@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:yana/UI/PAGES/Utilities.dart';
@@ -35,60 +36,83 @@ class _EditEventState extends State<EditEvent> {
             Radius.circular(20.0),
           ),
         ),
-        child: Column(children: [
-          createTextField('estimateDate', 'תאריך רצוי', 'date',
-              widget.theEvents.startEstimate.substring(0, 10)),
-          createTextField('startEstimateTime', 'שעת התחלה', 'time',
-              widget.theEvents.startEstimate.substring(11)),
-          createTextField('endEstimateTime', 'שעת סיום', 'time',
-              widget.theEvents.endEstimate.substring(11)),
-          Text(
-            "?כמה אנשים תרצו להיות",
-            style: TextStyle(color: Colors.blueGrey),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+        child: SingleChildScrollView(
+          child: Column(
             children: [
-              ElevatedButton(
+              createTextField('estimateDate', 'תאריך רצוי', 'date',
+                  widget.theEvents.startEstimate.substring(0, 10)),
+              createTextField('startEstimateTime', 'שעת התחלה', 'time',
+                  widget.theEvents.startEstimate.substring(11)),
+              createTextField('endEstimateTime', 'שעת סיום', 'time',
+                  widget.theEvents.endEstimate.substring(11)),
+              Padding(
+                padding: const EdgeInsets.only(top: 12.0),
                 child: Text(
-                  '+',
-                  style: TextStyle(color: Colors.white),
+                  "?כמה אנשים תרצו להיות",
+                  style: TextStyle(color: Colors.blueGrey),
                 ),
-                onPressed: incrementmaxNumPeople,
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.pink)),
               ),
-              Container(
-                width: 60,
-                child: createTextField('maxNumPeople', 'כמה אנשים', 'int',
-                    widget.theEvents.maxNumPeople),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    child: Text(
+                      '+',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: incrementMaxNumPeople,
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.pink)),
+                  ),
+                  Container(
+                    width: 60,
+                    child: createTextField('maxNumPeople', 'כמה אנשים', 'int',
+                        widget.theEvents.maxNumPeople),
+                  ),
+                  ElevatedButton(
+                    child: Text(
+                      '-',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: decrementMaxNumPeople,
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.pink)),
+                  ),
+                ],
               ),
-              ElevatedButton(
-                child: Text(
-                  '-',
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: decrementmaxNumPeople,
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.pink)),
+              SizedBox(
+                height: 15,
               ),
-            ],
+              createTextField('note', 'הערות', 'text', widget.theEvents.note),
+              SizedBox(
+                height: 30,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.pink),
+                    ),
+                    child: Text("שמור"),
+                    onPressed: saveTheEvent,
+                  ),
+                  TextButton(
+                    child: new Text(
+                      "סגור", style: TextStyle(color: Colors.blueGrey),),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+//                  if (!totallyPop) {
+//                    print("in popTotally");
+//                    seeListEventInPlace(context, thePlace);
+//                  }
+                    },
+                  ),
+                ],
+              ),
+            ]
           ),
-          SizedBox(
-            height: 15,
-          ),
-          createTextField('note', 'הערות', 'text', widget.theEvents.note),
-          SizedBox(
-            height: 30,
-          ),
-          ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.pink),
-            ),
-            child: Text("שמור"),
-            onPressed: saveTheEvent,
-          ),
-        ]),
+        ),
       ),
     );
   }
@@ -97,61 +121,90 @@ class _EditEventState extends State<EditEvent> {
     if (!this.allField.containsKey(name)) {
       this.allField[name] = TextEditingController(text: value.toString());
     }
+    var _textAlign = TextAlign.center;
     var onTap;
     switch (type) {
       case 'date':
         final format = DateFormat("yyyy-MM-dd");
-        return DateTimeField(
-          textAlign: TextAlign.right,
-          format: format,
-          decoration: new InputDecoration(
-              hintText: hint, hintStyle: TextStyle(color: Colors.grey)),
-          controller: this.allField[name],
-          onShowPicker: (context, currentValue) async {
-            showDatePicker(
-              context: context,
-              firstDate: DateTime.now(),
-              initialDate: DateTime.now(),
-              lastDate: DateTime.now().add(const Duration(days: 50)),
-            ).then((value) {
-              setState(() {
-                if (value != null) {
-                  (this.allField[name]!).text =
-                      DateFormat('yyyy-MM-dd').format(value);
-                  print((this.allField[name]!).text);
-                }
-              });
-            });
-          },
+        return Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: DateTimeField(
+                textAlign: TextAlign.right,
+                format: format,
+                decoration: new InputDecoration(
+                    hintText: hint, hintStyle: TextStyle(color: Colors.grey)),
+                controller: this.allField[name],
+                onShowPicker: (context, currentValue) async {
+                  showDatePicker(
+                    context: context,
+                    firstDate: DateTime.now(),
+                    initialDate: DateTime.now(),
+                    lastDate: DateTime.now().add(const Duration(days: 50)),
+                  ).then((value) {
+                    setState(() {
+                      if (value != null) {
+                        (this.allField[name]!).text =
+                            DateFormat('yyyy-MM-dd').format(value);
+                        print((this.allField[name]!).text);
+                      }
+                    });
+                  });
+                },
+              ),
+            ),
+            Expanded(
+                flex: 1,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: AutoSizeText(hint, maxLines: 1, textAlign: _textAlign,)
+                )
+            ),
+          ],
         );
       case 'time':
         final format = DateFormat("hh:mm:ss");
-        return DateTimeField(
-          textAlign: TextAlign.right,
-          format: format,
-          decoration: new InputDecoration(
-              hintText: hint, hintStyle: TextStyle(color: Colors.grey)),
-          controller: this.allField[name],
-          onShowPicker: (context, currentValue) async {
-            showTimePicker(
-              context: context,
-              initialTime: TimeOfDay(
-                  hour: DateTime.now().hour, minute: DateTime.now().minute),
-            ).then((value) {
-              setState(() {
-                if (value != null) {
-                  (this.allField[name]!).text = value.format(context);
-                  print((this.allField[name]!).text);
-                }
-              });
-            });
-          },
+        return Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: DateTimeField(
+                textAlign: TextAlign.right,
+                format: format,
+                decoration: new InputDecoration(
+                    hintText: hint, hintStyle: TextStyle(color: Colors.grey)),
+                controller: this.allField[name],
+                onShowPicker: (context, currentValue) async {
+                  showTimePicker(
+                    context: context,
+                    initialTime: TimeOfDay(
+                        hour: DateTime.now().hour, minute: DateTime.now().minute),
+                  ).then((value) {
+                    setState(() {
+                      if (value != null) {
+                        (this.allField[name]!).text = value.format(context);
+                        print((this.allField[name]!).text);
+                      }
+                    });
+                  });
+                },
+              ),
+            ),
+            Expanded(
+                flex: 1,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: AutoSizeText(hint, maxLines: 1, textAlign: _textAlign,)
+                )
+            ),
+          ],
         );
       case 'int':
         return TextField(
           textAlignVertical: TextAlignVertical.center,
           readOnly: true,
-          textAlign: TextAlign.right,
+          textAlign: _textAlign,
           decoration: InputDecoration(
               fillColor: Colors.white,
               hintText: hint,
@@ -159,19 +212,17 @@ class _EditEventState extends State<EditEvent> {
           controller: this.allField[name],
         );
       case 'text':
-        return Theme(
-          data: Theme.of(context).copyWith(splashColor: Colors.transparent),
-          child: TextField(
-            textAlign: TextAlign.right,
-            maxLines: 3,
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              hintText: hint,
-              hintStyle: TextStyle(color: Colors.grey),
-            ),
-            controller: this.allField[name],
+        print("**********************\n\n" + this.allField[name].toString() + "\n**********************\n");
+        return TextField(
+          textAlign: TextAlign.right,
+          maxLines: 3,
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.amber[300],
+            hintText: hint,
+            hintStyle: TextStyle(color: Colors.grey),
           ),
+          controller: this.allField[name],
         );
     }
   }
@@ -203,7 +254,7 @@ class _EditEventState extends State<EditEvent> {
       makeErrorAlert("חובה למלא את כל השדות בערכים תקינים");
       return;
     }
-    Events theNewEvents = Events(widget.theEvents.eventID,userMap['id']!,'test',formattedDate,true,startEstimate,endEstimate,1,maxNumPeople,widget.thePlace.placeID,widget.thePlace.name,(allField['note']!).text);
+    Events theNewEvents = Events(widget.theEvents.eventID,userMap['userID']!,'test',formattedDate,true,startEstimate,endEstimate,1,maxNumPeople,widget.thePlace.placeID,widget.thePlace.name,(allField['note']!).text);
     widget.theEvents = theNewEvents;
     var res = await Logic.createEditNewEvents(theNewEvents, false);
     if (res == null) {
@@ -268,7 +319,7 @@ class _EditEventState extends State<EditEvent> {
     );
   }
 
-  incrementmaxNumPeople() {
+  incrementMaxNumPeople() {
     int res = int.parse((allField['maxNumPeople']!).text);
     if (res > 15) {
       return;
@@ -277,7 +328,7 @@ class _EditEventState extends State<EditEvent> {
     (allField['maxNumPeople']!).text = "$res";
   }
 
-  decrementmaxNumPeople() {
+  decrementMaxNumPeople() {
     int res = int.parse((allField['maxNumPeople']!).text);
     if (res < 3) {
       return;

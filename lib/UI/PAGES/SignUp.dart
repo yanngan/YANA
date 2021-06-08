@@ -65,7 +65,7 @@ class _SignUpState extends State<SignUp> {
   int page = 0;
   LiquidController _liquidController = LiquidController();
   // CheckBoxListTiles boolean checkers
-  bool? _checked18 = false, _checkedTou = false, _checkedPp = false, _checkedNotifications = false, _checked_5 = false;
+  bool? _checked18 = false, _checkedTou = false, _checkedPp = false, _checkedNotifications = false;
   // Button Related
   final streamController = StreamController<bool>.broadcast();
   var change = false;
@@ -246,7 +246,6 @@ class _SignUpState extends State<SignUp> {
   void checkUserCredentials() {
     String checkerStr = "", btnResultText = "";
     dur = 1000;
-    if(!_checked_5!){ checkerStr = "לידור הוא הכי מדהים שיש!"; }
     if(!_checkedNotifications!){ checkerStr = "אנא אשר התראות"; }
     if(!_checkedPp!){ checkerStr = "נא לקרוא ולאשר את הצהרת הפרטיות"; }
     if(!_checkedTou!){ checkerStr = "נא לקרוא ולאשר את תנאי השימוש"; }
@@ -415,7 +414,7 @@ class _SignUpState extends State<SignUp> {
     // Signup body pages (Swiping area)
     pages = [
       Container(
-        color: Colors.blue,//Color(0xff305969),
+        color: Colors.blue,
         child: Padding(
           padding: const EdgeInsets.only(left: 0, top: 0, right: 0, bottom: 65),
           child: Column(
@@ -623,7 +622,7 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
       Container(
-        color: Colors.deepPurpleAccent,//Color(0xff305969),
+        color: Colors.deepPurpleAccent,
         child: Padding(
           padding: const EdgeInsets.only(left: 0, top: 0, right: 0, bottom: 65),
           child: Column(
@@ -829,7 +828,7 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
       Container(
-        color: Colors.teal,//Color(0xff305969),
+        color: Colors.teal,
         child: Padding(
           padding: const EdgeInsets.only(left: 0, top: 0, right: 0, bottom: 65),
           child: Column(
@@ -1061,7 +1060,7 @@ class _SignUpState extends State<SignUp> {
                   ],
                 ),
               ), // Logo + Title
-              Column(
+              Column( // TODO TODO TODO - > overflow in smaller screens
                 children: <Widget>[
                   Stack(
                     children: [
@@ -1084,6 +1083,66 @@ class _SignUpState extends State<SignUp> {
                           onChanged: (bool? val) {
                             setState(() {
                               _checked18 = val;
+//                              timeDilation = val! ? 4.0 : 2.75;
+                            });
+                          },
+//                  activeColor: Colors.green,
+//                  checkColor: Colors.blue,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: Image(
+                            height: 75,
+                            image: AssetImage(
+                                'assets/outer_1.png'
+                            )
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15, top: 10, right: 20, bottom: 0),
+                        child: CheckboxListTile(
+                          title: Text("קראתי והסכמתי לתנאי השימוש"),
+                          secondary: Icon(Icons.miscellaneous_services),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          value: _checkedTou,
+                          onChanged: (bool? val) {
+                            setState(() {
+                              _checkedTou = val;
+//                              timeDilation = val! ? 4.0 : 2.75;
+                            });
+                          },
+//                  activeColor: Colors.green,
+//                  checkColor: Colors.blue,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: Image(
+                            height: 75,
+                            image: AssetImage(
+                                'assets/outer_1.png'
+                            )
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15, top: 10, right: 20, bottom: 0),
+                        child: CheckboxListTile(
+                          title: Text("קראתי והסכמתי לתנאי השימוש"),
+                          secondary: Icon(Icons.miscellaneous_services),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          value: _checkedTou,
+                          onChanged: (bool? val) {
+                            setState(() {
+                              _checkedTou = val;
 //                              timeDilation = val! ? 4.0 : 2.75;
                             });
                           },
@@ -1174,36 +1233,6 @@ class _SignUpState extends State<SignUp> {
                           onChanged: (bool? val) {
                             setState(() {
                               _checkedNotifications = val;
-//                              timeDilation = val! ? 4.0 : 2.75;
-                            });
-                          },
-//                  activeColor: Colors.green,
-//                  checkColor: Colors.blue,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Stack(
-                    children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: Image(
-                            height: 75,
-                            image: AssetImage(
-                                'assets/outer_1.png'
-                            )
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15, top: 10, right: 20, bottom: 0),
-                        child: CheckboxListTile(
-                          title: AutoSizeText("אני מצהיר בזאת כי:\nלידור הוא הבן אדם המדהים ביותר!", maxLines: 2,),
-                          secondary: Icon(Icons.accessibility_new),
-                          controlAffinity: ListTileControlAffinity.leading,
-                          value: _checked_5,
-                          onChanged: (bool? val) {
-                            setState(() {
-                              _checked_5 = val;
 //                              timeDilation = val! ? 4.0 : 2.75;
                             });
                           },

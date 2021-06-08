@@ -448,7 +448,7 @@ class FirebaseHelper {
     for(var alias in querySnapshot.docs){
       dynamic json = alias.data();
       print("########## idEvent = " + json['idEvent']);
-      if(json['idUser'] == userMap['id']! ){
+      if(json['idUser'] == userMap['userID']! ){
         return json['status'];
       }
     }

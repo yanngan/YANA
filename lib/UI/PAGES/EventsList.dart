@@ -36,12 +36,16 @@ class _EventsListState extends State<EventsList> {
             child: Container(
               color: Colors.amber,
               child: _initDone
-              ? (listEvents.length == 0 ? EmptyScreen(maxLines: 3, text: "לא קיימים הקשורים לחשבונך ברגע זה, עליך להירשם או לבקש להצטרף לאירוע") : ListView.builder(
-                  itemCount: listEvents.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return _createRow(index);
-                  }
-              ))
+              ? (
+                  listEvents.length == 0
+                    ? EmptyScreen(maxLines: 3, text: "לא קיימים הקשורים לחשבונך ברגע זה, עליך להירשם או לבקש להצטרף לאירוע")
+                    : ListView.builder(
+                      itemCount: listEvents.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return _createRow(index);
+                      }
+                  )
+                )
               : SpinKitFadingCircle(
                 color: Colors.white,
                 size: 50.0,
@@ -209,15 +213,19 @@ class _EventsListState extends State<EventsList> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text("${listEvents[index].note}",
-                        style: TextStyle(fontSize: 15),
-                        textAlign: TextAlign.end,
+                      Flexible(
+                        child: Text(
+                          "${listEvents[index].note}",
+                          style: TextStyle(fontSize: 15),
+                          textAlign: TextAlign.end,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                       Text(" : ",
-                          style: TextStyle(fontSize: 15),
+                        style: TextStyle(fontSize: 15),
                       ),
                       Text("הערות",
-                          style: TextStyle(fontSize: 15),
+                        style: TextStyle(fontSize: 15),
                       ),
                     ],
                   ),

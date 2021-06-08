@@ -212,6 +212,7 @@ class _EditEventState extends State<EditEvent> {
           controller: this.allField[name],
         );
       case 'text':
+        print("**********************\n\n" + this.allField[name].toString() + "\n**********************\n");
         return TextField(
           textAlign: TextAlign.right,
           maxLines: 3,
@@ -253,7 +254,7 @@ class _EditEventState extends State<EditEvent> {
       makeErrorAlert("חובה למלא את כל השדות בערכים תקינים");
       return;
     }
-    Events theNewEvents = Events(widget.theEvents.eventID,userMap['id']!,'test',formattedDate,true,startEstimate,endEstimate,1,maxNumPeople,widget.thePlace.placeID,widget.thePlace.name,(allField['note']!).text);
+    Events theNewEvents = Events(widget.theEvents.eventID,userMap['userID']!,'test',formattedDate,true,startEstimate,endEstimate,1,maxNumPeople,widget.thePlace.placeID,widget.thePlace.name,(allField['note']!).text);
     widget.theEvents = theNewEvents;
     var res = await Logic.createEditNewEvents(theNewEvents, false);
     if (res == null) {

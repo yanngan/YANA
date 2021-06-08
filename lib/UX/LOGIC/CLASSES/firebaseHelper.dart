@@ -362,21 +362,30 @@ class FirebaseHelper {
   ///  date- events that in the range on a specific date
 
   static Future<List<Events>> getEventsBySearchCombination(
-      {String name = "", int capacity = -1, String date = ""}) async {
+      {String name = "", int capacity = -1, String date = "",String startHour=""}) async {
 
     List<Events> events = [];
     if(date.isEmpty){
       DateTime now = new DateTime.now();
       date = new DateFormat('yyyy-MM-dd').format(now);
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('Events')
+          .where("startEstimate", isGreaterThanOrEqualTo: date)
+          .get();
+      querySnapshot.docs.forEach((doc) {
+        events.add(Events.fromJson(doc.data()));
+      });
+    }else{
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('Events')
+          .where("startEstimate", isGreaterThanOrEqualTo: date + " "+startHour )
+          .where("startEstimate", isLessThanOrEqualTo: date+" 23:59")
+          .get();
+      querySnapshot.docs.forEach((doc) {
+        events.add(Events.fromJson(doc.data()));
+      });
     }
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('Events')
-        .where("startEstimate", isGreaterThanOrEqualTo: date)
-        .where("startEstimate", isLessThanOrEqualTo: date+" 23:59")
-        .get();
-    querySnapshot.docs.forEach((doc) {
-      events.add(Events.fromJson(doc.data()));
-    });
+
 
     if (capacity != -1) {
       events =

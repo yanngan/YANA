@@ -85,7 +85,7 @@ class _SeeEventState extends State<SeeEvent> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   _initDone?
-                  (widget.theEvents.userID == userMap["id"]?ElevatedButton(
+                  (widget.theEvents.userID == userMap["userID"]?ElevatedButton(
                     style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.pink),),
                     child: Text("ערוך"),
                     onPressed: editTheEvent,

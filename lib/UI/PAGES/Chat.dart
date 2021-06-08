@@ -2,9 +2,10 @@ import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:yana/UI/WIDGETS/allWidgets.dart';
-import 'package:yana/UI/PAGES/Profanity.dart';
+import 'package:yana/UX/LOGIC/Profanity.dart';
 import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
 import 'package:intl/intl.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
@@ -261,6 +262,8 @@ class _ChatState extends State<Chat> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
       child: new TextField(
+        inputFormatters: [WhitelistingTextInputFormatter(RegExp(r'[a-zA-Z0-9 ]'))],
+
         controller: _controllerInput,
         textAlign: TextAlign.center,
         decoration: InputDecoration(
@@ -273,55 +276,38 @@ class _ChatState extends State<Chat> {
           suffixIcon: IconButton(
             icon: Icon(Icons.send),
             onPressed: ()async{
+              ///getting the message from the input box
+              messageText = _controllerInput.text.toString().trim();
+              _controllerInput.clear();
               if(messageText.isEmpty){ return; }
-              // messageText ="hello fuck you ";
-              // messageText ="fuck you";
-              // messageText ="Hello assume you";
-              // messageText ="assume you hello";
-              String test ="hello world";
-              print("*"+messageText+"*");
-              print("*"+test+"*");
-              print("******************");
-              // for(int i=0; i< messageText.length; i++){
-              //     print(messageText[i]==test[i]);
-              // }
-              // print("******************");
-              print(messageText+"=="+test);
-              print(messageText == test);
-              print("***********************************0\n");
-              //check if the message is free of Curses
+
+              ///check if the message is free of Curses and Profanity words
               if (hasProfanity(messageText))
                 {
                   List<String> wordsFound = getAllProfanity(messageText);
-                  // print(wordsFound.toString());
                   _makeToast("תוכן הבא זוהה כפוגעני: "+wordsFound.toString(), Colors.red);
-                  print("***********************************1\n");
-                  _controllerInput.clear();
                   return;
                 }
-              print("***********************************2\n");
-
               DateTime now = new DateTime.now();
               String formattedDate = new DateFormat('dd-MM-yyyy hh:mm').format(now);
+              ///assemble the message and send via firebase to the other user
               Message message = Message(_me, _him, _meID, _himID, messageText, formattedDate);
-              // FirebaseHelper.sendMessageToFb(message);
+              FirebaseHelper.sendMessageToFb(message);
 
-              //send a notification to other user to tell him he got a new message
-              //get other user token
+              ///send a notification to other user to tell him he got a new message
+              ///get other user token
               String otherToken =  await FirebaseHelper.getTokenNotificationForAUser(_himID);
               if(otherToken.isEmpty){
-                _controllerInput.clear();
                 return;
               }
               Logic.sendPushNotificationsToUsers([otherToken], NotificationTitle, _him + " שלח/ה לך הודעה ");
-              _controllerInput.clear();
             },
           ),
         ),
-        onChanged: (str){
-          setState(() {
-            messageText = str.trim();
-          });
+        // onChanged: (str){
+        //   setState(() {
+        //      messageText = str.trim();
+        //   });
 //        if(value.isNotEmpty){
 ////          if(regExpEn.hasMatch(value[0].toString()).toString() == "true"){
 ////            setState(() {
@@ -351,7 +337,7 @@ class _ChatState extends State<Chat> {
 //            });
 //          }
 //        }
-        },
+//         },
       ),
     );
   }
@@ -378,6 +364,7 @@ class _ChatState extends State<Chat> {
     });
     return false;
   }
+  ///display on screen the Profanity words in red
   _makeToast(String str,var theColor) {
     Fluttertoast.showToast(
         msg: str,
@@ -389,28 +376,19 @@ class _ChatState extends State<Chat> {
         fontSize: 16.0
     );
   }
-
+///check if in a given string there is a Profanity words
   bool hasProfanity(String inputString) {
-    print("***********************************3\n");
     bool isProfane = false;
-    List<String> messageTextList= inputString.toLowerCase().split(' ');
-    print(messageTextList.toString());
-    // englishProfanityList.forEach((word) {
-    //   if (messageTextList.contains(word)) {
-    //     print("***********************************88\n");
-    //     isProfane = true;
-    //   }
-    // });
-
+    List<String> messageTextList= inputString.toLowerCase().trim().split(' ');
     messageTextList.forEach((element) {
       print(englishProfanityList.contains(element));
       if( englishProfanityList.contains(element) ){
             isProfane = true;
-          print("***********************************88\n");
       }
     });
     return isProfane;
   }
+  ///return all the Profanity words that the user tried to send
   List<String> getAllProfanity(String inputString) {
     List<String> found = [];
     englishProfanityList.forEach((word) {

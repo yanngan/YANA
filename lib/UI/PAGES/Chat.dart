@@ -48,16 +48,20 @@ class _ChatState extends State<Chat> {
   String messageText = "", _me = "", _meID = "", _him = "", _himID = "";
   double bottomPadding = 14.0, topPadding = 75.0, _keyboardHeight = 0.0;
   Map<String, String> _otherInfo = new Map<String, String>();
-
+  List<String> profanityList = new List.from(englishProfanityList)..addAll(hebrewProfanityList);
   _ChatState(this._otherInfo);
 
   @override
   void initState() {
     super.initState();
     _me = userMap['name'].toString();
-    _meID = userMap['id'].toString();
-    _him = _otherInfo['name'].toString();
-    _himID = _otherInfo['id'].toString();
+    _meID = userMap['userID'].toString();
+    // _him =  "Lidor Eliyahu Shelef";//_otherInfo['name'].toString();
+    // _himID = "10216275052784039";//_otherInfo['userID'].toString();
+    _him =  _otherInfo['name'].toString();
+    _himID =_otherInfo['userID'].toString();
+    // print(profanityList.toString());
+
     getMessages();
   }
 
@@ -261,7 +265,7 @@ class _ChatState extends State<Chat> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
       child: new TextField(
-        inputFormatters: [WhitelistingTextInputFormatter(RegExp(r'[a-zA-Z0-9 ]'))],
+        inputFormatters: [WhitelistingTextInputFormatter(RegExp(r'[a-zA-Z0-9 אבגדהוזחטיכךלמםנןסעפףצץקרשת]'))],
 
         controller: _controllerInput,
         textAlign: TextAlign.center,
@@ -380,8 +384,8 @@ class _ChatState extends State<Chat> {
     bool isProfane = false;
     List<String> messageTextList= inputString.toLowerCase().trim().split(' ');
     messageTextList.forEach((element) {
-      print(englishProfanityList.contains(element));
-      if( englishProfanityList.contains(element) ){
+      // print(englishProfanityList.contains(element));
+      if( profanityList.contains(element) ){
             isProfane = true;
       }
     });
@@ -390,7 +394,7 @@ class _ChatState extends State<Chat> {
   ///return all the Profanity words that the user tried to send
   List<String> getAllProfanity(String inputString) {
     List<String> found = [];
-    englishProfanityList.forEach((word) {
+    profanityList.forEach((word) {
       if (inputString.toLowerCase().contains(word)) {
         found.add(word);
       }
@@ -398,7 +402,6 @@ class _ChatState extends State<Chat> {
     return found;
   }
 
-  // var newList = new List.from(list1)..addAll(list2);
 }
 
 

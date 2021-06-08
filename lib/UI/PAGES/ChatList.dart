@@ -24,7 +24,8 @@ class _ChatListState extends State<ChatList> {
   void initState() {
     super.initState();
     initChatsList();
-   // FirebaseHelper.createNewChat(_userID, userMap["name"].toString(), "10216275052784039", "Lidor Eliyahu Shelef");
+   // FirebaseHelper.createNewChat(_userID, userMap["name"].toString(), "4520991924611511", "Yann Moshe Ganem");
+   // FirebaseHelper.createNewChat(_userID, userMap["name"].toString(), "01234567891234567", "Adriana Lima");
 //    FirebaseHelper.createNewChat(_userID, "Lidor Name", "DavidID", "David Name");
 //    FirebaseHelper.createNewChat(_userID, "Lidor Name", "SvetlanaID", "Svetlana Name");
 //    FirebaseHelper.createNewChat(_userID, "Lidor Name", "DanaID", "Dana Name");

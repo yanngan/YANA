@@ -17,14 +17,14 @@ class ChatList extends StatefulWidget {
 
 class _ChatListState extends State<ChatList> {
 
-  String _userID = "LidorID";//userMap["id"].toString();  // TODO change before production
+  String _userID = userMap["userID"].toString();
   Map<dynamic, dynamic> _senders = {};
 
   @override
   void initState() {
     super.initState();
     initChatsList();
-//    FirebaseHelper.createNewChat(_userID, "Lidor Name", "YisraelID", "Yisrael Name");
+   // FirebaseHelper.createNewChat(_userID, userMap["name"].toString(), "10216275052784039", "Lidor Eliyahu Shelef");
 //    FirebaseHelper.createNewChat(_userID, "Lidor Name", "DavidID", "David Name");
 //    FirebaseHelper.createNewChat(_userID, "Lidor Name", "SvetlanaID", "Svetlana Name");
 //    FirebaseHelper.createNewChat(_userID, "Lidor Name", "DanaID", "Dana Name");
@@ -58,7 +58,7 @@ class _ChatListState extends State<ChatList> {
           String key = _senders.keys.elementAt(index);  // key = Other ID
           return GestureDetector(
             onTap: (){
-              this.widget.otherInfo = {"name": _senders[key], "id" : key};
+              this.widget.otherInfo = {"name": _senders[key], "userID" : key};
               setState(() {
 //                this.widget.callback(4, userMap, this.widget.otherInfo, Chat_index);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => Chat(this.widget.otherInfo)));

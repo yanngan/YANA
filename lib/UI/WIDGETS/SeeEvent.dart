@@ -81,16 +81,32 @@ class _SeeEventState extends State<SeeEvent> {
                 ],
               ),
               SizedBox(height: 30,),
-              _initDone?
-              (widget.theEvents.userID == userMap["id"]?ElevatedButton(
-                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.pink),),
-                child: Text("ערוך"),
-                onPressed: editTheEvent,
-              ):ElevatedButton(
-                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(widget.theEvents.statusForUser == Events.NOT_ASK_YET_AND_NOT_GOING ||widget.theEvents.statusForUser == Events.DONT_KNOW ?Colors.pink:Colors.grey),),
-                child: Text("בקש להצטרף"),/// todo if have be approve by admin show "בטל הגעה"
-                onPressed: askToJoin,
-              )):SizedBox(height: 30,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _initDone?
+                  (widget.theEvents.userID == userMap["id"]?ElevatedButton(
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.pink),),
+                    child: Text("ערוך"),
+                    onPressed: editTheEvent,
+                  ):ElevatedButton(
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(widget.theEvents.statusForUser == Events.NOT_ASK_YET_AND_NOT_GOING ||widget.theEvents.statusForUser == Events.DONT_KNOW ?Colors.pink:Colors.grey),),
+                    child: Text("בקש להצטרף"),/// todo if have be approve by admin show "בטל הגעה"
+                    onPressed: askToJoin,
+                  )):SizedBox(height: 30,),
+                  TextButton(
+                    child: new Text(
+                      "סגור", style: TextStyle(color: Colors.blueGrey),),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+//                  if (!totallyPop) {
+//                    print("in popTotally");
+//                    seeListEventInPlace(context, thePlace);
+//                  }
+                    },
+                  ),
+                ],
+              ),
             ],
           ),
 
@@ -115,7 +131,7 @@ class _SeeEventState extends State<SeeEvent> {
   askToJoin()async{
 
     if(widget.theEvents.statusForUser == Events.NOT_ASK_YET_AND_NOT_GOING){
-      if(await Logic.userAskToJoinEvent(userMap['id']!,widget.theEvents.eventID,widget.theEvents.userID)){
+      if(await Logic.userAskToJoinEvent(userMap['userID']!,widget.theEvents.eventID,widget.theEvents.userID)){
         _makeToast("בקשתך נשלחה וממתינה לאישור מארגן האירוע");
       }
       else{

@@ -65,7 +65,7 @@ class _SignUpState extends State<SignUp> {
   int page = 0;
   LiquidController _liquidController = LiquidController();
   // CheckBoxListTiles boolean checkers
-  bool? _checked18 = false, _checkedTou = false, _checkedPp = false, _checkedNotifications = false, _checked_5 = false;
+  bool? _checked18 = false, _checkedTou = false, _checkedPp = false, _checkedNotifications = false;
   // Button Related
   final streamController = StreamController<bool>.broadcast();
   var change = false;
@@ -120,7 +120,7 @@ class _SignUpState extends State<SignUp> {
     sex = this.widget.userCredentials["gender"].toString();
     int age = int.parse(this.widget.userCredentials["age_range"].toString());
     if(age > 18){ _checked18 = true; }
-    photoURL = this.widget.userCredentials["picture_link"].toString();
+    photoURL = this.widget.userCredentials["fbPhoto"].toString();
   }
 
   /// We need to dispose all the controllers at the end of this widget session
@@ -231,8 +231,8 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
               SizedBox(
-                  height: 110,
-                  child: MyAppBar("Sign Up", null, height: 110,)
+                  height: appBarHeight,
+                  child: MyAppBar("Sign Up", null, height: appBarHeight,)
               ), // Appbar
             ],
           ),
@@ -246,25 +246,24 @@ class _SignUpState extends State<SignUp> {
   void checkUserCredentials() {
     String checkerStr = "", btnResultText = "";
     dur = 1000;
-    if(!_checked_5!){ checkerStr = "Lidor is \n   The Best ! ! !"; }
-    if(!_checkedNotifications!){ checkerStr = "Notification bullet"; }
-    if(!_checkedPp!){ checkerStr = "Please accept the privacy policy"; }
-    if(!_checkedTou!){ checkerStr = "Please accept the term of use"; }
-    if(!_checked18!){ checkerStr = "18 Statement missing"; }
-    if(smoking.isEmpty){ checkerStr = "Smoking missing"; }
-    if(fieldOfStudy.isEmpty){ checkerStr = "Field of study missing"; }
-    if(academicInstitution.isEmpty){ checkerStr = "Academic institution missing"; }
-    if(workArea.isEmpty){ checkerStr = "Work area missing"; }
-    if(livingArea.isEmpty){ checkerStr = "Living area missing"; }
-    if(bio.isEmpty){ checkerStr = "Bio missing"; }
-    if(hobbies.isEmpty){ checkerStr = "Hobbies missing"; }
-    if(sex.isEmpty){ checkerStr = "Sex missing"; }
-    if(fullName.isEmpty){ checkerStr = "Name missing"; }
+    if(!_checkedNotifications!){ checkerStr = "אנא אשר התראות"; }
+    if(!_checkedPp!){ checkerStr = "נא לקרוא ולאשר את הצהרת הפרטיות"; }
+    if(!_checkedTou!){ checkerStr = "נא לקרוא ולאשר את תנאי השימוש"; }
+    if(!_checked18!){ checkerStr = "נא לאשר שהינך מעל גיל 18"; }
+    if(smoking.isEmpty){ checkerStr = "מה היא העדפת העישון שלך?"; }
+    if(fieldOfStudy.isEmpty){ checkerStr = "מה הוא תחום הלימוד שלך?"; }
+    if(academicInstitution.isEmpty){ checkerStr = "היכן הלימודים מתקיימים?"; }
+    if(workArea.isEmpty){ checkerStr = "מה מיקום העבודה שלך?"; }
+    if(livingArea.isEmpty){ checkerStr = "מה הוא איזור המגורים שלך?"; }
+    if(bio.isEmpty){ checkerStr = "צריך לספר קצת על עצמך"; }
+    if(hobbies.isEmpty){ checkerStr = "איזה תחביבים יש לך?"; }
+    if(sex.isEmpty){ checkerStr = "מה היא ההזדהות המינית שלך?"; }
+    if(fullName.isEmpty){ checkerStr = "מה הוא שמך?"; }
     print("\n\n" + checkerStr + "\n\n");
     Future.delayed(const Duration(milliseconds: 1850), () {
       bool status = false;
       if(checkerStr.isEmpty){
-        btnResultText = "Success!";
+        btnResultText = "פעולה בוצעה!";
         status = true;
       }else{
         btnResultText = checkerStr;
@@ -280,23 +279,23 @@ class _SignUpState extends State<SignUp> {
           DateTime now = new DateTime.now();
           String formattedDate = new intl.DateFormat('dd-MM-yyyy').format(now);
           Map<String, String> newUserInfo = new Map<String, String>();
-          newUserInfo["id"]                =      this.widget.userCredentials["id"].toString();
-          newUserInfo["name"]              =      this.widget.userCredentials["name"].toString();
-          newUserInfo["email"]             =      this.widget.userCredentials["email"].toString();
-          newUserInfo["birthday"]          =      this.widget.userCredentials["birthday"].toString();
-          newUserInfo["age_range"]         =      this.widget.userCredentials["age_range"].toString();
-          newUserInfo["gender"]            =      this.widget.userCredentials["gender"].toString();
-          newUserInfo["hobbies"]           =      hobbies;
-          newUserInfo["bio"]               =      bio;
-          newUserInfo["living_area"]       =      livingArea;
-          newUserInfo["work_area"]         =      workArea;
-          newUserInfo["school"]            =      academicInstitution;
-          newUserInfo["field_of_study"]    =      fieldOfStudy;
-          newUserInfo["smoking"]           =      smoking;
-          newUserInfo["signUpDate"]        =      formattedDate;
-          newUserInfo["isBlocked"]         =      "false";
-          newUserInfo["notifications"]     =      _checkedNotifications.toString();
-          newUserInfo["picture_link"]      =      this.widget.userCredentials["picture_link"].toString();
+          newUserInfo["id"]                     =      this.widget.userCredentials["id"].toString();
+          newUserInfo["name"]                   =      this.widget.userCredentials["name"].toString();
+          newUserInfo["email"]                  =      this.widget.userCredentials["email"].toString();
+          newUserInfo["birthday"]               =      this.widget.userCredentials["birthday"].toString();
+          newUserInfo["age_range"]              =      this.widget.userCredentials["age_range"].toString();
+          newUserInfo["gender"]                 =      this.widget.userCredentials["gender"].toString();
+          newUserInfo["hobbies"]                =      hobbies;
+          newUserInfo["bio"]                    =      bio;
+          newUserInfo["livingArea"]             =      livingArea;
+          newUserInfo["workArea"]               =      workArea;
+          newUserInfo["academicInstitution"]    =      academicInstitution;
+          newUserInfo["fieldOfStudy"]           =      fieldOfStudy;
+          newUserInfo["smoking"]                =      smoking;
+          newUserInfo["signUpDate"]             =      formattedDate;
+          newUserInfo["isBlocked"]              =      "false";
+          newUserInfo["notifications"]          =      _checkedNotifications.toString();
+          newUserInfo["fbPhoto"]           =      this.widget.userCredentials["fbPhoto"].toString();
           User newUser = new User.fromMap(newUserInfo);
           FirebaseHelper.sendUserToFb(newUser);
           logNewUserIn(newUserInfo);
@@ -415,7 +414,7 @@ class _SignUpState extends State<SignUp> {
     // Signup body pages (Swiping area)
     pages = [
       Container(
-        color: Colors.blue,//Color(0xff305969),
+        color: Colors.blue,
         child: Padding(
           padding: const EdgeInsets.only(left: 0, top: 0, right: 0, bottom: 65),
           child: Column(
@@ -623,7 +622,7 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
       Container(
-        color: Colors.deepPurpleAccent,//Color(0xff305969),
+        color: Colors.deepPurpleAccent,
         child: Padding(
           padding: const EdgeInsets.only(left: 0, top: 0, right: 0, bottom: 65),
           child: Column(
@@ -829,7 +828,7 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
       Container(
-        color: Colors.teal,//Color(0xff305969),
+        color: Colors.teal,
         child: Padding(
           padding: const EdgeInsets.only(left: 0, top: 0, right: 0, bottom: 65),
           child: Column(
@@ -1061,7 +1060,7 @@ class _SignUpState extends State<SignUp> {
                   ],
                 ),
               ), // Logo + Title
-              Column(
+              Column( // TODO TODO TODO - > overflow in smaller screens
                 children: <Widget>[
                   Stack(
                     children: [
@@ -1084,6 +1083,66 @@ class _SignUpState extends State<SignUp> {
                           onChanged: (bool? val) {
                             setState(() {
                               _checked18 = val;
+//                              timeDilation = val! ? 4.0 : 2.75;
+                            });
+                          },
+//                  activeColor: Colors.green,
+//                  checkColor: Colors.blue,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: Image(
+                            height: 75,
+                            image: AssetImage(
+                                'assets/outer_1.png'
+                            )
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15, top: 10, right: 20, bottom: 0),
+                        child: CheckboxListTile(
+                          title: Text("קראתי והסכמתי לתנאי השימוש"),
+                          secondary: Icon(Icons.miscellaneous_services),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          value: _checkedTou,
+                          onChanged: (bool? val) {
+                            setState(() {
+                              _checkedTou = val;
+//                              timeDilation = val! ? 4.0 : 2.75;
+                            });
+                          },
+//                  activeColor: Colors.green,
+//                  checkColor: Colors.blue,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: Image(
+                            height: 75,
+                            image: AssetImage(
+                                'assets/outer_1.png'
+                            )
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15, top: 10, right: 20, bottom: 0),
+                        child: CheckboxListTile(
+                          title: Text("קראתי והסכמתי לתנאי השימוש"),
+                          secondary: Icon(Icons.miscellaneous_services),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          value: _checkedTou,
+                          onChanged: (bool? val) {
+                            setState(() {
+                              _checkedTou = val;
 //                              timeDilation = val! ? 4.0 : 2.75;
                             });
                           },
@@ -1174,36 +1233,6 @@ class _SignUpState extends State<SignUp> {
                           onChanged: (bool? val) {
                             setState(() {
                               _checkedNotifications = val;
-//                              timeDilation = val! ? 4.0 : 2.75;
-                            });
-                          },
-//                  activeColor: Colors.green,
-//                  checkColor: Colors.blue,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Stack(
-                    children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: Image(
-                            height: 75,
-                            image: AssetImage(
-                                'assets/outer_1.png'
-                            )
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15, top: 10, right: 20, bottom: 0),
-                        child: CheckboxListTile(
-                          title: AutoSizeText("אני מצהיר בזאת כי:\nלידור הוא הבן אדם המדהים ביותר!", maxLines: 2,),
-                          secondary: Icon(Icons.accessibility_new),
-                          controlAffinity: ListTileControlAffinity.leading,
-                          value: _checked_5,
-                          onChanged: (bool? val) {
-                            setState(() {
-                              _checked_5 = val;
 //                              timeDilation = val! ? 4.0 : 2.75;
                             });
                           },

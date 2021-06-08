@@ -82,7 +82,8 @@ class _MainPageState extends State<MainPage> {
         return Login(this.callback);
       }
     }else if(pageType == 4){
-      return Chat(this.callback, otherInfo);
+      return Chat(otherInfo);
+//      return Chat(this.callback, otherInfo);
     }else if(pageType == 3){
       return WillPopScope(
         onWillPop: _onBackPressed,

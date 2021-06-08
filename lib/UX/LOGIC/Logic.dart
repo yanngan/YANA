@@ -201,7 +201,7 @@ class Logic {
   static saveMyRegistrationToken() async { // TODO - call this method when the userMap['id'] is initialized
     FirebaseMessaging _messaging = FirebaseMessaging.instance;
     String registrationToken = await _messaging.getToken()??"";
-    FirebaseHelper.saveUserRegistrationToken(userMap['id']!,registrationToken);
+    FirebaseHelper.saveUserRegistrationToken(userMap['userID']!,registrationToken);
   }
 
   /// [userID] - Represent the User ID (the user of which you wish to send a notification to)

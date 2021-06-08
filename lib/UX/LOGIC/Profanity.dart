@@ -1,8 +1,9 @@
-List<String> _hebrew = [
+List<String> hebrewProfanityList = [
   "2 בנות 1 כוס",
   "אקרוטומופיליה",
   "שרמוטה",
   "שרמוטות",
+  "יזין",
   "שרלילות",
   "מזדיין",
   "כחבה",
@@ -12,7 +13,6 @@ List<String> _hebrew = [
   "בתולים",
   "בתולות",
   "לזיין",
-  "ישבן",
   "חריץ",
   "לעזאזל",
   "נבלה",
@@ -227,9 +227,9 @@ List<String> _hebrew = [
   "סקס עולמי",
   "מקלחות צהובות",
   "זואופיליה",
-  ];
+];
 
-List<String> _english = [
+List <String> englishProfanityList = [
   "2g1c",
   "2 girls 1 cup",
   "acrotomophilia",
@@ -633,5 +633,3 @@ List<String> _english = [
   "yiffy",
   "zoophilia",
 ];
-
-

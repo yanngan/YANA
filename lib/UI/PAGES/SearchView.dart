@@ -65,7 +65,7 @@ class _SearchViewState extends State<SearchView> {
                         SizedBox(height: 15,),
                         createTextField(
                           'estimateDate',
-                          'החל מאיזה תאריך',/// todo - after yisrael make this to look for a specific day-> change the text here
+                          'באיזה תאריך',/// todo - after yisrael make this to look for a specific day-> change the text here
                           'date',
                         ),
                         SizedBox(height: 15,),
@@ -336,7 +336,7 @@ class _SearchViewState extends State<SearchView> {
     if (!this.allField.containsKey(name)) {
       this.allField[name] = TextEditingController();
       if (type == 'int') {
-        (this.allField[name]!).text = '2';
+        (this.allField[name]!).text = '16';
       }
     }
     switch (type) {

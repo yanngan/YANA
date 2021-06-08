@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:yana/UI/WIDGETS/allWidgets.dart';
+import 'package:yana/UX/DB/allDB.dart';
 import 'package:yana/UX/LOGIC/Profanity.dart';
 import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
 import 'package:intl/intl.dart';
@@ -59,7 +60,7 @@ class _ChatState extends State<Chat> {
     _him =  _otherInfo['name'].toString();
     _himID =_otherInfo['userID'].toString();
     // print(profanityList.toString());
-
+    // FirebaseHelper.sendPlaceToFb(new Place("ים המלח", "ים המלח", "436537876", "הבקע הסורי-אפריקני", 999999999, "רגוע", false, "24 שעות", "ים המלח", 6, "https://he.wikipedia.org/wiki/%D7%99%D7%9D_%D7%94%D7%9E%D7%9C%D7%97", "https://www.google.com/maps/place/%D7%99%D7%9D+%D7%94%D7%9E%D7%9C%D7%97%E2%80%AD/@31.5374596,35.7704954,10z/data=!3m1!4b1!4m5!3m4!1s0x15033c2eaf9fbba1:0xf38cff48a0c15882!8m2!3d31.5590287!4d35.4731895", "31.5374596", "35.7704954", "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Dead_sea.jpg/375px-Dead_sea.jpg", "מעלה אדומים"));
     getMessages();
   }
 
@@ -302,7 +303,7 @@ class _ChatState extends State<Chat> {
               if(otherToken.isEmpty){
                 return;
               }
-              Logic.sendPushNotificationsToUsers([otherToken], NotificationTitle, _him + " שלח/ה לך הודעה ");
+              Logic.sendPushNotificationsToUsers([otherToken], NotificationTitle, _me + " שלח/ה לך הודעה ");
             },
           ),
         ),

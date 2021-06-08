@@ -159,54 +159,57 @@ class _LoginState extends State<Login> {
                             ) ,
                             ),
                           ), // Connect with Facebook
-//                          Padding(
-//                            padding: const EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
-//                            child: ClipRRect(
-//                              borderRadius: BorderRadius.circular(64),
-//                              child: ElevatedButton(
-//                                  style: ElevatedButton.styleFrom(
-//                                    elevation: (alpha / 100).round().toDouble(),
-//                                    primary: Colors.red.withAlpha(alpha.toInt()), // background
-//                                    onPrimary: Colors.white.withAlpha(alpha.toInt()), // foreground
-//                                  ),
-//                                  child: Row(
-//                                    mainAxisSize: MainAxisSize.min,
-//                                    children: [
-//                                      Text('התחבר עם משתמש דמה', style: TextStyle(fontSize: 24, color: Colors.black.withAlpha(alpha.toInt()))),
-//                                      Image(
-//                                          color: Colors.black.withAlpha(alpha.toInt()),
-//                                          height: 50,
-//                                          width: 50,
-//                                          image: AssetImage(
-//                                              'assets/facebook_logo.png'
-//                                          )
-//                                      ),
-//                                    ],
-//                                  ),
-//                                  onPressed: () { // TODO getCurrentUser(String userID)
-//                                    Map<String, String> dummyUserInfo = new Map<String, String>();
-//                                    dummyUserInfo["userID"]               =     "01234567891234567";
-//                                    dummyUserInfo["name"]                 =     "Adriana Lima";
-//                                    dummyUserInfo["email"]                =     "adrianalima@gmail.com";
-//                                    dummyUserInfo["gender"]               =     "female";
-//                                    dummyUserInfo["birthday"]             =     "12/06/1996";
-//                                    dummyUserInfo["age_range"]            =     "39";
-//                                    dummyUserInfo["hobbies"]              =     "Super Model, Actress";
-//                                    dummyUserInfo["bio"]                  =     "Most beautiful woman in the world!";
-//                                    dummyUserInfo["livingArea"]           =     "Salvador, Bahia, Brazil";
-//                                    dummyUserInfo["workArea"]             =     "New York, Los Angeles";
-//                                    dummyUserInfo["academicInstitution"]  =     "Creative Artists Agency";
-//                                    dummyUserInfo["fieldOfStudy"]         =     "Modeling";
-//                                    dummyUserInfo["smoking"]              =     "no baby";
-//                                    dummyUserInfo["fbPhoto"]              =     "https://upload.wikimedia.org/wikipedia/commons/8/8e/Adriana_Lima_2019_by_Glenn_Francis.jpg";
-//                                    dummyUserInfo["signUpDate"]           =     "20/09/2000";
-//                                    dummyUserInfo["isBlocked"]            =     "false";
-//                                    dummyUserInfo["notifications"]        =     "true";
-//                                    userCredentials(dummyUserInfo, LOGIN_DUMMY);
-//                                  }
-//                              ),
-//                            ),
-//                          ), // Connect with Dummy user
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 35.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(64),
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: (alpha / 100).round().toDouble(),
+                                    primary: Colors.red.withAlpha(alpha.toInt()), // background
+                                    onPrimary: Colors.white.withAlpha(alpha.toInt()), // foreground
+                                  ),
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      Center(
+                                        child: SizedBox(
+                                          height: 150,
+                                          child: Image.network(
+                                              "https://scontent.fsdv3-1.fna.fbcdn.net/v/t1.18169-1/p320x320/18620299_1450180998376011_5537896693663387130_n.jpg?_nc_cat=103&ccb=1-3&_nc_sid=7206a8&_nc_ohc=1U-UN1EWuE0AX9PeIRM&_nc_ht=scontent.fsdv3-1.fna&tp=6&oh=12d9bbfd2c3b0a40b8089804b7c806b6&oe=60E597CC"
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 80.0),
+                                        child: Text("משתמש לכבוד ג'ונאס", style: TextStyle(fontSize: 28, color: Colors.lightBlueAccent, fontWeight: FontWeight.bold)),
+                                      ),
+                                    ],
+                                  ),
+                                  onPressed: () { // TODO getCurrentUser(String userID)
+                                    Map<String, String> dummyUserInfo = new Map<String, String>();
+                                    dummyUserInfo["userID"]               =     "01234567891234567";
+                                    dummyUserInfo["name"]                 =     "Adriana Lima";
+                                    dummyUserInfo["email"]                =     "adrianalima@gmail.com";
+                                    dummyUserInfo["gender"]               =     "female";
+                                    dummyUserInfo["birthday"]             =     "12/06/1996";
+                                    dummyUserInfo["age_range"]            =     "39";
+                                    dummyUserInfo["hobbies"]              =     "Super Model, Actress";
+                                    dummyUserInfo["bio"]                  =     "Most beautiful woman in the world!";
+                                    dummyUserInfo["livingArea"]           =     "Salvador, Bahia, Brazil";
+                                    dummyUserInfo["workArea"]             =     "New York, Los Angeles";
+                                    dummyUserInfo["academicInstitution"]  =     "Creative Artists Agency";
+                                    dummyUserInfo["fieldOfStudy"]         =     "Modeling";
+                                    dummyUserInfo["smoking"]              =     "no baby";
+                                    dummyUserInfo["fbPhoto"]              =     "https://upload.wikimedia.org/wikipedia/commons/8/8e/Adriana_Lima_2019_by_Glenn_Francis.jpg";
+                                    dummyUserInfo["signUpDate"]           =     "20/09/2000";
+                                    dummyUserInfo["isBlocked"]            =     "false";
+                                    dummyUserInfo["notifications"]        =     "true";
+                                    userCredentials(dummyUserInfo, LOGIN_DUMMY);
+                                  }
+                              ),
+                            ),
+                          ), /// Connect with Dummy user
 //                          Padding(
 //                            padding: const EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
 //                            child: ClipRRect(
@@ -273,9 +276,10 @@ class _LoginState extends State<Login> {
  */
   void userCredentials(Map<String, String> credentials, String functionNeeded) async {
     //    Check if user is in our database
-    // TODO this commented section is for production, instead of the Test mode below
     String userId = credentials["id"].toString();
-//    userId = '01234567891234567';   // Test ID of Adriana Lima
+    if(functionNeeded == ""){
+//      userId = '01234567891234567';   // Test ID of Adriana Lima
+    }
     bool exists = false;
     User newUser = new User.isNULL('null');
     await Future.wait([

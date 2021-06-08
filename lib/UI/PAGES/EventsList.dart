@@ -36,12 +36,16 @@ class _EventsListState extends State<EventsList> {
             child: Container(
               color: Colors.amber,
               child: _initDone
-              ? (listEvents.length == 0 ? EmptyScreen(maxLines: 3, text: "לא קיימים הקשורים לחשבונך ברגע זה, עליך להירשם או לבקש להצטרף לאירוע") : ListView.builder(
-                  itemCount: listEvents.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return _createRow(index);
-                  }
-              ))
+              ? (
+                  listEvents.length == 0
+                    ? EmptyScreen(maxLines: 3, text: "לא קיימים הקשורים לחשבונך ברגע זה, עליך להירשם או לבקש להצטרף לאירוע")
+                    : ListView.builder(
+                      itemCount: listEvents.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return _createRow(index);
+                      }
+                  )
+                )
               : SpinKitFadingCircle(
                 color: Colors.white,
                 size: 50.0,
@@ -77,12 +81,12 @@ class _EventsListState extends State<EventsList> {
   }
 
   _createRow(int index){
-    String texeButton = "";
+    String textButton = "";
     var actionButton;
     print(listEvents[index]);
-    if (listEvents[index].userID == userMap['id']!) {
-      texeButton = "ערוך";
-      actionButton = ()async{
+    if (listEvents[index].userID == userMap['userID']!) {
+      textButton = "ערוך";
+      actionButton = () async {
         await MapLogic.addEditSeePoints(context, 'edit',
           theEvent: listEvents[index],
           thePlace: placeByEvents[listEvents[index].eventID],
@@ -94,15 +98,15 @@ class _EventsListState extends State<EventsList> {
       };
     }else {
       if (listEvents[index].statusForUser == Events.ASK) {
-        texeButton = "טרם אושר";
+        textButton = "טרם אושר";
         actionButton = (){_makeToast("בקשתך נשלחה, וממתינה לאישור מארגן האירוע",Colors.pink);};
       }
       else if(listEvents[index].statusForUser == Events.GOING){
-        texeButton = "בטל הגעה";
+        textButton = "בטל הגעה";
         actionButton = (){userCancelation(listEvents[index]);};
       }
       else{
-        texeButton = "שגיאה";
+        textButton = "שגיאה";
         actionButton = (){_makeToast("אנו מתנצלים אירעה שגיאה במערכת",Colors.red);};
       }
     }
@@ -110,7 +114,7 @@ class _EventsListState extends State<EventsList> {
       padding: EdgeInsets.fromLTRB(2, 0, 0, 15),
       child: InkWell(
         onTap: actionButton,
-        child: Neumorphism(null, null, Text(texeButton),
+        child: Neumorphism(null, null, Text(textButton),
           type: NeumorphismOuter,
           radius: 32.0,
           alignment: Alignment.centerLeft,
@@ -209,15 +213,19 @@ class _EventsListState extends State<EventsList> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text("${listEvents[index].note}",
-                        style: TextStyle(fontSize: 15),
-                        textAlign: TextAlign.end,
+                      Flexible(
+                        child: Text(
+                          "${listEvents[index].note}",
+                          style: TextStyle(fontSize: 15),
+                          textAlign: TextAlign.end,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                       Text(" : ",
-                          style: TextStyle(fontSize: 15),
+                        style: TextStyle(fontSize: 15),
                       ),
                       Text("הערות",
-                          style: TextStyle(fontSize: 15),
+                        style: TextStyle(fontSize: 15),
                       ),
                     ],
                   ),

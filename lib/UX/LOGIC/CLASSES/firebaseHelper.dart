@@ -1,21 +1,22 @@
-import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:yana/UI/PAGES/Utilities.dart';
 import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
 import 'package:yana/UX/DB/allDB.dart';
+///for a date format
+import 'package:intl/intl.dart';
 
 /// Yisrael Bar, Lidor Eliyahu Shelef, Yann Moshe Ganem
 class FirebaseHelper {
-//first use this method to access firebase collection - no need for real-time(messages)
+///first use this method to access firebase collection - no need for real-time(messages)
 // update I put it on first line of main
   /*static void initFirebase() async {
     await Firebase.initializeApp();
   }*/
 
 /// start Places-------------------------------------------------
-  //send to the firebase A new Place or update existing one
+  ///send to the firebase A new Place or update existing one
   static Future<bool> sendPlaceToFb(Place place) async {
     //add to real-time firebase on place name the place id
     FirebaseDatabase.instance
@@ -37,7 +38,7 @@ class FirebaseHelper {
     return true;
   }
 
-  //get a list of all place from the firebase
+  ///get a list of all place from the firebase
   static Future<List<Place>> getPlacesFromFb() async {
     List<Place> places = [];
     //read from collection
@@ -49,7 +50,7 @@ class FirebaseHelper {
     return places;
   }
 
-  //get from firebase a place by ID if it's not exist return null
+  ///get from firebase a place by ID if it's not exist return null
   static Future<Place?> getPlaceByID(String placeID) async {
     final refUsers =
         FirebaseFirestore.instance.collection('Places').doc(placeID);
@@ -63,7 +64,7 @@ class FirebaseHelper {
 /// end Places-------------------------------------------------
 
 /// start BulletinBoard-------------------------------------------------
-  //send BulletinBoard obj to firebase
+  ///send BulletinBoard obj to firebase
   static Future<bool> sendBulletinBoardToFb(BulletinBoard bulletinBoard) async {
     FirebaseFirestore fireStore = FirebaseFirestore.instance;
     var id = FirebaseFirestore.instance.collection('BulletinBoard').doc().id;
@@ -79,7 +80,7 @@ class FirebaseHelper {
     return true;
   }
 
-  //get all BulletinBoard from firebase
+  ///get all BulletinBoard from firebase
   static Future<List<BulletinBoard>> getBulletinBoardFromFb() async {
     List<BulletinBoard> bulletinBoards = [];
 
@@ -92,7 +93,7 @@ class FirebaseHelper {
     return bulletinBoards;
   }
 
-  //get BulletinBoard by ID from firebase
+  ///get BulletinBoard by ID from firebase
   static Future<BulletinBoard?> getBulletinBoardByID(String id) async {
     final refUsers =
         FirebaseFirestore.instance.collection('BulletinBoard').doc(id);
@@ -106,7 +107,7 @@ class FirebaseHelper {
 //end BulletinBoard-------------------------------------------------
 
 /// start Messages-------------------------------------------------
-  //send a new message to firebase realtime - store the message on both the sender and the receiver branch's
+  ///send a new message to firebase realtime - store the message on both the sender and the receiver branch's
   static void sendMessageToFb(Message m1) {
     //write a chat message
     final databaseReference = FirebaseDatabase.instance.reference();
@@ -122,7 +123,7 @@ class FirebaseHelper {
     myRef1.push().set(m1.toJson());
   }
 
-//just a test but not usable- implementation in chat page in the UI
+///just a test but not usable- implementation in chat page in the UI
   static Future<List<Message>> getMessagesFromFb(
       var selfName, var otherName) async {
     final databaseReference = FirebaseDatabase.instance.reference();
@@ -161,7 +162,7 @@ class FirebaseHelper {
 /// end Messages-------------------------------------------------
 
 /// start Events-------------------------------------------------
-  //generate event id to put in event object
+  ///generate event id to put in event object
   static Future<String> generateEventId() async {
     return await FirebaseFirestore.instance.collection('Events').doc().id;
   }
@@ -170,7 +171,7 @@ class FirebaseHelper {
     return await FirebaseFirestore.instance.collection('Attendance').doc().id;
   }
 
-  //send events object to firebase
+  ///send events object to firebase
   static Future<bool> sendEventToFb(Events event) async {
     //add to real-time firebase on place id the new event
     // FirebaseDatabase.instance
@@ -193,7 +194,7 @@ class FirebaseHelper {
     return true;
   }
 
-  //in case the event does not exist the function return null
+  ///in case the event does not exist the function return null
   static Future<Events?> getEventByID(String eventID) async {
     final refUsers =
         FirebaseFirestore.instance.collection('Events').doc(eventID);
@@ -205,7 +206,7 @@ class FirebaseHelper {
     }
   }
 
-  //in a given place id we get from firebase all the events in this place
+  ///in a given place id we get from firebase all the events in this place
   static Future<List<Events>> getEventsByPlaceID(String placeID) async {
     List<Events> events = [];
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -218,6 +219,7 @@ class FirebaseHelper {
     return events;
   }
 
+  ///deleting an event from the event collection and from Attendance collection
   static void deleteEventByID(String _eventID){
     FirebaseFirestore.instance.collection('Events').doc(_eventID).delete();
     FirebaseFirestore.instance.collection("Attendance")
@@ -247,7 +249,7 @@ class FirebaseHelper {
     return events1;
   }
 */
-  //get all events from firebase
+  ///get all events from firebase
   static Future<List<Events>> getEventsFromFb() async {
     //read from collection
     QuerySnapshot querySnapshot =
@@ -260,7 +262,7 @@ class FirebaseHelper {
     return events;
   }
 
-  //get all events that active
+  ///get all events that active
   static Future<List<Events>> getEventsByStatus(bool isActive) async {
     List<Events> events = [];
     //need to fix with await
@@ -274,7 +276,7 @@ class FirebaseHelper {
     return events;
   }
 
-//get all events by a place name
+///get all events by a place name--you should use getEventsBySearchCombination
   static Future<List<Events>> getEventsByName(String name) async {
     List<Events> events = [];
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -287,7 +289,7 @@ class FirebaseHelper {
     return events;
   }
 
-  //return all events that max capacity is less then num
+  ///return all events that max capacity is less then num--you should use getEventsBySearchCombination
   static Future<List<Events>> getEventsByMaxCapacity(int num) async {
     List<Events> events = [];
     //need to fix with await
@@ -301,13 +303,29 @@ class FirebaseHelper {
     return events;
   }
 
-  //get all events that from a given date and more.. date <= List<events>
-  //date= 2021-03-03 then the function will returns 2021-03-03, 2021-04-04...
-  static Future<List<Events>> getEventsByDate(String date) async {
+  ///get all events that in the range on a specific date, returns: List<events>
+  static Future<List<Events>> getEventsByASpecificDate(String startDate,String endDate ) async {
     List<Events> events = [];
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('Events')
-        .where("startEstimate", isGreaterThanOrEqualTo: date)
+        .where("startEstimate", isGreaterThanOrEqualTo: startDate)
+        .where("startEstimate", isLessThanOrEqualTo: endDate+" 23:59")
+        .get();
+    querySnapshot.docs.forEach((doc) {
+      events.add(Events.fromJson(doc.data()));
+    });
+    return events;
+  }
+  ///get all events that from this date and more, returns: List<events>
+  static Future<List<Events>> getEventsByDateAndMore(String startDate) async {
+    List<Events> events = [];
+    if(startDate.isEmpty){
+      DateTime now = new DateTime.now();
+      startDate = new DateFormat('yyyy-MM-dd').format(now);
+    }
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('Events')
+        .where("startEstimate", isGreaterThanOrEqualTo: startDate)
         .get();
     querySnapshot.docs.forEach((doc) {
       events.add(Events.fromJson(doc.data()));
@@ -338,13 +356,23 @@ class FirebaseHelper {
   }
 */
 
-  //get events by the 3 parameters : name, max capacity, date.
+  ///get events by the 3 parameters : name, max capacity, date.
+  ///  name- events that contain the place name like: Shoshana Bar
+  ///  capacity- events that have less max nom of people then capacity
+  ///  date- events that in the range on a specific date
+
   static Future<List<Events>> getEventsBySearchCombination(
       {String name = "", int capacity = -1, String date = ""}) async {
+
     List<Events> events = [];
+    if(date.isEmpty){
+      DateTime now = new DateTime.now();
+      date = new DateFormat('yyyy-MM-dd').format(now);
+    }
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('Events')
-        .where("startEstimate", isGreaterThanOrEqualTo: date)///todo - make this to return a specific day
+        .where("startEstimate", isGreaterThanOrEqualTo: date)
+        .where("startEstimate", isLessThanOrEqualTo: date+" 23:59")
         .get();
     querySnapshot.docs.forEach((doc) {
       events.add(Events.fromJson(doc.data()));
@@ -399,7 +427,7 @@ class FirebaseHelper {
   }
 
 
-  //if approve == true -> approve , else -> reject
+  ///if approve == true -> approve , else -> reject
   static Future<bool> approveOrRejectRequestToJoinEvent(String userID,Events theEvents,bool approve) async{
     FirebaseFirestore fireStore = FirebaseFirestore.instance;
     try {
@@ -421,7 +449,7 @@ class FirebaseHelper {
     }
   }
 
-  //if user been approve to join an event and regrets, use this function to cancel
+  ///if user been approve to join an event and regrets, use this function to cancel
   static Future<bool> userCancelation(String userID, Events event,)async{
     FirebaseFirestore fireStore = FirebaseFirestore.instance;
     try {
@@ -478,7 +506,7 @@ class FirebaseHelper {
   }
 
 
-  //get all Attendance Id-User for an Event
+  ///get all Attendance Id-User for an Event
   static Future<List<String>> getAllAttendanceIdUserForANEvent(String idEvent)async{
     QuerySnapshot querySnapshot =  await FirebaseFirestore.instance.collection('Attendance').where('idEvent',isEqualTo: idEvent).get();
     List<String> idUser = [];
@@ -502,7 +530,7 @@ class FirebaseHelper {
 /// end Events-------------------------------------------------
 
 /// start Users-------------------------------------------------
-  //send to firebase new user or update existing one
+  ///send to firebase new user or update existing one
   static Future<bool> sendUserToFb(User user) async {
     FirebaseFirestore fireStore = FirebaseFirestore.instance;
     //write to collection
@@ -514,7 +542,7 @@ class FirebaseHelper {
     return true;
   }
 
-  //get all users from firebase
+  ///get all users from firebase
   static Future<List<User>> getUsersFromFb() async {
     //read from collection
     QuerySnapshot querySnapshot =
@@ -526,7 +554,7 @@ class FirebaseHelper {
     return user;
   }
 
-  //in a given id return the user from firebase
+  ///in a given id return the user from firebase
   static Future<User?> getCurrentUser(String userID) async {
     final refUsers = FirebaseFirestore.instance.collection('Users').doc(userID);
     var doc = await refUsers.get();
@@ -537,7 +565,7 @@ class FirebaseHelper {
     }
   }
 
-  //check if a certain user id already exist
+  ///check if a certain user id already exist
   static Future<bool> checkIfUserExists(String userID) async {
     final refUsers = FirebaseFirestore.instance.collection('Users').doc(userID);
     var doc = await refUsers.get();
@@ -548,12 +576,12 @@ class FirebaseHelper {
     }
   }
 
-  // Delete the user entire account
+  /// Delete the user entire account
   static void deleteUserAccount(var _userID) {
     FirebaseFirestore.instance.collection('Users').doc(_userID).delete();
   }
 
-  //save the Firebase Cloud Messaging user token into Users
+  ///save the Firebase Cloud Messaging user token into Users
   static void saveUserRegistrationToken(String userID,String registrationToken)async{
     await FirebaseFirestore.instance.collection('Users').doc(userID).update({'notificationToken':registrationToken});
   }

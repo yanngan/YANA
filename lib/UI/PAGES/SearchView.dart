@@ -197,17 +197,18 @@ class _SearchViewState extends State<SearchView> {
   }
 
   void _init() async {
-    Logic.getEventsByCondition().then((value) async {
+    await Logic.getEventsByCondition().then((value) async {
+      listEvents.clear();
       listEvents = value;
       for (var oneEvents in listEvents) {
-        print(oneEvents.placeID);
+        // print(oneEvents.placeID);
         var temp = await Logic.getPlaceById(oneEvents.placeID);
         // ignore: unnecessary_null_comparison
         if (temp == null) {
           listEvents.remove(oneEvents);
           continue;
         }
-        print(temp.placeID);
+        // print(temp.placeID);
         PlaceByEvents[oneEvents.eventID] = temp;
       }
       setState(() {
@@ -237,15 +238,16 @@ class _SearchViewState extends State<SearchView> {
             placesName: placeName,
             startEstimateTime: startEstimateTime)
         .then((value) async {
+          listEvents.clear();
       listEvents = value;
       for (var oneEvents in listEvents) {
-        print(oneEvents.placeID);
+        // print(oneEvents.placeID);
         var temp = await Logic.getPlaceById(oneEvents.placeID);
         if (temp == null) {
           listEvents.remove(oneEvents);
           continue;
         }
-        print(temp.placeID);
+        // print(temp.placeID);
         PlaceByEvents[oneEvents.eventID] = temp;
       }
       setState(() {
@@ -256,7 +258,7 @@ class _SearchViewState extends State<SearchView> {
 
   _toggleSearch() {
     setState(() {
-      print(listEvents);
+      // print(listEvents);
       _seeField = !_seeField;
     });
   }

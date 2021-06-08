@@ -265,7 +265,13 @@ class _ChatState extends State<Chat> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
       child: new TextField(
-        inputFormatters: [WhitelistingTextInputFormatter(RegExp(r'[a-zA-Z0-9 אבגדהוזחטיכךלמםנןסעפףצץקרשת]'))],
+        inputFormatters: [
+          WhitelistingTextInputFormatter(
+            RegExp(
+                r'^[a-zA-Z0-9 ?:אבגדהוזחטיכךלמםנןסעפףצץקרשת_=!@#$&()\\-`.+,/\"]*$'
+            )
+          )
+        ],
 
         controller: _controllerInput,
         textAlign: TextAlign.center,

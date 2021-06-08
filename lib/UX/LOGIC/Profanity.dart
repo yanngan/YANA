@@ -633,3 +633,26 @@ List <String> englishProfanityList = [
   "yiffy",
   "zoophilia",
 ];
+
+List <String> arabicProfanityList = [
+  "كوس امك",
+  "كوس أختك",
+  "شرموطه",
+  "عاهره",
+  "منيك",
+  "منيوك",
+  "زباله",
+  "كوندره",
+  "مخصي",
+  "يا هامل",
+  "يلعن ابوك",
+  "يلعن امك",
+  "ابن شرموطه",
+  "ابن عاهره",
+];
+
+List <String> russianProfanityList = [];
+
+
+
+

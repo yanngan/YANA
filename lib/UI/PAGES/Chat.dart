@@ -56,8 +56,6 @@ class _ChatState extends State<Chat> {
     super.initState();
     _me = userMap['name'].toString();
     _meID = userMap['userID'].toString();
-    // _him =  "Lidor Eliyahu Shelef";//_otherInfo['name'].toString();
-    // _himID = "10216275052784039";//_otherInfo['userID'].toString();
     _him =  _otherInfo['name'].toString();
     _himID =_otherInfo['userID'].toString();
     // print(profanityList.toString());

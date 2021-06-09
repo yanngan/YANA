@@ -55,7 +55,7 @@ class _SettingsState extends State<Settings> {
   late TextEditingController _controllerSmoking;
   late TextEditingController _controllerSignUpDate;
   late User updatedUser;
-  String _age = userMap['age_range'].toString(), _hobbies = userMap['hobbies'].toString(), _bio = userMap['bio'].toString(),
+  String _hobbies = userMap['hobbies'].toString(), _bio = userMap['bio'].toString(),
       _livingArea = userMap['livingArea'].toString(), _workArea = userMap['workArea'].toString(),
       _academicInstitution =  userMap['academicInstitution'].toString(),
       _fieldOfStudy = userMap['fieldOfStudy'].toString(), _smoking = userMap['smoking'].toString();
@@ -83,7 +83,7 @@ class _SettingsState extends State<Settings> {
     _controllerEmail = new TextEditingController(text: userMap['email'].toString());
     _controllerSex = new TextEditingController(text: userMap['gender'].toString());
     _controllerBirthday = new TextEditingController(text: userMap['birthday'].toString());
-    _controllerAgeRange = new TextEditingController(text: _age);
+    _controllerAgeRange = new TextEditingController(text: userMap['age_range'].toString());
     _controllerHobbies = new TextEditingController(text: _hobbies);
     _controllerBio = new TextEditingController(text: _bio);
     _controllerLivingArea = new TextEditingController(text: _livingArea);
@@ -645,6 +645,7 @@ class _SettingsState extends State<Settings> {
     String userPhotoURL = "";
     double _h = ((MediaQuery.of(context).size.height / 3) * 1.75);
     double _w = ((MediaQuery.of(context).size.width / 2) * 1.45);
+    double textFieldsHeight = 35.0;
     userPhotoURL = userMap["fbPhoto"].toString();
     showModalBottomSheet(
       context: context,
@@ -871,9 +872,7 @@ class _SettingsState extends State<Settings> {
                                     child: TextField(
                                       controller: _controllerAgeRange,
                                       onChanged: (_text){
-                                        setState(() {
-                                          _age = _text;
-                                        });
+                                        setState(() {});
                                       },
                                       textAlign: TextAlign.center,
                                       decoration: InputDecoration(
@@ -1747,7 +1746,6 @@ class _SettingsState extends State<Settings> {
           fontSize: 16.0
       );
     }
-    userMap['age_range'] = _age;
     userMap['hobbies'] = _hobbies;
     userMap['bio'] = _bio;
     userMap['livingArea'] = _livingArea;

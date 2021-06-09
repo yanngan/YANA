@@ -25,18 +25,17 @@ class _NotificationPageState extends State<NotificationPage> {
     if(!_initDone){
       _init();
     }
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("התראות"),
-          iconTheme: IconThemeData(
-            color: Colors.amber, //change your color here
-          ),
-          backgroundColor: Colors.pink,
+    return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: Colors.amber, //change your color here
         ),
-        backgroundColor: Colors.amber,
-        body: Container(
+        backgroundColor: Colors.pink,
+      ),
+      backgroundColor: Colors.amber,
+      body: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Container(
           color: Colors.amber,
           child: _initDone?ListView.builder(
               itemCount: listNotification.length,

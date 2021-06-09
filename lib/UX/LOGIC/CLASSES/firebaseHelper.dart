@@ -209,17 +209,12 @@ class FirebaseHelper {
   ///in a given place id we get from firebase all the events in this place
   static Future<List<Events>> getEventsByPlaceID(String placeID) async {
     List<Events> events = [];
-    DateTime now = new DateTime.now();
-    String date = new DateFormat('yyyy-MM-dd').format(now);
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('Events')
-        // .where("placeID", isEqualTo: placeID)//can't do both where is the same query
-        .where("startEstimate", isGreaterThanOrEqualTo: date )
+        .where("placeID", isEqualTo: placeID)
         .get();
     querySnapshot.docs.forEach((doc) {
-      Events e1 =Events.fromJson(doc.data());
-      if(e1.placeID ==  placeID)
-        events.add( e1);
+      events.add(Events.fromJson(doc.data()));
     });
     return events;
   }

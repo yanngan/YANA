@@ -65,11 +65,4 @@ String aboutOrganization = "מיזם YANA הינו מיזם למלחמה בבד�
     "והקמת מאהלים חברתיים בנקודות מפתח (חוף הים, אוניברסיטה ועוד)."
     "המיזם מיועד לצעירים בגילאי 18 עד 35 (פלוס מינוס).";
 
-Map<String, String> developersInfo = {
-  "לידור אליהו שלף": "טקסט על לידור",
-  "יאן משה גנם": "פה יהיה כתוב ליאן",
-  "ישראל בר אור": "כאן מידע לישראל",
-  "ג'ונאס ספרלינג": "ג'ונאס #מידע",
-};
-
 /// Developers: Lidor Eliyahu Shelef, Yann Ganem, Yisrael Bar-Or and Jonas Sperling

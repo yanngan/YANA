@@ -247,7 +247,9 @@ class _NotificationPageState extends State<NotificationPage> {
       _makeToast("אירעה שגיאה, עמכם הסליחה",Colors.red);
       return;
     }
-    Logic.approveOrRejectRequestToJoinEvent(theOtherUser,theEvents,approve);
+    Logic.approveOrRejectRequestToJoinEvent(theOtherUser,theEvents,approve).then((value){
+      setState(() {});
+    });
   }
 
   /// Creates a toast message with [str] text and [theColor] color

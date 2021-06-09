@@ -6,6 +6,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:yana/UI/PAGES/DevelopersCreditPage.dart';
 import 'package:yana/UI/PAGES/Utilities.dart';
 import 'package:yana/UX/DB/users.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
@@ -36,7 +37,7 @@ class _SettingsState extends State<Settings> {
   /// @_controller'Name' - [TextField] controllers in order to get all the text changes
   /// [_hobbies], [_bio], [_livingArea], [_workArea], [_academicInstitution], [_fieldOfStudy], [_smoking] - User properties field in order to save them later
   bool _notification = userMap['notifications'].toString().toLowerCase() == 'true';
-  bool _isExpandedAbout = false, _isExpandedGetHelp = false;
+  bool _isExpandedAbout = false, _isExpandedGetHelp = false, _isExpandedAccount = false;
   double _radius = 14.0, _paddingRight = 30.0, _paddingLeft = 25.0;
   String userName = userMap['name'].toString();
   late List<bool> _toggleSelectionsMap, _toggleSelectionsChatsEvents;
@@ -58,6 +59,15 @@ class _SettingsState extends State<Settings> {
       _livingArea = userMap['livingArea'].toString(), _workArea = userMap['workArea'].toString(),
       _academicInstitution =  userMap['academicInstitution'].toString(),
       _fieldOfStudy = userMap['fieldOfStudy'].toString(), _smoking = userMap['smoking'].toString();
+  final Uri _emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: 'yana.dev.team@gmail.com',
+      queryParameters: {
+        'subject': userMap['name'].toString() + ", " + 'מעוניין לדווח על תקלה',
+        'body': 'בעבור התמיכה של יאנה,\nברצוני לדווח על התקלה הבאה:\n',
+//        'attachments': 'assets/yana_logo.png',
+      }
+  );
 
   @override
   void initState() {
@@ -108,7 +118,7 @@ class _SettingsState extends State<Settings> {
                             borderRadius: BorderRadius.all(Radius.circular(_radius)),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 10.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
                             child: ListTile(
                               title: Align(
                                   alignment: Alignment(1.153, 0),
@@ -342,7 +352,7 @@ class _SettingsState extends State<Settings> {
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: ListTile(
                             title: Align(
-                                alignment: Alignment(1.5, 0),
+                                alignment: Alignment(50.85, 0),
                                 child: AutoSizeText("עמוד אירועים וצ'אטים", maxLines: 2,)
                             ),
                             leading: Icon(Icons.map),
@@ -415,10 +425,10 @@ class _SettingsState extends State<Settings> {
                               headerBuilder: (context, isOpen){
                                 return Container(
                                   child: Padding(
-                                    padding: const EdgeInsets.only(left: 9.5),
+                                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
                                     child: ListTile(
                                       title: Align(
-                                          alignment: Alignment(1.023, 0),
+                                          alignment: Alignment(1.153, 0),
                                           child: Text("קבל עזרה")
                                       ),
                                       leading: ImageIcon(
@@ -438,8 +448,8 @@ class _SettingsState extends State<Settings> {
                                         launch(specialistNumberCall);
                                       },
                                       title: Align(
-                                        alignment: Alignment(1.251, 0),
-                                        child: Text("התקשר אל מומחה")
+                                          alignment: Alignment(1.251, 0),
+                                          child: Text("התקשר אל מומחה")
                                       ),
                                       leading: Icon(Icons.call),
                                     ),
@@ -451,8 +461,8 @@ class _SettingsState extends State<Settings> {
                                         launch("https://wa.me/$specialistNumberSms?text=");
                                       },
                                       title: Align(
-                                        alignment: Alignment(1.251, 0),
-                                        child: Text("שלח הודעה למומחה")
+                                          alignment: Alignment(1.251, 0),
+                                          child: Text("שלח הודעה למומחה")
                                       ),
                                       leading: Icon(Icons.message),
                                     ),
@@ -467,56 +477,128 @@ class _SettingsState extends State<Settings> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 10.0),
                       child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.amber[300]!.withOpacity(0.8),
-                          borderRadius: BorderRadius.all(Radius.circular(_radius)),
-                        ),
-                        child: Column(
+                          decoration: BoxDecoration(
+                            color: Colors.amber[300]!.withOpacity(0.8),
+                            borderRadius: BorderRadius.all(Radius.circular(_radius)),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: ListTile(
+                              onTap: () {
+                                launch(_emailLaunchUri.toString().replaceAll("+", " "));
+                              },
+                              title: Align(
+                                  alignment: Alignment(1.153, 0),
+                                  child: Text("דיווח על תקלה")
+                              ),
+                              leading: Icon(Icons.report_problem),
+                            ),
+                          )
+                      ),
+                    ),  //  Report An Issue
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 10.0),
+                      child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.amber[300]!.withOpacity(0.8),
+                            borderRadius: BorderRadius.all(Radius.circular(_radius)),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: ListTile(
+                              onTap: () {
+                                openDevelopersCredit();
+                              },
+                              title: Align(
+                                  alignment: Alignment(1.153, 0),
+                                  child: Text("קרדיט למפתחים")
+                              ),
+                              leading: Icon(Icons.developer_mode, color: Color(0xFF6b81ae),),
+                            ),
+                          )
+                      ),
+                    ),  //  Developers Credits
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 10.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(_radius)),
+                        child: ExpansionPanelList(
+                          elevation: 0,
+                          expandedHeaderPadding: EdgeInsets.all(0.0),
+                          expansionCallback: (int index, bool isExpanded) {
+                            setState(() {
+                              _isExpandedAccount = !_isExpandedAccount;
+                            });
+                          },
+                          animationDuration: Duration(milliseconds: 300),
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                              child: ListTile(
-                                onTap: (){
-                                  FirebaseHelper.deleteAllUserChats("LidorID");// TODO userMap['id']);
-                                },
-                                title: Align(
-                                    alignment: Alignment(1.314, 0),
-                                    child: Text("מחק את כול הצ'אטים")
-                                ),
-                                leading: Icon(Icons.delete_outline),
-                              ),
-                            ),  //  Delete All Chats
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                              child: ListTile(
-                                onTap: (){
-                                  FirebaseHelper.deleteAllUserEvents(userMap['id']);
-                                },
-                                title: Align(
-                                    alignment: Alignment(1.35, 0),
-                                    child: Text("מחק את כול האירועים")
-                                ),
-                                leading: Icon(Icons.delete_sharp),
-                              ),
-                            ),  //  Delete All Events
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                              child: ListTile(
-                                onTap: (){
-                                  FirebaseHelper.deleteUserAccount("yisrael"); // TODO userMap['id']);
-                                  _logOut();
-                                },
-                                title: Align(
-                                    alignment: Alignment(1.18, 0),
-                                    child: Text("מחק משתמש")
-                                ),
-                                leading: Icon(Icons.delete_forever),
-                              ),
-                            ),  //  Delete My Account
+                            ExpansionPanel(
+                              canTapOnHeader: true,
+                              isExpanded: _isExpandedAccount,
+                              backgroundColor: Colors.amber[300]!.withOpacity(0.8),
+                              headerBuilder: (context, isOpen){
+                                return Container(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                    child: ListTile(
+                                      title: Align(
+                                          alignment: Alignment(1.123, 0),
+                                          child: Text("חשבון")
+                                      ),
+                                      leading: Icon(Icons.switch_account),
+                                    ),
+                                  ),
+                                );
+                              },
+                              body: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                    child: ListTile(
+                                      onTap: (){
+                                        FirebaseHelper.deleteAllUserChats("LidorID");// TODO userMap['id']);
+                                      },
+                                      title: Align(
+                                          alignment: Alignment(1.314, 0),
+                                          child: Text("מחק את כול הצ'אטים")
+                                      ),
+                                      leading: Icon(Icons.delete_outline),
+                                    ),
+                                  ),  //  Delete All Chats
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                    child: ListTile(
+                                      onTap: (){
+                                        FirebaseHelper.deleteAllUserEvents(userMap['id']);
+                                      },
+                                      title: Align(
+                                          alignment: Alignment(1.35, 0),
+                                          child: Text("מחק את כול האירועים")
+                                      ),
+                                      leading: Icon(Icons.delete_sharp),
+                                    ),
+                                  ),  //  Delete All Events
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                    child: ListTile(
+                                      onTap: (){
+                                        FirebaseHelper.deleteUserAccount("yisrael"); // TODO userMap['id']);
+                                        _logOut();
+                                      },
+                                      title: Align(
+                                          alignment: Alignment(1.18, 0),
+                                          child: Text("מחק משתמש")
+                                      ),
+                                      leading: Icon(Icons.delete_forever),
+                                    ),
+                                  ),  //  Delete My Account
+                                ],
+                              ),//  Delete: All Chats / All Events / Account
+                            )
                           ],
                         ),
                       ),
-                    ),  //  Delete: All Chats / All Events / Account
+                    ),  //  All Account Deletion Related
                     Padding(
                       padding: const EdgeInsets.only(left: 35.0, right: 35.0, top: 10.0, bottom: 75.0),
                       child: Container(
@@ -1684,6 +1766,14 @@ class _SettingsState extends State<Settings> {
   void saveDefaultChatsEventsPreference() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(CHATS_EVENTS_TYPE_KEY, whichPage);
+  }
+
+  /// Opens the developers credit page
+  openDevelopersCredit(){
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => DevelopersCreditPage()),
+    );
   }
 
   /// Method to log the user out the application ( without closing it )

@@ -57,17 +57,18 @@ class _NoticeBoardState extends State<NoticeBoard> {
             details));
       } else {
         advertisements.add(Advertisement(
-
-            // this.context,
-            this.context,
             Color(0xfffad5b8),
+            element.bulletName,
+            element.eventIcon,
+            element.googleMapsLink,
             element.extraLink,
             element.extraLinkName,
             element.date,
             element.entryPrice,
             element.location,
             element.startTime,
-            details));
+            details
+            ));
       }
       index++;
     });
@@ -172,13 +173,9 @@ class Advertisement extends StatefulWidget {
   String adv_mapsLink;
   String adv_extraLink;
   String adv_extraLinkName;
-  BuildContext pagecontext;
-
-  // BuildContext pagecontext;
 
   //Constructor
   Advertisement(
-      //     this.pagecontext,
       this.color,
       this.adv_name,
       this.adv_icon,

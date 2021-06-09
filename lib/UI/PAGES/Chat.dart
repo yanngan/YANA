@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:yana/UI/WIDGETS/allWidgets.dart';
+import 'package:yana/UX/DB/allDB.dart';
 import 'package:yana/UX/LOGIC/Profanity.dart';
 import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
 import 'package:intl/intl.dart';
@@ -48,18 +49,20 @@ class _ChatState extends State<Chat> {
   String messageText = "", _me = "", _meID = "", _him = "", _himID = "";
   double bottomPadding = 14.0, topPadding = 75.0, _keyboardHeight = 0.0;
   Map<String, String> _otherInfo = new Map<String, String>();
-  List<String> profanityList = new List.from(englishProfanityList)..addAll(hebrewProfanityList);
+  List<String> profanityList = new List.from(englishProfanityList)
+                                      ..addAll(hebrewProfanityList)
+                                      ..addAll(arabicProfanityList);
   _ChatState(this._otherInfo);
 
   @override
   void initState() {
     super.initState();
+
     _me = userMap['name'].toString();
     _meID = userMap['userID'].toString();
     _him =  _otherInfo['name'].toString();
     _himID =_otherInfo['userID'].toString();
-    // print(profanityList.toString());
-
+    
     getMessages();
   }
 
@@ -263,7 +266,15 @@ class _ChatState extends State<Chat> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
       child: new TextField(
-        inputFormatters: [WhitelistingTextInputFormatter(RegExp(r'[a-zA-Z0-9 אבגדהוזחטיכךלמםנןסעפףצץקרשת]'))],
+        inputFormatters: [
+          WhitelistingTextInputFormatter(
+              RegExp(
+                r'[a-zA-Z0-9אבגדהוזחטיכךלמםנןסעפףצץקרשתАаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя_=!@#$&()\\-`. ?:+ ,/\"+×÷=/_€£¥₪*^%:;,~<>{}[]]*',
+                multiLine: true,
+                caseSensitive: false,
+              )
+          )
+        ],
 
         controller: _controllerInput,
         textAlign: TextAlign.center,
@@ -279,7 +290,6 @@ class _ChatState extends State<Chat> {
             onPressed: ()async{
               ///getting the message from the input box
               messageText = _controllerInput.text.toString().trim();
-              _controllerInput.clear();
               if(messageText.isEmpty){ return; }
 
               ///check if the message is free of Curses and Profanity words
@@ -289,6 +299,8 @@ class _ChatState extends State<Chat> {
                   _makeToast("תוכן הבא זוהה כפוגעני: "+wordsFound.toString(), Colors.red);
                   return;
                 }
+              _controllerInput.clear();
+
               DateTime now = new DateTime.now();
               String formattedDate = new DateFormat('dd-MM-yyyy hh:mm').format(now);
               ///assemble the message and send via firebase to the other user
@@ -301,7 +313,7 @@ class _ChatState extends State<Chat> {
               if(otherToken.isEmpty){
                 return;
               }
-              Logic.sendPushNotificationsToUsers([otherToken], NotificationTitle, _him + " שלח/ה לך הודעה ");
+              Logic.sendPushNotificationsToUsers([otherToken], NotificationTitle, _me + " שלח/ה לך הודעה ");
             },
           ),
         ),

@@ -183,6 +183,12 @@ class _SearchViewState extends State<SearchView> {
                       ? ListView.builder(
                           itemCount: listEvents.length,
                           itemBuilder: (BuildContext context, int index) {
+                            if(index == listEvents.length - 1){
+                              return Padding(
+                                padding: EdgeInsets.only(bottom: 90),
+                                child: _createRow(index),
+                              );
+                            }
                             return _createRow(index);
                           })
                       : SpinKitFadingCircle(
@@ -190,7 +196,7 @@ class _SearchViewState extends State<SearchView> {
                           size: 50.0,
                         ),
                 ),
-              ),
+              )
             ],
           ),
         ));

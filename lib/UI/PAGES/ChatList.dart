@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yana/UI/WIDGETS/EmptyScreen.dart';
 import 'package:yana/UI/WIDGETS/allWidgets.dart';
 import 'package:yana/UX/LOGIC/CLASSES/allClasses.dart';
 
@@ -19,6 +20,7 @@ class _ChatListState extends State<ChatList> {
 
   String _userID = userMap["userID"].toString();
   Map<dynamic, dynamic> _senders = {};
+  bool _isItEmpty = true;
 
   @override
   void initState() {
@@ -36,6 +38,7 @@ class _ChatListState extends State<ChatList> {
     _senders = await FirebaseHelper.getSendersInfo(_userID);
     setState(() {
       _senders; // TODO at the end of project - check for better way
+      _isItEmpty = false;
     });
   }
 
@@ -43,38 +46,51 @@ class _ChatListState extends State<ChatList> {
   Widget build(BuildContext context) {
 
     double freeScreenHeight = (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - 80);
-
-    return Container(
-      height: freeScreenHeight,
-      decoration: BoxDecoration(
-        color: Colors.amber,
-      ),
-      child: ListView.separated(
-        padding: EdgeInsets.zero,
-        separatorBuilder: (BuildContext context, int index) {
-          return SizedBox(height: 15);
-        },
-        itemCount: _senders.length,
-        itemBuilder: (context, index){
-          String key = _senders.keys.elementAt(index);  // key = Other ID
-          return GestureDetector(
-            onTap: (){
-              this.widget.otherInfo = {"name": _senders[key], "userID" : key};
-              setState(() {
-//                this.widget.callback(4, userMap, this.widget.otherInfo, Chat_index);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Chat(this.widget.otherInfo)));
-              });
-            },
-            child: Neumorphism(
-                null,
-                100.0,
-                Text(_senders[key], style: TextStyle(fontFamily: 'FontSkia', fontSize: 24.0, fontWeight: FontWeight.w600),),
-                type: NeumorphismInner,
-                radius: 0.0,
-                alignment: Alignment.center,
-                color: bodyColor),
-          );
-        },
+    print(_senders.length == 0);
+    return Scaffold(
+      appBar: null,
+      backgroundColor: Colors.amber,
+      body: Column(
+        children: [
+          Expanded(
+            child: !_isItEmpty
+                ? Container(
+              height: freeScreenHeight,
+              decoration: BoxDecoration(
+                color: Colors.amber,
+              ),
+              child: ListView.separated(
+                padding: EdgeInsets.zero,
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(height: 15);
+                },
+                itemCount: _senders.length,
+                itemBuilder: (context, index){
+                  String key = _senders.keys.elementAt(index);  // key = Other ID
+                  return GestureDetector(
+                    onTap: (){
+                      this.widget.otherInfo = {"name": _senders[key], "userID" : key};
+                      setState(() {
+                        //                this.widget.callback(4, userMap, this.widget.otherInfo, Chat_index);
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Chat(this.widget.otherInfo)));
+                      });
+                    },
+                    child: Neumorphism(
+                        null,
+                        100.0,
+                        Text(_senders[key], style: TextStyle(fontFamily: 'FontSkia', fontSize: 24.0, fontWeight: FontWeight.w600),),
+                        type: NeumorphismInner,
+                        radius: 0.0,
+                        alignment: Alignment.center,
+                        color: bodyColor),
+                  );
+                },
+              ),
+            )
+                : EmptyScreen(text: "אין צ'אטים פעילים כרגע"),
+          ),
+          SizedBox(height: 50,),
+        ],
       ),
     );
   }

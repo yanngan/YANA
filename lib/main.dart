@@ -249,23 +249,35 @@ class _MainPageState extends State<MainPage> {
         print("PushNotification.body = ${message.notification?.body}");
         if (notification != null) {
           // For displaying the notification as an overlay
+          String bodyToShow = message.notification!.body!.split("#")[0];
+          List<String> test = message.notification!.body!.split("#");
+          print(test);
           showSimpleNotification(
-            Text(notification.title??"ERROR"),
-            subtitle: Text(notification.body??"ERROR"),
-            leading: Icon(Icons.notifications),
-            background: Colors.pink,
-            duration: Duration(seconds: 3),
-            trailing: TextButton(
-                onPressed: (){
+              Text(notification.title??"ERROR"),
+              subtitle: Text(bodyToShow),
+              leading: Icon(Icons.notifications),
+              background: Colors.pink,
+              duration: Duration(seconds: 3),
+              trailing: TextButton(
+              onPressed: (){
+                if(message.notification!.title!.contains("הודעה")){
+                    List<String> param = message.notification!.body!.split("#");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Chat({"userID" : param[1],"name": param[2]})),
+                    );
+                }
+                else{
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => NotificationPage()),
-                    /// todo - if title contain "הודעה חדשה" go to chats page
                   );
-                },
-                child: Icon(Icons.arrow_forward_ios_outlined,color: Colors.amber,))
+                }
+              },
+              child: Icon(Icons.arrow_forward_ios_outlined,color: Colors.amber,))
           );
         }
+
 
       });
 

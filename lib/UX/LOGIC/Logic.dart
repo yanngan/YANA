@@ -135,7 +135,7 @@ class Logic {
         String body = "בקשתך להצטרך לאירוע אושרה על-ידי מארגן האירוע";
         Logic.sendPushNotificationsToUsers([token], title, body);
       });
-      FirebaseHelper.createNewChat(userMap['id']!, userMap['name']!,otheUser.userID, otheUser.name);
+      FirebaseHelper.createNewChat(userMap['userID']!, userMap['name']!,otheUser.userID, otheUser.name);
     }
     return await FirebaseHelper.approveOrRejectRequestToJoinEvent(otheUser.userID, theEvent, approve);
   }
@@ -172,13 +172,13 @@ class Logic {
     // TODO - New messages notifications - Need to implement?
     List<MyNotification> myNotifications = [];
     // get all join request user have to events he create
-    List<MyNotification> temp  = await FirebaseHelper.getUserJoinRequest(userMap['id']!);
+    List<MyNotification> temp  = await FirebaseHelper.getUserJoinRequest(userMap['userID']!);
     temp.forEach((element) {
       //print("in getUserJoinRequest");
       myNotifications.add(element);
     });
     // get all events he have be approve
-    temp  = await FirebaseHelper.getUserApprovedRequest(userMap['id']!);
+    temp  = await FirebaseHelper.getUserApprovedRequest(userMap['userID']!);
     temp.forEach((element) {
       //print("in getUserAprovedRequest ${element.type}");
       myNotifications.add(element);

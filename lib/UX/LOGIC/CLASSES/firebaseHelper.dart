@@ -438,7 +438,6 @@ class FirebaseHelper {
 
   ///if approve == true -> approve , else -> reject
   static Future<bool> approveOrRejectRequestToJoinEvent(String userID,Events theEvents,bool approve) async{
-    FirebaseFirestore fireStore = FirebaseFirestore.instance;
     try {
       QuerySnapshot<Map<String, dynamic>> res = await  FirebaseFirestore.instance.collection("Attendance").where("idEvent", isEqualTo : theEvents.eventID).get();
       int status = approve?1:2;

@@ -22,7 +22,7 @@ class _NoticeBoardState extends State<NoticeBoard> {
   bool isInitialized = false;
 
 //  late bool _isEmptyList;
-  bool _isEmptyList = true;
+  bool _isEmptyList = false;
   String details = "";
 
   @override
@@ -34,7 +34,7 @@ class _NoticeBoardState extends State<NoticeBoard> {
   //Initiate all the details and colors for all the Advert Card.
   void initBoardwithFb() async {
     var FbData = await FirebaseHelper.getBulletinBoardFromFb();
-
+    advertisements = [];
     int index = 0;
     FbData.forEach((element) {
       String details = "\u2022 כתובת\b: ${element.location}\n"
@@ -43,7 +43,7 @@ class _NoticeBoardState extends State<NoticeBoard> {
           "\u2022 זמן התחלה\b: ${element.startTime}\n";
       if (index % 2 == 0) {
         advertisements.add(Advertisement(
-            this.context,
+            // this.context,
             Color(0xfff3b5a5),
             element.bulletName,
             element.eventIcon,
@@ -57,7 +57,7 @@ class _NoticeBoardState extends State<NoticeBoard> {
             details));
       } else {
         advertisements.add(Advertisement(
-            this.context,
+            // this.context,
             Color(0xfffad5b8),
             element.bulletName,
             element.eventIcon,
@@ -72,12 +72,13 @@ class _NoticeBoardState extends State<NoticeBoard> {
       }
       index++;
     });
+    isInitialized = true;
     setState(() {
       advertisements;
     });
+  // advertisements = [];
 
-    isInitialized = true;
-    if (advertisements.isEmpty /*&& isInitialized*/) {
+    if (advertisements.isEmpty) {
       _isEmptyList = true;
     } else {
       _isEmptyList = false;
@@ -94,19 +95,18 @@ class _NoticeBoardState extends State<NoticeBoard> {
           children: [
             getBulletinBody(),
             SizedBox(
-              height: appBarHeight,
-              child: MyAppBar("לוח מודעות", null, height: appBarHeight)
-            ),
+                height: appBarHeight,
+                child: MyAppBar("לוח מודעות", null, height: appBarHeight)),
           ],
         ),
       ),
     );
   }
 
-  Widget getBulletinBody(){
-    if(_isEmptyList){
-      return EmptyScreen(text: "אין מודעות עדיין,\nאנא חזור מאוחר יותר");
-    }else{
+  Widget getBulletinBody() {
+    // if (_isEmptyList) {
+    //   return EmptyScreen(text: "אין מודעות עדיין,\nאנא חזור מאוחר יותר");
+    // } else {
       return Container(
         color: Colors.amber,
         child: ListView(children: [
@@ -115,18 +115,40 @@ class _NoticeBoardState extends State<NoticeBoard> {
             child: Container(
               child: Column(
                 children: [
-                  SizedBox(
-                    height: 70,
-                  ),
                   isInitialized
-                    ? Center(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: advertisements),
-                      )
-                    : SpinKitFadingCircle(
-                        color: Colors.white,
-                        size: (MediaQuery.of(context).size.width / 1.5),
+                      ? (advertisements.isEmpty
+                          ? Column(
+                            children: [
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height / 2.7,
+                              ),
+                              EmptyScreen(
+                                  text: "אין מודעות עדיין,\nאנא חזור מאוחר יותר"),
+                            ],
+                          )
+                          : Center(
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 60,
+                                  ),
+                                  Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                      children: advertisements),
+                                ],
+                              ),
+                            ))
+                      : Column(
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height / 2.7,
+                          ),
+                          SpinKitFadingCircle(
+                              color: Colors.white,
+                              size: (MediaQuery.of(context).size.width / 7),
+                            ),
+                        ],
                       ),
                 ],
               ),
@@ -135,7 +157,7 @@ class _NoticeBoardState extends State<NoticeBoard> {
         ]),
       );
     }
-  }
+  // }
 }
 
 //Advertisement Widget
@@ -151,11 +173,12 @@ class Advertisement extends StatefulWidget {
   String adv_mapsLink;
   String adv_extraLink;
   String adv_extraLinkName;
-  BuildContext pagecontext;
+
+  // BuildContext pagecontext;
 
   //Constructor
   Advertisement(
-      this.pagecontext,
+      //     this.pagecontext,
       this.color,
       this.adv_name,
       this.adv_icon,
@@ -173,7 +196,7 @@ class Advertisement extends StatefulWidget {
 }
 
 class _AdvertisementState extends State<Advertisement> {
-  double _width = 200;
+  double _width = 500;
   double _height = 100;
   bool _isOpen = false;
   String extra_link_name_to_use = "";
@@ -181,8 +204,8 @@ class _AdvertisementState extends State<Advertisement> {
 
   @override
   void initState() {
-    _height = (MediaQuery.of(widget.pagecontext).size.height / 9);
-    _width = (MediaQuery.of(widget.pagecontext).size.width);
+    // _height = (MediaQuery.of(widget.pagecontext).size.height / 9);
+    // _width = (MediaQuery.of(widget.pagecontext).size.width);
     super.initState();
     extra_link_name_to_use = "\u2022${widget.adv_extraLinkName}\n";
     maps_links_to_use = "\u2022 ניתוב למקום >\n";
@@ -247,7 +270,7 @@ class _AdvertisementState extends State<Advertisement> {
               Expanded(
                 flex: 1,
                 child: Container(
-                  width: _width,
+                  width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     color: widget.color,
                     borderRadius: BorderRadius.circular(25),
@@ -266,42 +289,55 @@ class _AdvertisementState extends State<Advertisement> {
                     children: <Widget>[
                       ///Title widget the does not change dynamically.
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 12.0),
+                        padding: EdgeInsets.symmetric(vertical: 18.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(20, 0, 10, 0),
-                              child: CircleAvatar(
-                                backgroundImage: NetworkImage(widget.adv_icon),
-                                radius: 30.0,
+                            Flexible(
+                              flex: 1,
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                                child: CircleAvatar(
+                                  backgroundImage: NetworkImage(widget.adv_icon),
+                                  radius: 30.0,
+                                ),
                               ),
                             ),
-                            Text(
-                              widget.adv_name,
-                              style: TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.grey[900],
-                                  fontFamily: 'FontPacifico'),
+                            Flexible(
+                              flex: 3,
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                child: AutoSizeText(
+                                  widget.adv_name,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.grey[900],
+                                      fontFamily: 'FontPacifico'),
+                                ),
+                              ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 15, 0),
-                              child: IconButton(
-                                  onPressed: () {
-                                    if (_opened.isNotEmpty) {
-                                      if (_opened.first == this) {
-                                        onPressed();
+                            Flexible(
+                              flex: 1,
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+                                child: IconButton(
+                                    onPressed: () {
+                                      if (_opened.isNotEmpty) {
+                                        if (_opened.first == this) {
+                                          onPressed();
+                                          _opened.clear();
+                                          return;
+                                        }
+                                        _opened.first.onPressed();
                                         _opened.clear();
-                                        return;
                                       }
-                                      _opened.first.onPressed();
-                                      _opened.clear();
-                                    }
-                                    onPressed();
-                                  },
-                                  icon: Icon(Icons.arrow_circle_down)),
+                                      onPressed();
+                                    },
+                                    icon: Icon(Icons.arrow_circle_down)),
+                              ),
                             ),
                           ],
                         ),
@@ -313,81 +349,82 @@ class _AdvertisementState extends State<Advertisement> {
                         child: AnimatedOpacity(
                           duration: Duration(milliseconds: 700),
                           opacity: _isOpen ? 1 : 0,
-                          child: Column(
-                            children: [
-                              Expanded(
+                          child: Expanded(
+                            child: SingleChildScrollView(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
                                 child: Padding(
-                                  padding: EdgeInsets.fromLTRB(10, 2, 10, 10),
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        AutoSizeText(
-                                          widget.adv_details,
-                                          maxLines: 8,
-                                          style: TextStyle(
-                                            fontFamily: 'FontRaleway',
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.black87,
-                                            fontSize: 16,
-                                            letterSpacing: 1,
-                                            decorationThickness: 2,
-                                            wordSpacing: 1,
-                                          ),
+                                  padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                  child: Column(
+                                    crossAxisAlignment:CrossAxisAlignment.start,
+                                    textDirection: TextDirection.rtl,
+                                    children: [
+                                      AutoSizeText(
+                                        widget.adv_details,
+                                        textDirection: TextDirection.rtl,
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                          fontFamily: 'FontRaleway',
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black87,
+                                          fontSize: 16,
+                                          letterSpacing: 1,
+                                          decorationThickness: 2,
+                                          wordSpacing: 1,
                                         ),
-                                        Container(
-                                          transform: Matrix4.translationValues(0, -20, 0),
-                                          // height: double.parse(extra_link_name_to_use.length.toString()),
-                                          child: RichText(
-                                              text: new TextSpan(
-                                                  text: extra_link_name_to_use,
-                                                  style: new TextStyle(
-                                                    fontFamily: 'FontRaleway',
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Colors.blueAccent,
-                                                    decoration: TextDecoration.underline,
-                                                    fontSize: 16,
-                                                    letterSpacing: 1,
-                                                    decorationThickness: 2,
-                                                    wordSpacing: 1,
-                                                  ),
-                                                  // style: ,
-                                                  recognizer:
+                                      ),
+                                      Container(
+                                        transform: Matrix4.translationValues(0, -20, 0),
+                                        // height: double.parse(extra_link_name_to_use.length.toString()),
+                                        child: RichText(
+                                            text: new TextSpan(
+                                                text: extra_link_name_to_use,
+                                                style: new TextStyle(
+                                                  fontFamily: 'FontRaleway',
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.blueAccent,
+                                                  decoration: TextDecoration.underline,
+                                                  fontSize: 16,
+                                                  letterSpacing: 1,
+                                                  decorationThickness: 2,
+                                                  wordSpacing: 1,
+                                                ),
+                                                // style: ,
+                                                recognizer:
                                                     new TapGestureRecognizer()
                                                       ..onTap = () {
                                                         _launchUrl(widget
                                                             .adv_extraLink);
                                                       })),
-                                        ),
-                                        Container(
-                                          transform: Matrix4.translationValues(0, -40, 0),
-                                          // height: double.parse(maps_links_to_use.length.toString()),
-                                          child: RichText(
-                                              text: new TextSpan(
-                                                  text: maps_links_to_use,
-                                                  style: new TextStyle(
-                                                    fontFamily: 'FontRaleway',
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Colors.blueAccent,
-                                                    decoration: TextDecoration.underline,
-                                                    fontSize: 16,
-                                                    letterSpacing: 1,
-                                                    decorationThickness: 2,
-                                                    wordSpacing: 1,
-                                                  ),
-                                                  recognizer:
+                                      ),
+                                      Container(
+                                        transform: Matrix4.translationValues(0, -40, 0),
+                                        // height: double.parse(maps_links_to_use.length.toString()),
+                                        child: RichText(
+                                            text: new TextSpan(
+                                                text: maps_links_to_use,
+                                                style: new TextStyle(
+                                                  fontFamily: 'FontRaleway',
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.blueAccent,
+                                                  decoration: TextDecoration.underline,
+                                                  fontSize: 16,
+                                                  letterSpacing: 1,
+                                                  decorationThickness: 2,
+                                                  wordSpacing: 1,
+                                                ),
+                                                recognizer:
                                                     new TapGestureRecognizer()
                                                       ..onTap = () {
                                                         _launchUrl(widget
                                                             .adv_mapsLink);
                                                       })),
-                                        )
-                                      ],
-                                    ),
+                                      )
+                                    ],
                                   ),
                                 ),
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ),

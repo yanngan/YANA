@@ -277,9 +277,9 @@ class _LoginState extends State<Login> {
  */
   void userCredentials(Map<String, String> credentials, String functionNeeded) async {
     //    Check if user is in our database
-    String userId = credentials["id"].toString();
-    if(functionNeeded == ""){
-//      userId = '01234567891234567';   // Test ID of Adriana Lima
+    String userId = credentials["userID"].toString();
+    if(functionNeeded == LOGIN_DUMMY){
+      userId = '01234567891234567';   // Test ID of Adriana Lima
     }
     bool exists = false;
     User newUser = new User.isNULL('null');

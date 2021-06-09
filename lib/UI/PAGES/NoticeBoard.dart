@@ -242,13 +242,13 @@ class _AdvertisementState extends State<Advertisement> {
     return SingleChildScrollView(
       child: AnimatedContainer(
         width: _width,
-        height: _height,
+        height: _isOpen ? _height : MediaQuery.of(context).size.height / 8,
         margin: EdgeInsets.fromLTRB(6, 6, 6, 20.0),
         duration: Duration(milliseconds: 500),
         child: GestureDetector(
           key: UniqueKey(),
           onTap: () {
-            // SetState of the open/close functionality
+            /// Function of the open/close functionality
             if (_opened.isNotEmpty) {
               if (_opened.first == this) {
                 onPressed();
@@ -307,7 +307,7 @@ class _AdvertisementState extends State<Advertisement> {
                                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                 child: AutoSizeText(
                                   widget.adv_name,
-                                  overflow: TextOverflow.ellipsis,
+                                  overflow: _isOpen ? TextOverflow.visible : TextOverflow.ellipsis,
                                   style: TextStyle(
                                       fontSize: 30,
                                       fontWeight: FontWeight.w400,

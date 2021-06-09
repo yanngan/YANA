@@ -8,7 +8,8 @@ class ChatsAndEvents extends StatefulWidget {
 
 //  Callback function related - See main.dart callback section for more info about it
   final Function callback;
-  ChatsAndEvents(this.callback);
+  bool goToChats;
+  ChatsAndEvents(this.callback,{this.goToChats = false});
 
   @override
   _ChatsAndEventsState createState() => _ChatsAndEventsState();
@@ -23,7 +24,7 @@ class _ChatsAndEventsState extends State<ChatsAndEvents> {
   Widget build(BuildContext context) {
     var screen;
     var theBackgroundColor;
-    if (_whichPage) {
+    if (_whichPage || widget.goToChats) {
       screen = ChatList(this.widget.callback);
       theBackgroundColor = Colors.amber;
     } else {

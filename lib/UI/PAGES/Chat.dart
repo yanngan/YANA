@@ -48,19 +48,19 @@ class _ChatState extends State<Chat> {
   String messageText = "", _me = "", _meID = "", _him = "", _himID = "";
   double bottomPadding = 14.0, topPadding = 75.0, _keyboardHeight = 0.0;
   Map<String, String> _otherInfo = new Map<String, String>();
-  List<String> profanityList = new List.from(englishProfanityList)..addAll(hebrewProfanityList);
+  List<String> profanityList = new List.from(englishProfanityList)
+                                      ..addAll(hebrewProfanityList)
+                                      ..addAll(arabicProfanityList);
   _ChatState(this._otherInfo);
 
   @override
   void initState() {
     super.initState();
+
     _me = userMap['name'].toString();
     _meID = userMap['userID'].toString();
-    // _him =  "Lidor Eliyahu Shelef";//_otherInfo['name'].toString();
-    // _himID = "10216275052784039";//_otherInfo['userID'].toString();
     _him =  _otherInfo['name'].toString();
     _himID =_otherInfo['userID'].toString();
-    // print(profanityList.toString());
 
     getMessages();
   }
@@ -267,9 +267,11 @@ class _ChatState extends State<Chat> {
       child: new TextField(
         inputFormatters: [
           WhitelistingTextInputFormatter(
-            RegExp(
-                r'^[a-zA-Z0-9 ?:אבגדהוזחטיכךלמםנןסעפףצץקרשת_=!@#$&()\\-`.+,/\"]*$'
-            )
+              RegExp(
+                r'[a-zA-Z0-9אבגדהוזחטיכךלמםנןסעפףצץקרשתАаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя_=!@#$&()\\-`. ?:+ ,/\"+×÷=/_€£¥₪*^%:;,~<>{}[]]*',
+                multiLine: true,
+                caseSensitive: false,
+              )
           )
         ],
 

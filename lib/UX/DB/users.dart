@@ -68,7 +68,7 @@ class User {
   // Parse a map into a user object
   factory User.fromMap(Map<String, String> userInfo){
     return User(
-      userInfo["id"].toString(),
+      userInfo["xxxx"].toString(),
       userInfo["name"].toString(),
       userInfo["email"].toString(),
       userInfo["gender"].toString(),

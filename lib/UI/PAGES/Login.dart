@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yana/UX/DB/users.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
+import 'package:yana/UX/LOGIC/Logic.dart';
 import 'Utilities.dart';
 
 const String LOGIN_REGULAR = "REGULAR_USER";
@@ -293,11 +294,13 @@ class _LoginState extends State<Login> {
     if(exists){
       setState(() {
         userMap = newUser.toMap();
+        Logic.saveMyRegistrationToken();
         this.widget.callback(3, newUser.toMap(), otherInfo, MapView_index);
       });
     }else{
       setState(() {
         newUser = new User.fromMap(credentials);
+        Logic.saveMyRegistrationToken();
         this.widget.callback(1, credentials, otherInfo, MapView_index);
       });
     }

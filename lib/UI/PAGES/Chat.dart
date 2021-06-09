@@ -322,7 +322,12 @@ class _ChatState extends State<Chat> {
               if(otherToken.isEmpty){
                 return;
               }
-              Logic.sendPushNotificationsToUsers([otherToken], NotificationTitle, _me + " שלח/ה לך הודעה ");
+              String title = NotificationTitle;
+              String body = ""; //will be formated: <the text to show>#<userID>#<name>
+              body += _me + "שלח/ה לך הודעה";
+              body += "#" + _meID;
+              body += "#" + _me;
+              Logic.sendPushNotificationsToUsers([otherToken], title, body);
             },
           ),
         ),

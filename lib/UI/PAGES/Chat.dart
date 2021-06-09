@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:yana/UI/WIDGETS/allWidgets.dart';
+import 'package:yana/UX/DB/allDB.dart';
 import 'package:yana/UX/LOGIC/Profanity.dart';
 import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
 import 'package:intl/intl.dart';
@@ -289,7 +290,6 @@ class _ChatState extends State<Chat> {
             onPressed: ()async{
               ///getting the message from the input box
               messageText = _controllerInput.text.toString().trim();
-              _controllerInput.clear();
               if(messageText.isEmpty){ return; }
 
               ///check if the message is free of Curses and Profanity words
@@ -299,6 +299,8 @@ class _ChatState extends State<Chat> {
                   _makeToast("תוכן הבא זוהה כפוגעני: "+wordsFound.toString(), Colors.red);
                   return;
                 }
+              _controllerInput.clear();
+
               DateTime now = new DateTime.now();
               String formattedDate = new DateFormat('dd-MM-yyyy hh:mm').format(now);
               ///assemble the message and send via firebase to the other user
@@ -311,7 +313,7 @@ class _ChatState extends State<Chat> {
               if(otherToken.isEmpty){
                 return;
               }
-              Logic.sendPushNotificationsToUsers([otherToken], NotificationTitle, _him + " שלח/ה לך הודעה ");
+              Logic.sendPushNotificationsToUsers([otherToken], NotificationTitle, _me + " שלח/ה לך הודעה ");
             },
           ),
         ),

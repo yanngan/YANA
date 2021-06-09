@@ -240,7 +240,6 @@ class _AddEventState extends State<AddEvent> {
       return;
     }
     String newId = await FirebaseHelper.generateEventId();
-
     Events theNewEvents = Events(
         newId, userMap['userID']!, userMap['name']!, formattedDate, true, startEstimate,
         endEstimate, 1, maxNumPeople, widget.thePlace.placeID,

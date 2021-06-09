@@ -279,7 +279,7 @@ class _SignUpState extends State<SignUp> {
           DateTime now = new DateTime.now();
           String formattedDate = new intl.DateFormat('dd-MM-yyyy').format(now);
           Map<String, String> newUserInfo = new Map<String, String>();
-          newUserInfo["id"]                     =      this.widget.userCredentials["id"].toString();
+          newUserInfo["userID"]                 =      this.widget.userCredentials["userID"].toString();
           newUserInfo["name"]                   =      this.widget.userCredentials["name"].toString();
           newUserInfo["email"]                  =      this.widget.userCredentials["email"].toString();
           newUserInfo["birthday"]               =      this.widget.userCredentials["birthday"].toString();

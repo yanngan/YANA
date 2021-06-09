@@ -41,6 +41,7 @@ class _NoticeBoardState extends State<NoticeBoard> {
           "\u2022 תאריך\b: ${element.date}\n"
           "\u2022 עלות כניסה\b: ${element.entryPrice}\n"
           "\u2022 זמן התחלה\b: ${element.startTime}\n";
+      print(element.bulletName + ' size: ' + element.bulletName.length.toString());
       if (index % 2 == 0) {
         advertisements.add(Advertisement(
             // this.context,
@@ -132,10 +133,13 @@ class _NoticeBoardState extends State<NoticeBoard> {
                                   SizedBox(
                                     height: 60,
                                   ),
-                                  Column(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                      children: advertisements),
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
+                                    child: Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                        children: advertisements),
+                                  ),
                                 ],
                               ),
                             ))
@@ -196,15 +200,22 @@ class _AdvertisementState extends State<Advertisement> {
   double _width = 500;
   double _height = 100;
   bool _isOpen = false;
+  bool maps_link_is_non_usable = false;
+  bool extra_link_is_non_usable = false;
   String extra_link_name_to_use = "";
   String maps_links_to_use = "";
 
   @override
   void initState() {
-    // _height = (MediaQuery.of(widget.pagecontext).size.height / 9);
-    // _width = (MediaQuery.of(widget.pagecontext).size.width);
     super.initState();
     extra_link_name_to_use = "\u2022${widget.adv_extraLinkName}\n";
+    if(widget.adv_mapsLink == 'null' || widget.adv_mapsLink == 'none'){
+      maps_link_is_non_usable = true;
+    }
+    if(widget.adv_extraLink == 'null' || widget.adv_extraLink == 'none'){
+      extra_link_is_non_usable = true;
+    }
+
     maps_links_to_use = "\u2022 ניתוב למקום >\n";
   }
 
@@ -222,14 +233,26 @@ class _AdvertisementState extends State<Advertisement> {
         if (_isOpen) {
           _height -= widget.adv_details.length +
               extra_link_name_to_use.length +
-              maps_links_to_use.length +
-              20;
+              maps_links_to_use.length + 1.5;
+          if(widget.adv_name.length > 18 && widget.adv_name.length < 25)
+            _height -= widget.adv_name.length * 2;
+          else if(widget.adv_name.length <= 40 && widget.adv_name.length >= 25)
+            _height -= widget.adv_name.length + 10;
+          else if(widget.adv_name.length > 40)
+            _height -= widget.adv_name.length;
+
           _isOpen = false;
         } else {
           _height += widget.adv_details.length +
               extra_link_name_to_use.length +
-              maps_links_to_use.length +
-              20;
+              maps_links_to_use.length + 1.5;
+          if(widget.adv_name.length > 18 && widget.adv_name.length < 25)
+            _height += widget.adv_name.length * 2;
+          else if(widget.adv_name.length < 40 && widget.adv_name.length > 25)
+            _height += widget.adv_name.length + 10;
+          else if(widget.adv_name.length > 40)
+            _height += widget.adv_name.length;
+
           _isOpen = true;
           _opened.add(this);
         }
@@ -240,219 +263,241 @@ class _AdvertisementState extends State<Advertisement> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: AnimatedContainer(
-        width: _width,
-        height: _isOpen ? _height : MediaQuery.of(context).size.height / 8,
-        margin: EdgeInsets.fromLTRB(6, 6, 6, 20.0),
-        duration: Duration(milliseconds: 500),
-        child: GestureDetector(
-          key: UniqueKey(),
-          onTap: () {
-            /// Function of the open/close functionality
-            if (_opened.isNotEmpty) {
-              if (_opened.first == this) {
+      child: Wrap(
+        children: [
+          AnimatedContainer(
+            width: MediaQuery.of(context).size.width,
+            height: _isOpen ? _height : MediaQuery.of(context).size.height / 7.2,
+            margin: EdgeInsets.fromLTRB(6, 6, 6, 20.0),
+            duration: Duration(milliseconds: 500),
+            child: GestureDetector(
+              key: UniqueKey(),
+              onTap: () {
+                /// Function of the open/close functionality
+                if (_opened.isNotEmpty) {
+                  if (_opened.first == this) {
+                    onPressed();
+                    _opened.clear();
+                    return;
+                  }
+                  _opened.first.onPressed();
+                  _opened.clear();
+                }
                 onPressed();
-                _opened.clear();
-                return;
-              }
-              _opened.first.onPressed();
-              _opened.clear();
-            }
-            onPressed();
-          },
-          // I put a column in case that we want another widget in the bottom.
-          child: Flex(
-            direction: Axis.vertical,
-            children: [
-              Expanded(
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: widget.color,
-                    borderRadius: BorderRadius.circular(25),
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 5.0,
-                        offset: Offset(3, 2),
-                        color: Colors.black.withOpacity(0.35),
-                        spreadRadius: 0.5, // Shadow position
-                      ),
-                    ],
-                  ),
-
-                  ///Column of the "card"
-                  child: Flex(
-                    direction: Axis.vertical,
-                    children: <Widget>[
-                      ///Title widget the does not change dynamically.
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 18.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Flexible(
-                              flex: 1,
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                                child: CircleAvatar(
-                                  backgroundImage: NetworkImage(widget.adv_icon),
-                                  radius: 30.0,
-                                ),
-                              ),
-                            ),
-                            Flexible(
-                              flex: 3,
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                child: AutoSizeText(
-                                  widget.adv_name,
-                                  overflow: _isOpen ? TextOverflow.visible : TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.grey[900],
-                                      fontFamily: 'FontPacifico'),
-                                ),
-                              ),
-                            ),
-                            Flexible(
-                              flex: 1,
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
-                                child: _isOpen ?
-                                IconButton(
-                                    onPressed: () {
-                                      if (_opened.isNotEmpty) {
-                                        if (_opened.first == this) {
-                                          onPressed();
-                                          _opened.clear();
-                                          return;
-                                        }
-                                        _opened.first.onPressed();
-                                        _opened.clear();
-                                      }
-                                      onPressed();
-                                    },
-                                    icon: Icon(Icons.arrow_circle_up))
-                                    : IconButton(
-                                    onPressed: () {
-                                      if (_opened.isNotEmpty) {
-                                        if (_opened.first == this) {
-                                          onPressed();
-                                          _opened.clear();
-                                          return;
-                                        }
-                                        _opened.first.onPressed();
-                                        _opened.clear();
-                                      }
-                                      onPressed();
-                                    },
-                                    icon: Icon(Icons.arrow_circle_down)),
-                              ),
-                            ),
-                          ],
-                        ),
+              },
+              // I put a column in case that we want another widget in the bottom.
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: widget.color,
+                        borderRadius: BorderRadius.circular(25),
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 5.0,
+                            offset: Offset(3, 2),
+                            color: Colors.black.withOpacity(0.35),
+                            spreadRadius: 0.5, // Shadow position
+                          ),
+                        ],
                       ),
 
-                      ///End of Title Part.
-                      //Advert details.
-                      Expanded(
-                        child: AnimatedOpacity(
-                          duration: Duration(milliseconds: 700),
-                          opacity: _isOpen ? 1 : 0,
-                          ///This column is here because of the expanded need to be in a directionaly widget (column,row,flex)
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: SingleChildScrollView(
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                      child: Column(
-                                        crossAxisAlignment:CrossAxisAlignment.start,
-                                        textDirection: TextDirection.rtl,
-                                        children: [
-                                          AutoSizeText(
-                                            widget.adv_details,
-                                            textDirection: TextDirection.rtl,
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(
-                                              fontFamily: 'FontRaleway',
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.black87,
-                                              fontSize: 16,
-                                              letterSpacing: 1,
-                                              decorationThickness: 2,
-                                              wordSpacing: 1,
-                                            ),
-                                          ),
-                                          Container(
-                                            transform: Matrix4.translationValues(0, -20, 0),
-                                            // height: double.parse(extra_link_name_to_use.length.toString()),
-                                            child: RichText(
-                                                text: new TextSpan(
-                                                    text: extra_link_name_to_use,
-                                                    style: new TextStyle(
-                                                      fontFamily: 'FontRaleway',
-                                                      fontWeight: FontWeight.w600,
-                                                      color: Colors.blueAccent,
-                                                      decoration: TextDecoration.underline,
-                                                      fontSize: 16,
-                                                      letterSpacing: 1,
-                                                      decorationThickness: 2,
-                                                      wordSpacing: 1,
-                                                    ),
-                                                    // style: ,
-                                                    recognizer:
-                                                    new TapGestureRecognizer()
-                                                      ..onTap = () {
-                                                        _launchUrl(widget
-                                                            .adv_extraLink);
-                                                      })),
-                                          ),
-                                          Container(
-                                            transform: Matrix4.translationValues(0, -40, 0),
-                                            // height: double.parse(maps_links_to_use.length.toString()),
-                                            child: RichText(
-                                                text: new TextSpan(
-                                                    text: maps_links_to_use,
-                                                    style: new TextStyle(
-                                                      fontFamily: 'FontRaleway',
-                                                      fontWeight: FontWeight.w600,
-                                                      color: Colors.blueAccent,
-                                                      decoration: TextDecoration.underline,
-                                                      fontSize: 16,
-                                                      letterSpacing: 1,
-                                                      decorationThickness: 2,
-                                                      wordSpacing: 1,
-                                                    ),
-                                                    recognizer:
-                                                    new TapGestureRecognizer()
-                                                      ..onTap = () {
-                                                        _launchUrl(widget
-                                                            .adv_mapsLink);
-                                                      })),
-                                          )
-                                        ],
-                                      ),
+                      ///Column of the "card"
+                      child: Flex(
+                        direction: Axis.vertical,
+                        children: <Widget>[
+                          ///Title widget the does not change dynamically.
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 18.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                    child: CircleAvatar(
+                                      backgroundImage: NetworkImage(widget.adv_icon),
+                                      radius: 30.0,
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                                Expanded(
+                                  flex: 3,
+                                  child: Padding(
+                                    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                    child: !_isOpen ? AutoSizeText(
+                                      widget.adv_name,
+                                      textAlign: TextAlign.center,
+                                      overflow: _isOpen ? TextOverflow.visible : TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.grey[900],
+                                          fontFamily: 'FontPacifico'),
+                                    ) : SingleChildScrollView(
+                                      child: Text(widget.adv_name,style: TextStyle(
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.grey[900],
+                                          fontFamily: 'FontPacifico'),),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                    child: _isOpen ?
+                                    IconButton(
+                                        onPressed: () {
+                                          if (_opened.isNotEmpty) {
+                                            if (_opened.first == this) {
+                                              onPressed();
+                                              _opened.clear();
+                                              return;
+                                            }
+                                            _opened.first.onPressed();
+                                            _opened.clear();
+                                          }
+                                          onPressed();
+                                        },
+                                        icon: Icon(Icons.arrow_circle_up))
+                                        : IconButton(
+                                        onPressed: () {
+                                          if (_opened.isNotEmpty) {
+                                            if (_opened.first == this) {
+                                              onPressed();
+                                              _opened.clear();
+                                              return;
+                                            }
+                                            _opened.first.onPressed();
+                                            _opened.clear();
+                                          }
+                                          onPressed();
+                                        },
+                                        icon: Icon(Icons.arrow_circle_down)),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
+                          // Padding(
+                          //   padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          //   child: AnimatedOpacity(
+                          //     duration: Duration(milliseconds: 700),
+                          //     opacity: _isOpen ? 1:0,
+                          //     child: Container(
+                          //       height: 1.5,
+                          //       width: MediaQuery.of(context).size.width / 7,
+                          //       color: Colors.grey[700],
+                          //     ),
+                          //   ),
+                          // ),
+                          ///End of Title Part.
+                          //Advert details.
+                          Expanded(
+                            child: AnimatedOpacity(
+                              duration: Duration(milliseconds: 700),
+                              opacity: _isOpen ? 1 : 0,
+                              ///This column is here because of the expanded need to be in a directionaly widget (column,row,flex)
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    child: SingleChildScrollView(
+                                      child: FittedBox(
+                                        fit: BoxFit.fitHeight,
+                                        child: Container(
+                                          width: MediaQuery.of(context).size.width,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(18, 0, 18, 0),
+                                            child: Column(
+                                              crossAxisAlignment:CrossAxisAlignment.start,
+                                              textDirection: TextDirection.rtl,
+                                              children: [
+                                                AutoSizeText(
+                                                  widget.adv_details,
+                                                  textDirection: TextDirection.rtl,
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    fontFamily: 'FontRaleway',
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.black87,
+                                                    fontSize: 16,
+                                                    letterSpacing: 1,
+                                                    decorationThickness: 2,
+                                                    wordSpacing: 1,
+                                                  ),
+                                                ),
+                                                Container(
+                                                  transform: Matrix4.translationValues(0, -20, 0),
+                                                  // height: double.parse(extra_link_name_to_use.length.toString()),
+                                                  child: !extra_link_is_non_usable ? RichText(
+                                                      text: new TextSpan(
+                                                          text: extra_link_name_to_use,
+                                                          style: new TextStyle(
+                                                            fontFamily: 'FontRaleway',
+                                                            fontWeight: FontWeight.w600,
+                                                            color: Colors.blueAccent,
+                                                            decoration: TextDecoration.underline,
+                                                            fontSize: 16,
+                                                            letterSpacing: 1,
+                                                            decorationThickness: 2,
+                                                            wordSpacing: 1,
+                                                          ),
+                                                          // style: ,
+                                                          recognizer:
+                                                          new TapGestureRecognizer()
+                                                            ..onTap = () {
+                                                              _launchUrl(widget
+                                                                  .adv_extraLink);
+                                                            })):null
+                                                ),
+                                                Container(
+                                                  transform: Matrix4.translationValues(0, -40, 0),
+                                                  // height: double.parse(maps_links_to_use.length.toString()),
+                                                  child: !maps_link_is_non_usable ? RichText(
+                                                      text: new TextSpan(
+                                                          text: maps_links_to_use,
+                                                          style: new TextStyle(
+                                                            fontFamily: 'FontRaleway',
+                                                            fontWeight: FontWeight.w600,
+                                                            color: Colors.blueAccent,
+                                                            decoration: TextDecoration.underline,
+                                                            fontSize: 16,
+                                                            letterSpacing: 1,
+                                                            decorationThickness: 2,
+                                                            wordSpacing: 1,
+                                                          ),
+                                                          recognizer:
+                                                          new TapGestureRecognizer()
+                                                            ..onTap = () {
+                                                              _launchUrl(widget
+                                                                  .adv_mapsLink);
+                                                            })):null
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

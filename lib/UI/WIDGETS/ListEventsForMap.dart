@@ -22,6 +22,7 @@ class _ListEventsForMapState extends State<ListEventsForMap> {
     if(!initDone){
       _init();
     }
+    String placeDetails = widget.thePlace.specialToString();
     return AlertDialog(
       title: new Text(widget.thePlace.name),
       backgroundColor: Colors.amber,
@@ -53,9 +54,48 @@ class _ListEventsForMapState extends State<ListEventsForMap> {
           },
         ),
         new TextButton(
-          child: new Text("Close",style: TextStyle(color: Colors.blueGrey),),
+          child: new Text("סגור",style: TextStyle(color: Colors.blueGrey),),
           onPressed: () {
             Navigator.of(context).pop();
+          },
+        ),new TextButton(
+          child: new Text("פרטים על המקום",style: TextStyle(color: Colors.blueGrey),),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  contentPadding: EdgeInsets.zero,
+                  title: Align(
+                    alignment: Alignment.center,
+                    child: Text(widget.thePlace.name),
+                  ),
+                  backgroundColor: Colors.amber,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0))
+                  ),
+                  insetPadding: EdgeInsets.symmetric(vertical: 200),
+                  content: SingleChildScrollView(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Directionality(child: Text(placeDetails),
+                        textDirection: TextDirection.rtl,
+                      ),
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: (){
+                        Navigator.pop(context);
+                      },
+                      child: Text("סגור"),
+                    )
+                  ],
+                );
+              },
+            );//
+            // Navigator.of(context).pop();
+
           },
         ),
       ],

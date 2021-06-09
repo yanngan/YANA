@@ -57,11 +57,10 @@ class _NoticeBoardState extends State<NoticeBoard> {
             details));
       } else {
         advertisements.add(Advertisement(
+
             // this.context,
+            this.context,
             Color(0xfffad5b8),
-            element.bulletName,
-            element.eventIcon,
-            element.googleMapsLink,
             element.extraLink,
             element.extraLinkName,
             element.date,
@@ -173,6 +172,7 @@ class Advertisement extends StatefulWidget {
   String adv_mapsLink;
   String adv_extraLink;
   String adv_extraLinkName;
+  BuildContext pagecontext;
 
   // BuildContext pagecontext;
 

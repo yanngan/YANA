@@ -252,7 +252,6 @@ class _AdvertisementState extends State<Advertisement> {
           key: UniqueKey(),
           onTap: () {
             // SetState of the open/close functionality
-
             if (_opened.isNotEmpty) {
               if (_opened.first == this) {
                 onPressed();
@@ -265,10 +264,10 @@ class _AdvertisementState extends State<Advertisement> {
             onPressed();
           },
           // I put a column in case that we want another widget in the bottom.
-          child: Column(
-            children: <Widget>[
+          child: Flex(
+            direction: Axis.vertical,
+            children: [
               Expanded(
-                flex: 1,
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
@@ -285,7 +284,8 @@ class _AdvertisementState extends State<Advertisement> {
                   ),
 
                   ///Column of the "card"
-                  child: Column(
+                  child: Flex(
+                    direction: Axis.vertical,
                     children: <Widget>[
                       ///Title widget the does not change dynamically.
                       Padding(
@@ -323,7 +323,22 @@ class _AdvertisementState extends State<Advertisement> {
                               flex: 1,
                               child: Padding(
                                 padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
-                                child: IconButton(
+                                child: _isOpen ?
+                                IconButton(
+                                    onPressed: () {
+                                      if (_opened.isNotEmpty) {
+                                        if (_opened.first == this) {
+                                          onPressed();
+                                          _opened.clear();
+                                          return;
+                                        }
+                                        _opened.first.onPressed();
+                                        _opened.clear();
+                                      }
+                                      onPressed();
+                                    },
+                                    icon: Icon(Icons.arrow_circle_up))
+                                    : IconButton(
                                     onPressed: () {
                                       if (_opened.isNotEmpty) {
                                         if (_opened.first == this) {
@@ -349,82 +364,87 @@ class _AdvertisementState extends State<Advertisement> {
                         child: AnimatedOpacity(
                           duration: Duration(milliseconds: 700),
                           opacity: _isOpen ? 1 : 0,
-                          child: Expanded(
-                            child: SingleChildScrollView(
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                  child: Column(
-                                    crossAxisAlignment:CrossAxisAlignment.start,
-                                    textDirection: TextDirection.rtl,
-                                    children: [
-                                      AutoSizeText(
-                                        widget.adv_details,
+                          ///This column is here because of the expanded need to be in a directionaly widget (column,row,flex)
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: SingleChildScrollView(
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                      child: Column(
+                                        crossAxisAlignment:CrossAxisAlignment.start,
                                         textDirection: TextDirection.rtl,
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          fontFamily: 'FontRaleway',
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.black87,
-                                          fontSize: 16,
-                                          letterSpacing: 1,
-                                          decorationThickness: 2,
-                                          wordSpacing: 1,
-                                        ),
-                                      ),
-                                      Container(
-                                        transform: Matrix4.translationValues(0, -20, 0),
-                                        // height: double.parse(extra_link_name_to_use.length.toString()),
-                                        child: RichText(
-                                            text: new TextSpan(
-                                                text: extra_link_name_to_use,
-                                                style: new TextStyle(
-                                                  fontFamily: 'FontRaleway',
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.blueAccent,
-                                                  decoration: TextDecoration.underline,
-                                                  fontSize: 16,
-                                                  letterSpacing: 1,
-                                                  decorationThickness: 2,
-                                                  wordSpacing: 1,
-                                                ),
-                                                // style: ,
-                                                recognizer:
+                                        children: [
+                                          AutoSizeText(
+                                            widget.adv_details,
+                                            textDirection: TextDirection.rtl,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              fontFamily: 'FontRaleway',
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.black87,
+                                              fontSize: 16,
+                                              letterSpacing: 1,
+                                              decorationThickness: 2,
+                                              wordSpacing: 1,
+                                            ),
+                                          ),
+                                          Container(
+                                            transform: Matrix4.translationValues(0, -20, 0),
+                                            // height: double.parse(extra_link_name_to_use.length.toString()),
+                                            child: RichText(
+                                                text: new TextSpan(
+                                                    text: extra_link_name_to_use,
+                                                    style: new TextStyle(
+                                                      fontFamily: 'FontRaleway',
+                                                      fontWeight: FontWeight.w600,
+                                                      color: Colors.blueAccent,
+                                                      decoration: TextDecoration.underline,
+                                                      fontSize: 16,
+                                                      letterSpacing: 1,
+                                                      decorationThickness: 2,
+                                                      wordSpacing: 1,
+                                                    ),
+                                                    // style: ,
+                                                    recognizer:
                                                     new TapGestureRecognizer()
                                                       ..onTap = () {
                                                         _launchUrl(widget
                                                             .adv_extraLink);
                                                       })),
-                                      ),
-                                      Container(
-                                        transform: Matrix4.translationValues(0, -40, 0),
-                                        // height: double.parse(maps_links_to_use.length.toString()),
-                                        child: RichText(
-                                            text: new TextSpan(
-                                                text: maps_links_to_use,
-                                                style: new TextStyle(
-                                                  fontFamily: 'FontRaleway',
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.blueAccent,
-                                                  decoration: TextDecoration.underline,
-                                                  fontSize: 16,
-                                                  letterSpacing: 1,
-                                                  decorationThickness: 2,
-                                                  wordSpacing: 1,
-                                                ),
-                                                recognizer:
+                                          ),
+                                          Container(
+                                            transform: Matrix4.translationValues(0, -40, 0),
+                                            // height: double.parse(maps_links_to_use.length.toString()),
+                                            child: RichText(
+                                                text: new TextSpan(
+                                                    text: maps_links_to_use,
+                                                    style: new TextStyle(
+                                                      fontFamily: 'FontRaleway',
+                                                      fontWeight: FontWeight.w600,
+                                                      color: Colors.blueAccent,
+                                                      decoration: TextDecoration.underline,
+                                                      fontSize: 16,
+                                                      letterSpacing: 1,
+                                                      decorationThickness: 2,
+                                                      wordSpacing: 1,
+                                                    ),
+                                                    recognizer:
                                                     new TapGestureRecognizer()
                                                       ..onTap = () {
                                                         _launchUrl(widget
                                                             .adv_mapsLink);
                                                       })),
-                                      )
-                                    ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
                       ),
@@ -433,6 +453,7 @@ class _AdvertisementState extends State<Advertisement> {
                 ),
               ),
             ],
+
           ),
         ),
       ),

@@ -6,6 +6,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:yana/UI/PAGES/DevelopersCreditPage.dart';
 import 'package:yana/UI/PAGES/Utilities.dart';
 import 'package:yana/UX/DB/users.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
@@ -505,7 +506,9 @@ class _SettingsState extends State<Settings> {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10.0),
                             child: ListTile(
-                              onTap: () {},
+                              onTap: () {
+                                openDevelopersCredit();
+                              },
                               title: Align(
                                   alignment: Alignment(1.153, 0),
                                   child: Text("קרדיט למפתחים")
@@ -1763,6 +1766,14 @@ class _SettingsState extends State<Settings> {
   void saveDefaultChatsEventsPreference() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(CHATS_EVENTS_TYPE_KEY, whichPage);
+  }
+
+  /// Opens the developers credit page
+  openDevelopersCredit(){
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => DevelopersCreditPage()),
+    );
   }
 
   /// Method to log the user out the application ( without closing it )

@@ -24,6 +24,11 @@ List<String> hebrewProfanityList = [
   "קקי",
   "קקות",
   "יהומו",
+  "הומואים",
+  "יהומואים",
+  "והומואים",
+  "מהומואים",
+  "בהומואים",
   "לסבית",
   "סוטה",
   "סוטים",
@@ -193,6 +198,8 @@ List<String> hebrewProfanityList = [
   "קוקסינל",
   "לחרבן",
   "חרא",
+  "יחרא",
+  "בחרא",
   "מתרומם",
   "זונה",
   "מעשה סדום",
@@ -656,7 +663,13 @@ List <String> arabicProfanityList = [
   "ابن عاهره",
 ];
 
-List <String> russianProfanityList = [];
+List <String> russianProfanityList = [
+  "Блять",
+  "Ебать",
+  "Пизда",
+  "Сука",
+  "Хуй",
+];
 
 
 

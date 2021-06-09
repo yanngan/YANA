@@ -15,6 +15,7 @@ class EventsList extends StatefulWidget {
 }
 
 class _EventsListState extends State<EventsList> {
+
   bool _initDone = false;
   List<Events> listEvents = [];
   Map<String, Place> placeByEvents = {};

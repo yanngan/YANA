@@ -30,6 +30,7 @@ class _LoginState extends State<Login> {
   Map<String, dynamic>? _userData;
   AccessToken? _accessToken;
   bool _checking = true;
+  bool unknownUser = true;
   String imageURL = "";
 //  All the elements sizes (without the facebook button size)
   var topSpace = 0.0, imageSize = 0.0, fontSizeBig = 0.0, fontSizeSmall = 0.0, fullSize = 0.0;
@@ -42,7 +43,13 @@ class _LoginState extends State<Login> {
     fontSizeBig = 45;
     fontSizeSmall = 30;
     fullSize = (topSpace * 1.35) + imageSize;
-    _checkIfIsLogged();
+    checkUserFacebook();
+  }
+
+  void checkUserFacebook() async {
+    await Future.wait([
+      _checkIfIsLogged(),
+    ]);
   }
 
   @override
@@ -105,112 +112,117 @@ class _LoginState extends State<Login> {
                     ],
                   ),
                 ), // Welcome Text
-                TweenAnimationBuilder(
-                    tween: Tween<double>(begin: 0, end: 255),
-                    duration: Duration(milliseconds: 1150),
-                    curve: Curves.easeInExpo,
-                    builder: (BuildContext _, double alpha, Widget? __) {
-                      return Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(64),
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  elevation: (alpha / 100).round().toDouble(),
-                                  primary: Colors.blue.withAlpha(alpha.toInt()), // background
-                                  onPrimary: Colors.white.withAlpha(alpha.toInt()), // foreground
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text('התחבר עם פייסבוק', style: TextStyle(fontSize: 24)),
-                                    Image(
-                                      color: Colors.white.withAlpha(alpha.toInt()),
-                                      height: 50,
-                                      width: 50,
-                                      image: AssetImage(
-                                          'assets/facebook_logo.png'
-                                      )
-                                    ),
-                                  ],
-                                ),
-                                onPressed: () async {
-                                  List<String> permissionsWanted = const ['email', 'public_profile', 'user_birthday', 'user_gender', 'user_age_range'];
-                                  final LoginResult result = await FacebookAuth.instance.login(permissions: permissionsWanted); // by the fault we request the email and the public profile
-                                  if(result.status == LoginStatus.success) {
-                                    // In this if statement the user is logged in!
-                                    _accessToken =  result.accessToken!;
-                                    _userData = await FacebookAuth.instance.getUserData(fields: "name,email,picture.width(150),birthday,gender,age_range",);
-                                    Map<String, String> userInfo = new Map<String, String>();
-                                    userInfo["id"]              =     _userData!["id"];
-                                    userInfo["name"]            =     _userData!["name"];
-                                    userInfo["email"]           =     _userData!["email"];
-                                    userInfo["birthday"]        =     _userData!["birthday"];
-                                    userInfo["gender"]          =     _userData!["gender"];
-                                    userInfo["age_range"]       =     _userData!["age_range"]["min"].toString();
-                                    userInfo["fbPhoto"]         =     _userData!["picture"]["data"]["url"].toString();
-                                    userCredentials(userInfo, LOGIN_REGULAR);
-                                    setState(() {
-                                      imageURL = _userData!["picture"]["data"]["url"].toString();
-                                    });
-                                  }
-                                }
-                            ) ,
-                            ),
-                          ), // Connect with Facebook
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 35.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(64),
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: (alpha / 100).round().toDouble(),
-                                    primary: Colors.red.withAlpha(alpha.toInt()), // background
-                                    onPrimary: Colors.white.withAlpha(alpha.toInt()), // foreground
-                                  ),
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      Center(
-                                        child: SizedBox(
-                                          height: 150,
-                                          child: Image.network(
-                                              "https://scontent.fsdv3-1.fna.fbcdn.net/v/t1.18169-1/p320x320/18620299_1450180998376011_5537896693663387130_n.jpg?_nc_cat=103&ccb=1-3&_nc_sid=7206a8&_nc_ohc=1U-UN1EWuE0AX9PeIRM&_nc_ht=scontent.fsdv3-1.fna&tp=6&oh=12d9bbfd2c3b0a40b8089804b7c806b6&oe=60E597CC"
-                                          ),
+                FutureBuilder(
+                  future: _checkIfIsLogged(),
+                  builder: (context, snapshot){
+                    if(snapshot.connectionState == ConnectionState.done){
+                      if(snapshot.hasError){ /* Some error happened, check it! */ }
+                      return TweenAnimationBuilder(
+                          tween: Tween<double>(begin: 0, end: 255),
+                          duration: Duration(milliseconds: 1150),
+                          curve: Curves.easeInExpo,
+                          builder: (BuildContext _, double alpha, Widget? __) {
+                            return Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(64),
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          elevation: (alpha / 100).round().toDouble(),
+                                          primary: Colors.blue.withAlpha(alpha.toInt()), // background
+                                          onPrimary: Colors.white.withAlpha(alpha.toInt()), // foreground
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 80.0),
-                                        child: Text("משתמש לכבוד ג'ונאס", style: TextStyle(fontSize: 28, color: Colors.lightBlueAccent, fontWeight: FontWeight.bold)),
-                                      ),
-                                    ],
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text('התחבר עם פייסבוק', style: TextStyle(fontSize: 24)),
+                                            Image(
+                                                color: Colors.white.withAlpha(alpha.toInt()),
+                                                height: 50,
+                                                width: 50,
+                                                image: AssetImage(
+                                                    'assets/facebook_logo.png'
+                                                )
+                                            ),
+                                          ],
+                                        ),
+                                        onPressed: () async {
+                                          List<String> permissionsWanted = const ['email', 'public_profile', 'user_birthday', 'user_gender', 'user_age_range'];
+                                          final LoginResult result = await FacebookAuth.instance.login(permissions: permissionsWanted); // by the fault we request the email and the public profile
+                                          if(result.status == LoginStatus.success) {
+                                            // In this if statement the user is logged in!
+                                            _accessToken =  result.accessToken!;
+                                            _userData = await FacebookAuth.instance.getUserData(fields: "name,email,picture.width(150),birthday,gender,age_range",);
+                                            Map<String, String> userInfo = new Map<String, String>();
+                                            userInfo["id"]              =     _userData!["id"];
+                                            userInfo["name"]            =     _userData!["name"];
+                                            userInfo["email"]           =     _userData!["email"];
+                                            userInfo["birthday"]        =     _userData!["birthday"];
+                                            userInfo["gender"]          =     _userData!["gender"];
+                                            userInfo["age_range"]       =     _userData!["age_range"]["min"].toString();
+                                            userInfo["fbPhoto"]         =     _userData!["picture"]["data"]["url"].toString();
+                                            userCredentials(userInfo, LOGIN_REGULAR);
+                                            setState(() {
+                                              imageURL = _userData!["picture"]["data"]["url"].toString();
+                                            });
+                                          }
+                                        }
+                                    ) ,
                                   ),
-                                  onPressed: () { // TODO getCurrentUser(String userID)
-                                    Map<String, String> dummyUserInfo = new Map<String, String>();
-                                    dummyUserInfo["userID"]               =     "01234567891234567";
-                                    dummyUserInfo["name"]                 =     "Adriana Lima";
-                                    dummyUserInfo["email"]                =     "adrianalima@gmail.com";
-                                    dummyUserInfo["gender"]               =     "female";
-                                    dummyUserInfo["birthday"]             =     "12/06/1996";
-                                    dummyUserInfo["age_range"]            =     "39";
-                                    dummyUserInfo["hobbies"]              =     "Super Model, Actress";
-                                    dummyUserInfo["bio"]                  =     "Most beautiful woman in the world!";
-                                    dummyUserInfo["livingArea"]           =     "Salvador, Bahia, Brazil";
-                                    dummyUserInfo["workArea"]             =     "New York, Los Angeles";
-                                    dummyUserInfo["academicInstitution"]  =     "Creative Artists Agency";
-                                    dummyUserInfo["fieldOfStudy"]         =     "Modeling";
-                                    dummyUserInfo["smoking"]              =     "no baby";
-                                    dummyUserInfo["fbPhoto"]              =     "https://upload.wikimedia.org/wikipedia/commons/8/8e/Adriana_Lima_2019_by_Glenn_Francis.jpg";
-                                    dummyUserInfo["signUpDate"]           =     "20/09/2000";
-                                    dummyUserInfo["isBlocked"]            =     "false";
-                                    dummyUserInfo["notifications"]        =     "true";
-                                    userCredentials(dummyUserInfo, LOGIN_DUMMY);
-                                  }
-                              ),
-                            ),
-                          ), /// Connect with Dummy user
+                                ), // Connect with Facebook
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 35.0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(64),
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          elevation: (alpha / 100).round().toDouble(),
+                                          primary: Colors.red.withAlpha(alpha.toInt()), // background
+                                          onPrimary: Colors.white.withAlpha(alpha.toInt()), // foreground
+                                        ),
+                                        child: Stack(
+                                          alignment: Alignment.center,
+                                          children: [
+                                            Center(
+                                              child: SizedBox(
+                                                height: 150,
+                                                child: Image.network(
+                                                    "https://scontent.fsdv3-1.fna.fbcdn.net/v/t1.18169-1/p320x320/18620299_1450180998376011_5537896693663387130_n.jpg?_nc_cat=103&ccb=1-3&_nc_sid=7206a8&_nc_ohc=1U-UN1EWuE0AX9PeIRM&_nc_ht=scontent.fsdv3-1.fna&tp=6&oh=12d9bbfd2c3b0a40b8089804b7c806b6&oe=60E597CC"
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(top: 80.0),
+                                              child: Text("משתמש לכבוד ג'ונאס", style: TextStyle(fontSize: 28, color: Colors.lightBlueAccent, fontWeight: FontWeight.bold)),
+                                            ),
+                                          ],
+                                        ),
+                                        onPressed: () { // TODO getCurrentUser(String userID)
+                                          Map<String, String> dummyUserInfo = new Map<String, String>();
+                                          dummyUserInfo["userID"]               =     "01234567891234567";
+                                          dummyUserInfo["name"]                 =     "Adriana Lima";
+                                          dummyUserInfo["email"]                =     "adrianalima@gmail.com";
+                                          dummyUserInfo["gender"]               =     "female";
+                                          dummyUserInfo["birthday"]             =     "12/06/1996";
+                                          dummyUserInfo["age_range"]            =     "39";
+                                          dummyUserInfo["hobbies"]              =     "Super Model, Actress";
+                                          dummyUserInfo["bio"]                  =     "Most beautiful woman in the world!";
+                                          dummyUserInfo["livingArea"]           =     "Salvador, Bahia, Brazil";
+                                          dummyUserInfo["workArea"]             =     "New York, Los Angeles";
+                                          dummyUserInfo["academicInstitution"]  =     "Creative Artists Agency";
+                                          dummyUserInfo["fieldOfStudy"]         =     "Modeling";
+                                          dummyUserInfo["smoking"]              =     "no baby";
+                                          dummyUserInfo["fbPhoto"]              =     "https://upload.wikimedia.org/wikipedia/commons/8/8e/Adriana_Lima_2019_by_Glenn_Francis.jpg";
+                                          dummyUserInfo["signUpDate"]           =     "20/09/2000";
+                                          dummyUserInfo["isBlocked"]            =     "false";
+                                          dummyUserInfo["notifications"]        =     "true";
+                                          userCredentials(dummyUserInfo, LOGIN_DUMMY);
+                                        }
+                                    ),
+                                  ),
+                                ), /// Connect with Dummy user
 //                          Padding(
 //                            padding: const EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
 //                            child: ClipRRect(
@@ -259,9 +271,13 @@ class _LoginState extends State<Login> {
 //                              ) ,
 //                            ),
 //                          ), // Signup
-                        ],
+                              ],
+                            );
+                          }
                       );
                     }
+                    return CircularProgressIndicator();   // TODO don't remove without consulting Lidor, it's for debugging
+                  },
                 ),
               ],
             ),
@@ -368,6 +384,10 @@ class _LoginState extends State<Login> {
         if(exists){
           userCredentials(loggedUserInfo, LOGIN_REGULAR);
         }
+      });
+    }else{
+      setState(() {
+        unknownUser = true;
       });
     }
   }

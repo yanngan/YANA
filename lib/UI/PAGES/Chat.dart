@@ -62,7 +62,7 @@ class _ChatState extends State<Chat> {
     _meID = userMap['userID'].toString();
     _him =  _otherInfo['name'].toString();
     _himID =_otherInfo['userID'].toString();
-    
+
     getMessages();
   }
 
@@ -90,9 +90,10 @@ class _ChatState extends State<Chat> {
   /// Method to get the last message height in order to apply extra padding
   int lastMsgHeight(String str){
     int _h = 0;
-    int occurrences = '\n'.allMatches(str).length;
-    if(occurrences <= 1){ return 11; }
-    _h = ((occurrences + 3) * 10) + 5;
+    int occurrences = '\n'.allMatches(str).length + 1;
+    if(occurrences >= 1) {
+      _h = ((occurrences + 3) * 11) + 7;
+    }
     return _h;
   }
 
@@ -101,9 +102,17 @@ class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context){
     /// Timer in order to "scroll" to the last message without the user noticing
-    Timer(Duration(microseconds: 1), () => _scrollController.jumpTo(
-      _scrollController.position.maxScrollExtent + lastMsgHeight(messages[messages.length - 1].message))// TODO fix - Invalid value: Valid value range is empty: -1
-    );
+    if(messages.length > 1){
+      Timer(Duration(microseconds: 1), () {
+          _scrollController.jumpTo(
+              _scrollController.position.maxScrollExtent
+                  + lastMsgHeight(messages[messages.length - 1].message)
+          );
+          print(messages[messages.length - 1].message);
+          print(lastMsgHeight(messages[messages.length - 1].message));
+        }
+      );
+    }
 
     double inputFieldHeight = (MediaQuery.of(context).size.height / 11);
     double screenHeight = (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top);

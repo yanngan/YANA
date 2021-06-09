@@ -59,14 +59,10 @@ Map<String, String> userMap         =   new Map<String, String>();
 Map<String, String> otherInfo       =   new Map<String, String>();
 
 /// [appName] about text
-String aboutOrganization = "YANA is a social initiative intended to fight "
-    "against loneliness amongst young adults at the ages of 18-35(+-)."
-    "This project is meant to help people create new social circles within "
-    "safe spaces. This project will take place through an app where young "
-    "adults can update their location in any of the YANA supporting businesses, "
-    "and invite friends from the YANA platform to come and join then for "
-    "a meeting / drink / meal etc...\nWe are looking for the participation "
-    "of as many different types of people from different places in Israel "
-    "in order to maximize exposure and help as many individuals as possible.";
+String aboutOrganization = "מיזם YANA הינו מיזם למלחמה בבדידות בקרב צעירים. "
+    "המיזם נועד ליצור מעגלים חברתיים חדשים עבור מי שאין להם ו/או שמעוניינים ליצור חברויות חדשות."
+    "המיזם פועל במספר מישורים בהם אפליקציה ליזימת והצטרפות לאירועים חברתיים מבוססי מיקום; אירועים חברתיים עבור צעירים בודדים כגון סדנאות, שיעורים ועוד; "
+    "והקמת מאהלים חברתיים בנקודות מפתח (חוף הים, אוניברסיטה ועוד)."
+    "המיזם מיועד לצעירים בגילאי 18 עד 35 (פלוס מינוס).";
 
 /// Developers: Lidor Eliyahu Shelef, Yann Ganem, Yisrael Bar-Or and Jonas Sperling

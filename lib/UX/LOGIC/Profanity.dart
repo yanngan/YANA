@@ -133,6 +133,13 @@ List<String> hebrewProfanityList = [
   "יחסי מין",
   "ג'ק אוף",
   "ג'יז",
+  "בתחת",
+  "יתחת",
+  "יחרא",
+  "גי",
+  "גיי",
+  "גייי",
+  "גיייי",
   "קינקי",
   "מסיבת לימון",
   "מתיז זכר",
@@ -267,8 +274,11 @@ List <String> englishProfanityList = [
   "bestiality",
   "big black",
   "big breasts",
+  "breasts",
   "big knockers",
+  "knockers",
   "big tits",
+  "tits",
   "bimbos",
   "birdlock",
   "bitch",
@@ -628,3 +638,26 @@ List <String> englishProfanityList = [
   "yiffy",
   "zoophilia",
 ];
+
+List <String> arabicProfanityList = [
+  "كوس امك",
+  "كوس أختك",
+  "شرموطه",
+  "عاهره",
+  "منيك",
+  "منيوك",
+  "زباله",
+  "كوندره",
+  "مخصي",
+  "يا هامل",
+  "يلعن ابوك",
+  "يلعن امك",
+  "ابن شرموطه",
+  "ابن عاهره",
+];
+
+List <String> russianProfanityList = [];
+
+
+
+

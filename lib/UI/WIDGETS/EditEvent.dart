@@ -26,93 +26,97 @@ class _EditEventState extends State<EditEvent> {
     double height = ((MediaQuery.of(context).size.height) / 2);
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          color: Colors.amber,
-          shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.all(
-            Radius.circular(20.0),
-          ),
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              createTextField('estimateDate', 'תאריך רצוי', 'date',
-                  widget.theEvents.startEstimate.substring(0, 10)),
-              createTextField('startEstimateTime', 'שעת התחלה', 'time',
-                  widget.theEvents.startEstimate.substring(11)),
-              createTextField('endEstimateTime', 'שעת סיום', 'time',
-                  widget.theEvents.endEstimate.substring(11)),
-              Padding(
-                padding: const EdgeInsets.only(top: 12.0),
-                child: Text(
-                  "?כמה אנשים תרצו להיות",
-                  style: TextStyle(color: Colors.blueGrey),
-                ),
+      child: Wrap(
+        children: [
+          Container(
+            width: width,
+//        height: height,
+            decoration: BoxDecoration(
+              color: Colors.amber,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.all(
+                Radius.circular(20.0),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    child: Text(
-                      '+',
-                      style: TextStyle(color: Colors.white),
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                  children: [
+                    createTextField('estimateDate', 'תאריך רצוי', 'date',
+                        widget.theEvents.startEstimate.substring(0, 10)),
+                    createTextField('startEstimateTime', 'שעת התחלה', 'time',
+                        widget.theEvents.startEstimate.substring(11)),
+                    createTextField('endEstimateTime', 'שעת סיום', 'time',
+                        widget.theEvents.endEstimate.substring(11)),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12.0),
+                      child: Text(
+                        "?כמה אנשים תרצו להיות",
+                        style: TextStyle(color: Colors.blueGrey),
+                      ),
                     ),
-                    onPressed: incrementMaxNumPeople,
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.pink)),
-                  ),
-                  Container(
-                    width: 60,
-                    child: createTextField('maxNumPeople', 'כמה אנשים', 'int',
-                        widget.theEvents.maxNumPeople),
-                  ),
-                  ElevatedButton(
-                    child: Text(
-                      '-',
-                      style: TextStyle(color: Colors.white),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          child: Text(
+                            '+',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          onPressed: incrementMaxNumPeople,
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(Colors.pink)),
+                        ),
+                        Container(
+                          width: 60,
+                          child: createTextField('maxNumPeople', 'כמה אנשים', 'int',
+                              widget.theEvents.maxNumPeople),
+                        ),
+                        ElevatedButton(
+                          child: Text(
+                            '-',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          onPressed: decrementMaxNumPeople,
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(Colors.pink)),
+                        ),
+                      ],
                     ),
-                    onPressed: decrementMaxNumPeople,
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.pink)),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              createTextField('note', 'הערות', 'text', widget.theEvents.note),
-              SizedBox(
-                height: 30,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.pink),
+                    SizedBox(
+                      height: 15,
                     ),
-                    child: Text("שמור"),
-                    onPressed: saveTheEvent,
-                  ),
-                  TextButton(
-                    child: new Text(
-                      "סגור", style: TextStyle(color: Colors.blueGrey),),
-                    onPressed: () {
-                      Navigator.of(context).pop();
+                    createTextField('note', 'הערות', 'text', widget.theEvents.note),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Colors.pink),
+                          ),
+                          child: Text("שמור"),
+                          onPressed: saveTheEvent,
+                        ),
+                        TextButton(
+                          child: new Text(
+                            "סגור", style: TextStyle(color: Colors.blueGrey),),
+                          onPressed: () {
+                            Navigator.of(context).pop();
 //                  if (!totallyPop) {
 //                    print("in popTotally");
 //                    seeListEventInPlace(context, thePlace);
 //                  }
-                    },
-                  ),
-                ],
+                          },
+                        ),
+                      ],
+                    ),
+                  ]
               ),
-            ]
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -212,7 +216,6 @@ class _EditEventState extends State<EditEvent> {
           controller: this.allField[name],
         );
       case 'text':
-        print("**********************\n\n" + this.allField[name].toString() + "\n**********************\n");
         return TextField(
           textAlign: TextAlign.right,
           maxLines: 3,

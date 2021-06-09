@@ -49,18 +49,20 @@ class _ChatState extends State<Chat> {
   String messageText = "", _me = "", _meID = "", _him = "", _himID = "";
   double bottomPadding = 14.0, topPadding = 75.0, _keyboardHeight = 0.0;
   Map<String, String> _otherInfo = new Map<String, String>();
-  List<String> profanityList = new List.from(englishProfanityList)..addAll(hebrewProfanityList);
+  List<String> profanityList = new List.from(englishProfanityList)
+                                      ..addAll(hebrewProfanityList)
+                                      ..addAll(arabicProfanityList);
   _ChatState(this._otherInfo);
 
   @override
   void initState() {
     super.initState();
+
     _me = userMap['name'].toString();
     _meID = userMap['userID'].toString();
     _him =  _otherInfo['name'].toString();
     _himID =_otherInfo['userID'].toString();
-    // print(profanityList.toString());
-    // FirebaseHelper.sendPlaceToFb(new Place("ים המלח", "ים המלח", "436537876", "הבקע הסורי-אפריקני", 999999999, "רגוע", false, "24 שעות", "ים המלח", 6, "https://he.wikipedia.org/wiki/%D7%99%D7%9D_%D7%94%D7%9E%D7%9C%D7%97", "https://www.google.com/maps/place/%D7%99%D7%9D+%D7%94%D7%9E%D7%9C%D7%97%E2%80%AD/@31.5374596,35.7704954,10z/data=!3m1!4b1!4m5!3m4!1s0x15033c2eaf9fbba1:0xf38cff48a0c15882!8m2!3d31.5590287!4d35.4731895", "31.5374596", "35.7704954", "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Dead_sea.jpg/375px-Dead_sea.jpg", "מעלה אדומים"));
+    
     getMessages();
   }
 
@@ -264,7 +266,15 @@ class _ChatState extends State<Chat> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
       child: new TextField(
-        inputFormatters: [WhitelistingTextInputFormatter(RegExp(r'[a-zA-Z0-9 אבגדהוזחטיכךלמםנןסעפףצץקרשת]'))],
+        inputFormatters: [
+          WhitelistingTextInputFormatter(
+              RegExp(
+                r'[a-zA-Z0-9אבגדהוזחטיכךלמםנןסעפףצץקרשתАаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя_=!@#$&()\\-`. ?:+ ,/\"+×÷=/_€£¥₪*^%:;,~<>{}[]]*',
+                multiLine: true,
+                caseSensitive: false,
+              )
+          )
+        ],
 
         controller: _controllerInput,
         textAlign: TextAlign.center,

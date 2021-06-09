@@ -2,10 +2,15 @@ import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:yana/UI/WIDGETS/allWidgets.dart';
+import 'package:yana/UX/DB/allDB.dart';
+import 'package:yana/UX/LOGIC/Profanity.dart';
 import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
 import 'package:intl/intl.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
+import 'package:yana/UX/LOGIC/Logic.dart';
 import 'Utilities.dart';
 
 // ignore: must_be_immutable
@@ -44,16 +49,20 @@ class _ChatState extends State<Chat> {
   String messageText = "", _me = "", _meID = "", _him = "", _himID = "";
   double bottomPadding = 14.0, topPadding = 75.0, _keyboardHeight = 0.0;
   Map<String, String> _otherInfo = new Map<String, String>();
-
+  List<String> profanityList = new List.from(englishProfanityList)
+                                      ..addAll(hebrewProfanityList)
+                                      ..addAll(arabicProfanityList);
   _ChatState(this._otherInfo);
 
   @override
   void initState() {
     super.initState();
+
     _me = userMap['name'].toString();
-    _meID = userMap['id'].toString();
-    _him = _otherInfo['name'].toString();
-    _himID = _otherInfo['id'].toString();
+    _meID = userMap['userID'].toString();
+    _him =  _otherInfo['name'].toString();
+    _himID =_otherInfo['userID'].toString();
+    
     getMessages();
   }
 
@@ -93,7 +102,7 @@ class _ChatState extends State<Chat> {
   Widget build(BuildContext context){
     /// Timer in order to "scroll" to the last message without the user noticing
     Timer(Duration(microseconds: 1), () => _scrollController.jumpTo(
-      _scrollController.position.maxScrollExtent + lastMsgHeight(messages[messages.length - 1].message))
+      _scrollController.position.maxScrollExtent + lastMsgHeight(messages[messages.length - 1].message))// TODO fix - Invalid value: Valid value range is empty: -1
     );
 
     double inputFieldHeight = (MediaQuery.of(context).size.height / 11);
@@ -257,6 +266,16 @@ class _ChatState extends State<Chat> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
       child: new TextField(
+        inputFormatters: [
+          WhitelistingTextInputFormatter(
+              RegExp(
+                r'[a-zA-Z0-9אבגדהוזחטיכךלמםנןסעפףצץקרשתАаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя_=!@#$&()\\-`. ?:+ ,/\"+×÷=/_€£¥₪*^%:;,~<>{}[]]*',
+                multiLine: true,
+                caseSensitive: false,
+              )
+          )
+        ],
+
         controller: _controllerInput,
         textAlign: TextAlign.center,
         decoration: InputDecoration(
@@ -268,21 +287,40 @@ class _ChatState extends State<Chat> {
           hintText: 'הקלד הודעה...',
           suffixIcon: IconButton(
             icon: Icon(Icons.send),
-            onPressed: (){
+            onPressed: ()async{
+              ///getting the message from the input box
+              messageText = _controllerInput.text.toString().trim();
               if(messageText.isEmpty){ return; }
+
+              ///check if the message is free of Curses and Profanity words
+              if (hasProfanity(messageText))
+                {
+                  List<String> wordsFound = getAllProfanity(messageText);
+                  _makeToast("תוכן הבא זוהה כפוגעני: "+wordsFound.toString(), Colors.red);
+                  return;
+                }
+              _controllerInput.clear();
+
               DateTime now = new DateTime.now();
               String formattedDate = new DateFormat('dd-MM-yyyy hh:mm').format(now);
+              ///assemble the message and send via firebase to the other user
               Message message = Message(_me, _him, _meID, _himID, messageText, formattedDate);
-              print(message.toString());
               FirebaseHelper.sendMessageToFb(message);
-              _controllerInput.clear();
+
+              ///send a notification to other user to tell him he got a new message
+              ///get other user token
+              String otherToken =  await FirebaseHelper.getTokenNotificationForAUser(_himID);
+              if(otherToken.isEmpty){
+                return;
+              }
+              Logic.sendPushNotificationsToUsers([otherToken], NotificationTitle, _me + " שלח/ה לך הודעה ");
             },
           ),
         ),
-        onChanged: (str){
-          setState(() {
-            messageText = str.trim();
-          });
+        // onChanged: (str){
+        //   setState(() {
+        //      messageText = str.trim();
+        //   });
 //        if(value.isNotEmpty){
 ////          if(regExpEn.hasMatch(value[0].toString()).toString() == "true"){
 ////            setState(() {
@@ -312,7 +350,7 @@ class _ChatState extends State<Chat> {
 //            });
 //          }
 //        }
-        },
+//         },
       ),
     );
   }
@@ -338,6 +376,40 @@ class _ChatState extends State<Chat> {
     Navigator.pop(context);
     });
     return false;
+  }
+  ///display on screen the Profanity words in red
+  _makeToast(String str,var theColor) {
+    Fluttertoast.showToast(
+        msg: str,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: theColor,
+        textColor: Colors.amber,
+        fontSize: 16.0
+    );
+  }
+///check if in a given string there is a Profanity words
+  bool hasProfanity(String inputString) {
+    bool isProfane = false;
+    List<String> messageTextList= inputString.toLowerCase().trim().split(' ');
+    messageTextList.forEach((element) {
+      // print(englishProfanityList.contains(element));
+      if( profanityList.contains(element) ){
+            isProfane = true;
+      }
+    });
+    return isProfane;
+  }
+  ///return all the Profanity words that the user tried to send
+  List<String> getAllProfanity(String inputString) {
+    List<String> found = [];
+    profanityList.forEach((word) {
+      if (inputString.toLowerCase().contains(word)) {
+        found.add(word);
+      }
+    });
+    return found;
   }
 
 }

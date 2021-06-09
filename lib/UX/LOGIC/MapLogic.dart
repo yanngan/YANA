@@ -60,19 +60,19 @@ class MapLogic{
               borderRadius: BorderRadius.all(Radius.circular(20.0))
           ),
           content: screen,
-          actions: <Widget>[
-            new TextButton(
-              child: new Text(
-                "סגור", style: TextStyle(color: Colors.blueGrey),),
-              onPressed: () {
-                Navigator.of(context).pop();
-                if (!totallyPop) {
-                  print("in popTotally");
-                  seeListEventInPlace(context, thePlace);
-                }
-              },
-            ),
-          ],
+//          actions: <Widget>[
+//            new TextButton(
+//              child: new Text(
+//                "סגור", style: TextStyle(color: Colors.blueGrey),),
+//              onPressed: () {
+//                Navigator.of(context).pop();
+//                if (!totallyPop) {
+//                  print("in popTotally");
+//                  seeListEventInPlace(context, thePlace);
+//                }
+//              },
+//            ),
+//          ],
         );
       },
     );

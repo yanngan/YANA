@@ -105,7 +105,7 @@ class Logic {
     if(maxNumPeople == -1){
       maxNumPeople = 1000;
     }
-    return await FirebaseHelper.getEventsBySearchCombination(name: placesName, capacity: maxNumPeople, date: estimateDate );
+    return await FirebaseHelper.getEventsBySearchCombination(name: placesName, capacity: maxNumPeople, date: estimateDate,startHour:startEstimateTime );
   }
 
   /// [userID] - Represent the current user ID
@@ -198,10 +198,10 @@ class Logic {
   }
 
   /// Method to save current user "notificationToken"
-  static saveMyRegistrationToken() async { // TODO - call this method when the userMap['id'] is initialized
+  static saveMyRegistrationToken() async { // TODO - call this method when the userMap['userID'] is initialized
     FirebaseMessaging _messaging = FirebaseMessaging.instance;
     String registrationToken = await _messaging.getToken()??"";
-    FirebaseHelper.saveUserRegistrationToken(userMap['id']!,registrationToken);
+    FirebaseHelper.saveUserRegistrationToken(userMap['userID']!,registrationToken);
   }
 
   /// [userID] - Represent the User ID (the user of which you wish to send a notification to)

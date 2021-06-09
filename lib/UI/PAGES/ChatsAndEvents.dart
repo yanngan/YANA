@@ -112,12 +112,12 @@ class _ChatsAndEventsState extends State<ChatsAndEvents> {
   }
 
   /// Method in order to switch between pages ( Events / Chats )
-  switchPage(String page) {
+  switchPage(String page)async {
     if ((page == 'chat' && _whichPage) || (page == 'listEvent' && !_whichPage)) {
       //do nothing
       return;
     }
-    print("hello");
+    // print("hello");
     setState(() {
       _whichPage = !_whichPage;
     });

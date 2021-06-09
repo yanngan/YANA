@@ -65,7 +65,7 @@ class _SearchViewState extends State<SearchView> {
                         SizedBox(height: 15,),
                         createTextField(
                           'estimateDate',
-                          'החל מאיזה תאריך',/// todo - after yisrael make this to look for a specific day-> change the text here
+                          'באיזה תאריך',/// todo - after yisrael make this to look for a specific day-> change the text here
                           'date',
                         ),
                         SizedBox(height: 15,),
@@ -183,6 +183,12 @@ class _SearchViewState extends State<SearchView> {
                       ? ListView.builder(
                           itemCount: listEvents.length,
                           itemBuilder: (BuildContext context, int index) {
+                            if(index == listEvents.length - 1){
+                              return Padding(
+                                padding: EdgeInsets.only(bottom: 90),
+                                child: _createRow(index),
+                              );
+                            }
                             return _createRow(index);
                           })
                       : SpinKitFadingCircle(
@@ -190,24 +196,25 @@ class _SearchViewState extends State<SearchView> {
                           size: 50.0,
                         ),
                 ),
-              ),
+              )
             ],
           ),
         ));
   }
 
   void _init() async {
-    Logic.getEventsByCondition().then((value) async {
+    await Logic.getEventsByCondition().then((value) async {
+      listEvents.clear();
       listEvents = value;
       for (var oneEvents in listEvents) {
-        print(oneEvents.placeID);
+        // print(oneEvents.placeID);
         var temp = await Logic.getPlaceById(oneEvents.placeID);
         // ignore: unnecessary_null_comparison
         if (temp == null) {
           listEvents.remove(oneEvents);
           continue;
         }
-        print(temp.placeID);
+        // print(temp.placeID);
         PlaceByEvents[oneEvents.eventID] = temp;
       }
       setState(() {
@@ -237,15 +244,16 @@ class _SearchViewState extends State<SearchView> {
             placesName: placeName,
             startEstimateTime: startEstimateTime)
         .then((value) async {
+          listEvents.clear();
       listEvents = value;
       for (var oneEvents in listEvents) {
-        print(oneEvents.placeID);
+        // print(oneEvents.placeID);
         var temp = await Logic.getPlaceById(oneEvents.placeID);
         if (temp == null) {
           listEvents.remove(oneEvents);
           continue;
         }
-        print(temp.placeID);
+        // print(temp.placeID);
         PlaceByEvents[oneEvents.eventID] = temp;
       }
       setState(() {
@@ -256,7 +264,7 @@ class _SearchViewState extends State<SearchView> {
 
   _toggleSearch() {
     setState(() {
-      print(listEvents);
+      // print(listEvents);
       _seeField = !_seeField;
     });
   }
@@ -336,7 +344,7 @@ class _SearchViewState extends State<SearchView> {
     if (!this.allField.containsKey(name)) {
       this.allField[name] = TextEditingController();
       if (type == 'int') {
-        (this.allField[name]!).text = '2';
+        (this.allField[name]!).text = '16';
       }
     }
     switch (type) {

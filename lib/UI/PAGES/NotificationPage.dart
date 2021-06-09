@@ -93,7 +93,7 @@ class _NotificationPageState extends State<NotificationPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(listNotification[index].statusForUser!=1?'בקשת הצטרפות לאירוע שטרם אישרת':'בקשת הצטרפות לאירוע שכבר אישרת',style: TextStyle(fontSize: 20,color: Colors.white, ),textAlign: TextAlign.center,),
+                Text('בקשת הצטרפות לאירוע שטרם אישרת',style: TextStyle(fontSize: 20,color: Colors.white, ),textAlign: TextAlign.center,),
               ],
             ),
             Row(
@@ -119,25 +119,25 @@ class _NotificationPageState extends State<NotificationPage> {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: listNotification[index].statusForUser!=1?ElevatedButton(
+                    child: ElevatedButton(
                       child: Text("אישור"),
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
                       onPressed: (){
                         approveOrRejectRequestToJoinEvent(index,true);
                       },
-                    ):SizedBox(height: 1,),
+                    ),
                   ),
                 ),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: listNotification[index].statusForUser!=1?ElevatedButton(
+                    child: ElevatedButton(
                       child: Text("דחייה"),
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
                       onPressed: (){
                         approveOrRejectRequestToJoinEvent(index,false);
                       },
-                    ):SizedBox(height: 1,),
+                    ),
                   ),
                 ),
               ],
@@ -248,7 +248,7 @@ class _NotificationPageState extends State<NotificationPage> {
       return;
     }
     Logic.approveOrRejectRequestToJoinEvent(theOtherUser,theEvents,approve).then((value){
-      setState((){});
+      setState(() {});
     });
   }
 

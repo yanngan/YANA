@@ -42,6 +42,13 @@ class _LoginState extends State<Login> {
     fontSizeBig = 45;
     fontSizeSmall = 30;
     fullSize = (topSpace * 1.35) + imageSize;
+    checkUserFacebook();
+  }
+
+  void checkUserFacebook() async {
+    await Future.wait([
+      _checkIfIsLogged(),
+    ]);
   }
 
   @override
@@ -356,7 +363,7 @@ class _LoginState extends State<Login> {
       final userData = await FacebookAuth.instance.getUserData(fields: "name,email,picture.width(150),birthday,gender,age_range");
       _accessToken = accessToken;
       Map<String, String> loggedUserInfo = new Map<String, String>();
-      loggedUserInfo["userID"]          =     userData["userID"];
+      loggedUserInfo["userID"]          =     userData["id"]; /// Need to be 'id' and not 'userID'
       loggedUserInfo["name"]            =     userData["name"];
       loggedUserInfo["email"]           =     userData["email"];
       loggedUserInfo["birthday"]        =     userData["birthday"];

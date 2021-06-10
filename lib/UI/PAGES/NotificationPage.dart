@@ -232,7 +232,8 @@ class _NotificationPageState extends State<NotificationPage> {
 
   /// [index] - Represents the index of the list we want to see the profile for
   seeProfile(int index) async {
-    _makeToast("שירות זה עוד לא נתמך לצערנו, עובדים על זה :)",Colors.pink); /// TODO - show pop up profile of other user ( Like current user in Settings.dart )
+    String _notificationCreatorID =  listNotification[index].userID;
+    User notificationsCreatorUser = Logic.getUserByIDFromFireBase(_notificationCreatorID);
   }
 
   /// [index] - Represents the index of the list we want to approve / reject

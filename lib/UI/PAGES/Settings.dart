@@ -139,6 +139,7 @@ class _SettingsState extends State<Settings> {
                                           _notification = val;
                                           userMap['notifications'] = _notification.toString();
                                           updateUser(); // Save notifications preferences
+                                          saveDefaultNotificationsPreference();
                                         });
                                       }
                                   ),
@@ -1768,6 +1769,12 @@ class _SettingsState extends State<Settings> {
   void saveDefaultChatsEventsPreference() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(CHATS_EVENTS_TYPE_KEY, whichPage);
+  }
+
+  /// Method to save user default map preferences
+  void saveDefaultNotificationsPreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(NOTIFICATIONS_KEY, _notification);
   }
 
   /// Opens the developers credit page

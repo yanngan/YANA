@@ -254,4 +254,9 @@ class Logic {
     sendPushNotificationsToUsers([registrationToken], title, body);
   }
 
+  static getUserByIDFromFireBase(String _userID) async {
+    User returnedUser = (await FirebaseHelper.getCurrentUser(_userID))!;
+    return returnedUser;
+  }
+
 }

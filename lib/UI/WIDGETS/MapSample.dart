@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:yana/UI/PAGES/Utilities.dart';
+import 'package:yana/UX/LOGIC/EXCEPTIONS/CanNotGetUserLocationException.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
 import 'package:yana/UX/LOGIC/MapLogic.dart';
 
@@ -23,6 +25,7 @@ class MapSampleState extends State<MapSample> {
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   bool mapType = defaultMapType; // true == MapType.hybrid, false == MapType.normal
   bool initDone = false;
+  int tries = 0;
   static final CameraPosition _tlv = CameraPosition( //init poit to be at TLV
     target: LatLng(32.085300, 34.781769),
     zoom: 14.4746,
@@ -121,10 +124,24 @@ class MapSampleState extends State<MapSample> {
 
   /// Go to current user place in the map
   void jumpToCurrentLocation() async {
-    Logic.getUserLocation().then((value){
-      initDone = true;
-      _goTo(value);
-    });
+    try {
+      if(tries == 0){
+        Logic.getUserLocation().then((value){
+          initDone = true;
+          _goTo(value);
+        });
+        tries += 1;
+      }
+    } on CanNotGetUserLocationException catch (_) {
+      Fluttertoast.showToast(
+          msg: "שירותי מיקום לא זמינים",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+    }
   }
 
   /// [res] - Temporary variable to hold all the markers

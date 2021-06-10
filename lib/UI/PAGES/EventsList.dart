@@ -83,16 +83,24 @@ class _EventsListState extends State<EventsList> {
   }
 
   _createRow(int index) {
-    String textButton = "";
+    String textButton = "", _userName = listEvents[index].userName;
+    if(_userName == userMap['name'].toString()){
+      if(userMap['gender'].toString() == "female"){
+        _userName = "את";
+      }else{
+        _userName = "אתה";
+      }
+    }
     var actionButton;
-    print(listEvents[index]);
+//    print(listEvents[index]);
     if (listEvents[index].userID == userMap['userID']!) {
       textButton = "ערוך";
       actionButton = () async {
         await MapLogic.addEditSeePoints(context, 'edit',
-            theEvent: listEvents[index],
-            thePlace: placeByEvents[listEvents[index].eventID],
-            totallyPop: true);
+          theEvent: listEvents[index],
+          thePlace: placeByEvents[listEvents[index].eventID],
+          totallyPop: true
+        );
         setState(() {
           _initDone = false;
         });
@@ -184,7 +192,24 @@ class _EventsListState extends State<EventsList> {
                         style: TextStyle(fontSize: 20),
                       ),
                     ],
-                  ),
+                  ),  //  Header
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        "$_userName",
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      Text(
+                        " : ",
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      Text(
+                        "יוצר האירוע",
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    ],
+                  ),  //  Creator Name
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -201,15 +226,15 @@ class _EventsListState extends State<EventsList> {
                         style: TextStyle(fontSize: 15),
                       ),
                     ],
-                  ),
+                  ),  //  Time
                   Text(
                     "כמות משתתפים מקסימלית : ${(listEvents[index].maxNumPeople)}",
                     style: TextStyle(fontSize: 15),
-                  ),
+                  ),  //  Max participants
                   Text(
                     "כמות משתתפים נוכחית : ${listEvents[index].curNumPeople}",
                     style: TextStyle(fontSize: 15),
-                  ),
+                  ),  //  Current participants
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -218,12 +243,14 @@ class _EventsListState extends State<EventsList> {
                           _launchUrl(
                               "${(placeByEvents[listEvents[index].eventID]!).googleMapLink}");
                         },
-                        child: Text(
-                          "${(placeByEvents[listEvents[index].eventID]!).address}",
-                          style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.blueAccent,
-                              decoration: TextDecoration.underline),
+                        child: Flexible(
+                          child: Text(
+                            "${(placeByEvents[listEvents[index].eventID]!).address}",
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.blueAccent,
+                                decoration: TextDecoration.underline),
+                          ),
                         ),
                       ),
                       Text(
@@ -231,11 +258,11 @@ class _EventsListState extends State<EventsList> {
                         style: TextStyle(fontSize: 15),
                       ),
                       Text(
-                        "כתובת המקום",
+                        "כתובת",
                         style: TextStyle(fontSize: 15),
                       ),
                     ],
-                  ),
+                  ),  //  Address
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -244,7 +271,7 @@ class _EventsListState extends State<EventsList> {
                           "${listEvents[index].note}",
                           style: TextStyle(fontSize: 15),
                           textAlign: TextAlign.end,
-                          overflow: TextOverflow.ellipsis,
+//                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       Text(
@@ -256,7 +283,7 @@ class _EventsListState extends State<EventsList> {
                         style: TextStyle(fontSize: 15),
                       ),
                     ],
-                  ),
+                  ),  //  Notes
                 ],
               ),
             ),

@@ -131,7 +131,7 @@ class _NoticeBoardState extends State<NoticeBoard> {
                               child: Column(
                                 children: [
                                   SizedBox(
-                                    height: 60,
+                                    height: MediaQuery.of(context).size.height / 13,
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
@@ -204,6 +204,7 @@ class _AdvertisementState extends State<Advertisement> {
   bool extra_link_is_non_usable = false;
   String extra_link_name_to_use = "";
   String maps_links_to_use = "";
+  final _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -233,25 +234,25 @@ class _AdvertisementState extends State<Advertisement> {
         if (_isOpen) {
           _height -= widget.adv_details.length +
               extra_link_name_to_use.length +
-              maps_links_to_use.length + 1.5;
-          if(widget.adv_name.length > 18 && widget.adv_name.length < 25)
-            _height -= widget.adv_name.length * 2;
-          else if(widget.adv_name.length <= 40 && widget.adv_name.length >= 25)
-            _height -= widget.adv_name.length + 10;
-          else if(widget.adv_name.length > 40)
-            _height -= widget.adv_name.length;
+              maps_links_to_use.length + widget.adv_name.length;
+          // if(widget.adv_name.length > 18 && widget.adv_name.length < 25)
+          //   _height -= widget.adv_name.length * 2;
+          // else if(widget.adv_name.length <= 40 && widget.adv_name.length >= 25)
+          //   _height -= widget.adv_name.length + 10;
+          // else if(widget.adv_name.length > 40)
+          //   _height -= widget.adv_name.length;
 
           _isOpen = false;
         } else {
           _height += widget.adv_details.length +
               extra_link_name_to_use.length +
-              maps_links_to_use.length + 1.5;
-          if(widget.adv_name.length > 18 && widget.adv_name.length < 25)
-            _height += widget.adv_name.length * 2;
-          else if(widget.adv_name.length < 40 && widget.adv_name.length > 25)
-            _height += widget.adv_name.length + 10;
-          else if(widget.adv_name.length > 40)
-            _height += widget.adv_name.length;
+              maps_links_to_use.length + widget.adv_name.length;
+          // if(widget.adv_name.length > 18 && widget.adv_name.length < 25)
+          //   _height += widget.adv_name.length * 2;
+          // else if(widget.adv_name.length < 40 && widget.adv_name.length > 25)
+          //   _height += widget.adv_name.length + 10;
+          // else if(widget.adv_name.length > 40)
+          //   _height += widget.adv_name.length;
 
           _isOpen = true;
           _opened.add(this);
@@ -267,7 +268,7 @@ class _AdvertisementState extends State<Advertisement> {
         children: [
           AnimatedContainer(
             width: MediaQuery.of(context).size.width,
-            height: _isOpen ? _height : MediaQuery.of(context).size.height / 7.2,
+            height: _isOpen ? _height : MediaQuery.of(context).size.height / 8.1,
             margin: EdgeInsets.fromLTRB(6, 6, 6, 20.0),
             duration: Duration(milliseconds: 500),
             child: GestureDetector(
@@ -328,22 +329,22 @@ class _AdvertisementState extends State<Advertisement> {
                                   flex: 3,
                                   child: Padding(
                                     padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                    child: !_isOpen ? AutoSizeText(
+                                    child: AutoSizeText(
                                       widget.adv_name,
                                       textAlign: TextAlign.center,
                                       overflow: _isOpen ? TextOverflow.visible : TextOverflow.ellipsis,
                                       style: TextStyle(
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.grey[900],
-                                          fontFamily: 'FontPacifico'),
-                                    ) : SingleChildScrollView(
-                                      child: Text(widget.adv_name,style: TextStyle(
-                                          fontSize: 25,
+                                          fontSize: 20,
                                           fontWeight: FontWeight.w400,
                                           color: Colors.grey[900],
                                           fontFamily: 'FontPacifico'),),
-                                    ),
+                                    // !_isOpen ?
+                                    // ) : SingleChildScrollView(
+                                    //   child: Text(widget.adv_name,style: TextStyle(
+                                    //       fontSize: 25,
+                                    //       fontWeight: FontWeight.w400,
+                                    //       color: Colors.grey[900],
+                                    //       fontFamily: 'FontPacifico'),),
                                   ),
                                 ),
                                 Expanded(
@@ -405,80 +406,89 @@ class _AdvertisementState extends State<Advertisement> {
                               ///This column is here because of the expanded need to be in a directionaly widget (column,row,flex)
                               child: Column(
                                 children: [
+                                  if (widget.adv_name.length > 25) TextButton(onPressed: ()=>{}, child: Icon(Icons.arrow_downward_rounded)),
                                   Expanded(
-                                    child: SingleChildScrollView(
-                                      child: FittedBox(
-                                        fit: BoxFit.fitHeight,
-                                        child: Container(
-                                          width: MediaQuery.of(context).size.width,
-                                          child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(18, 0, 18, 0),
-                                            child: Column(
-                                              crossAxisAlignment:CrossAxisAlignment.start,
-                                              textDirection: TextDirection.rtl,
-                                              children: [
-                                                AutoSizeText(
-                                                  widget.adv_details,
-                                                  textDirection: TextDirection.rtl,
-                                                  textAlign: TextAlign.start,
-                                                  style: TextStyle(
-                                                    fontFamily: 'FontRaleway',
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Colors.black87,
-                                                    fontSize: 16,
-                                                    letterSpacing: 1,
-                                                    decorationThickness: 2,
-                                                    wordSpacing: 1,
+                                    child: CupertinoScrollbar(
+                                      controller: _scrollController,
+                                      isAlwaysShown: true,
+                                      child: SingleChildScrollView(
+                                        controller: _scrollController,
+                                        child: FittedBox(
+                                          fit: BoxFit.fitHeight,
+                                          child: Container(
+                                           decoration: BoxDecoration(
+
+                                           ),
+                                            width: MediaQuery.of(context).size.width,
+                                            child: Padding(
+                                              padding: const EdgeInsets.fromLTRB(18, 0, 18, 0),
+                                              child: Column(
+                                                crossAxisAlignment:CrossAxisAlignment.start,
+                                                textDirection: TextDirection.rtl,
+                                                children: [
+                                                  AutoSizeText(
+                                                    widget.adv_details,
+                                                    textDirection: TextDirection.rtl,
+                                                    textAlign: TextAlign.start,
+                                                    style: TextStyle(
+                                                      fontFamily: 'FontRaleway',
+                                                      fontWeight: FontWeight.w600,
+                                                      color: Colors.black87,
+                                                      fontSize: 16,
+                                                      letterSpacing: 1,
+                                                      decorationThickness: 2,
+                                                      wordSpacing: 1,
+                                                    ),
                                                   ),
-                                                ),
-                                                Container(
-                                                  transform: Matrix4.translationValues(0, -20, 0),
-                                                  // height: double.parse(extra_link_name_to_use.length.toString()),
-                                                  child: !extra_link_is_non_usable ? RichText(
-                                                      text: new TextSpan(
-                                                          text: extra_link_name_to_use,
-                                                          style: new TextStyle(
-                                                            fontFamily: 'FontRaleway',
-                                                            fontWeight: FontWeight.w600,
-                                                            color: Colors.blueAccent,
-                                                            decoration: TextDecoration.underline,
-                                                            fontSize: 16,
-                                                            letterSpacing: 1,
-                                                            decorationThickness: 2,
-                                                            wordSpacing: 1,
-                                                          ),
-                                                          // style: ,
-                                                          recognizer:
-                                                          new TapGestureRecognizer()
-                                                            ..onTap = () {
-                                                              _launchUrl(widget
-                                                                  .adv_extraLink);
-                                                            })):null
-                                                ),
-                                                Container(
-                                                  transform: Matrix4.translationValues(0, -40, 0),
-                                                  // height: double.parse(maps_links_to_use.length.toString()),
-                                                  child: !maps_link_is_non_usable ? RichText(
-                                                      text: new TextSpan(
-                                                          text: maps_links_to_use,
-                                                          style: new TextStyle(
-                                                            fontFamily: 'FontRaleway',
-                                                            fontWeight: FontWeight.w600,
-                                                            color: Colors.blueAccent,
-                                                            decoration: TextDecoration.underline,
-                                                            fontSize: 16,
-                                                            letterSpacing: 1,
-                                                            decorationThickness: 2,
-                                                            wordSpacing: 1,
-                                                          ),
-                                                          recognizer:
-                                                          new TapGestureRecognizer()
-                                                            ..onTap = () {
-                                                              _launchUrl(widget
-                                                                  .adv_mapsLink);
-                                                            })):null
-                                                )
-                                              ],
+                                                  Container(
+                                                    transform: Matrix4.translationValues(0, -20, 0),
+                                                    // height: double.parse(extra_link_name_to_use.length.toString()),
+                                                    child: !extra_link_is_non_usable ? RichText(
+                                                        text: new TextSpan(
+                                                            text: extra_link_name_to_use,
+                                                            style: new TextStyle(
+                                                              fontFamily: 'FontRaleway',
+                                                              fontWeight: FontWeight.w600,
+                                                              color: Colors.blueAccent,
+                                                              decoration: TextDecoration.underline,
+                                                              fontSize: 16,
+                                                              letterSpacing: 1,
+                                                              decorationThickness: 2,
+                                                              wordSpacing: 1,
+                                                            ),
+                                                            // style: ,
+                                                            recognizer:
+                                                            new TapGestureRecognizer()
+                                                              ..onTap = () {
+                                                                _launchUrl(widget
+                                                                    .adv_extraLink);
+                                                              })):null
+                                                  ),
+                                                  Container(
+                                                    transform: Matrix4.translationValues(0, -40, 0),
+                                                    // height: double.parse(maps_links_to_use.length.toString()),
+                                                    child: !maps_link_is_non_usable ? RichText(
+                                                        text: new TextSpan(
+                                                            text: maps_links_to_use,
+                                                            style: new TextStyle(
+                                                              fontFamily: 'FontRaleway',
+                                                              fontWeight: FontWeight.w600,
+                                                              color: Colors.blueAccent,
+                                                              decoration: TextDecoration.underline,
+                                                              fontSize: 16,
+                                                              letterSpacing: 1,
+                                                              decorationThickness: 2,
+                                                              wordSpacing: 1,
+                                                            ),
+                                                            recognizer:
+                                                            new TapGestureRecognizer()
+                                                              ..onTap = () {
+                                                                _launchUrl(widget
+                                                                    .adv_mapsLink);
+                                                              })):null
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),

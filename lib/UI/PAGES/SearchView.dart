@@ -53,7 +53,7 @@ class _SearchViewState extends State<SearchView> {
                   ),
                 ),
               ),
-              _seeField
+              !_seeField
                 ? Container(
                     child: Column(
                       children: [
@@ -168,14 +168,27 @@ class _SearchViewState extends State<SearchView> {
                       ],
                     ),
                   )
-                : IconButton(
-                    icon: Icon(
-                      Icons.keyboard_arrow_down,
-                      size: 40,
-                      color: Colors.pink,
+              :Padding(
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints.expand(width: 150,height: 35),
+                  child: ElevatedButton(onPressed: _toggleSearch,child: Icon(Icons.search),style: ElevatedButton.styleFrom(
+                    primary: Colors.pink,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0)
                     ),
-                    onPressed: _toggleSearch,
                   ),
+                  ),
+                ),
+              ),
+                // : IconButton(
+                //     icon: Icon(
+                //       Icons.keyboard_arrow_down,
+                //       size: 40,
+                //       color: Colors.pink,
+                //     ),
+                //     onPressed: _toggleSearch,
+                //   ),
               Expanded(
                 child: Container(
                   color: Colors.amber[300],
@@ -199,7 +212,7 @@ class _SearchViewState extends State<SearchView> {
               )
             ],
           ),
-        ));
+        ),);
   }
 
   void _init() async {

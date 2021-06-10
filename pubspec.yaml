@@ -91,7 +91,7 @@ flutter:
         - asset: fonts/Raleway-SemiBold.ttf
     - family: FontPacifico
       fonts:
-        - asset: fonts/Pacifico.ttf
+        - asset: fonts/VarelaRound-Regular.ttf
     - family: FontDavidLibre
       fonts:
         - asset: fonts/DavidLibre-Bold.ttf

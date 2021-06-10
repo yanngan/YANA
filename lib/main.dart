@@ -249,9 +249,15 @@ class _MainPageState extends State<MainPage> {
         print("PushNotification.body = ${message.notification?.body}");
         if (notification != null) {
           // For displaying the notification as an overlay
-          String bodyToShow = message.notification!.body!.split("#")[0];
-          List<String> test = message.notification!.body!.split("#");
-          print(test);
+          String bodyToShow = "";// = message.notification!.body!.split("#")[0];
+          List<String> arr = message.notification!.body!.split("#");
+          if(arr.length == 3){
+            bodyToShow = arr[2];
+          }
+          else{
+            bodyToShow = arr[0];
+          }
+          print(arr);
           showSimpleNotification(
               Text(notification.title??"ERROR"),
               subtitle: Text(bodyToShow),
@@ -261,10 +267,10 @@ class _MainPageState extends State<MainPage> {
               trailing: TextButton(
               onPressed: (){
                 if(message.notification!.title!.contains("הודעה")){
-                    List<String> param = message.notification!.body!.split("#");
+                    //List<String> param = message.notification!.body!.split("#");
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Chat({"userID" : param[1],"name": param[2]})),
+                      MaterialPageRoute(builder: (context) => Chat({"userID" : arr[0],"name": arr[1]})),
                     );
                 }
                 else{

@@ -241,31 +241,35 @@ class _MainPageState extends State<MainPage> {
       // For handling the received notifications
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
         // Parse the message received
+        String bodyToShow = "";// = message.notification!.body!.split("#")[0];
+        List<String> arr = message.notification!.body!.split("#");
+        if(arr.length == 3){
+          bodyToShow = arr[2];
+        }
+        else{
+          bodyToShow = arr[0];
+        }
+
         PushNotification notification = PushNotification(
           title: message.notification?.title,
-          body: message.notification?.body,
+          body: bodyToShow,
         );
         print("PushNotification.title = ${message.notification?.title}");
         print("PushNotification.body = ${message.notification?.body}");
         if (notification != null) {
-          // For displaying the notification as an overlay
-          String bodyToShow = message.notification!.body!.split("#")[0];
-          List<String> test = message.notification!.body!.split("#");
-          print(test);
+
+          print(arr);
+          bool isMessage = message.notification!.title!.contains("הודעה");
           showSimpleNotification(
               Text(notification.title??"ERROR"),
-              subtitle: Text(bodyToShow),
-              leading: Icon(Icons.notifications),
+              subtitle: Text(message.notification!.body!),
+              leading: isMessage?Icon(Icons.message):Icon(Icons.notifications),
               background: Colors.pink,
               duration: Duration(seconds: 3),
               trailing: TextButton(
               onPressed: (){
-                if(message.notification!.title!.contains("הודעה")){
-                    List<String> param = message.notification!.body!.split("#");
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Chat({"userID" : param[1],"name": param[2]})),
-                    );
+                if(isMessage){
+                    //do nothing :)
                 }
                 else{
                   Navigator.push(
@@ -274,7 +278,7 @@ class _MainPageState extends State<MainPage> {
                   );
                 }
               },
-              child: Icon(Icons.arrow_forward_ios_outlined,color: Colors.amber,))
+              child: isMessage?SizedBox(height: 1,):Icon(Icons.arrow_forward_ios_outlined,color: Colors.amber,))
           );
         }
 

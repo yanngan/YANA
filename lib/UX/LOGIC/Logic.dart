@@ -255,7 +255,8 @@ class Logic {
   }
 
   static getUserByIDFromFireBase(String _userID) async {
-    return FirebaseHelper.getCurrentUser(_userID);
+    User returnedUser = (await FirebaseHelper.getCurrentUser(_userID))!;
+    return returnedUser;
   }
 
 }

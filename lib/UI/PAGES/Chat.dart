@@ -323,7 +323,7 @@ class _ChatState extends State<Chat> {
                 return;
               }
               String title = NotificationTitle;
-              String body = "$_meID#$_me#$_me${"שלח/ה לך הודעה"}"; //will be formated: <the text to show>#<userID>#<name>
+              String body = "$_me ${"שלח/ה לך הודעה"}"; //will be formated: <the text to show>#<userID>#<name>
               /*body += _me + "שלח/ה לך הודעה";
               body += "#" + _meID;
               body += "#" + _me;*/

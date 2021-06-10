@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // Export all the pages
 export 'Chat.dart';
@@ -19,6 +20,7 @@ export 'NotificationPage.dart';
 const appName                       =   "YANA";
 const MAP_TYPE_KEY                  =   "MAP_TYPE";
 const CHATS_EVENTS_TYPE_KEY         =   "CHATS_EVENTS_TYPE";
+const NOTIFICATIONS_KEY             =   "NOTIFICATIONS_KEY";
 const String NeumorphismInner       =   'NEUMORPHISM_INNER';
 const String NeumorphismOuter       =   'NEUMORPHISM_OUTER';
 const String NeumorphismOuterChip   =   'NEUMORPHISM_OUTER_CHIP';
@@ -59,14 +61,24 @@ Map<String, String> userMap         =   new Map<String, String>();
 Map<String, String> otherInfo       =   new Map<String, String>();
 
 /// [appName] about text
-String aboutOrganization = "YANA is a social initiative intended to fight "
-    "against loneliness amongst young adults at the ages of 18-35(+-)."
-    "This project is meant to help people create new social circles within "
-    "safe spaces. This project will take place through an app where young "
-    "adults can update their location in any of the YANA supporting businesses, "
-    "and invite friends from the YANA platform to come and join then for "
-    "a meeting / drink / meal etc...\nWe are looking for the participation "
-    "of as many different types of people from different places in Israel "
-    "in order to maximize exposure and help as many individuals as possible.";
+String aboutOrganization = "מיזם YANA הינו מיזם למלחמה בבדידות בקרב צעירים. "
+    "המיזם נועד ליצור מעגלים חברתיים חדשים עבור מי שאין להם ו/או שמעוניינים ליצור חברויות חדשות."
+    "המיזם פועל במספר מישורים בהם אפליקציה ליזימת והצטרפות לאירועים חברתיים מבוססי מיקום; אירועים חברתיים עבור צעירים בודדים כגון סדנאות, שיעורים ועוד; "
+    "והקמת מאהלים חברתיים בנקודות מפתח (חוף הים, אוניברסיטה ועוד)."
+    "המיזם מיועד לצעירים בגילאי 18 עד 35 (פלוס מינוס).";
+
+Map<String, String> developersInfo = {
+  "לידור אליהו שלף": "טקסט על לידור",
+  "יאן משה גנם": "פה יהיה כתוב ליאן",
+  "ישראל בר אור": "כאן מידע לישראל",
+  "ג'ונאס ספרלינג": "ג'ונאס #מידע",
+};
+Map<String, String> developersLinks = {
+  "Lidor" : "https://www.linkedin.com/in/lidor-e-s/",
+  "Yann" : "https://www.linkedin.com/in/yann-ganem-00ab02183/",
+  "Yisrael" : "https://www.linkedin.com/in/yisrael-bar-7534a842/",
+  "Jonas" : "https://www.linkedin.com/in/jonas-s-32927b20b/",
+};
+
 
 /// Developers: Lidor Eliyahu Shelef, Yann Ganem, Yisrael Bar-Or and Jonas Sperling

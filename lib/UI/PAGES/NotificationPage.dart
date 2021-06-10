@@ -25,17 +25,18 @@ class _NotificationPageState extends State<NotificationPage> {
     if(!_initDone){
       _init();
     }
-    return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(
-          color: Colors.amber, //change your color here
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("התראות"),
+          iconTheme: IconThemeData(
+            color: Colors.amber, //change your color here
+          ),
+          backgroundColor: Colors.pink,
         ),
-        backgroundColor: Colors.pink,
-      ),
-      backgroundColor: Colors.amber,
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Container(
+        backgroundColor: Colors.amber,
+        body: Container(
           color: Colors.amber,
           child: _initDone?ListView.builder(
               itemCount: listNotification.length,
@@ -93,7 +94,7 @@ class _NotificationPageState extends State<NotificationPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('בקשת הצטרפות לאירוע שטרם אישרת',style: TextStyle(fontSize: 20,color: Colors.white, ),textAlign: TextAlign.center,),
+                Text(listNotification[index].statusForUser!=1?'בקשת הצטרפות לאירוע שטרם אישרת':'בקשת הצטרפות לאירוע שכבר אישרת',style: TextStyle(fontSize: 20,color: Colors.white, ),textAlign: TextAlign.center,),
               ],
             ),
             Row(
@@ -119,25 +120,25 @@ class _NotificationPageState extends State<NotificationPage> {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
+                    child: listNotification[index].statusForUser!=1?ElevatedButton(
                       child: Text("אישור"),
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
                       onPressed: (){
                         approveOrRejectRequestToJoinEvent(index,true);
                       },
-                    ),
+                    ):SizedBox(height: 1,),
                   ),
                 ),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
+                    child: listNotification[index].statusForUser!=1?ElevatedButton(
                       child: Text("דחייה"),
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
                       onPressed: (){
                         approveOrRejectRequestToJoinEvent(index,false);
                       },
-                    ),
+                    ):SizedBox(height: 1,),
                   ),
                 ),
               ],
@@ -231,7 +232,8 @@ class _NotificationPageState extends State<NotificationPage> {
 
   /// [index] - Represents the index of the list we want to see the profile for
   seeProfile(int index) async {
-    _makeToast("שירות זה עוד לא נתמך לצערנו, עובדים על זה :)",Colors.pink); /// TODO - show pop up profile of other user ( Like current user in Settings.dart )
+    String _notificationCreatorID =  listNotification[index].userID;
+    User notificationsCreatorUser = Logic.getUserByIDFromFireBase(_notificationCreatorID);
   }
 
   /// [index] - Represents the index of the list we want to approve / reject
@@ -247,7 +249,9 @@ class _NotificationPageState extends State<NotificationPage> {
       _makeToast("אירעה שגיאה, עמכם הסליחה",Colors.red);
       return;
     }
-    Logic.approveOrRejectRequestToJoinEvent(theOtherUser,theEvents,approve);
+    Logic.approveOrRejectRequestToJoinEvent(theOtherUser,theEvents,approve).then((value){
+      setState(() {});
+    });
   }
 
   /// Creates a toast message with [str] text and [theColor] color

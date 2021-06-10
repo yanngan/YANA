@@ -187,7 +187,7 @@ class _AddEventState extends State<AddEvent> {
         return TextField(
           textAlignVertical: TextAlignVertical.center,
           readOnly: true,
-          textAlign: TextAlign.right,
+          textAlign: TextAlign.center,
           decoration: InputDecoration(
               fillColor: Colors.white,
               hintText: hint,
@@ -202,7 +202,7 @@ class _AddEventState extends State<AddEvent> {
             maxLines: 3,
             decoration: InputDecoration(
               filled: true,
-              fillColor: Colors.white,
+              fillColor: Colors.amber[300],
               hintText: hint,
               hintStyle: TextStyle(color: Colors.grey),
             ),
@@ -240,7 +240,6 @@ class _AddEventState extends State<AddEvent> {
       return;
     }
     String newId = await FirebaseHelper.generateEventId();
-
     Events theNewEvents = Events(
         newId, userMap['userID']!, userMap['name']!, formattedDate, true, startEstimate,
         endEstimate, 1, maxNumPeople, widget.thePlace.placeID,

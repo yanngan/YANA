@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // Inside stuff
 import 'package:yana/UI/WIDGETS/allWidgets.dart';
 import 'package:yana/UX/DB/users.dart';
@@ -279,7 +280,7 @@ class _SignUpState extends State<SignUp> {
           DateTime now = new DateTime.now();
           String formattedDate = new intl.DateFormat('dd-MM-yyyy').format(now);
           Map<String, String> newUserInfo = new Map<String, String>();
-          newUserInfo["id"]                     =      this.widget.userCredentials["id"].toString();
+          newUserInfo["userID"]                 =      this.widget.userCredentials["userID"].toString();
           newUserInfo["name"]                   =      this.widget.userCredentials["name"].toString();
           newUserInfo["email"]                  =      this.widget.userCredentials["email"].toString();
           newUserInfo["birthday"]               =      this.widget.userCredentials["birthday"].toString();
@@ -1348,6 +1349,12 @@ class _SignUpState extends State<SignUp> {
           break;
       }
     });
+  }
+
+  /// Method to save user default map preferences
+  void saveDefaultNotificationsPreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(NOTIFICATIONS_KEY, true);
   }
 
   Future<bool> _onBackPressed() async {

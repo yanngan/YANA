@@ -44,9 +44,9 @@ class _SeeEventState extends State<SeeEvent> {
                   Row(
                     textDirection: TextDirection.rtl,
                     children: [
-                      Text("שם יוצר האירוע:",textDirection: TextDirection.rtl,),
+                      Text("יוצר האירוע:",textDirection: TextDirection.rtl,),
                       SizedBox(width: 10,),
-                      Text(widget.theEvents.userName,textDirection: TextDirection.rtl,),
+                      Text(widget.theEvents.userName,textDirection: TextDirection.rtl, maxLines: 2,),
                     ],
                   ),
                   Row(
@@ -86,7 +86,7 @@ class _SeeEventState extends State<SeeEvent> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       _initDone?
-                      (widget.theEvents.userID == userMap["id"]?ElevatedButton(
+                      (widget.theEvents.userID == userMap["userID"]?ElevatedButton(
                         style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.pink),),
                         child: Text("ערוך"),
                         onPressed: editTheEvent,

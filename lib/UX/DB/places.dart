@@ -37,6 +37,16 @@ class Place{
       this.city
       );
 
+  String specialToString(){
+    String kosher= isKosher ? "כשר" : "לא כשר";
+    return 'כתובת: $address\n'
+        'איש קשר במקום: $representative\n'
+        'מספר ליצירת קשר: $phoneNumber\n'
+        'תכולה: $capacity\nוייב: $vibe\n'
+        'כשרות: $kosher\nשעת פתיחה: $openingHours';
+
+  }
+
 
   @override
   String toString() {

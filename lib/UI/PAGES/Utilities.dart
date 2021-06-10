@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // Export all the pages
 export 'Chat.dart';
@@ -71,5 +72,12 @@ Map<String, String> developersInfo = {
   "ישראל בר אור": "כאן מידע לישראל",
   "ג'ונאס ספרלינג": "ג'ונאס #מידע",
 };
+Map<String, String> developersLinks = {
+  "Lidor" : "https://www.linkedin.com/in/lidor-e-s/",
+  "Yann" : "https://www.linkedin.com/in/yann-ganem-00ab02183/",
+  "Yisrael" : "https://www.linkedin.com/in/yisrael-bar-7534a842/",
+  "Jonas" : "https://www.linkedin.com/in/jonas-s-32927b20b/",
+};
+
 
 /// Developers: Lidor Eliyahu Shelef, Yann Ganem, Yisrael Bar-Or and Jonas Sperling

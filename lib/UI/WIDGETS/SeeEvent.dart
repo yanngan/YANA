@@ -44,9 +44,9 @@ class _SeeEventState extends State<SeeEvent> {
                   Row(
                     textDirection: TextDirection.rtl,
                     children: [
-                      Text("שם יוצר האירוע:",textDirection: TextDirection.rtl,),
+                      Text("יוצר האירוע:",textDirection: TextDirection.rtl,),
                       SizedBox(width: 10,),
-                      Text(widget.theEvents.userName,textDirection: TextDirection.rtl,),
+                      Text(widget.theEvents.userName,textDirection: TextDirection.rtl, maxLines: 2,),
                     ],
                   ),
                   Row(

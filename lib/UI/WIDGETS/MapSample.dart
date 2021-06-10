@@ -34,7 +34,7 @@ class MapSampleState extends State<MapSample> {
   @override
   Widget build(BuildContext context) {
     if(!initDone){
-      jumpToCurrentLocation();
+      jumpToCurrentLocation(false);
       addLocationsPoints();
     }
     //jumpToCurrentLocation();
@@ -77,7 +77,7 @@ class MapSampleState extends State<MapSample> {
                       padding: const EdgeInsets.all(8.0),
                       child: FloatingActionButton(
                         heroTag: 'current_user_location',
-                        onPressed: jumpToCurrentLocation,
+                        onPressed: (){jumpToCurrentLocation(true);print("just call jumpToCurrentLocation ");},
                         backgroundColor: Colors.amber,
                         child: Icon(Icons.location_searching, color: Colors.pink,size: 30,),
                       ),
@@ -123,10 +123,10 @@ class MapSampleState extends State<MapSample> {
   }
 
   /// Go to current user place in the map
-  void jumpToCurrentLocation() async {
+  void jumpToCurrentLocation(bool zoomIn) async {
     try {
-      if(tries == 0){
-        Logic.getUserLocation().then((value){
+      if(tries == 0 || zoomIn){
+        Logic.getUserLocation(zoomIn).then((value){
           initDone = true;
           _goTo(value);
         });

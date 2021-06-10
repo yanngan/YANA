@@ -54,129 +54,138 @@ class _SearchViewState extends State<SearchView> {
                 ),
               ),
               !_seeField
-                ? Container(
-                    child: Column(
-                      children: [
-                        createTextField(
-                          'placeName',
-                          'שם המקום',
-                          'text',
-                        ),
-                        SizedBox(height: 15,),
-                        createTextField(
-                          'estimateDate',
-                          'באיזה תאריך',/// todo - after yisrael make this to look for a specific day-> change the text here
-                          'date',
-                        ),
-                        SizedBox(height: 15,),
-                        createTextField(
-                          'startEstimateTime',
-                          'החל מאיזה שעה',
-                          'time',
-                        ),
-                        SizedBox(height: 15,),
-                        Text(
-                          "כמות מקסימלית של אנשים באירוע",
-                          style: TextStyle(color: Colors.grey[900]),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(16,0,0,0),
-                              child: ElevatedButton(
+                ? AnimatedContainer(
+                    duration: Duration(milliseconds: 1000),
+                    curve: Curves.fastOutSlowIn,
+                    height: MediaQuery.of(context).size.height / 2.3,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          createTextField(
+                            'placeName',
+                            'שם המקום',
+                            'text',
+                          ),
+                          SizedBox(height: 15,),
+                          createTextField(
+                            'estimateDate',
+                            'באיזה תאריך',/// todo - after yisrael make this to look for a specific day-> change the text here
+                            'date',
+                          ),
+                          SizedBox(height: 15,),
+                          createTextField(
+                            'startEstimateTime',
+                            'החל מאיזה שעה',
+                            'time',
+                          ),
+                          SizedBox(height: 15,),
+                          Text(
+                            "כמות מקסימלית של אנשים באירוע",
+                            style: TextStyle(color: Colors.grey[900]),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(16,0,0,0),
+                                child: ElevatedButton(
+                                    child: Text(
+                                      '-',
+                                      style: TextStyle(color: Colors.white,fontSize: 27),
+                                    ),
+                                    onPressed: decrementMaxNumPeople,
+                                    style: ButtonStyle(
+                                        shape: MaterialStateProperty.all<CircleBorder>(CircleBorder(
+                                          // borderRadius: BorderRadius.circular(20),
+                                          //side: BorderSide(color: Colors.black38)
+                                        )),
+                                        backgroundColor: MaterialStateProperty.all(
+                                            Colors.pink))),
+                              ),
+                              Container(
+                                width: 20,
+                                child: createTextField(
+                                  'maxNumPeople',
+                                  'כמות מקסימלית של אנשים באירוע',
+                                  'int',
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0,0,10,0),
+                                child: ElevatedButton(
                                   child: Text(
-                                    '-',
-                                    style: TextStyle(color: Colors.white,fontSize: 27),
+                                    '+',
+                                    style: TextStyle(color: Colors.white,fontSize: 20),
                                   ),
-                                  onPressed: decrementMaxNumPeople,
+                                  onPressed: incrementMaxNumPeople,
                                   style: ButtonStyle(
                                       shape: MaterialStateProperty.all<CircleBorder>(CircleBorder(
-                                        // borderRadius: BorderRadius.circular(20),
+                                        // borderRadius: BorderRadius.circular(25),
                                         //side: BorderSide(color: Colors.black38)
+
                                       )),
-                                      backgroundColor: MaterialStateProperty.all(
-                                          Colors.pink))),
-                            ),
-                            Container(
-                              width: 20,
-                              child: createTextField(
-                                'maxNumPeople',
-                                'כמות מקסימלית של אנשים באירוע',
-                                'int',
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0,0,10,0),
-                              child: ElevatedButton(
-                                child: Text(
-                                  '+',
-                                  style: TextStyle(color: Colors.white,fontSize: 20),
-                                ),
-                                onPressed: incrementMaxNumPeople,
-                                style: ButtonStyle(
-                                    shape: MaterialStateProperty.all<CircleBorder>(CircleBorder(
-                                      // borderRadius: BorderRadius.circular(25),
-                                      //side: BorderSide(color: Colors.black38)
-
-                                    )),
-                                    backgroundColor:
-                                    MaterialStateProperty.all(Colors.pink)),
-                              ),
-                            ),
-
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(left: (_searchWidth / 3.5)),
-                              child: SizedBox(
-                                width: _searchWidth,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: ElevatedButton(
-                                    style: ButtonStyle(
                                       backgroundColor:
-                                      MaterialStateProperty.all(Colors.pink),
-                                      shadowColor: MaterialStateProperty.all<Color>(Colors.black),
-                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(25),
-                                        //side: BorderSide(color: Colors.black54)
-                                      )),
+                                      MaterialStateProperty.all(Colors.pink)),
+                                ),
+                              ),
+
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: (_searchWidth / 3.5)),
+                                child: SizedBox(
+                                  width: _searchWidth,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                        MaterialStateProperty.all(Colors.pink),
+                                        shadowColor: MaterialStateProperty.all<Color>(Colors.black),
+                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(25),
+                                          //side: BorderSide(color: Colors.black54)
+                                        )),
+                                      ),
+                                      child: Text(
+                                        "חפש",
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                      onPressed: _doSearch,
                                     ),
-                                    child: Text(
-                                      "חפש",
-                                      style: TextStyle(fontSize: 20),
-                                    ),
-                                    onPressed: _doSearch,
                                   ),
                                 ),
                               ),
-                            ),
-                            IconButton(
-                              icon: Icon(
-                                Icons.keyboard_arrow_up,
-                                size: 30,
-                                color: Colors.pink,
+                              IconButton(
+                                icon: Icon(
+                                  Icons.keyboard_arrow_up,
+                                  size: 30,
+                                  color: Colors.pink,
+                                ),
+                                onPressed: _toggleSearch,
                               ),
-                              onPressed: _toggleSearch,
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   )
-              :Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints.expand(width: 150,height: 35),
+              :
+              AnimatedContainer(
+                duration: Duration(milliseconds: 1000),
+                curve: Curves.bounceOut,
+                height: MediaQuery.of(context).size.height /10,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                   child: ElevatedButton(onPressed: _toggleSearch,child: Icon(Icons.search),style: ElevatedButton.styleFrom(
                     primary: Colors.pink,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0)
                     ),
+                    minimumSize: Size(150.0,40),
                   ),
                   ),
                 ),

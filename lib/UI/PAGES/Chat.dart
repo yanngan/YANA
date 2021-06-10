@@ -323,10 +323,10 @@ class _ChatState extends State<Chat> {
                 return;
               }
               String title = NotificationTitle;
-              String body = ""; //will be formated: <the text to show>#<userID>#<name>
-              body += _me + "שלח/ה לך הודעה";
+              String body = "$_me ${"שלח/ה לך הודעה"}#$_meID#$_me"; //will be formated: <the text to show>#<userID>#<name>
+              /*body += _me + "שלח/ה לך הודעה";
               body += "#" + _meID;
-              body += "#" + _me;
+              body += "#" + _me;*/
               Logic.sendPushNotificationsToUsers([otherToken], title, body);
             },
           ),

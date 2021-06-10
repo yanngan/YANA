@@ -62,7 +62,7 @@ class _ChatListState extends State<ChatList> {
               child: ListView.separated(
                 padding: EdgeInsets.zero,
                 separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(height: 15);
+                  return SizedBox(height: 2);
                 },
                 itemCount: _senders.length,
                 itemBuilder: (context, index){
@@ -76,13 +76,35 @@ class _ChatListState extends State<ChatList> {
                       });
                     },
                     child: Neumorphism(
-                        null,
-                        100.0,
-                        Text(_senders[key], style: TextStyle(fontFamily: 'FontSkia', fontSize: 24.0, fontWeight: FontWeight.w600),),
-                        type: NeumorphismInner,
-                        radius: 0.0,
-                        alignment: Alignment.center,
-                        color: bodyColor),
+                      null,
+                      75.0,
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 2.5),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  _senders[key],
+                                  style: TextStyle(fontFamily: 'FontSkia', fontSize: 24.0, fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Icon(Icons.arrow_forward_ios),
+                          ),
+                        ],
+                      ),
+                      type: NeumorphismInner,
+                      radius: 0.0,
+                      alignment: Alignment.center,
+                      color: bodyColor
+                    ),
                   );
                 },
               ),

@@ -50,7 +50,7 @@ class User {
       json['email'] as String,
       json['gender'] as String,
       json['birthday'] as String,
-      json['age_range'] as int,
+      int.parse(json['age_range']), // TODO -> Do not push this line, old line: json['age_range'] as int,
       json['hobbies'] as String,
       json['bio'] as String,
       json['livingArea'] as String,

@@ -263,7 +263,7 @@ class _MainPageState extends State<MainPage> {
           showSimpleNotification(
               Text(notification.title??"ERROR"),
               subtitle: Text(message.notification!.body!),
-              leading: Icon(Icons.notifications),
+              leading: isMessage?Icon(Icons.message):Icon(Icons.notifications),
               background: Colors.pink,
               duration: Duration(seconds: 3),
               trailing: TextButton(

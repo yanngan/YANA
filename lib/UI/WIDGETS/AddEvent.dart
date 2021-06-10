@@ -239,6 +239,10 @@ class _AddEventState extends State<AddEvent> {
       makeErrorAlert("חובה למלא את כל השדות בערכים תקינים");
       return;
     }
+    if(startEstimateTime.compareTo(endEstimateTime)>0){
+      makeErrorAlert("שעת התחלה לא יכולה להיות לאחר שעת סיום");
+      return;
+    }
     String newId = await FirebaseHelper.generateEventId();
     Events theNewEvents = Events(
         newId, userMap['userID']!, userMap['name']!, formattedDate, true, startEstimate,

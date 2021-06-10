@@ -80,6 +80,12 @@ class _NotificationPageState extends State<NotificationPage> {
   /// Method that create a row of type [MyNotification.EVENTS_ASK_TO_JOIN]
   /// [index] - Represents the index of the list we want to create a row for
   _createAskToJoin(int index){
+    String title = "";
+    switch(listNotification[index].statusForUser){
+      case 1:title = 'בקשת הצטרפות לאירוע שכבר אישרת';break;
+      case 2:title = 'בקשת הצטרפות לאירוע שבחרת לא לאשר';break;
+      default:title = 'בקשת הצטרפות לאירוע שטרם אישרת';break;
+    }
     return Padding(
       padding: const EdgeInsets.only(top: 4,right: 4,left: 4),
       child: Wrap(
@@ -95,7 +101,7 @@ class _NotificationPageState extends State<NotificationPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(listNotification[index].statusForUser!=1?'בקשת הצטרפות לאירוע שטרם אישרת':'בקשת הצטרפות לאירוע שכבר אישרת',style: TextStyle(fontSize: 20,color: Colors.white, ),textAlign: TextAlign.center,),
+                    Text(title,style: TextStyle(fontSize: 20,color: Colors.white, ),textAlign: TextAlign.center,),
                   ],
                 ),
                 Row(
@@ -121,11 +127,11 @@ class _NotificationPageState extends State<NotificationPage> {
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: listNotification[index].statusForUser!=1?ElevatedButton(
+                        child: listNotification[index].statusForUser<1?ElevatedButton(
                           child: Text("אישור"),
                           style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
-                          onPressed: (){
-                            approveOrRejectRequestToJoinEvent(index,true);
+                          onPressed: () async {
+                            await approveOrRejectRequestToJoinEvent(index,true);
                           },
                         ):SizedBox(height: 1,),
                       ),
@@ -133,11 +139,14 @@ class _NotificationPageState extends State<NotificationPage> {
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: listNotification[index].statusForUser!=1?ElevatedButton(
+                        child: listNotification[index].statusForUser<1?ElevatedButton(
                           child: Text("דחייה"),
                           style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
-                          onPressed: (){
-                            approveOrRejectRequestToJoinEvent(index,false);
+                          onPressed: () async {
+                            await approveOrRejectRequestToJoinEvent(index,false);
+                            setState(() {
+                              _initDone = false;
+                            });
                           },
                         ):SizedBox(height: 1,),
                       ),
@@ -551,6 +560,17 @@ class _NotificationPageState extends State<NotificationPage> {
   /// [index] - Represents the index of the list we want to approve / reject
   /// [approve] - A boolean flag that indicates if we need to approve or denied the request
   approveOrRejectRequestToJoinEvent(int index, bool approve) async {
+    var dialog =  showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            child: SpinKitFadingCircle(
+              color: Colors.white,
+              size: 50.0,
+            ),
+          );
+        }
+    );
     var theEvents = await FirebaseHelper.getEventByID(listNotification[index].eventsID);
     if(theEvents == null){
       _makeToast('אירעה תקלה, נסה שנית מאוחר יותר',Colors.pink);
@@ -562,7 +582,10 @@ class _NotificationPageState extends State<NotificationPage> {
       return;
     }
     await Logic.approveOrRejectRequestToJoinEvent(theOtherUser,theEvents,approve).then((value){
-      setState(() {});
+      Navigator.pop(context);
+      setState(() {
+        _initDone = false;
+      });
     });
   }
 

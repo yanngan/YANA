@@ -20,6 +20,7 @@ export 'NotificationPage.dart';
 const appName                       =   "YANA";
 const MAP_TYPE_KEY                  =   "MAP_TYPE";
 const CHATS_EVENTS_TYPE_KEY         =   "CHATS_EVENTS_TYPE";
+const NOTIFICATIONS_KEY             =   "NOTIFICATIONS_KEY";
 const String NeumorphismInner       =   'NEUMORPHISM_INNER';
 const String NeumorphismOuter       =   'NEUMORPHISM_OUTER';
 const String NeumorphismOuterChip   =   'NEUMORPHISM_OUTER_CHIP';

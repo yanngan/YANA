@@ -17,7 +17,7 @@ class Logic {
 
   /// Method in order to get the current user geo location
   /// @return type - [CameraPosition] containing latitude and longitude of the user geo location
-  static Future<CameraPosition> getUserLocation() async {
+  static Future<CameraPosition> getUserLocation(bool zoomIn) async {
     ///getUserLocation
     ///try to get hes current location, if fail ->
     /// then try to get last know location
@@ -37,7 +37,7 @@ class Logic {
     print(position);
     CameraPosition toReturn = CameraPosition(
       target: LatLng(position.latitude, position.longitude),
-      zoom: 18.4746,
+      zoom: zoomIn?18.456:13.4746,
     );
     return toReturn;
   }
@@ -255,7 +255,8 @@ class Logic {
   }
 
   static getUserByIDFromFireBase(String _userID) async {
-    return FirebaseHelper.getCurrentUser(_userID);
+    User returnedUser = (await FirebaseHelper.getCurrentUser(_userID))!;
+    return returnedUser;
   }
 
 }

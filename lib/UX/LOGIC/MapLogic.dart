@@ -13,11 +13,21 @@ class MapLogic{
   /// Returns all the map markers [markers] representing all the [Place]s on the map
   static getMarkers(BuildContext context) async {
     Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+    BitmapDescriptor myIcon = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(size: Size(1, 1),),
+      "assets/yana_mini_logo.png",
+    );
     List<Place> places = await Logic.getAllPlaces();
     places.forEach((onePlace) {
-      markers[MarkerId(onePlace.placeID)] = new MyMarker(onePlace,markerId: MarkerId(onePlace.placeID),position: LatLng(double.parse(onePlace.latitude),double.parse(onePlace.longitude)),onTap: (){
-        seeListEventInPlace(context,onePlace);});
-    });
+      markers[MarkerId(onePlace.placeID)] = new MyMarker(
+          onePlace,
+          icon: myIcon,
+          markerId: MarkerId(onePlace.placeID),
+          position: LatLng(double.parse(onePlace.latitude),double.parse(onePlace.longitude)),
+          onTap: (){
+            seeListEventInPlace(context,onePlace);});
+          }
+    );
     return markers;
   }
 

@@ -243,12 +243,14 @@ class _EventsListState extends State<EventsList> {
                           _launchUrl(
                               "${(placeByEvents[listEvents[index].eventID]!).googleMapLink}");
                         },
-                        child: Text(
-                          "${(placeByEvents[listEvents[index].eventID]!).address}",
-                          style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.blueAccent,
-                              decoration: TextDecoration.underline),
+                        child: Flexible(
+                          child: Text(
+                            "${(placeByEvents[listEvents[index].eventID]!).address}",
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.blueAccent,
+                                decoration: TextDecoration.underline),
+                          ),
                         ),
                       ),
                       Text(
@@ -256,7 +258,7 @@ class _EventsListState extends State<EventsList> {
                         style: TextStyle(fontSize: 15),
                       ),
                       Text(
-                        "כתובת המקום",
+                        "כתובת",
                         style: TextStyle(fontSize: 15),
                       ),
                     ],

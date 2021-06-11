@@ -1,5 +1,21 @@
 class Place{
 
+  /// [placeID] - ID of the place
+  /// [address] - Address of the place ( location )
+  /// [phoneNumber] - The place phone number
+  /// [representative] - The person the user can call or talk to in the place
+  /// [capacity] - Max number of people allowed in this place
+  /// [vibe] - The general vibe of the place
+  /// [isKosher] - [bool] flag to determine if the place is kosher or not
+  /// [openingHours] - The place opening hours
+  /// [name] - Name of the place
+  /// [ageRestrictions] - Minimum age for entry to this place
+  /// [webLink] - The place web link ( can be website/ Facebook and more )
+  /// [googleMapLink] - Google Maps link
+  /// [latitude] - latitude of the place location
+  /// [longitude] - longitude of the place location
+  /// [placeIcon] - Icon for the place ( can be logo or anything else )
+  /// [city] - The city the place is at
   String placeID;
   String address;
   String phoneNumber;
@@ -17,26 +33,27 @@ class Place{
   String placeIcon;
   String city;
 
-  //constructor
+  // constructor
   Place(
-      this.placeID,
-      this.address,
-      this.phoneNumber,
-      this.representative,
-      this.capacity,
-      this.vibe,
-      this.isKosher,
-      this.openingHours,
-      this.name,
-      this.ageRestrictions,
-      this.webLink,
-      this.googleMapLink,
-      this.latitude,
-      this.longitude,
-      this.placeIcon,
-      this.city
-      );
+    this.placeID,
+    this.address,
+    this.phoneNumber,
+    this.representative,
+    this.capacity,
+    this.vibe,
+    this.isKosher,
+    this.openingHours,
+    this.name,
+    this.ageRestrictions,
+    this.webLink,
+    this.googleMapLink,
+    this.latitude,
+    this.longitude,
+    this.placeIcon,
+    this.city
+  );
 
+  /// In order to print the MyNotification object in a special way
   String specialToString(){
     String kosher= isKosher ? "כשר" : "לא כשר";
     return 'כתובת: $address\n'
@@ -47,11 +64,14 @@ class Place{
 
   }
 
-
+  /// In order to print the MyNotification object
   @override
   String toString() {
     return 'Places{placeID: $placeID, address: $address, phoneNumber: $phoneNumber, representative: $representative, capacity: $capacity, vibe: $vibe, isKosher: $isKosher, openingHours: $openingHours, name: $name, ageRestrictions: $ageRestrictions, webLink: $webLink, googleMapLink: $googleMapLink, placeIcon: $placeIcon}';
-  } //parse a json to place object
+  }
+
+  /// Parse a json to place object
+  /// [json] - The [Json] object to translate
   factory Place.fromJson(dynamic json) {
     return Place(
       json['placeID'] as String,
@@ -73,7 +93,7 @@ class Place{
     );
   }
 
-//make a json object
+  /// make a json object
   Map<String, dynamic> toJson() {
     return {
       "placeID": this.placeID,
@@ -94,16 +114,5 @@ class Place{
       "city": this.city,
     };
   }
-
-
-
-
-
-
-
-
-
-
-
 
 }

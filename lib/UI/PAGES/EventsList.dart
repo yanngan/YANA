@@ -77,13 +77,12 @@ class _EventsListState extends State<EventsList> {
     Logic.getAllUserEvent().then((value) async {
       listEvents = value;
       for (var oneEvents in listEvents) {
-        // print(oneEvents.placeID);
         var temp = await Logic.getPlaceById(oneEvents.placeID);
+        // ignore: unnecessary_null_comparison
         if (temp == null) {
           listEvents.remove(oneEvents);
           continue;
         }
-        // print(temp.placeID);
         placeByEvents[oneEvents.eventID] = temp;
         if (oneEvents.userID != userMap['userID']!) {
           oneEvents.statusForUser =
@@ -108,7 +107,6 @@ class _EventsListState extends State<EventsList> {
       }
     }
     var actionButton;
-//    print(listEvents[index]);
     if (listEvents[index].userID == userMap['userID']!) {
       textButton = "ערוך";
       actionButton = () async {
@@ -336,10 +334,9 @@ class _EventsListState extends State<EventsList> {
         fontSize: 16.0);
   }
 
-  /// Launch a url method
+  /// Method to launch a url
   /// [url] - desired url to launch using the [launch] method
   void _launchUrl(String url) async {
-    // print(url);
     if (await canLaunch(url)) {
       launch(url);
     } else {

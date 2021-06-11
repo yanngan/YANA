@@ -25,6 +25,8 @@ class _AddEventState extends State<AddEvent> {
   /// [allField] - [Map] of pairs of key [String] : value [TextEditingController] of all the fields controllers
   Map<String, TextEditingController> allField = {};
 
+  /// [width] - Desired width
+  /// [height] - Desired height
   @override
   Widget build(BuildContext context) {
     double width = (MediaQuery.of(context).size.width);
@@ -35,7 +37,6 @@ class _AddEventState extends State<AddEvent> {
         children: [
           Container(
             width: width,
-//        height: height,
             decoration: BoxDecoration(
               color: Colors.amber,
               shape: BoxShape.rectangle,
@@ -119,10 +120,6 @@ class _AddEventState extends State<AddEvent> {
                       "סגור", style: TextStyle(color: Colors.blueGrey),),
                     onPressed: () {
                       Navigator.of(context).pop();
-//                  if (!totallyPop) {
-//                    print("in popTotally");
-//                    seeListEventInPlace(context, thePlace);
-//                  }
                     },
                   ),
                 ],
@@ -165,7 +162,6 @@ class _AddEventState extends State<AddEvent> {
                 if (value != null) {
                   (this.allField[name]!).text =
                       DateFormat('yyyy-MM-dd').format(value);
-                  print((this.allField[name]!).text);
                 }
               });
             });
@@ -188,7 +184,6 @@ class _AddEventState extends State<AddEvent> {
               setState(() {
                 if (value != null) {
                   (this.allField[name]!).text = value.format(context);
-                  print((this.allField[name]!).text);
                 }
               });
             });
@@ -234,7 +229,7 @@ class _AddEventState extends State<AddEvent> {
     int maxNumPeople = -1;
     try {
       maxNumPeople = int.parse((allField['maxNumPeople']!).text);
-    } on Exception catch (e) {
+    } on Exception {
       maxNumPeople = -1;
     }
 

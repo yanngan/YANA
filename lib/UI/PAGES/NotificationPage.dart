@@ -6,7 +6,6 @@ import 'package:yana/UX/DB/allDB.dart';
 import 'package:yana/UX/LOGIC/CLASSES/allClasses.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
 import 'package:yana/UX/LOGIC/MapLogic.dart';
-
 import 'Utilities.dart';
 
 class NotificationPage extends StatefulWidget {
@@ -66,7 +65,6 @@ class _NotificationPageState extends State<NotificationPage> {
   /// Method that creates a row to the list of the notifications
   /// [index] - Represents the index of the list we want to create a row for
   _createRow(int index){
-    print(listNotification[index]);
     switch(listNotification[index].type){
       case MyNotification.EVENTS_ASK_TO_JOIN_BEEN_APPROVE: //MyNotification.EVENTS_ASK_TO_JOIN_BEEN_APPROVE
         return _createBeenApprove(index);

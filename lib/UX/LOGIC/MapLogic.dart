@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:yana/UI/PAGES/Utilities.dart';
 import 'package:yana/UI/WIDGETS/allWidgets.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
-
 import 'CLASSES/allClasses.dart';
 import '../DB/allDB.dart';
 
@@ -70,19 +68,6 @@ class MapLogic{
               borderRadius: BorderRadius.all(Radius.circular(20.0))
           ),
           content: screen,
-//          actions: <Widget>[
-//            new TextButton(
-//              child: new Text(
-//                "סגור", style: TextStyle(color: Colors.blueGrey),),
-//              onPressed: () {
-//                Navigator.of(context).pop();
-//                if (!totallyPop) {
-//                  print("in popTotally");
-//                  seeListEventInPlace(context, thePlace);
-//                }
-//              },
-//            ),
-//          ],
         );
       },
     );

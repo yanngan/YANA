@@ -27,6 +27,8 @@ class _SeeEventState extends State<SeeEvent> {
   /// [_initDone] - A [bool] that representing if the initializing process is finished or not
   bool _initDone = false;
 
+  /// [width] - Desired width
+  /// [height] - Desired height
   @override
   Widget build(BuildContext context) {
     double width = (MediaQuery.of(context).size.width);
@@ -107,7 +109,6 @@ class _SeeEventState extends State<SeeEvent> {
                         onPressed: () {
                           Navigator.of(context).pop();
                           if (!widget.totallyPop) {
-                            print("in popTotally");
                             MapLogic.seeListEventInPlace(context, widget.thePlace);
                           }
                         },
@@ -139,7 +140,6 @@ class _SeeEventState extends State<SeeEvent> {
 
   /// Callback function that gets called when the users are requesting to join an event
   askToJoin() async {
-
     if(widget.theEvents.statusForUser == Events.NOT_ASK_YET_AND_NOT_GOING){
       if(await Logic.userAskToJoinEvent(userMap['userID']!,widget.theEvents.eventID,widget.theEvents.userID)){
         _makeToast("בקשתך נשלחה וממתינה לאישור מארגן האירוע");
@@ -171,3 +171,4 @@ class _SeeEventState extends State<SeeEvent> {
   }
 
 }
+

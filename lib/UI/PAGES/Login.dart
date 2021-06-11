@@ -1,9 +1,6 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yana/UX/DB/users.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
@@ -19,6 +16,7 @@ class Login extends StatefulWidget {
 
 //  Callback function related - See main.dart callback section for more info about it
   final Function callback;
+  // constructor
   const Login(this.callback);
 
   @override
@@ -29,14 +27,14 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
 
   /// [_userData] - [Map] Representing the user object information
-  /// [_accessToken]  - [AccessToken] from facebook, relating to the user object we get form the facebook instance
+  /// [_accessToken] - [AccessToken] from facebook, relating to the user object we get form the facebook instance
   /// [unknownUser] - [bool] flag in order to point out if we know this user or not ( should he sign up or log in )
-  /// [imageURL]  - User profile image url
-  /// [topSpace]  - Top side padding
+  /// [imageURL] - User profile image url
+  /// [topSpace] - Top side padding
   /// [imageSize] - Application Logo size
   /// [fontSizeBig] - Title font size
   /// [fontSizeSmall] - Sub-Title font size
-  /// [fullSize]  - Actual body size we want
+  /// [fullSize] - Actual body size we want
   Map<String, dynamic>? _userData;
   AccessToken? _accessToken;
   bool unknownUser = true;
@@ -301,7 +299,7 @@ class _LoginState extends State<Login> {
   /// to determine if the user is new / existing / blocked.
   /// After it checks the user credential and determines what to do with him, it perform that decision
   /// [credentials] - [Map] of the [User] credentials in form of strings ( key : value )
-  /// [functionNeeded]  -  The function needed for that user
+  /// [functionNeeded] - The function needed for that user
   void userCredentials(Map<String, String> credentials, String functionNeeded) async {
     //    Check if user is in our database
     String userId = credentials["userID"].toString();
@@ -332,35 +330,6 @@ class _LoginState extends State<Login> {
       });
     }
 
-//    TODO --> Test mode, pre production - START
-//    switch (functionNeeded){
-//      case SIGN_UP:
-//        setState(() {
-//          this.widget.callback(1, credentials, new Map<String, String>(), SingUp_index);
-//        });
-//        break;
-//      case LOGIN_REGULAR:
-//      case LOGIN_DUMMY:
-//        if(functionNeeded == LOGIN_REGULAR){
-//          Fluttertoast.showToast(
-//              msg: "אנא התחבר עם משתמש דמה!\n\n\n\n\n\t\t\t\t\tאו צפה בעולם נשרף!!",
-//              toastLength: Toast.LENGTH_SHORT,
-//              gravity: ToastGravity.CENTER,
-//              timeInSecForIosWeb: 1,
-//              backgroundColor: Colors.red,
-//              textColor: Colors.black54,
-//              fontSize: 16.0
-//          );
-//        }
-//        setState(() {
-//          userMap = credentials;
-//          getPreference();
-//          this.widget.callback(3, credentials, new Map<String, String>(), MapView_index);
-//        });
-//        break;
-//    }
-//    TODO --> Test mode, pre production - END
-
   }
 
   /// In order to get the user [SharedPreferences] preferences about the map / default pages
@@ -371,6 +340,7 @@ class _LoginState extends State<Login> {
   }
 
   /// A Facebook method that checks if the user is logged in or not
+  /// [accessToken] - Facebook returned [AccessToken]
   Future<void> _checkIfIsLogged() async {
     final accessToken = await FacebookAuth.instance.accessToken;
     if (accessToken != null) {

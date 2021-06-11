@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 // Export all the pages
 export 'Chat.dart';
@@ -60,7 +59,7 @@ Map<String, String> userMap         =   new Map<String, String>();
 /// Other User information will be stored in here
 Map<String, String> otherInfo       =   new Map<String, String>();
 
-/// [appName] about text
+/// [appName] about text [String]
 String aboutOrganization = "מיזם YANA הינו מיזם למלחמה בבדידות בקרב צעירים. "
     "המיזם נועד ליצור מעגלים חברתיים חדשים עבור מי שאין להם ו/או שמעוניינים ליצור חברויות חדשות."
     "המיזם פועל במספר מישורים בהם אפליקציה ליזימת והצטרפות לאירועים חברתיים מבוססי מיקום; אירועים חברתיים עבור צעירים בודדים כגון סדנאות, שיעורים ועוד; "

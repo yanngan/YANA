@@ -19,6 +19,7 @@ class User {
   bool isBlocked;
   bool notifications;
 
+  /// In order to print the MyNotification object
   @override
   String toString() {
     return 'User{'
@@ -42,7 +43,8 @@ class User {
         '}';
   }
 
-  //parse a json to user object
+  /// Parse a json to users object
+  /// [json] - The [Json] object to translate
   factory User.fromJson(dynamic json) {
     return User(
       json['userID'] as String,
@@ -65,7 +67,8 @@ class User {
     );
   }
 
-  // Parse a map into a user object
+  /// Parse a map to users object
+  /// [userInfo] - The [Map] object to translate
   factory User.fromMap(Map<String, String> userInfo){
     return User(
       userInfo["userID"].toString(),
@@ -88,7 +91,7 @@ class User {
     );
   }
 
-  // Parse a map into a user object
+  /// Create a dummy users object
   factory User.isNULL(String value){
     return User(
       value,
@@ -111,7 +114,7 @@ class User {
     );
   }
 
-  //constructor
+  // constructor
   User(
       this.userID,
       this.name,
@@ -132,7 +135,7 @@ class User {
       this.notifications,
       );
 
-// Make a json object
+  /// make a json object
   Map<String, dynamic> toJson() {
     return {
       "userID": this.userID,
@@ -155,7 +158,7 @@ class User {
     };
   }
 
-//  Make a map object
+  /// make a map object
   Map<String, String> toMap(){
     return {
       "userID": this.userID,

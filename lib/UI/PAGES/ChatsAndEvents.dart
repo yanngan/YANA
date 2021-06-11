@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:yana/UX/DB/allDB.dart';
-import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
-import 'package:yana/UX/LOGIC/CLASSES/allClasses.dart';
 import 'Utilities.dart';
 
 // ignore: must_be_immutable
@@ -119,11 +116,10 @@ class _ChatsAndEventsState extends State<ChatsAndEvents> {
   }
 
   /// Method in order to switch between pages ( Events / Chats )
-  /// [page]  - A [String] representing the page we want to show / see
+  /// [page] - A [String] representing the page we want to show / see
   switchPage(String page) async {
     if ((page == 'chat' && _whichPage) || (page == 'listEvent' && !_whichPage)) {
-      // do nothing
-      return;
+      return; // do nothing
     }
     setState(() {
       _whichPage = !_whichPage;

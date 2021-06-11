@@ -29,6 +29,8 @@ class _EditEventState extends State<EditEvent> {
   /// [allField] - [Map] of pairs of key [String] : value [TextEditingController] of all the fields controllers
   Map<String, TextEditingController> allField = {};
 
+  /// [width] - Desired width
+  /// [height] - Desired height
   @override
   Widget build(BuildContext context) {
     double width = (MediaQuery.of(context).size.width);
@@ -39,7 +41,6 @@ class _EditEventState extends State<EditEvent> {
         children: [
           Container(
             width: width,
-//        height: height,
             decoration: BoxDecoration(
               color: Colors.amber,
               shape: BoxShape.rectangle,
@@ -113,10 +114,6 @@ class _EditEventState extends State<EditEvent> {
                             "סגור", style: TextStyle(color: Colors.blueGrey),),
                           onPressed: () {
                             Navigator.of(context).pop();
-//                  if (!totallyPop) {
-//                    print("in popTotally");
-//                    seeListEventInPlace(context, thePlace);
-//                  }
                           },
                         ),
                       ],
@@ -139,7 +136,6 @@ class _EditEventState extends State<EditEvent> {
       this.allField[name] = TextEditingController(text: value.toString());
     }
     var _textAlign = TextAlign.center;
-    var onTap;
     switch (type) {
       case 'date':
         final format = DateFormat("yyyy-MM-dd");
@@ -164,7 +160,6 @@ class _EditEventState extends State<EditEvent> {
                       if (value != null) {
                         (this.allField[name]!).text =
                             DateFormat('yyyy-MM-dd').format(value);
-                        print((this.allField[name]!).text);
                       }
                     });
                   });
@@ -201,7 +196,6 @@ class _EditEventState extends State<EditEvent> {
                     setState(() {
                       if (value != null) {
                         (this.allField[name]!).text = value.format(context);
-                        print((this.allField[name]!).text);
                       }
                     });
                   });
@@ -254,11 +248,11 @@ class _EditEventState extends State<EditEvent> {
     int maxNumPeople = -1;
     try {
       maxNumPeople = int.parse((allField['maxNumPeople']!).text);
-    } on Exception catch (e) {
+    } on Exception {
       maxNumPeople = -1;
     }
 
-    //the UserID is in allPages in the Map there
+    /// The UserID is in allPages in the Map there
     if (estimateDate == '' ||
         startEstimateTime == '' ||
         endEstimateTime == '' ||

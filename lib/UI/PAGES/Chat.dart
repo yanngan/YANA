@@ -16,11 +16,11 @@ import 'Utilities.dart';
 // ignore: must_be_immutable
 class Chat extends StatefulWidget {
 
-  /// [messages]  - [List] of [Message] holding all this current chat messages
+  /// [messages] - [List] of [Message] holding all this current chat messages
   /// [userCredentials] - [Map] holding the other [User] information
   static List<Message> messages = [];
   Map<String, String> _otherInfo = new Map<String, String>();
-//  constructor
+  // constructor
   Chat(this._otherInfo);
 
   @override
@@ -111,8 +111,6 @@ class _ChatState extends State<Chat> {
               _scrollController.position.maxScrollExtent
                   + lastMsgHeight(messages[messages.length - 1].message)
           );
-          print(messages[messages.length - 1].message);
-          print(lastMsgHeight(messages[messages.length - 1].message));
         }
       );
     }
@@ -216,19 +214,6 @@ class _ChatState extends State<Chat> {
                         Expanded(
                           flex: 1,
                           child: SizedBox(),
-//                              Container(
-//                                height: inputFieldHeight,
-//                                color: bodyColor,
-//                                child: Neumorphism(
-//                                    null,
-//                                    inputFieldHeight,
-//                                    sendMsg(),
-//                                    type: NeumorphismInner,
-//                                    radius: 0.0,
-//                                    alignment: Alignment.bottomCenter,
-//                                    color: bodyColor
-//                                ),
-//                              )
                         ),  // Input Message Area
                       ],
                     ),
@@ -280,14 +265,13 @@ class _ChatState extends State<Chat> {
       child: new TextField(
         inputFormatters: [
           WhitelistingTextInputFormatter(
-              RegExp(
-                r'[a-zA-Z0-9אבגדהוזחטיכךלמםנןסעפףצץקרשתАаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя_=!@#$&()\\-`. ?:+ ,/\"+×÷=/_€£¥₪*^%:;,~<>{}[]]*',
-                multiLine: true,
-                caseSensitive: false,
-              )
+            RegExp(
+              r'[a-zA-Z0-9אבגדהוזחטיכךלמםנןסעפףצץקרשתАаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя_=!@#$&()\\-`. ?:+ ,/\"+×÷=/_€£¥₪*^%:;,~<>{}[]]*',
+              multiLine: true,
+              caseSensitive: false,
+            )
           )
         ],
-
         controller: _controllerInput,
         textAlign: TextAlign.center,
         decoration: InputDecoration(
@@ -300,11 +284,11 @@ class _ChatState extends State<Chat> {
           suffixIcon: IconButton(
             icon: Icon(Icons.send),
             onPressed: ()async{
-              ///getting the message from the input box
+              /// Getting the message from the input box
               messageText = _controllerInput.text.toString().trim();
               if(messageText.isEmpty){ return; }
 
-              ///check if the message is free of Curses and Profanity words
+              /// Check if the message is free of Curses and Profanity words
               if (hasProfanity(messageText))
                 {
                   List<String> wordsFound = getAllProfanity(messageText);
@@ -315,59 +299,22 @@ class _ChatState extends State<Chat> {
 
               DateTime now = new DateTime.now();
               String formattedDate = new DateFormat('dd-MM-yyyy hh:mm').format(now);
-              ///assemble the message and send via firebase to the other user
+              /// Assemble the message and send via firebase to the other user
               Message message = Message(_me, _him, _meID, _himID, messageText, formattedDate);
               FirebaseHelper.sendMessageToFb(message);
 
-              ///send a notification to other user to tell him he got a new message
-              ///get other user token
+              /// Send a notification to other user to tell him he got a new message
+              /// Get other user token
               String otherToken =  await FirebaseHelper.getTokenNotificationForAUser(_himID);
               if(otherToken.isEmpty){
                 return;
               }
               String title = NotificationTitle;
               String body = "$_me ${"שלח/ה לך הודעה"}"; //will be formated: <the text to show>#<userID>#<name>
-              /*body += _me + "שלח/ה לך הודעה";
-              body += "#" + _meID;
-              body += "#" + _me;*/
               Logic.sendPushNotificationsToUsers([otherToken], title, body);
             },
           ),
         ),
-        // onChanged: (str){
-        //   setState(() {
-        //      messageText = str.trim();
-        //   });
-//        if(value.isNotEmpty){
-////          if(regExpEn.hasMatch(value[0].toString()).toString() == "true"){
-////            setState(() {
-////              textAlign = TextAlign.start;
-////            });
-////          }else if(regExpHe.hasMatch(value[0].toString()).toString() == "true"){
-////            setState(() {
-////              textAlign = TextAlign.end;
-////            });
-////          }else{
-////            setState(() {
-////              textAlign = TextAlign.start;
-////            });
-////          }
-//          if(abc.contains(value[0])){
-//            setState(() {
-//              textAlign = TextAlign.start;
-//              Fluttertoast.showToast(
-//                  msg: "This is Center Short Toast",
-//                  toastLength: Toast.LENGTH_SHORT,
-//                  gravity: ToastGravity.CENTER,
-//                  timeInSecForIosWeb: 1,
-//                  backgroundColor: Colors.red,
-//                  textColor: Colors.white,
-//                  fontSize: 16.0
-//              );
-//            });
-//          }
-//        }
-//         },
       ),
     );
   }
@@ -386,8 +333,10 @@ class _ChatState extends State<Chat> {
     });
   }
 
-  ///display on screen the Profanity words in red
-  _makeToast(String str,var theColor) {
+  /// Display on screen the Profanity words
+  /// [str] - Toast text
+  /// [theColor] - Toast background color
+  _makeToast(String str, var theColor) {
     Fluttertoast.showToast(
         msg: str,
         toastLength: Toast.LENGTH_LONG,
@@ -405,7 +354,6 @@ class _ChatState extends State<Chat> {
     bool isProfane = false;
     List<String> messageTextList= inputString.toLowerCase().trim().split(' ');
     messageTextList.forEach((element) {
-      // print(englishProfanityList.contains(element));
       if( profanityList.contains(element) ){
             isProfane = true;
       }

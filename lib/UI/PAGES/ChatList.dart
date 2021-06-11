@@ -45,7 +45,7 @@ class _ChatListState extends State<ChatList> {
     });
   }
 
-  /// [freeScreenHeight]  - Available screen height we have
+  /// [freeScreenHeight] - Available screen height we have
   @override
   Widget build(BuildContext context) {
 

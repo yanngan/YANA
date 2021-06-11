@@ -229,55 +229,7 @@ class _LoginState extends State<Login> {
                                           }
                                       ),
                                     ),
-                                  ), /// Connect with Dummy user
-//                          Padding(
-//                            padding: const EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
-//                            child: ClipRRect(
-//                              borderRadius: BorderRadius.circular(64),
-//                              child: ElevatedButton(
-//                                  style: ElevatedButton.styleFrom(
-//                                    elevation: (alpha / 100).round().toDouble(),
-//                                    primary: Colors.green.withAlpha(alpha.toInt()), // background
-//                                    onPrimary: Colors.white.withAlpha(alpha.toInt()), // foreground
-//                                  ),
-//                                  child: Row(
-//                                    mainAxisSize: MainAxisSize.min,
-//                                    children: [
-//                                      Text('הרשמה עם פייסבוק', style: TextStyle(fontSize: 24)),
-//                                      Image(
-//                                          color: Colors.white.withAlpha(alpha.toInt()),
-//                                          height: 50,
-//                                          width: 50,
-//                                          image: AssetImage(
-//                                              'assets/facebook_logo.png'
-//                                          )
-//                                      ),
-//                                    ],
-//                                  ),
-//                                  onPressed: () async {
-//                                    List<String> permissionsWanted = const ['email', 'public_profile', 'user_birthday', 'user_gender', 'user_age_range'];
-//                                    final LoginResult result = await FacebookAuth.instance.login(permissions: permissionsWanted); // by the fault we request the email and the public profile
-//                                    if(result.status == LoginStatus.success) {
-//                                      // In this if statement the user is logged in!
-//                                      _accessToken =  result.accessToken!;
-//                                      _userData = await FacebookAuth.instance.getUserData(fields: "name,email,picture.width(150),birthday,gender,age_range",);
-//                                      Map<String, String> userInfo = new Map<String, String>();
-//                                      userInfo["userID"]          =     _userData!["id"];
-//                                      userInfo["name"]            =     _userData!["name"];
-//                                      userInfo["email"]           =     _userData!["email"];
-//                                      userInfo["birthday"]        =     _userData!["birthday"];
-//                                      userInfo["gender"]          =     _userData!["gender"];
-//                                      userInfo["age_range"]       =     _userData!["age_range"]["min"].toString();
-//                                      userInfo["fbPhoto"]         =     _userData!["picture"]["data"]["url"].toString();
-//                                      userCredentials(userInfo, SIGN_UP);
-//                                      setState(() {
-//                                        imageURL = _userData!["picture"]["data"]["url"].toString();
-//                                      });
-//                                    }
-//                                  }
-//                              ) ,
-//                            ),
-//                          ), // Signup
+                                  ), // Connect with Dummy user
                                 ],
                               );
                             }

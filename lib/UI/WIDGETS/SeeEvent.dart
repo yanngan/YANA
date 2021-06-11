@@ -106,10 +106,10 @@ class _SeeEventState extends State<SeeEvent> {
                           "סגור", style: TextStyle(color: Colors.blueGrey),),
                         onPressed: () {
                           Navigator.of(context).pop();
-//                  if (!totallyPop) {
-//                    print("in popTotally");
-//                    seeListEventInPlace(context, thePlace);
-//                  }
+                          if (!widget.totallyPop) {
+                            print("in popTotally");
+                            MapLogic.seeListEventInPlace(context, widget.thePlace);
+                          }
                         },
                       ),
                     ],

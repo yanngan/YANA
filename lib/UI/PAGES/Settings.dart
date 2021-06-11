@@ -12,7 +12,7 @@ import 'package:yana/UX/DB/users.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
 //WIDGETS
 import '../WIDGETS/allWidgets.dart';
-
+// TODO - defaults check
 class Settings extends StatefulWidget {
 
 //  Callback function related - See main.dart callback section for more info about it

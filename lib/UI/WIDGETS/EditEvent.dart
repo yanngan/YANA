@@ -266,6 +266,10 @@ class _EditEventState extends State<EditEvent> {
       makeErrorAlert("חובה למלא את כל השדות בערכים תקינים");
       return;
     }
+    if(startEstimateTime.compareTo(endEstimateTime)>0){
+      makeErrorAlert("שעת התחלה לא יכולה להיות לאחר שעת סיום");
+      return;
+    }
     Events theNewEvents = Events(widget.theEvents.eventID,userMap['userID']!,'test',formattedDate,true,startEstimate,endEstimate,1,maxNumPeople,widget.thePlace.placeID,widget.thePlace.name,(allField['note']!).text);
     widget.theEvents = theNewEvents;
     var res = await Logic.createEditNewEvents(theNewEvents, false);

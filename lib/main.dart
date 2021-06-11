@@ -259,16 +259,28 @@ class _MainPageState extends State<MainPage> {
         if (notification != null) {
 
           print(arr);
-          bool isMessage = message.notification!.title!.contains("הודעה");
+          var icon;
+          bool noAction = false;
+          if(message.notification!.title!.contains("הודעה")){
+            noAction = true;
+            icon = Icon(Icons.message);
+          }
+          else if(message.notification!.title!.contains("משתתף ביטל")){
+            noAction = true;
+            icon = Icon(Icons.sentiment_dissatisfied_outlined);
+          }
+          else{
+            icon = Icon(Icons.notifications);
+          }
           showSimpleNotification(
               Text(notification.title??"ERROR"),
               subtitle: Text(message.notification!.body!),
-              leading: isMessage?Icon(Icons.message):Icon(Icons.notifications),
+              leading: icon,
               background: Colors.pink,
               duration: Duration(seconds: 3),
               trailing: TextButton(
               onPressed: (){
-                if(isMessage){
+                if(noAction){
                     //do nothing :)
                 }
                 else{
@@ -278,7 +290,7 @@ class _MainPageState extends State<MainPage> {
                   );
                 }
               },
-              child: isMessage?SizedBox(height: 1,):Icon(Icons.arrow_forward_ios_outlined,color: Colors.amber,))
+              child: noAction?SizedBox(height: 1,):Icon(Icons.arrow_forward_ios_outlined,color: Colors.amber,))
           );
         }
 

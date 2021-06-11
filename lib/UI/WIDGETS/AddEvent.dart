@@ -7,17 +7,24 @@ import 'package:yana/UX/LOGIC/CLASSES/allClasses.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
 import 'package:yana/UX/LOGIC/MapLogic.dart';
 
-import 'SeeEvent.dart';
-
+// ignore: must_be_immutable
 class AddEvent extends StatefulWidget {
+
+  /// [thePlace] - The [Place] the event is taking place in
   Place thePlace;
+  // constructor
   AddEvent(this.thePlace);
+
   @override
   _AddEventState createState() => _AddEventState();
+
 }
 
 class _AddEventState extends State<AddEvent> {
+
+  /// [allField] - [Map] of pairs of key [String] : value [TextEditingController] of all the fields controllers
   Map<String, TextEditingController> allField = {};
+
   @override
   Widget build(BuildContext context) {
     double width = (MediaQuery.of(context).size.width);
@@ -64,7 +71,7 @@ class _AddEventState extends State<AddEvent> {
                       '+',
                       style: TextStyle(color: Colors.white),
                     ),
-                    onPressed: incrementmaxNumPeople,
+                    onPressed: incrementMaxNumPeople,
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.pink)),
                   ),
@@ -81,7 +88,7 @@ class _AddEventState extends State<AddEvent> {
                         '-',
                         style: TextStyle(color: Colors.white),
                       ),
-                      onPressed: decrementmaxNumPeople,
+                      onPressed: decrementMaxNumPeople,
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(Colors.pink))),
                 ],
@@ -127,6 +134,10 @@ class _AddEventState extends State<AddEvent> {
     );
   }
 
+  /// A method in order to create a field of given information based on
+  /// [name] - [String] that will appear before the intractable area for the user to understand what the intractable area is for
+  /// [hint] - [String] that will appear in the area the user need to interact with
+  /// [type] - Determine the type of the field
   createTextField(String name, String hint, String type) {
     if (!this.allField.containsKey(name)) {
       this.allField[name] = TextEditingController();
@@ -212,13 +223,9 @@ class _AddEventState extends State<AddEvent> {
     }
   }
 
+  /// Method to save the event into FireBase
   saveTheEvent() async {
-    allField.forEach((key, value) {
-      print("key = $key , value = ${value.text}");
-    });
-
-    String formattedDate =
-        DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.now());
+    String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.now());
     String estimateDate = ((allField['estimateDate']!).text);
     String startEstimateTime = ((allField['startEstimateTime']!).text);
     String startEstimate = estimateDate + " " + startEstimateTime;
@@ -255,6 +262,7 @@ class _AddEventState extends State<AddEvent> {
         theEvent: theNewEvents, thePlace: widget.thePlace);
   }
 
+  /// Method to create an Error [AlertDialog] with the [text] as the bdoy [String]
   makeErrorAlert(String text) {
     showDialog(
       context: context,
@@ -283,7 +291,8 @@ class _AddEventState extends State<AddEvent> {
     );
   }
 
-  incrementmaxNumPeople() {
+  /// Method to increment the max number of people allowed in the event
+  incrementMaxNumPeople() {
     int res = int.parse((allField['maxNumPeople']!).text);
     if (res > 15) {
       return;
@@ -292,7 +301,8 @@ class _AddEventState extends State<AddEvent> {
     (allField['maxNumPeople']!).text = "$res";
   }
 
-  decrementmaxNumPeople() {
+  /// Method to decrement the max number of people allowed in the event
+  decrementMaxNumPeople() {
     int res = int.parse((allField['maxNumPeople']!).text);
     if (res < 3) {
       return;
@@ -300,4 +310,5 @@ class _AddEventState extends State<AddEvent> {
     res--;
     (allField['maxNumPeople']!).text = "$res";
   }
+
 }

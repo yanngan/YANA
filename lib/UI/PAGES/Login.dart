@@ -10,6 +10,7 @@ import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
 import 'Utilities.dart';
 
+/// Constant variable that represents the keys for the login function
 const String LOGIN_REGULAR = "REGULAR_USER";
 const String LOGIN_DUMMY = "DUMMY_USER";
 const String SIGN_UP = "SIGN_UP_NEW_USER";
@@ -22,16 +23,24 @@ class Login extends StatefulWidget {
 
   @override
   _LoginState createState() => _LoginState();
+
 }
 
 class _LoginState extends State<Login> {
 
-//  Variables:
+  /// [_userData] - [Map] Representing the user object information
+  /// [_accessToken]  - [AccessToken] from facebook, relating to the user object we get form the facebook instance
+  /// [unknownUser] - [bool] flag in order to point out if we know this user or not ( should he sign up or log in )
+  /// [imageURL]  - User profile image url
+  /// [topSpace]  - Top side padding
+  /// [imageSize] - Application Logo size
+  /// [fontSizeBig] - Title font size
+  /// [fontSizeSmall] - Sub-Title font size
+  /// [fullSize]  - Actual body size we want
   Map<String, dynamic>? _userData;
   AccessToken? _accessToken;
   bool unknownUser = true;
   String imageURL = "";
-//  All the elements sizes (without the facebook button size)
   var topSpace = 0.0, imageSize = 0.0, fontSizeBig = 0.0, fontSizeSmall = 0.0, fullSize = 0.0;
 
   @override
@@ -45,6 +54,7 @@ class _LoginState extends State<Login> {
     checkUserFacebook();
   }
 
+  /// Method that calls the [_checkIfIsLogged] method b/c you cant have async functions inside the [initState]
   void checkUserFacebook() async {
     await Future.wait([
       _checkIfIsLogged(),
@@ -286,10 +296,12 @@ class _LoginState extends State<Login> {
     );
   }
 
-/*
- * Function that checks the user credentials against our data base in order
- * to determine if the user is new / existing / blocked.
- */
+
+  /// Function that checks the user credentials against our data base in order
+  /// to determine if the user is new / existing / blocked.
+  /// After it checks the user credential and determines what to do with him, it perform that decision
+  /// [credentials] - [Map] of the [User] credentials in form of strings ( key : value )
+  /// [functionNeeded]  -  The function needed for that user
   void userCredentials(Map<String, String> credentials, String functionNeeded) async {
     //    Check if user is in our database
     String userId = credentials["userID"].toString();
@@ -351,12 +363,14 @@ class _LoginState extends State<Login> {
 
   }
 
+  /// In order to get the user [SharedPreferences] preferences about the map / default pages
   void getPreference() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     defaultMapType = (prefs.getBool(MAP_TYPE_KEY) ?? false);
     whichPage = (prefs.getBool(CHATS_EVENTS_TYPE_KEY) ?? false);
   }
 
+  /// A Facebook method that checks if the user is logged in or not
   Future<void> _checkIfIsLogged() async {
     final accessToken = await FacebookAuth.instance.accessToken;
     if (accessToken != null) {
@@ -384,6 +398,7 @@ class _LoginState extends State<Login> {
     }
   }
 
+  /// Callback function for the user back button press
   Future<bool> _onBackPressed() async {
     bool finalResult = await showDialog(
       barrierDismissible: false,

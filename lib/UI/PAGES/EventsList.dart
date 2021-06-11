@@ -10,12 +10,17 @@ import 'package:yana/UX/LOGIC/MapLogic.dart';
 import 'Utilities.dart';
 
 class EventsList extends StatefulWidget {
+
   @override
   _EventsListState createState() => _EventsListState();
+
 }
 
 class _EventsListState extends State<EventsList> {
 
+  /// [_initDone] - [bool] flag representing if the initializing process is finished or not
+  /// [listEvents] - [List] of [Events] holding all the events currently active
+  /// [placeByEvents] - [Map] of the pairs key [String] : value [Place] holding all the places of the events
   bool _initDone = false;
   List<Events> listEvents = [];
   Map<String, Place> placeByEvents = {};
@@ -30,22 +35,30 @@ class _EventsListState extends State<EventsList> {
       backgroundColor: Colors.amber,
       body: Column(
         children: [
-          //TextButton(onPressed: (){Logic.sendTestNotification();}, child: Text("testNotification")),
           Expanded(
             child: Container(
               color: Colors.amber,
               child: _initDone
-                  ? (listEvents.length == 0
-                      ? EmptyScreen(
-                          maxLines: 3,
-                          text:
-                              "לא קיימים הקשורים לחשבונך ברגע זה, עליך להירשם או לבקש להצטרף לאירוע")
-                      : ListView.builder(
-                          itemCount: listEvents.length,
-                          itemBuilder: (BuildContext context, int index) {
+                ? (listEvents.length == 0
+                    ? EmptyScreen(
+                        maxLines: 3,
+                        text:
+                            "לא קיימים הקשורים לחשבונך ברגע זה, עליך להירשם או לבקש להצטרף לאירוע")
+                    : ListView.builder(
+                        itemCount: listEvents.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          if(index == (listEvents.length - 1)){
+                            return Padding(
+                              padding: EdgeInsets.only(bottom: 40.0),
+                              child: _createRow(index),
+                            );
+                          }else{
                             return _createRow(index);
-                          }))
-                  : SpinKitFadingCircle(
+                          }
+                        }
+                      )
+                  )
+                : SpinKitFadingCircle(
                       color: Colors.white,
                       size: 50.0,
                     ),
@@ -59,6 +72,7 @@ class _EventsListState extends State<EventsList> {
     );
   }
 
+  /// Method to initialize all the variables and fields we need for this page
   _init() {
     Logic.getAllUserEvent().then((value) async {
       listEvents = value;
@@ -82,6 +96,8 @@ class _EventsListState extends State<EventsList> {
     });
   }
 
+  /// Each row of the [ListView] of events is created using this function
+  /// [index] - the index of [listEvents], in order to get the event we want
   _createRow(int index) {
     String textButton = "", _userName = listEvents[index].userName;
     if(_userName == userMap['name'].toString()){
@@ -293,8 +309,10 @@ class _EventsListState extends State<EventsList> {
     );
   }
 
+  /// Callback function that gets called when the user opt to cancel his attendance to an event
+  /// [event] - The [Events] representing the event the user wish to cancel attendance to
   userCancelation(Events event) async {
-    if (await Logic.userCancelation(userMap['id']!, event)) {
+    if (await Logic.userCancelation(userMap['userID']!, event)) {
       _makeToast("בוצע ביטול", Colors.pink);
     } else {
       _makeToast("מתנצלים אירעה שגיאה, נסה שנית מאוחר יותר", Colors.pink);
@@ -304,6 +322,9 @@ class _EventsListState extends State<EventsList> {
     });
   }
 
+  /// Create a toast message
+  /// [str] - Toast text
+  /// [theColor] - Toast text color
   _makeToast(String str, var theColor) {
     Fluttertoast.showToast(
         msg: str,
@@ -315,6 +336,8 @@ class _EventsListState extends State<EventsList> {
         fontSize: 16.0);
   }
 
+  /// Launch a url method
+  /// [url] - desired url to launch using the [launch] method
   void _launchUrl(String url) async {
     // print(url);
     if (await canLaunch(url)) {
@@ -323,4 +346,7 @@ class _EventsListState extends State<EventsList> {
       _makeToast("סורי - הקישור לא עובד :(", Colors.pink);
     }
   }
+
 }
+
+

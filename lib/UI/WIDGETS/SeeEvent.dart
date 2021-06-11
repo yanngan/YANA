@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:yana/UI/PAGES/Utilities.dart';
-import 'package:yana/UI/WIDGETS/allWidgets.dart';
 import 'package:yana/UX/DB/allDB.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
 import 'package:yana/UX/LOGIC/MapLogic.dart';
@@ -9,9 +8,13 @@ import 'package:yana/UX/LOGIC/MapLogic.dart';
 // ignore: must_be_immutable
 class SeeEvent extends StatefulWidget {
 
+  /// [thePlace] - The [Place] the event is taking place in
+  /// [theEvents] - The [Events] event we wish to see
+  /// [totallyPop] - [bool] flag to know if totally close the edit screen
   Place thePlace;
   Events theEvents;
-  bool totallyPop;//in use to know if totally close the edit screen
+  bool totallyPop;
+  // constructor
   SeeEvent(this.thePlace,this.theEvents,this.totallyPop);
 
   @override
@@ -20,7 +23,10 @@ class SeeEvent extends StatefulWidget {
 }
 
 class _SeeEventState extends State<SeeEvent> {
+
+  /// [_initDone] - A [bool] that representing if the initializing process is finished or not
   bool _initDone = false;
+
   @override
   Widget build(BuildContext context) {
     double width = (MediaQuery.of(context).size.width);
@@ -117,21 +123,22 @@ class _SeeEventState extends State<SeeEvent> {
     );
   }
 
-  _init()async{
-    print("in _init");
+  /// Method to initialize all the variables and fields we need for this page
+  _init() async {
     widget.theEvents.statusForUser =  await Logic.getStatusEventForUser(widget.theEvents.eventID);
-    print("init done statusForUser = ${widget.theEvents.statusForUser} ");
     setState(() {
       _initDone = true;
     });
   }
 
+  /// Callback function that gets called when the users prompt to edit the event that is shown to them
   editTheEvent(){
     Navigator.of(context).pop();
     MapLogic.addEditSeePoints(context,'edit',theEvent:widget.theEvents,thePlace:widget.thePlace,totallyPop: widget.totallyPop);
   }
 
-  askToJoin()async{
+  /// Callback function that gets called when the users are requesting to join an event
+  askToJoin() async {
 
     if(widget.theEvents.statusForUser == Events.NOT_ASK_YET_AND_NOT_GOING){
       if(await Logic.userAskToJoinEvent(userMap['userID']!,widget.theEvents.eventID,widget.theEvents.userID)){
@@ -149,6 +156,8 @@ class _SeeEventState extends State<SeeEvent> {
     });
   }
 
+  /// A Method to make a toast
+  /// [str] - [String] that will be the text of the toast
   _makeToast(String str){
     Fluttertoast.showToast(
         msg: str,
@@ -160,4 +169,5 @@ class _SeeEventState extends State<SeeEvent> {
         fontSize: 16.0
     );
   }
+
 }

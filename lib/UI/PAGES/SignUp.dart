@@ -1,7 +1,6 @@
 // Libraries
 import 'dart:async';
 import 'dart:math';
-//import 'package:intl/intl.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,11 +15,10 @@ import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
 import 'Utilities.dart';
 
 /// User properties field in order to save them later:
-/// [fullName], [sex], [hobbies], [livingArea], [workArea],
+/// [fullName], [gender], [hobbies], [livingArea], [workArea],
 /// [academicInstitution], [fieldOfStudy], [smoking], [photoURL]
-/// Submit button default color:
-/// [dynamicColor]
-String fullName = "", sex = "", hobbies = "", bio = "";
+/// [dynamicColor]  - Submit button default color
+String fullName = "", gender = "", hobbies = "", bio = "";
 String livingArea = "", workArea = "", academicInstitution = "", fieldOfStudy = "";
 String smoking = "";
 String photoURL = "";
@@ -29,8 +27,9 @@ var dynamicColor = Colors.blue;
 // ignore: must_be_immutable
 class SignUp extends StatefulWidget {
 
-//  Callback function related - See main.dart callback section for more info about it
+  /// [userCredentials] - [Map] holding the current [User] information
   Map<String, String> userCredentials = new Map<String, String>();
+//  Callback function related - See main.dart callback section for more info about it
   final Function callback;
   SignUp(this.callback, this.userCredentials);
 
@@ -59,15 +58,12 @@ class _SignUpState extends State<SignUp> {
   /// [containerH] - Each element height
   /// [pages] - List of pages to the [PageView]
   /// @_controller'Name' - [TextField] controllers in order to get all the text changes
-  // Animation default duration
   static const int duration = 700; // 700
   static double _widthPageView = 350, _heightPageView = 600;
   double heightDivider = 1.4, widthDivider = 1.15;
   int page = 0;
   LiquidController _liquidController = LiquidController();
-  // CheckBoxListTiles boolean checkers
   bool? _checked18 = false, _checkedTou = false, _checkedPp = false, _checkedNotifications = false;
-  // Button Related
   final streamController = StreamController<bool>.broadcast();
   var change = false;
   var clr = Colors.red, btnText = "שלח", _duration = 1000, dur = 1000;
@@ -84,7 +80,7 @@ class _SignUpState extends State<SignUp> {
 
   // First Page Controllers
   TextEditingController _controllerFullName = new TextEditingController(text: fullName);
-  TextEditingController _controllerSex = new TextEditingController(text: sex);
+  TextEditingController _controllerSex = new TextEditingController(text: gender);
   TextEditingController _controllerHobbies = new TextEditingController(text: hobbies);
   TextEditingController _controllerBio = new TextEditingController(text: bio);
   // Second Page Controllers
@@ -103,7 +99,7 @@ class _SignUpState extends State<SignUp> {
 
     // First Page Controllers
     _controllerFullName = new TextEditingController(text: fullName);
-    _controllerSex = new TextEditingController(text: sex);
+    _controllerSex = new TextEditingController(text: gender);
     _controllerHobbies = new TextEditingController(text: hobbies);
     _controllerBio = new TextEditingController(text: bio);
     // Second Page Controllers
@@ -118,7 +114,7 @@ class _SignUpState extends State<SignUp> {
   /// Method to fill all the necessary daa from the facebook object we got
   void fillFromFacebook() {
     fullName = this.widget.userCredentials["name"].toString();
-    sex = this.widget.userCredentials["gender"].toString();
+    gender = this.widget.userCredentials["gender"].toString();
     int age = int.parse(this.widget.userCredentials["age_range"].toString());
     if(age > 18){ _checked18 = true; }
     photoURL = this.widget.userCredentials["fbPhoto"].toString();
@@ -258,7 +254,7 @@ class _SignUpState extends State<SignUp> {
     if(livingArea.isEmpty){ checkerStr = "מה הוא איזור המגורים שלך?"; }
     if(bio.isEmpty){ checkerStr = "צריך לספר קצת על עצמך"; }
     if(hobbies.isEmpty){ checkerStr = "איזה תחביבים יש לך?"; }
-    if(sex.isEmpty){ checkerStr = "מה היא ההזדהות המינית שלך?"; }
+    if(gender.isEmpty){ checkerStr = "מה היא ההזדהות המינית שלך?"; }
     if(fullName.isEmpty){ checkerStr = "מה הוא שמך?"; }
     print("\n\n" + checkerStr + "\n\n");
     Future.delayed(const Duration(milliseconds: 1850), () {
@@ -306,6 +302,7 @@ class _SignUpState extends State<SignUp> {
   }
 
   /// After checking everything and saving it, log the new user in
+  /// [updateUserInfo]  - [Map] holding the updated user information
   void logNewUserIn(Map<String, String> updateUserInfo){
     Future.delayed(const Duration(milliseconds: 2000), () {
       setState(() {
@@ -376,6 +373,7 @@ class _SignUpState extends State<SignUp> {
   // Pages dots to indicate which page is the current one
 
   /// Method that build the dots that indicates which page is the current page
+  /// [index] - Represent which dot is it
   Widget _buildDot(int index) {
     double selectedOne = Curves.easeOut.transform(
       max(
@@ -520,7 +518,7 @@ class _SignUpState extends State<SignUp> {
                               controller: _controllerSex,
                               onChanged: (_sex){
                                 setState(() {
-                                  sex = _sex;
+                                  gender = _sex;
                                 });
                               },
                               textAlign: TextAlign.center,
@@ -1331,6 +1329,7 @@ class _SignUpState extends State<SignUp> {
   }
 
   /// Each page swipe callback function
+  /// [lpage] - Represent the index of the page we want to go to
   pageChangeCallback(int lpage) {
     setState(() {
       page = lpage;
@@ -1357,6 +1356,7 @@ class _SignUpState extends State<SignUp> {
     prefs.setBool(NOTIFICATIONS_KEY, true);
   }
 
+  /// Callback function for the user back button press
   Future<bool> _onBackPressed() async {
     bool finalResult = await showDialog(
       barrierDismissible: false,

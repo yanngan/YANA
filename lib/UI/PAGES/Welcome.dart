@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:connectivity/connectivity.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'Utilities.dart';
 
@@ -19,8 +18,11 @@ class Welcome extends StatefulWidget {
 
 class _WelcomeState extends State<Welcome> {
 
-//  Variables:
-//  All the elements sizes
+  /// [topSpace]  - Top space padding
+  /// [imageSize] - Application Logo image size
+  /// [fontSizeBig] - Title font size
+  /// [fontSizeSmall] - Sub-Title font size
+  /// [fullSize]  - Actual size of body we want
   var topSpace = 0.0, imageSize = 0.0, fontSizeBig = 0.0, fontSizeSmall = 0.0, fullSize = 0.0;
 
   @override
@@ -32,7 +34,7 @@ class _WelcomeState extends State<Welcome> {
     fontSizeSmall = 30;
     fullSize = (topSpace * 1.35) + imageSize;
 
-//    In order to make this screen visible for only 7 seconds and then go to an identical screen with extra options
+    /// In order to make this screen visible for only 7 seconds and then go to an identical screen with extra options
     Future.delayed(Duration(seconds: 2)).then((value) => {
       checkInternetConnection(),
     });
@@ -130,6 +132,11 @@ class _WelcomeState extends State<Welcome> {
     );
   }
 
+  /// A method that check if the user has internet connection
+  /// [connectivityResult]  - Variable holding the user network information
+  /// [internet]  - Internet [bool] flag ( yes / no internet connection)
+  /// [firstDialog] - [bool] Flag to check if the dialog has opened for the first time or not ( in order to avoid infinite loop )
+  /// [isOpen]  - [bool] Flag to check if the dialog is open or not
   void checkInternetConnection() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     bool internet = false, firstDialog = true, isOpen = false;
@@ -189,6 +196,7 @@ class _WelcomeState extends State<Welcome> {
     }
   }
 
+  /// Callback function for the user back button press
   Future<bool> _onBackPressed() async {
     bool finalResult = await showDialog(
       barrierDismissible: false,

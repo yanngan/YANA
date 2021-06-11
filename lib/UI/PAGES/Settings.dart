@@ -29,13 +29,15 @@ class _SettingsState extends State<Settings> {
   /// [_notification] - Determine if the user would like to get popup notifications
   /// [_isExpandedAbout] - About section open / close variable
   /// [_isExpandedGetHelp] - Get Help section open / close variable
+  /// [_isExpandedAccount] - Account section open / close variable
   /// [_radius] - The radius of the background of the user edit area
   /// [_paddingRight], [_paddingLeft] - Column of user info sides padding
   /// [userName] - The name of the user, we got it from Facebook
   /// [_toggleSelectionsMap] - a list of booleans that represent the map default views
   /// [_toggleSelectionsChatsEvents] - a list of booleans that represent the chats / events default page
   /// @_controller'Name' - [TextField] controllers in order to get all the text changes
-  /// [_hobbies], [_bio], [_livingArea], [_workArea], [_academicInstitution], [_fieldOfStudy], [_smoking] - User properties field in order to save them later
+  /// [_age], [_hobbies], [_bio], [_livingArea], [_workArea], [_academicInstitution], [_fieldOfStudy], [_smoking] - User properties field in order to save them later
+  /// [_emailLaunchUri] - A [Uri] representing the email we want to let the user option to send to us
   bool _notification = userMap['notifications'].toString().toLowerCase() == 'true';
   bool _isExpandedAbout = false, _isExpandedGetHelp = false, _isExpandedAccount = false;
   double _radius = 14.0, _paddingRight = 30.0, _paddingLeft = 25.0;

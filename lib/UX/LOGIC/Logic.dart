@@ -1,6 +1,4 @@
-//FLUTTER
 import 'dart:convert';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -34,7 +32,6 @@ class Logic {
     if (position == null) {
       throw CanNotGetUserLocationException();
     }
-    print(position);
     CameraPosition toReturn = CameraPosition(
       target: LatLng(position.latitude, position.longitude),
       zoom: zoomIn?18.456:13.4746,
@@ -98,10 +95,6 @@ class Logic {
   /// [placesName] - Desired place name
   /// Returns a [List] of [Events] that meet the conditions
   static Future<List<Events>> getEventsByCondition({int maxNumPeople = -1, String estimateDate = '', String startEstimateTime = "", String placesName = ""}) async {
-//    print("maxNumPeople = $maxNumPeople");
-//    print("estimateDate = $estimateDate");
-//    print("startEstimateTime = $startEstimateTime");
-//    print("placesName = $placesName");
     if(maxNumPeople == -1){
       maxNumPeople = 1000;
     }
@@ -174,13 +167,11 @@ class Logic {
     // get all join request user have to events he create
     List<MyNotification> temp  = await FirebaseHelper.getUserJoinRequest(userMap['userID']!);
     temp.forEach((element) {
-      //print("in getUserJoinRequest");
       myNotifications.add(element);
     });
     // get all events he have be approve
     temp  = await FirebaseHelper.getUserApprovedRequest(userMap['userID']!);
     temp.forEach((element) {
-      //print("in getUserAprovedRequest ${element.type}");
       myNotifications.add(element);
     });
     return myNotifications;
@@ -237,26 +228,39 @@ class Logic {
 
     if (response.statusCode == 200) {
       // on success do sth
-      print('test ok push CFM');
       return true;
     } else {
-      print(' CFM error');
       // on failure do sth
       return false;
     }
   }
 
-  static sendTestNotification() async {
-    FirebaseMessaging _messaging = FirebaseMessaging.instance;
-    String registrationToken = await _messaging.getToken() ?? "";
-    String title = "כותרת!!!";
-    String body = "תכולה";
-    sendPushNotificationsToUsers([registrationToken], title, body);
-  }
-
+  /// Retrieves a user based on the ID
+  /// [_userID] - The desired user ID
   static getUserByIDFromFireBase(String _userID) async {
     User returnedUser = (await FirebaseHelper.getCurrentUser(_userID))!;
     return returnedUser;
   }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -20,12 +20,12 @@ class _SearchViewState extends State<SearchView> {
   /// [_initDone] - [bool] flag to check if the initializing process is completed or not
   /// [_seeField] - [bool] flag to determine if to show the search filters area or not
   /// [listEvents] - [List] of all the [Events] (=events) that the search gave (default is all of them)
-  /// [PlaceByEvents] - [Map] of pairs of key [String] : value [Place] of all the places of the events
+  /// [placeByEvents] - [Map] of pairs of key [String] : value [Place] of all the places of the events
   /// [allField] - [Map] of pairs of key [String] : value [TextEditingController] of all the fields controllers
   bool _initDone = false;
   bool _seeField = false;
   List<Events> listEvents = [];
-  Map<String, Place> PlaceByEvents = {};
+  Map<String, Place> placeByEvents = {};
   Map<String, TextEditingController> allField = {};
 
   /// [_searchWidth] - Desired search width
@@ -237,15 +237,13 @@ class _SearchViewState extends State<SearchView> {
       listEvents.clear();
       listEvents = value;
       for (var oneEvents in listEvents) {
-        // print(oneEvents.placeID);
         var temp = await Logic.getPlaceById(oneEvents.placeID);
         // ignore: unnecessary_null_comparison
         if (temp == null) {
           listEvents.remove(oneEvents);
           continue;
         }
-        // print(temp.placeID);
-        PlaceByEvents[oneEvents.eventID] = temp;
+        placeByEvents[oneEvents.eventID] = temp;
       }
       setState(() {
         _initDone = true;
@@ -259,10 +257,6 @@ class _SearchViewState extends State<SearchView> {
   /// [startEstimateTime] - [String] that holds the estimated time of the day the event will start
   /// [maxNumPeople] - [int] that holds the max number of people allowed in this event
   void _doSearch() async {
-    //placeName  estimateDate  startEstimateTime maxNumPeople
-    allField.forEach((key, value) {
-      print("key = $key , value = ${value.text}");
-    });
     String placeName = (allField['placeName']!).text;
     String estimateDate = (allField['estimateDate']!).text;
     String startEstimateTime = (allField['startEstimateTime']!).text;
@@ -282,14 +276,13 @@ class _SearchViewState extends State<SearchView> {
           listEvents.clear();
       listEvents = value;
       for (var oneEvents in listEvents) {
-        // print(oneEvents.placeID);
         var temp = await Logic.getPlaceById(oneEvents.placeID);
+        // ignore: unnecessary_null_comparison
         if (temp == null) {
           listEvents.remove(oneEvents);
           continue;
         }
-        // print(temp.placeID);
-        PlaceByEvents[oneEvents.eventID] = temp;
+        placeByEvents[oneEvents.eventID] = temp;
       }
       setState(() {
         _initDone = true;
@@ -300,7 +293,6 @@ class _SearchViewState extends State<SearchView> {
   /// Method in order to open / close the search area based on [_seeField]
   _toggleSearch() {
     setState(() {
-      // print(listEvents);
       _seeField = !_seeField;
     });
   }
@@ -345,7 +337,7 @@ class _SearchViewState extends State<SearchView> {
                 children: [
                   //Text('Event - ${listEvents[index].eventID}'),
                   Text(
-                    '${(PlaceByEvents[listEvents[index].eventID]!).name}',
+                    '${(placeByEvents[listEvents[index].eventID]!).name}',
                     style: TextStyle(
                         fontSize: 20,
                         color: Colors.grey[900],
@@ -370,7 +362,7 @@ class _SearchViewState extends State<SearchView> {
         onTap: () {
           MapLogic.addEditSeePoints(context, 'see',
               theEvent: listEvents[index],
-              thePlace: PlaceByEvents[listEvents[index].eventID],
+              thePlace: placeByEvents[listEvents[index].eventID],
               totallyPop: true);
         },
       ),
@@ -410,7 +402,6 @@ class _SearchViewState extends State<SearchView> {
                   if (value != null) {
                     (this.allField[name]!).text =
                         intl.DateFormat('yyyy-MM-dd').format(value);
-                    print((this.allField[name]!).text);
                   }
                 });
               });
@@ -437,7 +428,6 @@ class _SearchViewState extends State<SearchView> {
                 setState(() {
                   if (value != null) {
                     (this.allField[name]!).text = value.format(context);
-                    print((this.allField[name]!).text);
                   }
                 });
               });

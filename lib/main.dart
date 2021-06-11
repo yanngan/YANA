@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 //PAGES
 import 'UI/NOTIFICATION/NotificationClasses.dart';
@@ -12,7 +11,7 @@ import 'UI/PAGES/Utilities.dart';
 import 'UI/WIDGETS/allWidgets.dart';
 import 'package:overlay_support/overlay_support.dart';
 // Do not delete next line!
-//AIzaSyAg2GgqVtmCLI6Ge73OdoU2xTYtIW_0Fp0
+// AIzaSyAg2GgqVtmCLI6Ge73OdoU2xTYtIW_0Fp0
 
 /// Developers: Lidor Eliyahu Shelef, Yann Ganem, Yisrael Bar-Or and Jonas Sperling
 
@@ -34,10 +33,15 @@ class MainPage extends StatefulWidget {
 
   @override
   _MainPageState createState() => _MainPageState();
+
 }
 
 class _MainPageState extends State<MainPage> {
 
+  /// [hideAppBar] - A [bool] flag in order to decide if to show or not the app bar
+  /// [hideBottomNavigationBar] - A [bool] flag in order to decide if to show or not the navigation bar
+  /// [pageController] - A page controller for the page view functions
+  /// [_messaging] - A [FirebaseMessaging] object for the chats
   bool hideAppBar = true;
   bool hideBottomNavigationBar = false;
   PageController pageController = PageController(initialPage:currentIndex, keepPage: true,);
@@ -61,7 +65,7 @@ class _MainPageState extends State<MainPage> {
     return applicationSetup();
   }
 
-//  callback function in order to allow moving between login sign up and the inner area of the application
+  /// callback function in order to allow moving between login sign up and the inner area of the application
   void callback(int type, Map<String, String> credentials, Map<String, String> _otherInfo, int _pageIndex) {
     setState(() {
       pageType = type;
@@ -72,6 +76,7 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
+  /// Method in order to initialize all the application setup for running
   Widget applicationSetup(){
     if(pageType >= 0 && pageType <= 2){
       if(pageType == 0){
@@ -96,6 +101,7 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
+  /// Method in order to initialize all the application inner setup for running
   Widget innerApplication(){
     if(pageType == 3) {
       return Scaffold(
@@ -108,7 +114,6 @@ class _MainPageState extends State<MainPage> {
                 physics: new NeverScrollableScrollPhysics(),
                 onPageChanged: (index) {
                   FocusScope.of(context).unfocus();
-                  print(index);
                   hideBottomNavigationBar = true;
                   switch (index) {
                     case ChatsAndEvents_index:
@@ -173,52 +178,16 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
+  /// Log the user out of the application + Facebook
   Future<void> _logOut() async {
     await FacebookAuth.instance.logOut();
     setState(() {});
   }
 
-  Future<bool> _onBackPressed() async {
-    bool finalResult = await showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) => new AlertDialog(
-        title: Text('Exiting the app'),
-        elevation: 24.0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('You want to exit the app? Should we log you out of Facebook as well?'),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              },
-              child: Text("I want to stay"),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-              child: Text("Exit, but keep me logged in"),
-            ),
-            TextButton(
-              onPressed: () {
-                _logOut();
-                Navigator.of(context).pop(true);
-              },
-              child: Text("Exit and log me out"),
-            ),
-          ],
-        ),
-      ),
-    );
-    return finalResult;
-  }
-
+  /// Handles all the notifications for the application
   void registerNotification() async {
     // 1. Initialize the Firebase app
-    //await Firebase.initializeApp();
+//    await Firebase.initializeApp();
 
     // 2. Instantiate Firebase Messaging
     _messaging = FirebaseMessaging.instance;
@@ -231,13 +200,10 @@ class _MainPageState extends State<MainPage> {
       sound: true,
     );
 
-    //the Notification token to this device
+    // The Notification token to this device
     String token = await _messaging.getToken()??"";
-    print("token = $token");
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('User granted permission');
-
       // For handling the received notifications
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
         // Parse the message received
@@ -254,11 +220,7 @@ class _MainPageState extends State<MainPage> {
           title: message.notification?.title,
           body: bodyToShow,
         );
-        print("PushNotification.title = ${message.notification?.title}");
-        print("PushNotification.body = ${message.notification?.body}");
         if (notification != null) {
-
-          print(arr);
           var icon;
           bool noAction = false;
           if(message.notification!.title!.contains("הודעה")){
@@ -303,10 +265,53 @@ class _MainPageState extends State<MainPage> {
     } else {
       print('User declined or has not accepted permission');
     }
+
+  }
+
+  /// Callback function for the user back button press
+  Future<bool> _onBackPressed() async {
+    bool finalResult = await showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => new AlertDialog(
+        title: Text('Exiting the app'),
+        elevation: 24.0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('You want to exit the app? Should we log you out of Facebook as well?'),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: Text("I want to stay"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: Text("Exit, but keep me logged in"),
+            ),
+            TextButton(
+              onPressed: () {
+                _logOut();
+                Navigator.of(context).pop(true);
+              },
+              child: Text("Exit and log me out"),
+            ),
+          ],
+        ),
+      ),
+    );
+    return finalResult;
   }
 
 }
 
+/// A method in order to handle the messaging of the chat
+/// [message] - The message it self
+/// TODO - Implement the right way - in V2
 Future _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.messageId}");
 }
@@ -325,3 +330,4 @@ checkForInitialMessage() async {
   }
 
 }
+

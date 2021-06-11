@@ -23,11 +23,13 @@ class BulletinBoard{
   String startTime;
   String visibility;
 
+  /// In order to print the bulletinBoard object
   @override
   String toString() {
     return 'BulletinBoard{bulletName: $bulletName, date: $date, entryPrice: $entryPrice, eventIcon: $eventIcon, extraData: $extraData, extraLink: $extraLink, extraLinkName: $extraLinkName, googleMapsLink: $googleMapsLink, location: $location, startTime: $startTime, visibility: $visibility}';
   }
 
+  // constructor
   BulletinBoard(
       this.bulletName,
       this.date,
@@ -39,11 +41,11 @@ class BulletinBoard{
       this.googleMapsLink,
       this.location,
       this.startTime,
-      this.visibility);
+      this.visibility
+    );
 
-
-
-  //parse a json to BulletinBoard object
+  /// Parse a json to BulletinBoard object
+  /// [json] - The [Json] object to translate
   factory BulletinBoard.fromJson(dynamic json) {
     return BulletinBoard(
       json['bulletName'] as String,
@@ -61,7 +63,7 @@ class BulletinBoard{
     );
   }
 
-  //make a json object
+  /// Make a json object
   Map<String, dynamic> toJson() {
     return {
       "bulletName": this.bulletName,

@@ -25,9 +25,24 @@ class MyMarker extends Marker{
       zIndex = 0.0,
       onTap,
       onDragEnd,
-    }) : super(markerId:markerId,alpha:alpha,anchor:anchor,consumeTapEvents:consumeTapEvents,draggable:draggable,
-    flat:flat,icon:icon,infoWindow:infoWindow,position:position,rotation:rotation,visible:visible,
-      zIndex:zIndex,onTap:onTap,onDragEnd:onDragEnd);
+    })
+    : super(
+        markerId:markerId,
+        alpha:alpha,
+        anchor:anchor,
+        consumeTapEvents:consumeTapEvents,
+        draggable:draggable,
+        flat:flat,
+        icon:icon,
+        infoWindow:infoWindow,
+        position:position,
+        rotation:rotation,
+        visible:visible,
+        zIndex:zIndex,
+        onTap:onTap,
+        onDragEnd:onDragEnd
+      );
 
 }
+
 

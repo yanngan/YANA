@@ -1,4 +1,3 @@
-
 /// [hebrewProfanityList] - List of profanity words in Hebrew
 /// [englishProfanityList] - List of profanity words in English
 /// [arabicProfanityList] - List of profanity words in Arabic

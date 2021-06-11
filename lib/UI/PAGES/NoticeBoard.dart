@@ -6,70 +6,79 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:yana/UI/WIDGETS/EmptyScreen.dart';
+import 'package:yana/UX/DB/allDB.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
 import '../WIDGETS/MyAppBar.dart';
 import 'Utilities.dart';
 
 class NoticeBoard extends StatefulWidget {
+
   @override
   _NoticeBoardState createState() => _NoticeBoardState();
+
 }
 
+/// [_opened] - A [Queue] object holding all the widgets ( int the list ) in order to check when one is open and close th rest
+/// [advertisements] - A [List] of [Advertisement] holding all of the advertisements
 Queue _opened = Queue();
 List<Advertisement> advertisements = [];
 
 class _NoticeBoardState extends State<NoticeBoard> {
-  bool isInitialized = false;
 
-//  late bool _isEmptyList;
+  /// [isInitialized] - [bool] flag to check if the initializing process is finished or not
+  /// [_isEmptyList] - [bool] flag to indicate if the list is empty or not
+  /// [details] - Each advertisement details
+  bool isInitialized = false;
   bool _isEmptyList = false;
   String details = "";
 
   @override
   void initState() {
     super.initState();
-    initBoardwithFb();
+    initBoardWithFb();
   }
 
-  //Initiate all the details and colors for all the Advert Card.
-  void initBoardwithFb() async {
-    var FbData = await FirebaseHelper.getBulletinBoardFromFb();
+  /// Initiate all the details and colors for all the Advert Card.
+  /// [fbData] - [List] of [BulletinBoard] from Firebase
+  /// [index] - The index of the list
+  void initBoardWithFb() async {
+    var fbData = await FirebaseHelper.getBulletinBoardFromFb();
     advertisements = [];
     int index = 0;
-    FbData.forEach((element) {
+    fbData.forEach((element) {
       String details = "\u2022 כתובת\b: ${element.location}\n"
           "\u2022 תאריך\b: ${element.date}\n"
           "\u2022 עלות כניסה\b: ${element.entryPrice}\n"
           "\u2022 זמן התחלה\b: ${element.startTime}\n";
-      print(element.bulletName + ' size: ' + element.bulletName.length.toString());
       if (index % 2 == 0) {
         advertisements.add(Advertisement(
-            // this.context,
-            Color(0xfff3b5a5),
-            element.bulletName,
-            element.eventIcon,
-            element.googleMapsLink,
-            element.extraLink,
-            element.extraLinkName,
-            element.date,
-            element.entryPrice,
-            element.location,
-            element.startTime,
-            details));
+          Color(0xfff3b5a5),
+          element.bulletName,
+          element.eventIcon,
+          element.googleMapsLink,
+          element.extraLink,
+          element.extraLinkName,
+          element.date,
+          element.entryPrice,
+          element.location,
+          element.startTime,
+          details)
+        );
       } else {
         advertisements.add(Advertisement(
-            Color(0xfffad5b8),
-            element.bulletName,
-            element.eventIcon,
-            element.googleMapsLink,
-            element.extraLink,
-            element.extraLinkName,
-            element.date,
-            element.entryPrice,
-            element.location,
-            element.startTime,
-            details
-            ));
+          Color(0xfffad5b8),
+          element.bulletName,
+          element.eventIcon,
+          element.googleMapsLink,
+          element.extraLink,
+          element.extraLinkName,
+          element.date,
+          element.entryPrice,
+          element.location,
+          element.startTime,
+          details
+          )
+        );
       }
       index++;
     });
@@ -77,13 +86,13 @@ class _NoticeBoardState extends State<NoticeBoard> {
     setState(() {
       advertisements;
     });
-  // advertisements = [];
 
     if (advertisements.isEmpty) {
       _isEmptyList = true;
     } else {
       _isEmptyList = false;
     }
+
   }
 
   @override
@@ -104,10 +113,8 @@ class _NoticeBoardState extends State<NoticeBoard> {
     );
   }
 
+  /// Retrieve the bulletin body as a widget ( with the [ListView] inside it )
   Widget getBulletinBody() {
-    // if (_isEmptyList) {
-    //   return EmptyScreen(text: "אין מודעות עדיין,\nאנא חזור מאוחר יותר");
-    // } else {
       return Container(
         color: Colors.amber,
         child: ListView(children: [
@@ -117,33 +124,34 @@ class _NoticeBoardState extends State<NoticeBoard> {
               child: Column(
                 children: [
                   isInitialized
-                      ? (advertisements.isEmpty
-                          ? Column(
-                            children: [
-                              SizedBox(
-                                height: MediaQuery.of(context).size.height / 2.7,
-                              ),
-                              EmptyScreen(
-                                  text: "אין מודעות עדיין,\nאנא חזור מאוחר יותר"),
-                            ],
+                    ? (advertisements.isEmpty
+                        ? Column(
+                          children: [
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height / 2.7,
+                            ),
+                            EmptyScreen(
+                                text: "אין מודעות עדיין,\nאנא חזור מאוחר יותר"),
+                          ],
+                        )
+                        : Center(
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: MediaQuery.of(context).size.height / 13,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                      children: advertisements),
+                                ),
+                              ],
+                            ),
                           )
-                          : Center(
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    height: MediaQuery.of(context).size.height / 13,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
-                                    child: Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                        children: advertisements),
-                                  ),
-                                ],
-                              ),
-                            ))
-                      : Column(
+                      )
+                    : Column(
                         children: [
                           SizedBox(
                             height: MediaQuery.of(context).size.height / 2.7,
@@ -161,65 +169,88 @@ class _NoticeBoardState extends State<NoticeBoard> {
         ]),
       );
     }
-  // }
+
 }
 
-//Advertisement Widget
+// ignore: must_be_immutable
 class Advertisement extends StatefulWidget {
-  String adv_name;
-  String adv_location;
-  String adv_date;
-  String adv_entryPrice;
-  String adv_startTime;
-  String adv_details;
-  String adv_icon;
-  Color color;
-  String adv_mapsLink;
-  String adv_extraLink;
-  String adv_extraLinkName;
 
-  //Constructor
+  /// [advName] - Advertisement name
+  /// [advLocation] - Advertisement location
+  /// [advDate] - Advertisement estimated date
+  /// [advEntryPrice] - Advertisement entry price ( Free / Amount in NIS )
+  /// [advStartTime] - Advertisement estimated start time of the day
+  /// [advDetails] - Details about the advertisement
+  /// [advIcon] - Advertisement icon ( can be logo, or anything else )
+  /// [advMapsLink] - Google Maps link to the location
+  /// [advExtraLink] - Advertisement extra link ( can be facebook event / website / etc... )
+  /// [advExtraLinkName] - Advertisement extra link name to appear
+  /// [color] - Advertisement background color
+  String advName;
+  String advLocation;
+  String advDate;
+  String advEntryPrice;
+  String advStartTime;
+  String advDetails;
+  String advIcon;
+  String advMapsLink;
+  String advExtraLink;
+  String advExtraLinkName;
+  Color color;
+
+  // constructor
   Advertisement(
       this.color,
-      this.adv_name,
-      this.adv_icon,
-      this.adv_mapsLink,
-      this.adv_extraLink,
-      this.adv_extraLinkName,
-      this.adv_date,
-      this.adv_entryPrice,
-      this.adv_location,
-      this.adv_startTime,
-      this.adv_details);
+      this.advName,
+      this.advIcon,
+      this.advMapsLink,
+      this.advExtraLink,
+      this.advExtraLinkName,
+      this.advDate,
+      this.advEntryPrice,
+      this.advLocation,
+      this.advStartTime,
+      this.advDetails);
 
   @override
   _AdvertisementState createState() => _AdvertisementState();
+
 }
 
 class _AdvertisementState extends State<Advertisement> {
+
+  /// [_width] - The desired width for the advertisement
+  /// [_height] - The desired height for the advertisement
+  /// [_isOpen] - [bool] flag to indicate if the current advertisement is open or not
+  /// [mapsLinkIsNonUsable] - [bool] flag to indicate if the google map link is usable ot not ( for example if its null )
+  /// [extraLinkIsNonUsable] - [bool] flag to indicate if the extra link is usable ot not ( for example if its null )
+  /// [extraLinkNameToUse] - The name the extra link should appear to the user with
+  /// [mapsLinksToUse] - The google maps link
+  /// [_scrollController] - [ScrollController] in order to make configuration to the scroll behavior of the page
   double _width = 500;
   double _height = 100;
   bool _isOpen = false;
-  bool maps_link_is_non_usable = false;
-  bool extra_link_is_non_usable = false;
-  String extra_link_name_to_use = "";
-  String maps_links_to_use = "";
+  bool mapsLinkIsNonUsable = false;
+  bool extraLinkIsNonUsable = false;
+  String extraLinkNameToUse = "";
+  String mapsLinksToUse = "";
   final _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    extra_link_name_to_use = "\u2022${widget.adv_extraLinkName}\n";
-    if(widget.adv_mapsLink == 'null' || widget.adv_mapsLink == 'none'){
-      maps_link_is_non_usable = true;
+    extraLinkNameToUse = "\u2022${widget.advExtraLinkName}\n";
+    if(widget.advMapsLink == 'null' || widget.advMapsLink == 'none'){
+      mapsLinkIsNonUsable = true;
     }
-    if(widget.adv_extraLink == 'null' || widget.adv_extraLink == 'none'){
-      extra_link_is_non_usable = true;
+    if(widget.advExtraLink == 'null' || widget.advExtraLink == 'none'){
+      extraLinkIsNonUsable = true;
     }
-
-    maps_links_to_use = "\u2022 ניתוב למקום >\n";
+    mapsLinksToUse = "\u2022 ניתוב למקום >\n";
   }
 
+  /// Method to launch a url
+  /// [url] - desired url to launch using the [launch] method
   void _launchUrl(String url) async {
     if (await canLaunch(url)) {
       launch(url);
@@ -228,13 +259,14 @@ class _AdvertisementState extends State<Advertisement> {
     }
   }
 
+  /// Callback function for the user tap, the method is using [mounted]
   void onPressed() {
     if (this.mounted) {
-      setState(() {
+      setState( () {
         if (_isOpen) {
-          _height -= widget.adv_details.length +
-              extra_link_name_to_use.length +
-              maps_links_to_use.length + widget.adv_name.length;
+          _height -= widget.advDetails.length +
+              extraLinkNameToUse.length +
+              mapsLinksToUse.length + widget.advName.length;
           // if(widget.adv_name.length > 18 && widget.adv_name.length < 25)
           //   _height -= widget.adv_name.length * 2;
           // else if(widget.adv_name.length <= 40 && widget.adv_name.length >= 25)
@@ -244,9 +276,9 @@ class _AdvertisementState extends State<Advertisement> {
 
           _isOpen = false;
         } else {
-          _height += widget.adv_details.length +
-              extra_link_name_to_use.length +
-              maps_links_to_use.length + widget.adv_name.length;
+          _height += widget.advDetails.length +
+              extraLinkNameToUse.length +
+              mapsLinksToUse.length + widget.advName.length;
           // if(widget.adv_name.length > 18 && widget.adv_name.length < 25)
           //   _height += widget.adv_name.length * 2;
           // else if(widget.adv_name.length < 40 && widget.adv_name.length > 25)
@@ -320,7 +352,7 @@ class _AdvertisementState extends State<Advertisement> {
                                   child: Padding(
                                     padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                                     child: CircleAvatar(
-                                      backgroundImage: NetworkImage(widget.adv_icon),
+                                      backgroundImage: NetworkImage(widget.advIcon),
                                       radius: 30.0,
                                     ),
                                   ),
@@ -330,7 +362,7 @@ class _AdvertisementState extends State<Advertisement> {
                                   child: Padding(
                                     padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                                     child: AutoSizeText(
-                                      widget.adv_name,
+                                      widget.advName,
                                       textAlign: TextAlign.center,
                                       overflow: _isOpen ? TextOverflow.visible : TextOverflow.ellipsis,
                                       style: TextStyle(
@@ -406,7 +438,7 @@ class _AdvertisementState extends State<Advertisement> {
                               ///This column is here because of the expanded need to be in a directionaly widget (column,row,flex)
                               child: Column(
                                 children: [
-                                  if (widget.adv_name.length > 25) TextButton(onPressed: ()=>{}, child: Icon(Icons.arrow_downward_rounded)),
+                                  if (widget.advName.length > 25) TextButton(onPressed: ()=>{}, child: Icon(Icons.arrow_downward_rounded)),
                                   Expanded(
                                     child: CupertinoScrollbar(
                                       controller: _scrollController,
@@ -427,7 +459,7 @@ class _AdvertisementState extends State<Advertisement> {
                                                 textDirection: TextDirection.rtl,
                                                 children: [
                                                   AutoSizeText(
-                                                    widget.adv_details,
+                                                    widget.advDetails,
                                                     textDirection: TextDirection.rtl,
                                                     textAlign: TextAlign.start,
                                                     style: TextStyle(
@@ -443,9 +475,9 @@ class _AdvertisementState extends State<Advertisement> {
                                                   Container(
                                                     transform: Matrix4.translationValues(0, -20, 0),
                                                     // height: double.parse(extra_link_name_to_use.length.toString()),
-                                                    child: !extra_link_is_non_usable ? RichText(
+                                                    child: !extraLinkIsNonUsable ? RichText(
                                                         text: new TextSpan(
-                                                            text: extra_link_name_to_use,
+                                                            text: extraLinkNameToUse,
                                                             style: new TextStyle(
                                                               fontFamily: 'FontRaleway',
                                                               fontWeight: FontWeight.w600,
@@ -461,15 +493,15 @@ class _AdvertisementState extends State<Advertisement> {
                                                             new TapGestureRecognizer()
                                                               ..onTap = () {
                                                                 _launchUrl(widget
-                                                                    .adv_extraLink);
+                                                                    .advExtraLink);
                                                               })):null
                                                   ),
                                                   Container(
                                                     transform: Matrix4.translationValues(0, -40, 0),
                                                     // height: double.parse(maps_links_to_use.length.toString()),
-                                                    child: !maps_link_is_non_usable ? RichText(
+                                                    child: !mapsLinkIsNonUsable ? RichText(
                                                         text: new TextSpan(
-                                                            text: maps_links_to_use,
+                                                            text: mapsLinksToUse,
                                                             style: new TextStyle(
                                                               fontFamily: 'FontRaleway',
                                                               fontWeight: FontWeight.w600,
@@ -484,7 +516,7 @@ class _AdvertisementState extends State<Advertisement> {
                                                             new TapGestureRecognizer()
                                                               ..onTap = () {
                                                                 _launchUrl(widget
-                                                                    .adv_mapsLink);
+                                                                    .advMapsLink);
                                                               })):null
                                                   ),
                                                 ],
@@ -511,43 +543,6 @@ class _AdvertisementState extends State<Advertisement> {
       ),
     );
   }
+
 }
 
-//Advert Title Widget
-// class Cards_Title extends StatelessWidget {
-//   @override
-//   var name;
-//   var fb;
-//   Cards_Title(this.name, this.fb);
-//
-//   Widget build(BuildContext context) {
-//     return Center(
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: <Widget>[
-//           Padding(
-//             padding: EdgeInsets.fromLTRB(20, 0, 10, 0),
-//             child: CircleAvatar(
-//               backgroundImage: NetworkImage(fb),
-//               radius: 30.0,
-//             ),
-//           ),
-//           Text(
-//             name,
-//             style: TextStyle(
-//                 fontSize: 30,
-//                 fontWeight: FontWeight.w400,
-//                 color: Colors.grey[900],
-//                 fontFamily: 'FontPacifico'),
-//           ),
-//
-//           Padding(
-//             padding: const EdgeInsets.fromLTRB(0, 10, 15, 0),
-//             child: IconButton(onPressed: () {}, icon: Icon(Icons.arrow_circle_down),splashColor: Colors.green,),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }

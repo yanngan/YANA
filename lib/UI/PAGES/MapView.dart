@@ -16,6 +16,7 @@ class _MapViewState extends State<MapView> {
     return Scaffold(
       body: Container(
         child: Center(
+          /// Map Widget for the entire screen
          child: MapSample()
         ),
       ),

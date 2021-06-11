@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 /// Custom made exception for not finding the user location or general location
 class CanNotGetUserLocationException implements Exception{
 

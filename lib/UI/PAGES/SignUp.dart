@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yana/UI/WIDGETS/allWidgets.dart';
 import 'package:yana/UX/DB/users.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
+import 'package:yana/UX/LOGIC/Logic.dart';
 import 'Utilities.dart';
 
 /// User properties field in order to save them later:
@@ -256,7 +257,6 @@ class _SignUpState extends State<SignUp> {
     if(hobbies.isEmpty){ checkerStr = "איזה תחביבים יש לך?"; }
     if(gender.isEmpty){ checkerStr = "מה היא ההזדהות המינית שלך?"; }
     if(fullName.isEmpty){ checkerStr = "מה הוא שמך?"; }
-    print("\n\n" + checkerStr + "\n\n");
     Future.delayed(const Duration(milliseconds: 1850), () {
       bool status = false;
       if(checkerStr.isEmpty){
@@ -304,6 +304,7 @@ class _SignUpState extends State<SignUp> {
   /// After checking everything and saving it, log the new user in
   /// [updateUserInfo]  - [Map] holding the updated user information
   void logNewUserIn(Map<String, String> updateUserInfo){
+    Logic.saveMyRegistrationToken();
     Future.delayed(const Duration(milliseconds: 2000), () {
       setState(() {
         Fluttertoast.showToast(
@@ -410,7 +411,7 @@ class _SignUpState extends State<SignUp> {
     // Each item padding
     const double _padding = 12.0;
 
-    // Signup body pages (Swiping area)
+    // Signup body pages (Swiping area) TODO fix containers
     pages = [
       Container(
         color: Colors.blue,
@@ -575,45 +576,6 @@ class _SignUpState extends State<SignUp> {
                       ],
                     ),
                   ), // Item 3
-                  Padding(
-                    padding: const EdgeInsets.only(top: _padding, bottom: _padding, left: 0, right: 0),
-                    child: Stack(
-                      children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: Image(
-                              height: 50,
-                              image: AssetImage(
-                                  'assets/inner_1.png'
-                              )
-                          ),
-                        ), // Background - Inner
-                        Padding(
-                          padding: const EdgeInsets.only(left: 35, top: 0, bottom: 0, right: 40),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: TextField(
-                              controller: _controllerBio,
-                              onChanged: (_bio){
-                                setState(() {
-                                  bio = _bio;
-                                });
-                              },
-                              textAlign: TextAlign.center,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                errorBorder: InputBorder.none,
-                                disabledBorder: InputBorder.none,
-                                hintText: 'תמצית',
-                              ),
-                            ),
-                          ),
-                        ), // Input field
-                      ],
-                    ),
-                  ), // Item 4
                 ],
               ), // Body
             ],
@@ -682,6 +644,45 @@ class _SignUpState extends State<SignUp> {
                           child: Align(
                             alignment: Alignment.center,
                             child: TextField(
+                              controller: _controllerBio,
+                              onChanged: (_bio){
+                                setState(() {
+                                  bio = _bio;
+                                });
+                              },
+                              textAlign: TextAlign.center,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                disabledBorder: InputBorder.none,
+                                hintText: 'תמצית',
+                              ),
+                            ),
+                          ),
+                        ), // Input field
+                      ],
+                    ),
+                  ), // Item 1
+                  Padding(
+                    padding: const EdgeInsets.only(top: _padding, bottom: _padding, left: 0, right: 0),
+                    child: Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.center,
+                          child: Image(
+                              height: 50,
+                              image: AssetImage(
+                                  'assets/inner_1.png'
+                              )
+                          ),
+                        ), // Background - Inner
+                        Padding(
+                          padding: const EdgeInsets.only(left: 35, top: 0, bottom: 0, right: 40),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: TextField(
                               controller: _controllerLivingArea,
                               onChanged: (_livingArea){
                                 setState(() {
@@ -702,7 +703,7 @@ class _SignUpState extends State<SignUp> {
                         ), // Input field
                       ],
                     ),
-                  ), // Item 1
+                  ), // Item 2
                   Padding(
                     padding: const EdgeInsets.only(top: _padding, bottom: _padding, left: 0, right: 0),
                     child: Stack(
@@ -741,85 +742,7 @@ class _SignUpState extends State<SignUp> {
                         ), // Input field
                       ],
                     ),
-                  ), // Item 2
-                  Padding(
-                    padding: const EdgeInsets.only(top: _padding, bottom: _padding, left: 0, right: 0),
-                    child: Stack(
-                      children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: Image(
-                              height: 50,
-                              image: AssetImage(
-                                  'assets/inner_1.png'
-                              )
-                          ),
-                        ), // Background - Inner
-                        Padding(
-                          padding: const EdgeInsets.only(left: 35, top: 0, bottom: 0, right: 40),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: TextField(
-                              controller: _controllerAcademicInstitution,
-                              onChanged: (_academicInstitution){
-                                setState(() {
-                                  academicInstitution = _academicInstitution;
-                                });
-                              },
-                              textAlign: TextAlign.center,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                errorBorder: InputBorder.none,
-                                disabledBorder: InputBorder.none,
-                                hintText: 'מוסד לימודים',
-                              ),
-                            ),
-                          ),
-                        ), // Input field
-                      ],
-                    ),
                   ), // Item 3
-                  Padding(
-                    padding: const EdgeInsets.only(top: _padding, bottom: _padding, left: 0, right: 0),
-                    child: Stack(
-                      children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: Image(
-                              height: 50,
-                              image: AssetImage(
-                                  'assets/inner_1.png'
-                              )
-                          ),
-                        ), // Background - Inner
-                        Padding(
-                          padding: const EdgeInsets.only(left: 35, top: 0, bottom: 0, right: 40),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: TextField(
-                              controller: _controllerFieldOfStudy,
-                              onChanged: (_fieldOfStudy){
-                                setState(() {
-                                  fieldOfStudy = _fieldOfStudy;
-                                });
-                              },
-                              textAlign: TextAlign.center,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                errorBorder: InputBorder.none,
-                                disabledBorder: InputBorder.none,
-                                hintText: 'מה אתם לומדים',
-                              ),
-                            ),
-                          ),
-                        ), // Input field
-                      ],
-                    ),
-                  ), // Item 4
                 ],
               ), // Body
             ],
@@ -888,10 +811,10 @@ class _SignUpState extends State<SignUp> {
                           child: Align(
                             alignment: Alignment.center,
                             child: TextField(
-                              controller: _controllerSmoking,
-                              onChanged: (_smoking){
+                              controller: _controllerAcademicInstitution,
+                              onChanged: (_academicInstitution){
                                 setState(() {
-                                  smoking = _smoking;
+                                  academicInstitution = _academicInstitution;
                                 });
                               },
                               textAlign: TextAlign.center,
@@ -901,7 +824,7 @@ class _SignUpState extends State<SignUp> {
                                 enabledBorder: InputBorder.none,
                                 errorBorder: InputBorder.none,
                                 disabledBorder: InputBorder.none,
-                                hintText: 'עישון',
+                                hintText: 'מוסד לימודים',
                               ),
                             ),
                           ),
@@ -927,7 +850,12 @@ class _SignUpState extends State<SignUp> {
                           child: Align(
                             alignment: Alignment.center,
                             child: TextField(
-                              // TODO add controller once you figure out whats gonna be in here
+                              controller: _controllerFieldOfStudy,
+                              onChanged: (_fieldOfStudy){
+                                setState(() {
+                                  fieldOfStudy = _fieldOfStudy;
+                                });
+                              },
                               textAlign: TextAlign.center,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
@@ -935,7 +863,7 @@ class _SignUpState extends State<SignUp> {
                                 enabledBorder: InputBorder.none,
                                 errorBorder: InputBorder.none,
                                 disabledBorder: InputBorder.none,
-                                hintText: '???',
+                                hintText: 'מה אתם לומדים',
                               ),
                             ),
                           ),
@@ -961,7 +889,12 @@ class _SignUpState extends State<SignUp> {
                           child: Align(
                             alignment: Alignment.center,
                             child: TextField(
-                              // TODO add controller once you figure out whats gonna be in here
+                              controller: _controllerSmoking,
+                              onChanged: (_smoking){
+                                setState(() {
+                                  smoking = _smoking;
+                                });
+                              },
                               textAlign: TextAlign.center,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
@@ -969,7 +902,7 @@ class _SignUpState extends State<SignUp> {
                                 enabledBorder: InputBorder.none,
                                 errorBorder: InputBorder.none,
                                 disabledBorder: InputBorder.none,
-                                hintText: '???',
+                                hintText: 'עישון',
                               ),
                             ),
                           ),
@@ -977,40 +910,6 @@ class _SignUpState extends State<SignUp> {
                       ],
                     ),
                   ), // Item 3
-                  Padding(
-                    padding: const EdgeInsets.only(top: _padding, bottom: _padding, left: 0, right: 0),
-                    child: Stack(
-                      children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: Image(
-                              height: 50,
-                              image: AssetImage(
-                                  'assets/inner_1.png'
-                              )
-                          ),
-                        ), // Background - Inner
-                        Padding(
-                          padding: const EdgeInsets.only(left: 35, top: 0, bottom: 0, right: 40),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: TextField(
-                              // TODO add controller once you figure out whats gonna be in here
-                              textAlign: TextAlign.center,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                errorBorder: InputBorder.none,
-                                disabledBorder: InputBorder.none,
-                                hintText: '???',
-                              ),
-                            ),
-                          ),
-                        ), // Input field
-                      ],
-                    ),
-                  ), // Item 4
                 ],
               ), // Body
             ],
@@ -1082,66 +981,6 @@ class _SignUpState extends State<SignUp> {
                           onChanged: (bool? val) {
                             setState(() {
                               _checked18 = val;
-//                              timeDilation = val! ? 4.0 : 2.75;
-                            });
-                          },
-//                  activeColor: Colors.green,
-//                  checkColor: Colors.blue,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Stack(
-                    children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: Image(
-                            height: 75,
-                            image: AssetImage(
-                                'assets/outer_1.png'
-                            )
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15, top: 10, right: 20, bottom: 0),
-                        child: CheckboxListTile(
-                          title: Text("קראתי והסכמתי לתנאי השימוש"),
-                          secondary: Icon(Icons.miscellaneous_services),
-                          controlAffinity: ListTileControlAffinity.leading,
-                          value: _checkedTou,
-                          onChanged: (bool? val) {
-                            setState(() {
-                              _checkedTou = val;
-//                              timeDilation = val! ? 4.0 : 2.75;
-                            });
-                          },
-//                  activeColor: Colors.green,
-//                  checkColor: Colors.blue,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Stack(
-                    children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: Image(
-                            height: 75,
-                            image: AssetImage(
-                                'assets/outer_1.png'
-                            )
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15, top: 10, right: 20, bottom: 0),
-                        child: CheckboxListTile(
-                          title: Text("קראתי והסכמתי לתנאי השימוש"),
-                          secondary: Icon(Icons.miscellaneous_services),
-                          controlAffinity: ListTileControlAffinity.leading,
-                          value: _checkedTou,
-                          onChanged: (bool? val) {
-                            setState(() {
-                              _checkedTou = val;
 //                              timeDilation = val! ? 4.0 : 2.75;
                             });
                           },
@@ -1308,19 +1147,19 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
               ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Padding(
-                  padding: const EdgeInsets.all(25.0),
-                  child: TextButton(
-                    onPressed: () {
-                      _liquidController.animateToPage(
-                          page: pages.length - 1, duration: duration);
-                    },
-                    child: Text("סוף", style: TextStyle(color: Colors.white.withOpacity(0.6)),),
-                  ),
-                ),
-              ),
+//              Align(
+//                alignment: Alignment.bottomRight,
+//                child: Padding(
+//                  padding: const EdgeInsets.all(25.0),
+//                  child: TextButton(
+//                    onPressed: () {
+//                      _liquidController.animateToPage(
+//                          page: pages.length - 1, duration: duration);
+//                    },
+//                    child: Text("סוף", style: TextStyle(color: Colors.white.withOpacity(0.6)),),
+//                  ),
+//                ),
+//              ),
             ],
           ),
         ),
@@ -1329,11 +1168,11 @@ class _SignUpState extends State<SignUp> {
   }
 
   /// Each page swipe callback function
-  /// [lpage] - Represent the index of the page we want to go to
-  pageChangeCallback(int lpage) {
+  /// [desiredPage] - Represent the index of the page we want to go to
+  pageChangeCallback(int desiredPage) {
     setState(() {
-      page = lpage;
-      switch(lpage){
+      page = desiredPage;
+      switch(desiredPage){
         case 0:
           dynamicColor = Colors.blue;
           break;

@@ -9,6 +9,7 @@ class Welcome extends StatefulWidget {
 
 //  Callback function related - See main.dart callback section for more info about it
   final Function callback;
+  // constructor
   const Welcome(this.callback);
 
   @override
@@ -22,7 +23,7 @@ class _WelcomeState extends State<Welcome> {
   /// [imageSize] - Application Logo image size
   /// [fontSizeBig] - Title font size
   /// [fontSizeSmall] - Sub-Title font size
-  /// [fullSize]  - Actual size of body we want
+  /// [fullSize] - Actual size of body we want
   var topSpace = 0.0, imageSize = 0.0, fontSizeBig = 0.0, fontSizeSmall = 0.0, fullSize = 0.0;
 
   @override

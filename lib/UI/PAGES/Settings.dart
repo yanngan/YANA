@@ -1,4 +1,3 @@
-//FLUTTER
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,11 +11,13 @@ import 'package:yana/UX/DB/users.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
 //WIDGETS
 import '../WIDGETS/allWidgets.dart';
+
 // TODO - defaults check
 class Settings extends StatefulWidget {
 
 //  Callback function related - See main.dart callback section for more info about it
   final Function callback;
+  // constructor
   Settings(this.callback);
 
   @override

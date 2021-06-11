@@ -98,3 +98,4 @@ class _MyCurvedNavigationBarState extends State<MyCurvedNavigationBar> {
   }
 
 }
+

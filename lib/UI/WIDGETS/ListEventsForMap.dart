@@ -7,16 +7,24 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 // ignore: must_be_immutable
 class ListEventsForMap extends StatefulWidget {
+
+  /// [thePlace] - [Place] variable representing the place on the map
   Place thePlace;
+  // constructor
   ListEventsForMap(this.thePlace);
 
   @override
   _ListEventsForMapState createState() => _ListEventsForMapState();
+
 }
 
 class _ListEventsForMapState extends State<ListEventsForMap> {
+
+  /// [initDone] - [bool] flag representing if the initializing process is finished or not
+  /// [listEvents] - [List] of [Events] holding all the events currently active
   bool initDone = false;
   List<Events> listEvents = [];
+
   @override
   Widget build(BuildContext context) {
     if(!initDone){
@@ -102,8 +110,7 @@ class _ListEventsForMapState extends State<ListEventsForMap> {
     );
   }
 
-
-
+  /// Method to initialize all the variables and fields we need for this page
   _init(){
     Logic.getEventsByPlace(widget.thePlace.placeID).then((value){
       listEvents = value;
@@ -113,6 +120,8 @@ class _ListEventsForMapState extends State<ListEventsForMap> {
     });
   }
 
+  /// Each row of the [ListView] of events is created using this function
+  /// [index] - the index of [listEvents], in order to get the event we want
   _createRow(int index){
     return InkWell(
       child: Container(
@@ -139,9 +148,11 @@ class _ListEventsForMapState extends State<ListEventsForMap> {
     );
   }
 
+  /// Method in order to refresh the page
   refresh(){
     setState(() {
       initDone = false;
     });
   }
+
 }

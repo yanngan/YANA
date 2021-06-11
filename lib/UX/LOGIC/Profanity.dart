@@ -1,3 +1,9 @@
+
+/// [hebrewProfanityList] - List of profanity words in Hebrew
+/// [englishProfanityList] - List of profanity words in English
+/// [arabicProfanityList] - List of profanity words in Arabic
+/// [russianProfanityList] - List of profanity words in Russian
+
 List<String> hebrewProfanityList = [
   "2 בנות 1 כוס",
   "אקרוטומופיליה",

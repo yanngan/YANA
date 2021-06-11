@@ -4,22 +4,28 @@ import 'package:yana/UX/LOGIC/CLASSES/Message.dart';
 import 'package:yana/UX/LOGIC/CLASSES/allClasses.dart';
 import 'Utilities.dart';
 
+// ignore: must_be_immutable
 class ChatsAndEvents extends StatefulWidget {
 
+  /// [goToChats] - [bool] flag to determine to go to the chat page
+  bool goToChats;
 //  Callback function related - See main.dart callback section for more info about it
   final Function callback;
-  bool goToChats;
+  // constructor
   ChatsAndEvents(this.callback,{this.goToChats = false});
 
   @override
   _ChatsAndEventsState createState() => _ChatsAndEventsState();
+
 }
 
-/// [_whichPage] - determine which page is selected ( Events / Chats )
 class _ChatsAndEventsState extends State<ChatsAndEvents> {
 
+  /// [_whichPage] - determine which page is selected ( Events / Chats )
   bool _whichPage = whichPage;
 
+  /// [screen]  - Determine which screen the user will see
+  /// [theBackgroundColor]  - Entire page background color
   @override
   Widget build(BuildContext context) {
     var screen;
@@ -113,12 +119,12 @@ class _ChatsAndEventsState extends State<ChatsAndEvents> {
   }
 
   /// Method in order to switch between pages ( Events / Chats )
-  switchPage(String page)async {
+  /// [page]  - A [String] representing the page we want to show / see
+  switchPage(String page) async {
     if ((page == 'chat' && _whichPage) || (page == 'listEvent' && !_whichPage)) {
-      //do nothing
+      // do nothing
       return;
     }
-    // print("hello");
     setState(() {
       _whichPage = !_whichPage;
     });

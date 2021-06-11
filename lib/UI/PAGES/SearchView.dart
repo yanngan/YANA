@@ -7,21 +7,28 @@ import 'package:yana/UI/PAGES/Utilities.dart';
 import 'package:yana/UX/DB/allDB.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
 import 'package:yana/UX/LOGIC/MapLogic.dart';
-import '../WIDGETS/MyAppBar.dart';
 
 class SearchView extends StatefulWidget {
+
   @override
   _SearchViewState createState() => _SearchViewState();
+
 }
 
 class _SearchViewState extends State<SearchView> {
+
+  /// [_initDone] - [bool] flag to check if the initializing process is completed or not
+  /// [_seeField] - [bool] flag to determine if to show the search filters area or not
+  /// [listEvents] - [List] of all the [Events] (=events) that the search gave (default is all of them)
+  /// [PlaceByEvents] - [Map] of pairs of key [String] : value [Place] of all the places of the events
+  /// [allField] - [Map] of pairs of key [String] : value [TextEditingController] of all the fields controllers
   bool _initDone = false;
   bool _seeField = false;
   List<Events> listEvents = [];
   Map<String, Place> PlaceByEvents = {};
   Map<String, TextEditingController> allField = {};
-  // @override
 
+  /// [_searchWidth] - Desired search width
   @override
   Widget build(BuildContext context) {
     double _searchWidth = ((MediaQuery.of(context).size.width) / 2);
@@ -224,6 +231,7 @@ class _SearchViewState extends State<SearchView> {
         ),);
   }
 
+  /// Method to initialize all the variables and fields we need for this page
   void _init() async {
     await Logic.getEventsByCondition().then((value) async {
       listEvents.clear();
@@ -245,6 +253,11 @@ class _SearchViewState extends State<SearchView> {
     });
   }
 
+  /// Callback function that gets called when we need a search programmatically or when the user presses the search option
+  /// [placeName] - [String] that holds the name of the place
+  /// [estimateDate] - [String] that holds the estimate date that the user want
+  /// [startEstimateTime] - [String] that holds the estimated time of the day the event will start
+  /// [maxNumPeople] - [int] that holds the max number of people allowed in this event
   void _doSearch() async {
     //placeName  estimateDate  startEstimateTime maxNumPeople
     allField.forEach((key, value) {
@@ -284,6 +297,7 @@ class _SearchViewState extends State<SearchView> {
     });
   }
 
+  /// Method in order to open / close the search area based on [_seeField]
   _toggleSearch() {
     setState(() {
       // print(listEvents);
@@ -291,7 +305,8 @@ class _SearchViewState extends State<SearchView> {
     });
   }
 
-  // create row in the list
+  /// Each row of the [ListView] of events is created using this function
+  /// [index] - the index of [listEvents], in order to get the event we want
   _createRow(int index) {
     Color _color = Colors.amber;
     var _icon = Icons.edit;
@@ -362,6 +377,10 @@ class _SearchViewState extends State<SearchView> {
     );
   }
 
+  /// A method in order to create a field of given information based on
+  /// [name] - [String] that will appear before the intractable area for the user to understand what the intractable area is for
+  /// [hint] - [String] that will appear in the area the user need to interact with
+  /// [type] - Determine the type of the field
   createTextField(String name, String hint, String type) {
     if (!this.allField.containsKey(name)) {
       this.allField[name] = TextEditingController();
@@ -461,6 +480,7 @@ class _SearchViewState extends State<SearchView> {
     }
   }
 
+  /// Method to increment the max number of people allowed in the event
   incrementMaxNumPeople() {
     if((allField['maxNumPeople']!).text == '-'){
       (allField['maxNumPeople']!).text = '2';
@@ -474,6 +494,7 @@ class _SearchViewState extends State<SearchView> {
     (allField['maxNumPeople']!).text = "$res";
   }
 
+  /// Method to decrement the max number of people allowed in the event
   decrementMaxNumPeople() {
     int res = int.parse((allField['maxNumPeople']!).text);
     if (res < 3) {

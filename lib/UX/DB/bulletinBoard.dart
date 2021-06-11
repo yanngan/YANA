@@ -1,5 +1,16 @@
 class BulletinBoard{
 
+  /// [bulletName] - [String] Representing the name of each bullet
+  /// [date] - [String] The date the bullet is set to be in
+  /// [entryPrice] - [String] The entry price for the current bullet
+  /// [eventIcon] - [String] The icon representing the bullet
+  /// [extraData] - [String] Extra data the creator wish to add
+  /// [extraLink] - [String] Extra link for the users to click and see
+  /// [extraLinkName] - [String] Name for the extra link
+  /// [googleMapsLink] - [String] Link to Google Maps
+  /// [location] - [String] The location of the bullet
+  /// [startTime] - [String] The time the bullet event should start
+  /// [visibility] - [String] Visibility of the bullet event ( public, private, else )
   String bulletName;
   String date;
   String entryPrice;

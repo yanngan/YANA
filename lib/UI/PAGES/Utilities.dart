@@ -16,7 +16,7 @@ export 'ChatList.dart';
 export 'ChatsAndEvents.dart';
 export 'NotificationPage.dart';
 
-// Application Constant Keys
+/// Application Constant Keys
 const appName                       =   "YANA";
 const MAP_TYPE_KEY                  =   "MAP_TYPE";
 const CHATS_EVENTS_TYPE_KEY         =   "CHATS_EVENTS_TYPE";
@@ -30,12 +30,12 @@ const String specialistNumberSms    =   "972523558539";
 const bodyColor                     =   Colors.amber;
 const senderColor                   =   bodyColor;
 const receiverColor                 =   Colors.pink;
-const double appBarHeight           =   100.0;
+const double appBarHeight           =   110.0;
 bool isOver18                       =   false;
 bool defaultMapType                 =   false;
 bool whichPage                      =   false;
 
-// Pages indexes
+/// Pages indexes
 const int ChatsAndEvents_index      =   0;
 const int SearchView_index          =   1;
 const int MapView_index             =   2;
@@ -45,7 +45,7 @@ const int Welcome_index             =   5;
 const int Login_index               =   6;
 const int SingUp_index              =   7;
 const int Chat_index                =   8;
-// Determine which page will be displayed to the user
+/// Determine which page will be displayed to the user
 int pageType                        =   0;
 /*
  * int pageType = 0;   --> Welcome Page
@@ -67,11 +67,13 @@ String aboutOrganization = "מיזם YANA הינו מיזם למלחמה בבד�
     "והקמת מאהלים חברתיים בנקודות מפתח (חוף הים, אוניברסיטה ועוד)."
     "המיזם מיועד לצעירים בגילאי 18 עד 35 (פלוס מינוס).";
 
+/// [developersInfo]  - Application developers [Map] holding the developers names + LinkedIn statement
+/// [developersLinks]  - Holding the developers LinkedIn links based on their names
 Map<String, String> developersInfo = {
-  "לידור אליהו שלף": "טקסט על לידור",
-  "יאן משה גנם": "פה יהיה כתוב ליאן",
-  "ישראל בר אור": "כאן מידע לישראל",
-  "ג'ונאס ספרלינג": "ג'ונאס #מידע",
+  "לידור אליהו שלף": "ללינקדאין של לידור",
+  "יאן משה גנם": "ללינקדאין של יאן",
+  "ישראל בר אור": "ללינקדאין של ישראל",
+  "ג'ונאס ספרלינג": "ללינקדאין של ג'ונאס",
 };
 Map<String, String> developersLinks = {
   "Lidor" : "https://www.linkedin.com/in/lidor-e-s/",

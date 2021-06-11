@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:yana/UI/PAGES/Utilities.dart';
 
@@ -7,6 +5,8 @@ import 'package:yana/UI/PAGES/Utilities.dart';
 /// 1) Concave Neumorphism shape
 /// 2) Flat Neumorphism shape
 /// 3) Emboss Neumorphism shape
+/// If you want to learn more about [Neumorphism] go to below link:
+/// [https://uxdesign.cc/neumorphism-in-user-interfaces-b47cef3bf3a6]
 @override
 class Neumorphism extends StatefulWidget{
 

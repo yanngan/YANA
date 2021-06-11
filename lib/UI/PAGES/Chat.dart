@@ -16,13 +16,12 @@ import 'Utilities.dart';
 // ignore: must_be_immutable
 class Chat extends StatefulWidget {
 
+  /// [messages]  - [List] of [Message] holding all this current chat messages
+  /// [userCredentials] - [Map] holding the other [User] information
   static List<Message> messages = [];
-  /// Other user info map of data
   Map<String, String> _otherInfo = new Map<String, String>();
-//  Callback function related - See main.dart callback section for more info about it
-//  final Function callback;
+//  constructor
   Chat(this._otherInfo);
-//  Chat(this.callback, this.otherInfo);
 
   @override
   _ChatState createState() => _ChatState(this._otherInfo);
@@ -42,6 +41,8 @@ class _ChatState extends State<Chat> {
   /// [_himID] - Other user ID
   /// [bottomPadding], [topPadding] - Top / Bottom padding
   /// [_keyboardHeight] - The height of the keyboard by default ( in order to keep looks when the keyboard is open )
+  /// [_otherInfo] - [Map] holding the other [User] information
+  /// [profanityList] - [List] of [String] made from few other [List]s containing all the profanity words we check in each language we support
   ScrollController _scrollController = new ScrollController();
   TextEditingController _controllerInput = new TextEditingController();
   List<Message> messages = [];
@@ -52,6 +53,7 @@ class _ChatState extends State<Chat> {
   List<String> profanityList = new List.from(englishProfanityList)
                                       ..addAll(hebrewProfanityList)
                                       ..addAll(arabicProfanityList);
+  // constructor
   _ChatState(this._otherInfo);
 
   @override
@@ -88,6 +90,7 @@ class _ChatState extends State<Chat> {
   }
 
   /// Method to get the last message height in order to apply extra padding
+  /// [str] - A [String] representing the last message of the current chat
   int lastMsgHeight(String str){
     int _h = 0;
     int occurrences = '\n'.allMatches(str).length + 1;
@@ -383,14 +386,6 @@ class _ChatState extends State<Chat> {
     });
   }
 
-  /// Method that fires when the user press the back button
-  Future<bool> _onBackPressed() async {
-    setState(() {
-//      this.widget.callback(3, userMap, otherInfo, ChatsAndEvents_index);
-    Navigator.pop(context);
-    });
-    return false;
-  }
   ///display on screen the Profanity words in red
   _makeToast(String str,var theColor) {
     Fluttertoast.showToast(
@@ -403,7 +398,9 @@ class _ChatState extends State<Chat> {
         fontSize: 16.0
     );
   }
-///check if in a given string there is a Profanity words
+
+  /// Check if in a given string there is a Profanity words
+  /// [inputString] - The given [String] input from the user that we need to check for profanity
   bool hasProfanity(String inputString) {
     bool isProfane = false;
     List<String> messageTextList= inputString.toLowerCase().trim().split(' ');
@@ -415,7 +412,9 @@ class _ChatState extends State<Chat> {
     });
     return isProfane;
   }
-  ///return all the Profanity words that the user tried to send
+
+  /// Return all the Profanity words that the user tried to send
+  /// [inputString] - A [String] we need to retrieve all the profanity words that it contains
   List<String> getAllProfanity(String inputString) {
     List<String> found = [];
     profanityList.forEach((word) {
@@ -424,6 +423,15 @@ class _ChatState extends State<Chat> {
       }
     });
     return found;
+  }
+
+  /// Callback function for the user back button press
+  Future<bool> _onBackPressed() async {
+    setState(() {
+//      this.widget.callback(3, userMap, otherInfo, ChatsAndEvents_index);
+      Navigator.pop(context);
+    });
+    return false;
   }
 
 }

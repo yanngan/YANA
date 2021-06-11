@@ -292,7 +292,7 @@ class _LoginState extends State<Login> {
   }
 
   /// A Facebook method that checks if the user is logged in or not
-  /// [accessToken] - Facebook returned [AccessToken]
+  /// [accessToken] - Facebook returned [AccessToken] holding status information about the user facebook instance
   Future<void> _checkIfIsLogged() async {
     final accessToken = await FacebookAuth.instance.accessToken;
     if (accessToken != null) {

@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 // ignore: must_be_immutable
 class EmptyScreen extends StatefulWidget {
 
+  /// [text] - [String] that will appear on the empty screen
+  /// [maxLines] - [int] representing the max number of lines we allow - default is 2
   String text;
   int maxLines = 2;
+  // constructor
   EmptyScreen({this.maxLines = 2, required this.text});
 
   @override
@@ -15,8 +18,11 @@ class EmptyScreen extends StatefulWidget {
 
 class _EmptyScreenState extends State<EmptyScreen> {
 
+  /// [text] - [String] that will appear on the empty screen
+  /// [maxLines] - [int] representing the max number of lines we allow - default is 2
   String text;
   int maxLines = 2;
+  // constructor
   _EmptyScreenState({this.maxLines = 2, required this.text});
 
   @override
@@ -39,3 +45,4 @@ class _EmptyScreenState extends State<EmptyScreen> {
   }
 
 }
+

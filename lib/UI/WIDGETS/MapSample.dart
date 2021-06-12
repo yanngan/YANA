@@ -18,8 +18,9 @@ class MapSampleState extends State<MapSample> {
 
   /// [_controller] - [GoogleMapController] allows us to control the map
   /// [markers] - [Map] of all the places on the map
-  /// [mapType] - Represent the map type ( normal / hybrid ) - defaulted to [defaultMapType]
-  /// [initDone] - boolean flag that represent that all the markers loading is complete
+  /// [mapType] - [bool] Represents the map type ( normal / hybrid ) - defaulted to [defaultMapType]
+  /// [initDone] - [bool] flag that represent that all the markers loading is complete
+  /// [tries] - [int] representing the number of tried [GoogleMap] API tried to show the no location dialog
   /// [_tlv] - Default location to Tel-Aviv Israel
   Completer<GoogleMapController> _controller = Completer();
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};

@@ -1,15 +1,13 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yana/UX/DB/users.dart';
 import 'package:yana/UX/LOGIC/CLASSES/firebaseHelper.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
 import 'Utilities.dart';
 
+/// Constant variable that represents the keys for the login function
 const String LOGIN_REGULAR = "REGULAR_USER";
 const String LOGIN_DUMMY = "DUMMY_USER";
 const String SIGN_UP = "SIGN_UP_NEW_USER";
@@ -18,20 +16,29 @@ class Login extends StatefulWidget {
 
 //  Callback function related - See main.dart callback section for more info about it
   final Function callback;
+  // constructor
   const Login(this.callback);
 
   @override
   _LoginState createState() => _LoginState();
+
 }
 
 class _LoginState extends State<Login> {
 
-//  Variables:
+  /// [_userData] - [Map] Representing the user object information
+  /// [_accessToken] - [AccessToken] from facebook, relating to the user object we get form the facebook instance
+  /// [unknownUser] - [bool] flag in order to point out if we know this user or not ( should he sign up or log in )
+  /// [imageURL] - User profile image url
+  /// [topSpace] - Top side padding
+  /// [imageSize] - Application Logo size
+  /// [fontSizeBig] - Title font size
+  /// [fontSizeSmall] - Sub-Title font size
+  /// [fullSize] - Actual body size we want
   Map<String, dynamic>? _userData;
   AccessToken? _accessToken;
   bool unknownUser = true;
   String imageURL = "";
-//  All the elements sizes (without the facebook button size)
   var topSpace = 0.0, imageSize = 0.0, fontSizeBig = 0.0, fontSizeSmall = 0.0, fullSize = 0.0;
 
   @override
@@ -45,6 +52,7 @@ class _LoginState extends State<Login> {
     checkUserFacebook();
   }
 
+  /// Method that calls the [_checkIfIsLogged] method b/c you cant have async functions inside the [initState]
   void checkUserFacebook() async {
     await Future.wait([
       _checkIfIsLogged(),
@@ -221,55 +229,7 @@ class _LoginState extends State<Login> {
                                           }
                                       ),
                                     ),
-                                  ), /// Connect with Dummy user
-//                          Padding(
-//                            padding: const EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
-//                            child: ClipRRect(
-//                              borderRadius: BorderRadius.circular(64),
-//                              child: ElevatedButton(
-//                                  style: ElevatedButton.styleFrom(
-//                                    elevation: (alpha / 100).round().toDouble(),
-//                                    primary: Colors.green.withAlpha(alpha.toInt()), // background
-//                                    onPrimary: Colors.white.withAlpha(alpha.toInt()), // foreground
-//                                  ),
-//                                  child: Row(
-//                                    mainAxisSize: MainAxisSize.min,
-//                                    children: [
-//                                      Text('הרשמה עם פייסבוק', style: TextStyle(fontSize: 24)),
-//                                      Image(
-//                                          color: Colors.white.withAlpha(alpha.toInt()),
-//                                          height: 50,
-//                                          width: 50,
-//                                          image: AssetImage(
-//                                              'assets/facebook_logo.png'
-//                                          )
-//                                      ),
-//                                    ],
-//                                  ),
-//                                  onPressed: () async {
-//                                    List<String> permissionsWanted = const ['email', 'public_profile', 'user_birthday', 'user_gender', 'user_age_range'];
-//                                    final LoginResult result = await FacebookAuth.instance.login(permissions: permissionsWanted); // by the fault we request the email and the public profile
-//                                    if(result.status == LoginStatus.success) {
-//                                      // In this if statement the user is logged in!
-//                                      _accessToken =  result.accessToken!;
-//                                      _userData = await FacebookAuth.instance.getUserData(fields: "name,email,picture.width(150),birthday,gender,age_range",);
-//                                      Map<String, String> userInfo = new Map<String, String>();
-//                                      userInfo["userID"]          =     _userData!["id"];
-//                                      userInfo["name"]            =     _userData!["name"];
-//                                      userInfo["email"]           =     _userData!["email"];
-//                                      userInfo["birthday"]        =     _userData!["birthday"];
-//                                      userInfo["gender"]          =     _userData!["gender"];
-//                                      userInfo["age_range"]       =     _userData!["age_range"]["min"].toString();
-//                                      userInfo["fbPhoto"]         =     _userData!["picture"]["data"]["url"].toString();
-//                                      userCredentials(userInfo, SIGN_UP);
-//                                      setState(() {
-//                                        imageURL = _userData!["picture"]["data"]["url"].toString();
-//                                      });
-//                                    }
-//                                  }
-//                              ) ,
-//                            ),
-//                          ), // Signup
+                                  ), // Connect with Dummy user
                                 ],
                               );
                             }
@@ -286,10 +246,12 @@ class _LoginState extends State<Login> {
     );
   }
 
-/*
- * Function that checks the user credentials against our data base in order
- * to determine if the user is new / existing / blocked.
- */
+
+  /// Function that checks the user credentials against our data base in order
+  /// to determine if the user is new / existing / blocked.
+  /// After it checks the user credential and determines what to do with him, it perform that decision
+  /// [credentials] - [Map] of the [User] credentials in form of strings ( key : value )
+  /// [functionNeeded] - The function needed for that user
   void userCredentials(Map<String, String> credentials, String functionNeeded) async {
     //    Check if user is in our database
     String userId = credentials["userID"].toString();
@@ -320,43 +282,17 @@ class _LoginState extends State<Login> {
       });
     }
 
-//    TODO --> Test mode, pre production - START
-//    switch (functionNeeded){
-//      case SIGN_UP:
-//        setState(() {
-//          this.widget.callback(1, credentials, new Map<String, String>(), SingUp_index);
-//        });
-//        break;
-//      case LOGIN_REGULAR:
-//      case LOGIN_DUMMY:
-//        if(functionNeeded == LOGIN_REGULAR){
-//          Fluttertoast.showToast(
-//              msg: "אנא התחבר עם משתמש דמה!\n\n\n\n\n\t\t\t\t\tאו צפה בעולם נשרף!!",
-//              toastLength: Toast.LENGTH_SHORT,
-//              gravity: ToastGravity.CENTER,
-//              timeInSecForIosWeb: 1,
-//              backgroundColor: Colors.red,
-//              textColor: Colors.black54,
-//              fontSize: 16.0
-//          );
-//        }
-//        setState(() {
-//          userMap = credentials;
-//          getPreference();
-//          this.widget.callback(3, credentials, new Map<String, String>(), MapView_index);
-//        });
-//        break;
-//    }
-//    TODO --> Test mode, pre production - END
-
   }
 
+  /// In order to get the user [SharedPreferences] preferences about the map / default pages
   void getPreference() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     defaultMapType = (prefs.getBool(MAP_TYPE_KEY) ?? false);
     whichPage = (prefs.getBool(CHATS_EVENTS_TYPE_KEY) ?? false);
   }
 
+  /// A Facebook method that checks if the user is logged in or not
+  /// [accessToken] - Facebook returned [AccessToken] holding status information about the user facebook instance
   Future<void> _checkIfIsLogged() async {
     final accessToken = await FacebookAuth.instance.accessToken;
     if (accessToken != null) {
@@ -384,6 +320,7 @@ class _LoginState extends State<Login> {
     }
   }
 
+  /// Callback function for the user back button press
   Future<bool> _onBackPressed() async {
     bool finalResult = await showDialog(
       barrierDismissible: false,

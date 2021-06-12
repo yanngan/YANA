@@ -16,13 +16,12 @@ import 'Utilities.dart';
 // ignore: must_be_immutable
 class Chat extends StatefulWidget {
 
+  /// [messages] - [List] of [Message] holding all this current chat messages
+  /// [userCredentials] - [Map] holding the other [User] information
   static List<Message> messages = [];
-  /// Other user info map of data
   Map<String, String> _otherInfo = new Map<String, String>();
-//  Callback function related - See main.dart callback section for more info about it
-//  final Function callback;
+  // constructor
   Chat(this._otherInfo);
-//  Chat(this.callback, this.otherInfo);
 
   @override
   _ChatState createState() => _ChatState(this._otherInfo);
@@ -42,6 +41,8 @@ class _ChatState extends State<Chat> {
   /// [_himID] - Other user ID
   /// [bottomPadding], [topPadding] - Top / Bottom padding
   /// [_keyboardHeight] - The height of the keyboard by default ( in order to keep looks when the keyboard is open )
+  /// [_otherInfo] - [Map] holding the other [User] information
+  /// [profanityList] - [List] of [String] made from few other [List]s containing all the profanity words we check in each language we support
   ScrollController _scrollController = new ScrollController();
   TextEditingController _controllerInput = new TextEditingController();
   List<Message> messages = [];
@@ -52,6 +53,7 @@ class _ChatState extends State<Chat> {
   List<String> profanityList = new List.from(englishProfanityList)
                                       ..addAll(hebrewProfanityList)
                                       ..addAll(arabicProfanityList);
+  // constructor
   _ChatState(this._otherInfo);
 
   @override
@@ -88,6 +90,7 @@ class _ChatState extends State<Chat> {
   }
 
   /// Method to get the last message height in order to apply extra padding
+  /// [str] - A [String] representing the last message of the current chat
   int lastMsgHeight(String str){
     int _h = 0;
     int occurrences = '\n'.allMatches(str).length + 1;
@@ -108,8 +111,6 @@ class _ChatState extends State<Chat> {
               _scrollController.position.maxScrollExtent
                   + lastMsgHeight(messages[messages.length - 1].message)
           );
-          print(messages[messages.length - 1].message);
-          print(lastMsgHeight(messages[messages.length - 1].message));
         }
       );
     }
@@ -213,19 +214,6 @@ class _ChatState extends State<Chat> {
                         Expanded(
                           flex: 1,
                           child: SizedBox(),
-//                              Container(
-//                                height: inputFieldHeight,
-//                                color: bodyColor,
-//                                child: Neumorphism(
-//                                    null,
-//                                    inputFieldHeight,
-//                                    sendMsg(),
-//                                    type: NeumorphismInner,
-//                                    radius: 0.0,
-//                                    alignment: Alignment.bottomCenter,
-//                                    color: bodyColor
-//                                ),
-//                              )
                         ),  // Input Message Area
                       ],
                     ),
@@ -277,14 +265,13 @@ class _ChatState extends State<Chat> {
       child: new TextField(
         inputFormatters: [
           WhitelistingTextInputFormatter(
-              RegExp(
-                r'[a-zA-Z0-9אבגדהוזחטיכךלמםנןסעפףצץקרשתАаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя_=!@#$&()\\-`. ?:+ ,/\"+×÷=/_€£¥₪*^%:;,~<>{}[]]*',
-                multiLine: true,
-                caseSensitive: false,
-              )
+            RegExp(
+              r'[a-zA-Z0-9אבגדהוזחטיכךלמםנןסעפףצץקרשתАаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя_=!@#$&()\\-`. ?:+ ,/\"+×÷=/_€£¥₪*^%:;,~<>{}[]]*',
+              multiLine: true,
+              caseSensitive: false,
+            )
           )
         ],
-
         controller: _controllerInput,
         textAlign: TextAlign.center,
         decoration: InputDecoration(
@@ -297,11 +284,11 @@ class _ChatState extends State<Chat> {
           suffixIcon: IconButton(
             icon: Icon(Icons.send),
             onPressed: ()async{
-              ///getting the message from the input box
+              /// Getting the message from the input box
               messageText = _controllerInput.text.toString().trim();
               if(messageText.isEmpty){ return; }
 
-              ///check if the message is free of Curses and Profanity words
+              /// Check if the message is free of Curses and Profanity words
               if (hasProfanity(messageText))
                 {
                   List<String> wordsFound = getAllProfanity(messageText);
@@ -312,59 +299,22 @@ class _ChatState extends State<Chat> {
 
               DateTime now = new DateTime.now();
               String formattedDate = new DateFormat('dd-MM-yyyy hh:mm').format(now);
-              ///assemble the message and send via firebase to the other user
+              /// Assemble the message and send via firebase to the other user
               Message message = Message(_me, _him, _meID, _himID, messageText, formattedDate);
               FirebaseHelper.sendMessageToFb(message);
 
-              ///send a notification to other user to tell him he got a new message
-              ///get other user token
+              /// Send a notification to other user to tell him he got a new message
+              /// Get other user token
               String otherToken =  await FirebaseHelper.getTokenNotificationForAUser(_himID);
               if(otherToken.isEmpty){
                 return;
               }
               String title = NotificationTitle;
               String body = "$_me ${"שלח/ה לך הודעה"}"; //will be formated: <the text to show>#<userID>#<name>
-              /*body += _me + "שלח/ה לך הודעה";
-              body += "#" + _meID;
-              body += "#" + _me;*/
               Logic.sendPushNotificationsToUsers([otherToken], title, body);
             },
           ),
         ),
-        // onChanged: (str){
-        //   setState(() {
-        //      messageText = str.trim();
-        //   });
-//        if(value.isNotEmpty){
-////          if(regExpEn.hasMatch(value[0].toString()).toString() == "true"){
-////            setState(() {
-////              textAlign = TextAlign.start;
-////            });
-////          }else if(regExpHe.hasMatch(value[0].toString()).toString() == "true"){
-////            setState(() {
-////              textAlign = TextAlign.end;
-////            });
-////          }else{
-////            setState(() {
-////              textAlign = TextAlign.start;
-////            });
-////          }
-//          if(abc.contains(value[0])){
-//            setState(() {
-//              textAlign = TextAlign.start;
-//              Fluttertoast.showToast(
-//                  msg: "This is Center Short Toast",
-//                  toastLength: Toast.LENGTH_SHORT,
-//                  gravity: ToastGravity.CENTER,
-//                  timeInSecForIosWeb: 1,
-//                  backgroundColor: Colors.red,
-//                  textColor: Colors.white,
-//                  fontSize: 16.0
-//              );
-//            });
-//          }
-//        }
-//         },
       ),
     );
   }
@@ -383,16 +333,10 @@ class _ChatState extends State<Chat> {
     });
   }
 
-  /// Method that fires when the user press the back button
-  Future<bool> _onBackPressed() async {
-    setState(() {
-//      this.widget.callback(3, userMap, otherInfo, ChatsAndEvents_index);
-    Navigator.pop(context);
-    });
-    return false;
-  }
-  ///display on screen the Profanity words in red
-  _makeToast(String str,var theColor) {
+  /// Display on screen the Profanity words
+  /// [str] - Toast text
+  /// [theColor] - Toast background color
+  _makeToast(String str, var theColor) {
     Fluttertoast.showToast(
         msg: str,
         toastLength: Toast.LENGTH_LONG,
@@ -403,19 +347,22 @@ class _ChatState extends State<Chat> {
         fontSize: 16.0
     );
   }
-///check if in a given string there is a Profanity words
+
+  /// Check if in a given string there is a Profanity words
+  /// [inputString] - The given [String] input from the user that we need to check for profanity
   bool hasProfanity(String inputString) {
     bool isProfane = false;
     List<String> messageTextList= inputString.toLowerCase().trim().split(' ');
     messageTextList.forEach((element) {
-      // print(englishProfanityList.contains(element));
       if( profanityList.contains(element) ){
             isProfane = true;
       }
     });
     return isProfane;
   }
-  ///return all the Profanity words that the user tried to send
+
+  /// Return all the Profanity words that the user tried to send
+  /// [inputString] - A [String] we need to retrieve all the profanity words that it contains
   List<String> getAllProfanity(String inputString) {
     List<String> found = [];
     profanityList.forEach((word) {
@@ -424,6 +371,15 @@ class _ChatState extends State<Chat> {
       }
     });
     return found;
+  }
+
+  /// Callback function for the user back button press
+  Future<bool> _onBackPressed() async {
+    setState(() {
+//      this.widget.callback(3, userMap, otherInfo, ChatsAndEvents_index);
+      Navigator.pop(context);
+    });
+    return false;
   }
 
 }

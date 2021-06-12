@@ -2,7 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:yana/UI/PAGES/Utilities.dart';
-import 'package:yana/UI/WIDGETS/allWidgets.dart';
 import 'package:yana/UX/DB/allDB.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
@@ -10,16 +9,28 @@ import 'package:yana/UX/LOGIC/MapLogic.dart';
 
 // ignore: must_be_immutable
 class EditEvent extends StatefulWidget {
+
+  /// [thePlace] - The [Place] the event is taking place in
+  /// [theEvents] - The [Events] event we wish to see
+  /// [totallyPop] - [bool] flag to know if totally close the edit screen
   Place thePlace;
   Events theEvents;
   bool totallyPop;
+  // constructor
   EditEvent(this.thePlace, this.theEvents,this.totallyPop);
+
   @override
   _EditEventState createState() => _EditEventState();
+
 }
 
 class _EditEventState extends State<EditEvent> {
+
+  /// [allField] - [Map] of pairs of key [String] : value [TextEditingController] of all the fields controllers
   Map<String, TextEditingController> allField = {};
+
+  /// [width] - Desired width
+  /// [height] - Desired height
   @override
   Widget build(BuildContext context) {
     double width = (MediaQuery.of(context).size.width);
@@ -30,7 +41,6 @@ class _EditEventState extends State<EditEvent> {
         children: [
           Container(
             width: width,
-//        height: height,
             decoration: BoxDecoration(
               color: Colors.amber,
               shape: BoxShape.rectangle,
@@ -104,10 +114,6 @@ class _EditEventState extends State<EditEvent> {
                             "סגור", style: TextStyle(color: Colors.blueGrey),),
                           onPressed: () {
                             Navigator.of(context).pop();
-//                  if (!totallyPop) {
-//                    print("in popTotally");
-//                    seeListEventInPlace(context, thePlace);
-//                  }
                           },
                         ),
                       ],
@@ -121,12 +127,15 @@ class _EditEventState extends State<EditEvent> {
     );
   }
 
+  /// A method in order to create a field of given information based on
+  /// [name] - [String] that will appear before the intractable area for the user to understand what the intractable area is for
+  /// [hint] - [String] that will appear in the area the user need to interact with
+  /// [type] - Determine the type of the field
   createTextField(String name, String hint, String type, var value) {
     if (!this.allField.containsKey(name)) {
       this.allField[name] = TextEditingController(text: value.toString());
     }
     var _textAlign = TextAlign.center;
-    var onTap;
     switch (type) {
       case 'date':
         final format = DateFormat("yyyy-MM-dd");
@@ -151,7 +160,6 @@ class _EditEventState extends State<EditEvent> {
                       if (value != null) {
                         (this.allField[name]!).text =
                             DateFormat('yyyy-MM-dd').format(value);
-                        print((this.allField[name]!).text);
                       }
                     });
                   });
@@ -188,7 +196,6 @@ class _EditEventState extends State<EditEvent> {
                     setState(() {
                       if (value != null) {
                         (this.allField[name]!).text = value.format(context);
-                        print((this.allField[name]!).text);
                       }
                     });
                   });
@@ -230,13 +237,9 @@ class _EditEventState extends State<EditEvent> {
     }
   }
 
+  /// Method to save the event into FireBase
   saveTheEvent() async {
-    allField.forEach((key, value) {
-      print("key = $key , value = ${value.text}");
-    });
-
-    String formattedDate =
-        DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.now());
+    String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.now());
     String estimateDate = ((allField['estimateDate']!).text);
     String startEstimateTime = ((allField['startEstimateTime']!).text);
     String startEstimate = estimateDate + " " + startEstimateTime;
@@ -245,11 +248,11 @@ class _EditEventState extends State<EditEvent> {
     int maxNumPeople = -1;
     try {
       maxNumPeople = int.parse((allField['maxNumPeople']!).text);
-    } on Exception catch (e) {
+    } on Exception {
       maxNumPeople = -1;
     }
 
-    //the UserID is in allPages in the Map there
+    /// The UserID is in allPages in the Map there
     if (estimateDate == '' ||
         startEstimateTime == '' ||
         endEstimateTime == '' ||
@@ -276,28 +279,7 @@ class _EditEventState extends State<EditEvent> {
     Navigator.pushReplacement(context, route);*/
   }
 
-  _selectDate(TextEditingController controller) async {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(const Duration(days: 50)),
-    ).then((value) {
-      print(value.toString());
-      setState(() {
-        controller.text = value.toString();
-      });
-    });
-  }
-
-  _selectTime(TextEditingController controller) async {
-    controller.text = (await showTimePicker(
-      initialTime: TimeOfDay.now(),
-      context: context,
-    ))
-        .toString();
-  }
-
+  /// Method to create an Error [AlertDialog] with the [text] as the body - [String]
   makeErrorAlert(String text) {
     showDialog(
       context: context,
@@ -326,6 +308,7 @@ class _EditEventState extends State<EditEvent> {
     );
   }
 
+  /// Method to increment the max number of people allowed in the event
   incrementMaxNumPeople() {
     int res = int.parse((allField['maxNumPeople']!).text);
     if (res > 15) {
@@ -335,6 +318,7 @@ class _EditEventState extends State<EditEvent> {
     (allField['maxNumPeople']!).text = "$res";
   }
 
+  /// Method to decrement the max number of people allowed in the event
   decrementMaxNumPeople() {
     int res = int.parse((allField['maxNumPeople']!).text);
     if (res < 3) {

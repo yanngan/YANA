@@ -8,8 +8,11 @@ import 'Utilities.dart';
 // ignore: must_be_immutable
 class ChatList extends StatefulWidget {
 
+  /// [otherInfo] - [Map] holding the other [User] information
   Map<String, String> otherInfo = new Map<String, String>();
+//  Callback function related - See main.dart callback section for more info about it
   final Function callback;
+  // constructor
   ChatList(this.callback);
 
   @override
@@ -18,6 +21,9 @@ class ChatList extends StatefulWidget {
 
 class _ChatListState extends State<ChatList> {
 
+  /// [_userID] - Current [User] ID
+  /// [_senders] - [Map] of all the people the current user have chat relations with
+  /// [_isItEmpty] - [bool] flag to check if the [_senders] is empty or not
   String _userID = userMap["userID"].toString();
   Map<dynamic, dynamic> _senders = {};
   bool _isItEmpty = true;
@@ -28,12 +34,9 @@ class _ChatListState extends State<ChatList> {
     initChatsList();
    // FirebaseHelper.createNewChat(_userID, userMap["name"].toString(), "4520991924611511", "Yann Moshe Ganem");
    // FirebaseHelper.createNewChat(_userID, userMap["name"].toString(), "01234567891234567", "Adriana Lima");
-//    FirebaseHelper.createNewChat(_userID, "Lidor Name", "DavidID", "David Name");
-//    FirebaseHelper.createNewChat(_userID, "Lidor Name", "SvetlanaID", "Svetlana Name");
-//    FirebaseHelper.createNewChat(_userID, "Lidor Name", "DanaID", "Dana Name");
-//    FirebaseHelper.createNewChat(_userID, "Lidor Name", "ZevelID", "Zevel Name");
   }
 
+  /// Method to initialize the [_senders] map
   void initChatsList() async {
     _senders = await FirebaseHelper.getSendersInfo(_userID);
     setState(() {
@@ -42,11 +45,12 @@ class _ChatListState extends State<ChatList> {
     });
   }
 
+  /// [freeScreenHeight] - Available screen height we have
   @override
   Widget build(BuildContext context) {
 
     double freeScreenHeight = (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - 80);
-    print(_senders.length == 0);
+
     return Scaffold(
       appBar: null,
       backgroundColor: Colors.amber,

@@ -10,16 +10,19 @@ class MapView extends StatefulWidget {
 
 // TODO - make the map more clear that is our (YANA) map and not some random widget
 class _MapViewState extends State<MapView> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         child: Center(
+          /// Map Widget for the entire screen
          child: MapSample()
         ),
       ),
     );
   }
+
 }
 
 

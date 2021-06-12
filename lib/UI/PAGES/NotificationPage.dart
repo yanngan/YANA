@@ -6,7 +6,6 @@ import 'package:yana/UX/DB/allDB.dart';
 import 'package:yana/UX/LOGIC/CLASSES/allClasses.dart';
 import 'package:yana/UX/LOGIC/Logic.dart';
 import 'package:yana/UX/LOGIC/MapLogic.dart';
-
 import 'Utilities.dart';
 
 class NotificationPage extends StatefulWidget {
@@ -18,8 +17,8 @@ class NotificationPage extends StatefulWidget {
 
 class _NotificationPageState extends State<NotificationPage> {
 
-  /// [_initDone] - A boolean flag that represents that the [listNotification] has been initialized
-  /// [listNotification] - A [List] of [MyNotification] representing all the current user related notifications
+  /// [_initDone] - [bool] flag that represents that the [listNotification] has been initialized
+  /// [listNotification] - [List] of [MyNotification] representing all the current user related notifications
   bool _initDone = false;
   List<MyNotification> listNotification = [];
 
@@ -66,7 +65,6 @@ class _NotificationPageState extends State<NotificationPage> {
   /// Method that creates a row to the list of the notifications
   /// [index] - Represents the index of the list we want to create a row for
   _createRow(int index){
-    print(listNotification[index]);
     switch(listNotification[index].type){
       case MyNotification.EVENTS_ASK_TO_JOIN_BEEN_APPROVE: //MyNotification.EVENTS_ASK_TO_JOIN_BEEN_APPROVE
         return _createBeenApprove(index);
@@ -87,7 +85,7 @@ class _NotificationPageState extends State<NotificationPage> {
       default:title = 'בקשת הצטרפות לאירוע שטרם אישרת';break;
     }
     return Padding(
-      padding: const EdgeInsets.only(top: 4,right: 4,left: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
       child: Wrap(
         children: [
           Container(
@@ -105,41 +103,47 @@ class _NotificationPageState extends State<NotificationPage> {
                   ],
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton(
                       child: Text("צפה באירוע"),
                       onPressed: (){
                         seeEvents(index);
                       },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.amber[700],
+                      ),
                     ),
                     ElevatedButton(
                       child: Text("צפה בפרופיל"),
                       onPressed: (){
                         seeProfile(index);
                       },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.amber[700],
+                      ),
                     ),
                   ],
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: listNotification[index].statusForUser<1?ElevatedButton(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                        child: listNotification[index].statusForUser != 1 ? ElevatedButton(
                           child: Text("אישור"),
                           style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
                           onPressed: () async {
                             await approveOrRejectRequestToJoinEvent(index,true);
                           },
-                        ):SizedBox(height: 1,),
+                        ) : SizedBox(height: 1,),
                       ),
                     ),
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: listNotification[index].statusForUser<1?ElevatedButton(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                        child: listNotification[index].statusForUser != 1 ? ElevatedButton(
                           child: Text("דחייה"),
                           style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
                           onPressed: () async {
@@ -148,7 +152,7 @@ class _NotificationPageState extends State<NotificationPage> {
                               _initDone = false;
                             });
                           },
-                        ):SizedBox(height: 1,),
+                        ) : SizedBox(height: 1,),
                       ),
                     ),
                   ],
@@ -165,7 +169,7 @@ class _NotificationPageState extends State<NotificationPage> {
   /// [index] - Represents the index of the list we want to create a row for
   _createBeenApprove(int index){
     return Padding(
-      padding: const EdgeInsets.only(top: 4,right: 4,left: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
       child: Wrap(
         children: [
           Container(
@@ -179,16 +183,17 @@ class _NotificationPageState extends State<NotificationPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('ברכות! בקשתך להצטרף לאירוע אושרה, כעת תוכל לשוחח עם מארגן האירוע בחלונית הצאט', style: TextStyle(fontSize: 20, color: Colors.white,), textAlign: TextAlign.center,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      child: Text("צפה באירוע"),
-                      onPressed: () {
-                        seeEvents(index);
-                      },
+                Align(
+                  alignment: Alignment.center,
+                  child: ElevatedButton(
+                    child: Text("צפה באירוע"),
+                    onPressed: () {
+                      seeEvents(index);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.amber[700],
                     ),
-                  ],
+                  ),
                 ),
               ],
             ),
@@ -202,7 +207,7 @@ class _NotificationPageState extends State<NotificationPage> {
   /// [index] - Represents the index of the list we want to create a row for
   _createEventHaveChange(int index){
     return Padding(
-      padding: const EdgeInsets.only(top: 4,right: 4,left: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
       child: Wrap(
         children: [
           Container(
@@ -217,16 +222,17 @@ class _NotificationPageState extends State<NotificationPage> {
               children: [
                 //Text('Event - ${listEvents[index].eventID}'),
                 Text('מעדכנים אותך כי מנהל האירוע עדכן את האירוע שנרשמת אליו',style: TextStyle(fontSize: 20,color: Colors.white, ),textAlign: TextAlign.center,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      child: Text("צפה באירוע"),
-                      onPressed: (){
-                        seeEvents(index);
-                      },
+                Align(
+                  alignment: Alignment.center,
+                  child: ElevatedButton(
+                    child: Text("צפה באירוע"),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.amber[700],
                     ),
-                  ],
+                    onPressed: (){
+                      seeEvents(index);
+                    },
+                  ),
                 ),
               ],
             ),

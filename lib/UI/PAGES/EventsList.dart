@@ -238,12 +238,12 @@ class _EventsListState extends State<EventsList> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      InkWell(
-                        onTap: () {
-                          _launchUrl(
-                              "${(placeByEvents[listEvents[index].eventID]!).googleMapLink}");
-                        },
-                        child: Flexible(
+                      Flexible (
+                        child: InkWell(
+                          onTap: () {
+                            _launchUrl(
+                                "${(placeByEvents[listEvents[index].eventID]!).googleMapLink}");
+                          },
                           child: Text(
                             "${(placeByEvents[listEvents[index].eventID]!).address}",
                             style: TextStyle(

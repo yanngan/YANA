@@ -68,7 +68,7 @@ class _MainPageState extends State<MainPage> {
       userMap = credentials;
       otherInfo = _otherInfo;
       currentIndex = _pageIndex;
-      pageController = PageController(initialPage:currentIndex, keepPage: true,);
+      //pageController = PageController(initialPage:currentIndex, keepPage: true,);
     });
   }
 

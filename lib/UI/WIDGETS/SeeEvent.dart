@@ -33,8 +33,41 @@ class _SeeEventState extends State<SeeEvent> {
   Widget build(BuildContext context) {
     double width = (MediaQuery.of(context).size.width);
     double height = ((MediaQuery.of(context).size.height)/2);
+    var actionButton;
     if(!_initDone){
       _init();
+    }
+    else{
+      if(widget.theEvents.userID == userMap["userID"]){
+        actionButton = ElevatedButton(
+          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.pink),),
+          child: Text("ערוך"),
+          onPressed: editTheEvent,
+        );
+      }
+      else{
+        if(widget.theEvents.statusForUser == Events.ASK){
+          actionButton = ElevatedButton(
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.grey),),
+            child: Text("בקשתך ממתינה"),
+            onPressed: askToJoin,
+          );
+        }
+        else if(widget.theEvents.statusForUser == Events.NOT_ASK_YET_AND_NOT_GOING){
+          actionButton = ElevatedButton(
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.pink),),
+            child: Text("בקש להצטרף"),
+            onPressed: askToJoin,
+          );
+        }
+        else if(widget.theEvents.statusForUser == Events.GOING){
+          actionButton = ElevatedButton(//todo - make this to be delete my participation
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.grey),),
+            child: Text("בקשתך להצטרף אושרה"),
+            onPressed: (){},
+          );
+        }
+      }
     }
     return  Padding(
         padding: const EdgeInsets.all(8.0),
@@ -94,15 +127,7 @@ class _SeeEventState extends State<SeeEvent> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       _initDone?
-                      (widget.theEvents.userID == userMap["userID"]?ElevatedButton(
-                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.pink),),
-                        child: Text("ערוך"),
-                        onPressed: editTheEvent,
-                      ):ElevatedButton(
-                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(widget.theEvents.statusForUser == Events.NOT_ASK_YET_AND_NOT_GOING ||widget.theEvents.statusForUser == Events.DONT_KNOW ?Colors.pink:Colors.grey),),
-                        child: Text("בקש להצטרף"),/// todo if have be approve by admin show "בטל הגעה"
-                        onPressed: askToJoin,
-                      )):SizedBox(height: 30,),
+                      actionButton:SizedBox(height: 30,),
                       TextButton(
                         child: new Text(
                           "סגור", style: TextStyle(color: Colors.blueGrey),),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../PAGES/Utilities.dart';
 
 // ignore: must_be_immutable
@@ -87,12 +88,10 @@ class _MyCurvedNavigationBarState extends State<MyCurvedNavigationBar> {
         ),  /// Setting Page
       ],
       onTap: (index) {
-        setState(() {
-          pageController.animateToPage(
-              index,
-              duration: Duration(milliseconds: 500),curve: Curves.easeInOut
-          );
-        });
+        pageController.animateToPage(
+            index,
+            duration: Duration(milliseconds: 500),curve: Curves.easeInOut
+        );
       },
     );
   }

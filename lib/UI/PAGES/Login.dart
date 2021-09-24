@@ -179,7 +179,7 @@ class _LoginState extends State<Login> {
                                       ) ,
                                     ),
                                   ), // Connect with Facebook
-                                  Padding(
+                                  /*Padding(
                                     padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 35.0),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(64),
@@ -229,7 +229,7 @@ class _LoginState extends State<Login> {
                                           }
                                       ),
                                     ),
-                                  ), // Connect with Dummy user
+                                  ),*/ // Connect with Dummy user
                                 ],
                               );
                             }

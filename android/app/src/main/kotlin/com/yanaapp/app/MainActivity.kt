@@ -1,4 +1,4 @@
-package com.yana.yana
+package com.yanaapp.app
 
 import io.flutter.embedding.android.FlutterActivity
 
